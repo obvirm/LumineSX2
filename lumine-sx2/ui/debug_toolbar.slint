@@ -1,0 +1,103 @@
+import { Button, HorizontalBox, VerticalBox, ComboBox } from "std-widgets.slint";
+
+// ─── Debug Toolbar ───
+export component DebugToolbar inherits Rectangle {
+    in property <bool> is-running: false;
+    in property <bool> is-paused: false;
+    in property <string> current-cpu: "EE";
+    in property <string> current-pc: "0x00000000";
+    in property <bool> can-step: true;
+
+    callback run-pause();
+    callback step-into();
+    callback step-over();
+    callback step-out();
+    callback run-to-cursor();
+    callback cpu-changed(string /*cpu*/);
+    callback analyze();
+    callback toggle-breakpoints();
+    callback reset();
+
+    height: 40px;
+    background: #1e1e2e;
+
+    HorizontalLayout {
+        padding: 4px;
+        spacing: 4px;
+
+        // CPU selector
+        cpu-combo := ComboBox {
+            model: ["EE", "IOP"];
+            current-index: root.current-cpu == "EE" ? 0 : 1;
+            width: 70px;
+        }
+
+        Rectangle { width: 1px; background: #313244; }
+
+        // Run/Pause
+        Button {
+            text: root.is-running ? "⏸" : "▶";
+            clicked => { root.run-pause(); }
+            width: 40px;
+            tooltip: root.is-running ? "Pause" : "Run";
+        }
+
+        // Step Into
+        Button {
+            text: "↓";
+            clicked => { root.step-into(); }
+            width: 32px;
+            enabled: root.can-step;
+            tooltip: "Step Into (F11)";
+        }
+
+        // Step Over
+        Button {
+            text: "→";
+            clicked => { root.step-over(); }
+            width: 32px;
+            enabled: root.can-step;
+            tooltip: "Step Over (F10)";
+        }
+
+        // Step Out
+        Button {
+            text: "↑";
+            clicked => { root.step-out(); }
+            width: 32px;
+            enabled: root.can-step;
+            tooltip: "Step Out (Shift+F11)";
+        }
+
+        // Run to Cursor
+        Button {
+            text: "⤓";
+            clicked => { root.run-to-cursor(); }
+            width: 32px;
+            tooltip: "Run to Cursor";
+        }
+
+        Rectangle { width: 1px; background: #313244; }
+
+        // Reset
+        Button {
+            text: "⟳";
+            clicked => { root.reset(); }
+            width: 32px;
+            tooltip: "Reset";
+        }
+
+        Rectangle { horizontal-stretch: 1; }
+
+        // PC display
+        Text {
+            text: "PC: " + root.current-pc;
+            color: #89b4fa;
+            font-size: 12px;
+            font-family: "Cascadia Code", "Consolas", monospace;
+            vertical-alignment: center;
+        }
+
+        Rectangle { width: 8px; }
+    }
+}

@@ -1,0 +1,31 @@
+[package]
+name = "pcsx2-qt"
+version = "2.0.0"
+edition = "2021"
+authors = ["PCSX2 Dev Team"]
+license = "GPL-3.0+"
+description = "Rust rewrite of PCSX2 Qt host interface using unsafe FFI"
+
+[lib]
+name = "pcsx2_qt"
+path = "src/lib.rs"
+
+[[bin]]
+name = "pcsx2-qt"
+path = "src/main.rs"
+
+[dependencies]
+libc = "0.2"
+# Qt bindings would require additional setup
+# qt_widgets = "0.5"
+
+[features]
+default = []
+debug = []
+devbuild = []
+raintegration = []
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1

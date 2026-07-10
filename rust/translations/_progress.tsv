@@ -1,0 +1,1032 @@
+file	original_loc	target_rust_path	status	agent_id	started_at	completed_at	notes
+common\AlignedMalloc.cpp	41	rust\translations\common/AlignedMalloc.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\AlignedMalloc.h	27	rust\translations\common/AlignedMalloc.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\Assertions.cpp	103	rust\translations\common/Assertions.rs	translated	agent-batch-fillin-001	2026-06-19T04.55.43	agent-batch-002
+common\Assertions.h	38	rust\translations\common/Assertions.rs	translated	agent-batch-fillin-001	2026-06-19T04.55.43	agent-batch-002
+common\BitUtils.h	79	rust\translations\common/BitUtils.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\ByteSwap.h	40	rust\translations\common/ByteSwap.rs	translated	agent-batch-fillin-001		2026-06-19T04.48.29	agent-batch-001
+common\CocoaTools.h	38	rust\translations\common/CocoaTools.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\Console.cpp	430	rust\translations\common/Console.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\Console.h	161	rust\translations\common/Console.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\CrashHandler.cpp	310	rust\translations\common/CrashHandler.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\CrashHandler.h	16	rust\translations\common/CrashHandler.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\Darwin\DarwinMisc.cpp	546	rust\translations\common/Darwin/DarwinMisc.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\Darwin\DarwinMisc.h	16	rust\translations\common/Darwin/DarwinMisc.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\Darwin\DarwinThreads.cpp	235	rust\translations\common/Darwin/DarwinThreads.rs	pending				
+common\DynamicLibrary.cpp	146	rust\translations\common/DynamicLibrary.rs	translated	agent-batch-fillin-001		2026-06-19T04.55.43	agent-batch-002
+common\DynamicLibrary.h	60	rust\translations\common/DynamicLibrary.rs	translated	agent-batch-fillin-001		2026-06-19T04.55.43	agent-batch-002
+common\Easing.h	227	rust\translations\common/Easing.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\emitter\bmi.cpp	18	rust\translations\common/emitter/bmi.rs	pending				
+common\emitter\fpu.cpp	51	rust\translations\common/emitter/fpu.rs	pending				
+common\emitter\groups.cpp	204	rust\translations\common/emitter/groups.rs	pending				
+common\emitter\implement\avx.h	84	rust\translations\common/emitter/implement/avx.rs	pending				
+common\emitter\implement\bmi.h	41	rust\translations\common/emitter/implement/bmi.rs	pending				
+common\emitter\implement\dwshift.h	24	rust\translations\common/emitter/implement/dwshift.rs	pending				
+common\emitter\implement\group1.h	48	rust\translations\common/emitter/implement/group1.rs	pending				
+common\emitter\implement\group2.h	43	rust\translations\common/emitter/implement/group2.rs	pending				
+common\emitter\implement\group3.h	55	rust\translations\common/emitter/implement/group3.rs	pending				
+common\emitter\implement\helpers.h	65	rust\translations\common/emitter/implement/helpers.rs	pending				
+common\emitter\implement\incdec.h	17	rust\translations\common/emitter/implement/incdec.rs	pending				
+common\emitter\implement\jmpcall.h	62	rust\translations\common/emitter/implement/jmpcall.rs	pending				
+common\emitter\implement\movs.h	104	rust\translations\common/emitter/implement/movs.rs	pending				
+common\emitter\implement\simd_arithmetic.h	269	rust\translations\common/emitter/implement/simd_arithmetic.rs	pending				
+common\emitter\implement\simd_comparisons.h	95	rust\translations\common/emitter/implement/simd_comparisons.rs	pending				
+common\emitter\implement\simd_helpers.h	139	rust\translations\common/emitter/implement/simd_helpers.rs	pending				
+common\emitter\implement\simd_moremovs.h	133	rust\translations\common/emitter/implement/simd_moremovs.rs	pending				
+common\emitter\implement\simd_shufflepack.h	176	rust\translations\common/emitter/implement/simd_shufflepack.rs	pending				
+common\emitter\implement\simd_templated_helpers.h	22	rust\translations\common/emitter/implement/simd_templated_helpers.rs	pending				
+common\emitter\implement\test.h	51	rust\translations\common/emitter/implement/test.rs	pending				
+common\emitter\implement\xchg.h	8	rust\translations\common/emitter/implement/xchg.rs	pending				
+common\emitter\instructions.h	510	rust\translations\common/emitter/instructions.rs	pending				
+common\emitter\internal.h	176	rust\translations\common/emitter/internal.rs	pending				
+common\emitter\jmp.cpp	234	rust\translations\common/emitter/jmp.rs	pending				
+common\emitter\legacy_instructions.h	167	rust\translations\common/emitter/legacy_instructions.rs	pending				
+common\emitter\legacy_internal.h	20	rust\translations\common/emitter/legacy_internal.rs	pending				
+common\emitter\legacy_sse.cpp	14	rust\translations\common/emitter/legacy_sse.rs	pending				
+common\emitter\legacy_types.h	9	rust\translations\common/emitter/legacy_types.rs	pending				
+common\emitter\legacy.cpp	339	rust\translations\common/emitter/legacy.rs	pending				
+common\emitter\movs.cpp	227	rust\translations\common/emitter/movs.rs	pending				
+common\emitter\simd.cpp	767	rust\translations\common/emitter/simd.rs	pending				
+common\emitter\x86emitter.cpp	1304	rust\translations\common/emitter/x86emitter.rs	translated			2026-06-19T05.29.11	agent-batch-004-005
+common\emitter\x86emitter.h	33	rust\translations\common/emitter/x86emitter.rs	translated			2026-06-19T05.29.11	agent-batch-004-005
+common\emitter\x86types.h	907	rust\translations\common/emitter/x86types.rs	pending				
+common\EnumOps.h	77	rust\translations\common/EnumOps.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\Error.cpp	234	rust\translations\common/Error.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\Error.h	85	rust\translations\common/Error.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\FastJmp.cpp	83	rust\translations\common/FastJmp.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\FastJmp.h	21	rust\translations\common/FastJmp.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\FileSystem.cpp	2322	rust\translations\common/FileSystem.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\FileSystem.h	177	rust\translations\common/FileSystem.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\FPControl.h	180	rust\translations\common/FPControl.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\HashCombine.h	11	rust\translations\common/HashCombine.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\HeapArray.h	336	rust\translations\common/HeapArray.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\HeterogeneousContainers.h	56	rust\translations\common/HeterogeneousContainers.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\HostSys.cpp	166	rust\translations\common/HostSys.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\HostSys.h	167	rust\translations\common/HostSys.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\HTTPDownloader.cpp	280	rust\translations\common/HTTPDownloader.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\HTTPDownloader.h	79	rust\translations\common/HTTPDownloader.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\HTTPDownloaderCurl.cpp	174	rust\translations\common/HTTPDownloaderCurl.rs	pending				
+common\HTTPDownloaderCurl.h	28	rust\translations\common/HTTPDownloaderCurl.rs	pending				
+common\HTTPDownloaderWinHTTP.cpp	277	rust\translations\common/HTTPDownloaderWinHTTP.rs	pending				
+common\HTTPDownloaderWinHTTP.h	30	rust\translations\common/HTTPDownloaderWinHTTP.rs	pending				
+common\Image.cpp	1152	rust\translations\common/Image.rs	translated	agent-batch-fillin-001	2026-06-19T04.55.43	agent-batch-002
+common\Image.h	117	rust\translations\common/Image.rs	translated	agent-batch-fillin-001	2026-06-19T04.55.43	agent-batch-002
+common\Linux\LnxHostSys.cpp	283	rust\translations\common/Linux/LnxHostSys.rs	pending				
+common\Linux\LnxMisc.cpp	330	rust\translations\common/Linux/LnxMisc.rs	pending				
+common\Linux\LnxThreads.cpp	294	rust\translations\common/Linux/LnxThreads.rs	pending				
+common\LRUCache.h	105	rust\translations\common/LRUCache.rs	translated	agent-batch-fillin-001		2026-06-19T04.48.29	agent-batch-001	filled-in missing SetMaxCapacity/Evict/Remove/SetManualEvict/ManualEvict and manual_evict field
+common\MD5Digest.cpp	176	rust\translations\common/MD5Digest.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\MD5Digest.h	16	rust\translations\common/MD5Digest.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\MemoryInterface.cpp	131	rust\translations\common/MemoryInterface.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\MemoryInterface.h	43	rust\translations\common/MemoryInterface.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\MemorySettingsInterface.cpp	276	rust\translations\common/MemorySettingsInterface.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\MemorySettingsInterface.h	51	rust\translations\common/MemorySettingsInterface.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\MRCHelpers.h	77	rust\translations\common/MRCHelpers.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\Path.h	62	rust\translations\common/Path.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\Pcsx2Defs.h	145	rust\translations\common/Pcsx2Defs.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\Pcsx2Types.h	94	rust\translations\common/Pcsx2Types.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\Perf.cpp	193	rust\translations\common/Perf.rs	translated	agent-batch-fillin-001	2026-06-19T04.55.43	agent-batch-002
+common\Perf.h	25	rust\translations\common/Perf.rs	translated	agent-batch-fillin-001	2026-06-19T04.55.43	agent-batch-002
+common\PrecompiledHeader.cpp	3	rust\translations\common/PrecompiledHeader.rs	pending				
+common\PrecompiledHeader.h	7	rust\translations\common/PrecompiledHeader.rs	pending				
+common\ProgressCallback.cpp	196	rust\translations\common/ProgressCallback.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\ProgressCallback.h	85	rust\translations\common/ProgressCallback.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\ReadbackSpinManager.cpp	191	rust\translations\common/ReadbackSpinManager.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\ReadbackSpinManager.h	46	rust\translations\common/ReadbackSpinManager.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\RedtapeWilCom.h	15	rust\translations\common/RedtapeWilCom.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\RedtapeWindows.h	17	rust\translations\common/RedtapeWindows.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\ScopedGuard.h	44	rust\translations\common/ScopedGuard.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\Semaphore.cpp	165	rust\translations\common/Semaphore.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\SettingsInterface.h	221	rust\translations\common/SettingsInterface.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\SettingsWrapper.cpp	186	rust\translations\common/SettingsWrapper.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\SettingsWrapper.h	108	rust\translations\common/SettingsWrapper.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\SingleRegisterTypes.h	153	rust\translations\common/SingleRegisterTypes.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\SmallString.cpp	705	rust\translations\common/SmallString.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\SmallString.h	342	rust\translations\common/SmallString.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\StackWalker.cpp	1127	rust\translations\common/StackWalker.rs	pending				
+common\StackWalker.h	155	rust\translations\common/StackWalker.rs	pending				
+common\StringUtil.cpp	468	rust\translations\common/StringUtil.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\StringUtil.h	290	rust\translations\common/StringUtil.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\TextureDecompress.cpp	962	rust\translations\common/TextureDecompress.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\TextureDecompress.h	165	rust\translations\common/TextureDecompress.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\Threading.h	213	rust\translations\common/Threading.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\Timer.cpp	158	rust\translations\common/Timer.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\Timer.h	35	rust\translations\common/Timer.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\VectorIntrin.h	38	rust\translations\common/VectorIntrin.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\WAVWriter.cpp	95	rust\translations\common/WAVWriter.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\WAVWriter.h	28	rust\translations\common/WAVWriter.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\WindowInfo.cpp	212	rust\translations\common/WindowInfo.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\WindowInfo.h	35	rust\translations\common/WindowInfo.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\Windows\WinHostSys.cpp	297	rust\translations\common/Windows/WinHostSys.rs	pending				
+common\Windows\WinMisc.cpp	123	rust\translations\common/Windows/WinMisc.rs	pending				
+common\Windows\WinThreads.cpp	244	rust\translations\common/Windows/WinThreads.rs	pending				
+common\WrappedMemCopy.h	37	rust\translations\common/WrappedMemCopy.rs	translated			2026-06-19T04.48.29	agent-batch-001
+common\YAML.cpp	69	rust\translations\common/YAML.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\YAML.h	12	rust\translations\common/YAML.rs	translated			2026-06-19T04.55.43	agent-batch-002
+common\ZipHelpers.h	121	rust\translations\common/ZipHelpers.rs	translated			2026-06-19T04.48.29	agent-batch-001
+pcsx2-gsrunner\Main.cpp	1138	rust\translations\pcsx2-gsrunner/Main.rs	pending				
+pcsx2-qt\AboutDialog.cpp	127	rust\translations\pcsx2-qt/AboutDialog.rs	pending				
+pcsx2-qt\AboutDialog.h	25	rust\translations\pcsx2-qt/AboutDialog.rs	pending				
+pcsx2-qt\AsyncDialogs.cpp	311	rust\translations\pcsx2-qt/AsyncDialogs.rs	pending				
+pcsx2-qt\AsyncDialogs.h	157	rust\translations\pcsx2-qt/AsyncDialogs.rs	pending				
+pcsx2-qt\AutoUpdaterDialog.cpp	785	rust\translations\pcsx2-qt/AutoUpdaterDialog.rs	pending				
+pcsx2-qt\AutoUpdaterDialog.h	57	rust\translations\pcsx2-qt/AutoUpdaterDialog.rs	pending				
+pcsx2-qt\ColorPickerButton.cpp	43	rust\translations\pcsx2-qt/ColorPickerButton.rs	pending				
+pcsx2-qt\ColorPickerButton.h	21	rust\translations\pcsx2-qt/ColorPickerButton.rs	pending				
+pcsx2-qt\CoverDownloadDialog.cpp	142	rust\translations\pcsx2-qt/CoverDownloadDialog.rs	pending				
+pcsx2-qt\CoverDownloadDialog.h	48	rust\translations\pcsx2-qt/CoverDownloadDialog.rs	pending				
+pcsx2-qt\Debugger\AnalysisOptionsDialog.cpp	27	rust\translations\pcsx2-qt/Debugger/AnalysisOptionsDialog.rs	pending				
+pcsx2-qt\Debugger\AnalysisOptionsDialog.h	16	rust\translations\pcsx2-qt/Debugger/AnalysisOptionsDialog.rs	pending				
+pcsx2-qt\Debugger\Breakpoints\BreakpointDialog.cpp	162	rust\translations\pcsx2-qt/Debugger/Breakpoints/BreakpointDialog.rs	pending				
+pcsx2-qt\Debugger\Breakpoints\BreakpointDialog.h	30	rust\translations\pcsx2-qt/Debugger/Breakpoints/BreakpointDialog.rs	pending				
+pcsx2-qt\Debugger\Breakpoints\BreakpointModel.cpp	639	rust\translations\pcsx2-qt/Debugger/Breakpoints/BreakpointModel.rs	pending				
+pcsx2-qt\Debugger\Breakpoints\BreakpointModel.h	58	rust\translations\pcsx2-qt/Debugger/Breakpoints/BreakpointModel.rs	pending				
+pcsx2-qt\Debugger\Breakpoints\BreakpointView.cpp	147	rust\translations\pcsx2-qt/Debugger/Breakpoints/BreakpointView.rs	pending				
+pcsx2-qt\Debugger\Breakpoints\BreakpointView.h	29	rust\translations\pcsx2-qt/Debugger/Breakpoints/BreakpointView.rs	pending				
+pcsx2-qt\Debugger\DebuggerEvents.h	47	rust\translations\pcsx2-qt/Debugger/DebuggerEvents.rs	pending				
+pcsx2-qt\Debugger\DebuggerSettingsManager.cpp	157	rust\translations\pcsx2-qt/Debugger/DebuggerSettingsManager.rs	pending				
+pcsx2-qt\Debugger\DebuggerSettingsManager.h	23	rust\translations\pcsx2-qt/Debugger/DebuggerSettingsManager.rs	pending				
+pcsx2-qt\Debugger\DebuggerView.cpp	256	rust\translations\pcsx2-qt/Debugger/DebuggerView.rs	pending				
+pcsx2-qt\Debugger\DebuggerView.h	165	rust\translations\pcsx2-qt/Debugger/DebuggerView.rs	pending				
+pcsx2-qt\Debugger\DebuggerWindow.cpp	460	rust\translations\pcsx2-qt/Debugger/DebuggerWindow.rs	pending				
+pcsx2-qt\Debugger\DebuggerWindow.h	60	rust\translations\pcsx2-qt/Debugger/DebuggerWindow.rs	pending				
+pcsx2-qt\Debugger\DisassemblyView.cpp	917	rust\translations\pcsx2-qt/Debugger/DisassemblyView.rs	pending				
+pcsx2-qt\Debugger\DisassemblyView.h	79	rust\translations\pcsx2-qt/Debugger/DisassemblyView.rs	pending				
+pcsx2-qt\Debugger\Docking\DockLayout.cpp	743	rust\translations\pcsx2-qt/Debugger/Docking/DockLayout.rs	pending				
+pcsx2-qt\Debugger\Docking\DockLayout.h	121	rust\translations\pcsx2-qt/Debugger/Docking/DockLayout.rs	pending				
+pcsx2-qt\Debugger\Docking\DockManager.cpp	702	rust\translations\pcsx2-qt/Debugger/Docking/DockManager.rs	pending				
+pcsx2-qt\Debugger\Docking\DockManager.h	81	rust\translations\pcsx2-qt/Debugger/Docking/DockManager.rs	pending				
+pcsx2-qt\Debugger\Docking\DockMenuBar.cpp	270	rust\translations\pcsx2-qt/Debugger/Docking/DockMenuBar.rs	pending				
+pcsx2-qt\Debugger\Docking\DockMenuBar.h	68	rust\translations\pcsx2-qt/Debugger/Docking/DockMenuBar.rs	pending				
+pcsx2-qt\Debugger\Docking\DockTables.cpp	188	rust\translations\pcsx2-qt/Debugger/Docking/DockTables.rs	pending				
+pcsx2-qt\Debugger\Docking\DockTables.h	57	rust\translations\pcsx2-qt/Debugger/Docking/DockTables.rs	pending				
+pcsx2-qt\Debugger\Docking\DockUtils.cpp	86	rust\translations\pcsx2-qt/Debugger/Docking/DockUtils.rs	pending				
+pcsx2-qt\Debugger\Docking\DockUtils.h	33	rust\translations\pcsx2-qt/Debugger/Docking/DockUtils.rs	pending				
+pcsx2-qt\Debugger\Docking\DockViews.cpp	247	rust\translations\pcsx2-qt/Debugger/Docking/DockViews.rs	pending				
+pcsx2-qt\Debugger\Docking\DockViews.h	85	rust\translations\pcsx2-qt/Debugger/Docking/DockViews.rs	pending				
+pcsx2-qt\Debugger\Docking\DropIndicators.cpp	473	rust\translations\pcsx2-qt/Debugger/Docking/DropIndicators.rs	pending				
+pcsx2-qt\Debugger\Docking\DropIndicators.h	85	rust\translations\pcsx2-qt/Debugger/Docking/DropIndicators.rs	pending				
+pcsx2-qt\Debugger\Docking\LayoutEditorDialog.cpp	81	rust\translations\pcsx2-qt/Debugger/Docking/LayoutEditorDialog.rs	pending				
+pcsx2-qt\Debugger\Docking\LayoutEditorDialog.h	32	rust\translations\pcsx2-qt/Debugger/Docking/LayoutEditorDialog.rs	pending				
+pcsx2-qt\Debugger\Docking\NoLayoutsWidget.cpp	13	rust\translations\pcsx2-qt/Debugger/Docking/NoLayoutsWidget.rs	pending				
+pcsx2-qt\Debugger\Docking\NoLayoutsWidget.h	14	rust\translations\pcsx2-qt/Debugger/Docking/NoLayoutsWidget.rs	pending				
+pcsx2-qt\Debugger\JsonValueWrapper.h	32	rust\translations\pcsx2-qt/Debugger/JsonValueWrapper.rs	pending				
+pcsx2-qt\Debugger\Memory\MemorySearchView.cpp	642	rust\translations\pcsx2-qt/Debugger/Memory/MemorySearchView.rs	pending				
+pcsx2-qt\Debugger\Memory\MemorySearchView.h	132	rust\translations\pcsx2-qt/Debugger/Memory/MemorySearchView.rs	pending				
+pcsx2-qt\Debugger\Memory\MemoryView.cpp	845	rust\translations\pcsx2-qt/Debugger/Memory/MemoryView.rs	pending				
+pcsx2-qt\Debugger\Memory\MemoryView.h	131	rust\translations\pcsx2-qt/Debugger/Memory/MemoryView.rs	pending				
+pcsx2-qt\Debugger\Memory\SavedAddressesModel.cpp	187	rust\translations\pcsx2-qt/Debugger/Memory/SavedAddressesModel.rs	pending				
+pcsx2-qt\Debugger\Memory\SavedAddressesModel.h	46	rust\translations\pcsx2-qt/Debugger/Memory/SavedAddressesModel.rs	pending				
+pcsx2-qt\Debugger\Memory\SavedAddressesView.cpp	133	rust\translations\pcsx2-qt/Debugger/Memory/SavedAddressesView.rs	pending				
+pcsx2-qt\Debugger\Memory\SavedAddressesView.h	20	rust\translations\pcsx2-qt/Debugger/Memory/SavedAddressesView.rs	pending				
+pcsx2-qt\Debugger\ModuleModel.cpp	124	rust\translations\pcsx2-qt/Debugger/ModuleModel.rs	pending				
+pcsx2-qt\Debugger\ModuleModel.h	42	rust\translations\pcsx2-qt/Debugger/ModuleModel.rs	pending				
+pcsx2-qt\Debugger\ModuleView.cpp	92	rust\translations\pcsx2-qt/Debugger/ModuleView.rs	pending				
+pcsx2-qt\Debugger\ModuleView.h	18	rust\translations\pcsx2-qt/Debugger/ModuleView.rs	pending				
+pcsx2-qt\Debugger\RegisterView.cpp	394	rust\translations\pcsx2-qt/Debugger/RegisterView.rs	pending				
+pcsx2-qt\Debugger\RegisterView.h	52	rust\translations\pcsx2-qt/Debugger/RegisterView.rs	pending				
+pcsx2-qt\Debugger\StackModel.cpp	110	rust\translations\pcsx2-qt/Debugger/StackModel.rs	pending				
+pcsx2-qt\Debugger\StackModel.h	39	rust\translations\pcsx2-qt/Debugger/StackModel.rs	pending				
+pcsx2-qt\Debugger\StackView.cpp	71	rust\translations\pcsx2-qt/Debugger/StackView.rs	pending				
+pcsx2-qt\Debugger\StackView.h	17	rust\translations\pcsx2-qt/Debugger/StackView.rs	pending				
+pcsx2-qt\Debugger\SymbolTree\NewSymbolDialogs.cpp	541	rust\translations\pcsx2-qt/Debugger/SymbolTree/NewSymbolDialogs.rs	pending				
+pcsx2-qt\Debugger\SymbolTree\NewSymbolDialogs.h	121	rust\translations\pcsx2-qt/Debugger/SymbolTree/NewSymbolDialogs.rs	pending				
+pcsx2-qt\Debugger\SymbolTree\SymbolTreeDelegates.cpp	434	rust\translations\pcsx2-qt/Debugger/SymbolTree/SymbolTreeDelegates.rs	pending				
+pcsx2-qt\Debugger\SymbolTree\SymbolTreeDelegates.h	66	rust\translations\pcsx2-qt/Debugger/SymbolTree/SymbolTreeDelegates.rs	pending				
+pcsx2-qt\Debugger\SymbolTree\SymbolTreeLocation.cpp	206	rust\translations\pcsx2-qt/Debugger/SymbolTree/SymbolTreeLocation.rs	pending				
+pcsx2-qt\Debugger\SymbolTree\SymbolTreeLocation.h	34	rust\translations\pcsx2-qt/Debugger/SymbolTree/SymbolTreeLocation.rs	pending				
+pcsx2-qt\Debugger\SymbolTree\SymbolTreeModel.cpp	427	rust\translations\pcsx2-qt/Debugger/SymbolTree/SymbolTreeModel.rs	pending				
+pcsx2-qt\Debugger\SymbolTree\SymbolTreeModel.h	69	rust\translations\pcsx2-qt/Debugger/SymbolTree/SymbolTreeModel.rs	pending				
+pcsx2-qt\Debugger\SymbolTree\SymbolTreeNode.cpp	695	rust\translations\pcsx2-qt/Debugger/SymbolTree/SymbolTreeNode.rs	pending				
+pcsx2-qt\Debugger\SymbolTree\SymbolTreeNode.h	100	rust\translations\pcsx2-qt/Debugger/SymbolTree/SymbolTreeNode.rs	pending				
+pcsx2-qt\Debugger\SymbolTree\SymbolTreeViews.cpp	1012	rust\translations\pcsx2-qt/Debugger/SymbolTree/SymbolTreeViews.rs	pending				
+pcsx2-qt\Debugger\SymbolTree\SymbolTreeViews.h	151	rust\translations\pcsx2-qt/Debugger/SymbolTree/SymbolTreeViews.rs	pending				
+pcsx2-qt\Debugger\SymbolTree\TypeString.cpp	138	rust\translations\pcsx2-qt/Debugger/SymbolTree/TypeString.rs	pending				
+pcsx2-qt\Debugger\SymbolTree\TypeString.h	14	rust\translations\pcsx2-qt/Debugger/SymbolTree/TypeString.rs	pending				
+pcsx2-qt\Debugger\ThreadModel.cpp	125	rust\translations\pcsx2-qt/Debugger/ThreadModel.rs	pending				
+pcsx2-qt\Debugger\ThreadModel.h	78	rust\translations\pcsx2-qt/Debugger/ThreadModel.rs	pending				
+pcsx2-qt\Debugger\ThreadView.cpp	77	rust\translations\pcsx2-qt/Debugger/ThreadView.rs	pending				
+pcsx2-qt\Debugger\ThreadView.h	19	rust\translations\pcsx2-qt/Debugger/ThreadView.rs	pending				
+pcsx2-qt\DisplayWidget.cpp	433	rust\translations\pcsx2-qt/DisplayWidget.rs	pending				
+pcsx2-qt\DisplayWidget.h	59	rust\translations\pcsx2-qt/DisplayWidget.rs	pending				
+pcsx2-qt\EarlyHardwareCheck.cpp	38	rust\translations\pcsx2-qt/EarlyHardwareCheck.rs	pending				
+pcsx2-qt\GameList\GameListModel.cpp	427	rust\translations\pcsx2-qt/GameList/GameListModel.rs	pending				
+pcsx2-qt\GameList\GameListModel.h	79	rust\translations\pcsx2-qt/GameList/GameListModel.rs	pending				
+pcsx2-qt\GameList\GameListRefreshThread.cpp	99	rust\translations\pcsx2-qt/GameList/GameListRefreshThread.rs	pending				
+pcsx2-qt\GameList\GameListRefreshThread.h	50	rust\translations\pcsx2-qt/GameList/GameListRefreshThread.rs	pending				
+pcsx2-qt\GameList\GameListWidget.cpp	845	rust\translations\pcsx2-qt/GameList/GameListWidget.rs	pending				
+pcsx2-qt\GameList\GameListWidget.h	102	rust\translations\pcsx2-qt/GameList/GameListWidget.rs	pending				
+pcsx2-qt\LogWindow.cpp	414	rust\translations\pcsx2-qt/LogWindow.rs	pending				
+pcsx2-qt\LogWindow.h	48	rust\translations\pcsx2-qt/LogWindow.rs	pending				
+pcsx2-qt\MainWindow.cpp	3309	rust\translations\pcsx2-qt/MainWindow.rs	pending				
+pcsx2-qt\MainWindow.h	299	rust\translations\pcsx2-qt/MainWindow.rs	pending				
+pcsx2-qt\PrecompiledHeader.cpp	3	rust\translations\pcsx2-qt/PrecompiledHeader.rs	pending				
+pcsx2-qt\PrecompiledHeader.h	18	rust\translations\pcsx2-qt/PrecompiledHeader.rs	pending				
+pcsx2-qt\QtHost.cpp	2170	rust\translations\pcsx2-qt/QtHost.rs	pending				
+pcsx2-qt\QtHost.h	234	rust\translations\pcsx2-qt/QtHost.rs	pending				
+pcsx2-qt\QtKeyCodes.cpp	578	rust\translations\pcsx2-qt/QtKeyCodes.rs	pending				
+pcsx2-qt\QtProgressCallback.cpp	189	rust\translations\pcsx2-qt/QtProgressCallback.rs	pending				
+pcsx2-qt\QtProgressCallback.h	72	rust\translations\pcsx2-qt/QtProgressCallback.rs	pending				
+pcsx2-qt\QtUtils.cpp	482	rust\translations\pcsx2-qt/QtUtils.rs	pending				
+pcsx2-qt\QtUtils.h	171	rust\translations\pcsx2-qt/QtUtils.rs	pending				
+pcsx2-qt\Settings\AchievementLoginDialog.cpp	146	rust\translations\pcsx2-qt/Settings/AchievementLoginDialog.rs	pending				
+pcsx2-qt\Settings\AchievementLoginDialog.h	28	rust\translations\pcsx2-qt/Settings/AchievementLoginDialog.rs	pending				
+pcsx2-qt\Settings\AchievementSettingsWidget.cpp	239	rust\translations\pcsx2-qt/Settings/AchievementSettingsWidget.rs	pending				
+pcsx2-qt\Settings\AchievementSettingsWidget.h	23	rust\translations\pcsx2-qt/Settings/AchievementSettingsWidget.rs	pending				
+pcsx2-qt\Settings\AdvancedSettingsWidget.cpp	175	rust\translations\pcsx2-qt/Settings/AdvancedSettingsWidget.rs	pending				
+pcsx2-qt\Settings\AdvancedSettingsWidget.h	19	rust\translations\pcsx2-qt/Settings/AdvancedSettingsWidget.rs	pending				
+pcsx2-qt\Settings\AudioSettingsWidget.cpp	447	rust\translations\pcsx2-qt/Settings/AudioSettingsWidget.rs	pending				
+pcsx2-qt\Settings\AudioSettingsWidget.h	34	rust\translations\pcsx2-qt/Settings/AudioSettingsWidget.rs	pending				
+pcsx2-qt\Settings\BIOSSettingsWidget.cpp	112	rust\translations\pcsx2-qt/Settings/BIOSSettingsWidget.rs	pending				
+pcsx2-qt\Settings\BIOSSettingsWidget.h	19	rust\translations\pcsx2-qt/Settings/BIOSSettingsWidget.rs	pending				
+pcsx2-qt\Settings\ControllerBindingWidget.cpp	1270	rust\translations\pcsx2-qt/Settings/ControllerBindingWidget.rs	pending				
+pcsx2-qt\Settings\ControllerBindingWidget.h	229	rust\translations\pcsx2-qt/Settings/ControllerBindingWidget.rs	pending				
+pcsx2-qt\Settings\ControllerGlobalSettingsWidget.cpp	175	rust\translations\pcsx2-qt/Settings/ControllerGlobalSettingsWidget.rs	pending				
+pcsx2-qt\Settings\ControllerGlobalSettingsWidget.h	60	rust\translations\pcsx2-qt/Settings/ControllerGlobalSettingsWidget.rs	pending				
+pcsx2-qt\Settings\ControllerSettingsWindow.cpp	515	rust\translations\pcsx2-qt/Settings/ControllerSettingsWindow.rs	pending				
+pcsx2-qt\Settings\ControllerSettingsWindow.h	83	rust\translations\pcsx2-qt/Settings/ControllerSettingsWindow.rs	pending				
+pcsx2-qt\Settings\ControllerSettingWidgetBinder.h	173	rust\translations\pcsx2-qt/Settings/ControllerSettingWidgetBinder.rs	pending				
+pcsx2-qt\Settings\DebugAnalysisSettingsWidget.cpp	412	rust\translations\pcsx2-qt/Settings/DebugAnalysisSettingsWidget.rs	pending				
+pcsx2-qt\Settings\DebugAnalysisSettingsWidget.h	51	rust\translations\pcsx2-qt/Settings/DebugAnalysisSettingsWidget.rs	pending				
+pcsx2-qt\Settings\DebugSettingsWidget.cpp	250	rust\translations\pcsx2-qt/Settings/DebugSettingsWidget.rs	pending				
+pcsx2-qt\Settings\DebugSettingsWidget.h	31	rust\translations\pcsx2-qt/Settings/DebugSettingsWidget.rs	pending				
+pcsx2-qt\Settings\DEV9DnsHostDialog.cpp	104	rust\translations\pcsx2-qt/Settings/DEV9DnsHostDialog.rs	pending				
+pcsx2-qt\Settings\DEV9DnsHostDialog.h	27	rust\translations\pcsx2-qt/Settings/DEV9DnsHostDialog.rs	pending				
+pcsx2-qt\Settings\DEV9SettingsWidget.cpp	889	rust\translations\pcsx2-qt/Settings/DEV9SettingsWidget.rs	pending				
+pcsx2-qt\Settings\DEV9SettingsWidget.h	64	rust\translations\pcsx2-qt/Settings/DEV9SettingsWidget.rs	pending				
+pcsx2-qt\Settings\DEV9UiCommon.cpp	58	rust\translations\pcsx2-qt/Settings/DEV9UiCommon.rs	pending				
+pcsx2-qt\Settings\DEV9UiCommon.h	34	rust\translations\pcsx2-qt/Settings/DEV9UiCommon.rs	pending				
+pcsx2-qt\Settings\EmulationSettingsWidget.cpp	279	rust\translations\pcsx2-qt/Settings/EmulationSettingsWidget.rs	pending				
+pcsx2-qt\Settings\EmulationSettingsWidget.h	22	rust\translations\pcsx2-qt/Settings/EmulationSettingsWidget.rs	pending				
+pcsx2-qt\Settings\FolderSettingsWidget.cpp	27	rust\translations\pcsx2-qt/Settings/FolderSettingsWidget.rs	pending				
+pcsx2-qt\Settings\FolderSettingsWidget.h	14	rust\translations\pcsx2-qt/Settings/FolderSettingsWidget.rs	pending				
+pcsx2-qt\Settings\GameCheatSettingsWidget.cpp	292	rust\translations\pcsx2-qt/Settings/GameCheatSettingsWidget.rs	pending				
+pcsx2-qt\Settings\GameCheatSettingsWidget.h	51	rust\translations\pcsx2-qt/Settings/GameCheatSettingsWidget.rs	pending				
+pcsx2-qt\Settings\GameFixSettingsWidget.cpp	53	rust\translations\pcsx2-qt/Settings/GameFixSettingsWidget.rs	pending				
+pcsx2-qt\Settings\GameFixSettingsWidget.h	14	rust\translations\pcsx2-qt/Settings/GameFixSettingsWidget.rs	pending				
+pcsx2-qt\Settings\GameListSettingsWidget.cpp	221	rust\translations\pcsx2-qt/Settings/GameListSettingsWidget.rs	pending				
+pcsx2-qt\Settings\GameListSettingsWidget.h	36	rust\translations\pcsx2-qt/Settings/GameListSettingsWidget.rs	pending				
+pcsx2-qt\Settings\GamePatchSettingsWidget.cpp	178	rust\translations\pcsx2-qt/Settings/GamePatchSettingsWidget.rs	pending				
+pcsx2-qt\Settings\GamePatchSettingsWidget.h	41	rust\translations\pcsx2-qt/Settings/GamePatchSettingsWidget.rs	pending				
+pcsx2-qt\Settings\GameSummaryWidget.cpp	364	rust\translations\pcsx2-qt/Settings/GameSummaryWidget.rs	pending				
+pcsx2-qt\Settings\GameSummaryWidget.h	35	rust\translations\pcsx2-qt/Settings/GameSummaryWidget.rs	pending				
+pcsx2-qt\Settings\GraphicsSettingsWidget.cpp	1048	rust\translations\pcsx2-qt/Settings/GraphicsSettingsWidget.rs	pending				
+pcsx2-qt\Settings\GraphicsSettingsWidget.h	66	rust\translations\pcsx2-qt/Settings/GraphicsSettingsWidget.rs	pending				
+pcsx2-qt\Settings\HddCreateQt.cpp	34	rust\translations\pcsx2-qt/Settings/HddCreateQt.rs	pending				
+pcsx2-qt\Settings\HddCreateQt.h	20	rust\translations\pcsx2-qt/Settings/HddCreateQt.rs	pending				
+pcsx2-qt\Settings\HotkeySettingsWidget.cpp	77	rust\translations\pcsx2-qt/Settings/HotkeySettingsWidget.rs	pending				
+pcsx2-qt\Settings\HotkeySettingsWidget.h	26	rust\translations\pcsx2-qt/Settings/HotkeySettingsWidget.rs	pending				
+pcsx2-qt\Settings\InputBindingDialog.cpp	335	rust\translations\pcsx2-qt/Settings/InputBindingDialog.rs	pending				
+pcsx2-qt\Settings\InputBindingDialog.h	58	rust\translations\pcsx2-qt/Settings/InputBindingDialog.rs	pending				
+pcsx2-qt\Settings\InputBindingWidget.cpp	455	rust\translations\pcsx2-qt/Settings/InputBindingWidget.rs	pending				
+pcsx2-qt\Settings\InputBindingWidget.h	81	rust\translations\pcsx2-qt/Settings/InputBindingWidget.rs	pending				
+pcsx2-qt\Settings\InterfaceSettingsWidget.cpp	270	rust\translations\pcsx2-qt/Settings/InterfaceSettingsWidget.rs	pending				
+pcsx2-qt\Settings\InterfaceSettingsWidget.h	31	rust\translations\pcsx2-qt/Settings/InterfaceSettingsWidget.rs	pending				
+pcsx2-qt\Settings\MemoryCardConvertDialog.cpp	272	rust\translations\pcsx2-qt/Settings/MemoryCardConvertDialog.rs	pending				
+pcsx2-qt\Settings\MemoryCardConvertDialog.h	51	rust\translations\pcsx2-qt/Settings/MemoryCardConvertDialog.rs	pending				
+pcsx2-qt\Settings\MemoryCardConvertWorker.cpp	139	rust\translations\pcsx2-qt/Settings/MemoryCardConvertWorker.rs	pending				
+pcsx2-qt\Settings\MemoryCardConvertWorker.h	24	rust\translations\pcsx2-qt/Settings/MemoryCardConvertWorker.rs	pending				
+pcsx2-qt\Settings\MemoryCardCreateDialog.cpp	110	rust\translations\pcsx2-qt/Settings/MemoryCardCreateDialog.rs	pending				
+pcsx2-qt\Settings\MemoryCardCreateDialog.h	23	rust\translations\pcsx2-qt/Settings/MemoryCardCreateDialog.rs	pending				
+pcsx2-qt\Settings\MemoryCardSettingsWidget.cpp	427	rust\translations\pcsx2-qt/Settings/MemoryCardSettingsWidget.rs	pending				
+pcsx2-qt\Settings\MemoryCardSettingsWidget.h	83	rust\translations\pcsx2-qt/Settings/MemoryCardSettingsWidget.rs	pending				
+pcsx2-qt\Settings\OsdFontPickerDialog.cpp	946	rust\translations\pcsx2-qt/Settings/OsdFontPickerDialog.rs	pending				
+pcsx2-qt\Settings\OsdFontPickerDialog.h	71	rust\translations\pcsx2-qt/Settings/OsdFontPickerDialog.rs	pending				
+pcsx2-qt\Settings\OSDSettingsWidget.cpp	239	rust\translations\pcsx2-qt/Settings/OSDSettingsWidget.rs	pending				
+pcsx2-qt\Settings\OSDSettingsWidget.h	28	rust\translations\pcsx2-qt/Settings/OSDSettingsWidget.rs	pending				
+pcsx2-qt\Settings\SettingsWidget.cpp	118	rust\translations\pcsx2-qt/Settings/SettingsWidget.rs	pending				
+pcsx2-qt\Settings\SettingsWidget.h	44	rust\translations\pcsx2-qt/Settings/SettingsWidget.rs	pending				
+pcsx2-qt\Settings\SettingsWindow.cpp	609	rust\translations\pcsx2-qt/Settings/SettingsWindow.rs	pending				
+pcsx2-qt\Settings\SettingsWindow.h	130	rust\translations\pcsx2-qt/Settings/SettingsWindow.rs	pending				
+pcsx2-qt\SettingWidgetBinder.h	1259	rust\translations\pcsx2-qt/SettingWidgetBinder.rs	pending				
+pcsx2-qt\SetupWizardDialog.cpp	482	rust\translations\pcsx2-qt/SetupWizardDialog.rs	pending				
+pcsx2-qt\SetupWizardDialog.h	65	rust\translations\pcsx2-qt/SetupWizardDialog.rs	pending				
+pcsx2-qt\ShortcutCreationDialog.cpp	510	rust\translations\pcsx2-qt/ShortcutCreationDialog.rs	pending				
+pcsx2-qt\ShortcutCreationDialog.h	22	rust\translations\pcsx2-qt/ShortcutCreationDialog.rs	pending				
+pcsx2-qt\Themes.cpp	566	rust\translations\pcsx2-qt/Themes.rs	pending				
+pcsx2-qt\Tools\InputRecording\InputRecordingViewer.cpp	107	rust\translations\pcsx2-qt/Tools/InputRecording/InputRecordingViewer.rs	pending				
+pcsx2-qt\Tools\InputRecording\InputRecordingViewer.h	23	rust\translations\pcsx2-qt/Tools/InputRecording/InputRecordingViewer.rs	pending				
+pcsx2-qt\Tools\InputRecording\NewInputRecordingDlg.cpp	77	rust\translations\pcsx2-qt/Tools/InputRecording/NewInputRecordingDlg.rs	pending				
+pcsx2-qt\Tools\InputRecording\NewInputRecordingDlg.h	28	rust\translations\pcsx2-qt/Tools/InputRecording/NewInputRecordingDlg.rs	pending				
+pcsx2-qt\Translations.cpp	624	rust\translations\pcsx2-qt/Translations.rs	pending				
+pcsx2-qt\VCRuntimeChecker.cpp	92	rust\translations\pcsx2-qt/VCRuntimeChecker.rs	pending				
+pcsx2\Achievements.cpp	3293	rust\translations\pcsx2/Achievements.rs	translated	manual-agent	2026-06-20	2026-06-20	Idiomatic Rust 2021 translation covering Reset/Initialize/GameChanged/Update/GetAchievements/GetLeaderboards/IsActive/Enable APIs; uses std Mutex, OnceLock, and Box<dyn HTTPDownloader>; compiles cleanly under cargo check (no errors in Achievements.rs).
+pcsx2\Achievements.h	132	rust\translations\pcsx2/Achievements.rs	translated	manual-agent	2026-06-20	2026-06-20	Header folded into the single Rust module (one .rs file covers both .h and .cpp).				
+pcsx2\arm64\AsmHelpers.cpp	395	rust\translations\pcsx2/arm64/AsmHelpers.rs	pending				
+pcsx2\arm64\AsmHelpers.h	115	rust\translations\pcsx2/arm64/AsmHelpers.rs	pending				
+pcsx2\arm64\RecStubs.cpp	23	rust\translations\pcsx2/arm64/RecStubs.rs	pending				
+pcsx2\arm64\Vif_Dynarec.cpp	500	rust\translations\pcsx2/arm64/Vif_Dynarec.rs	pending				
+pcsx2\arm64\Vif_UnpackNEON.cpp	362	rust\translations\pcsx2/arm64/Vif_UnpackNEON.rs	pending				
+pcsx2\arm64\Vif_UnpackNEON.h	118	rust\translations\pcsx2/arm64/Vif_UnpackNEON.rs	pending				
+pcsx2\BuildVersion.cpp	14	rust\translations\pcsx2/BuildVersion.rs	pending				
+pcsx2\BuildVersion.h	16	rust\translations\pcsx2/BuildVersion.rs	pending				
+pcsx2\Cache.cpp	420	rust\translations\pcsx2/Cache.rs	translated	agent-batch-fillin-002		2026-06-19T05.14.26	agent-batch-003	filled-in writeback_cache + writeback_line helpers and fixed tag_is_dirty_and_valid operator precedence
+pcsx2\Cache.h	19	rust\translations\pcsx2/Cache.rs	translated	agent-batch-fillin-002		2026-06-19T05.14.26	agent-batch-003	filled-in writeback_cache + writeback_line helpers and fixed tag_is_dirty_and_valid operator precedence
+pcsx2\CDVD\BlockdumpFileReader.cpp	120	rust\translations\pcsx2/CDVD/BlockdumpFileReader.rs	pending				
+pcsx2\CDVD\BlockdumpFileReader.h	25	rust\translations\pcsx2/CDVD/BlockdumpFileReader.rs	pending				
+pcsx2\CDVD\CDVD_internal.h	263	rust\translations\pcsx2/CDVD/CDVD_internal.rs	pending				
+pcsx2\CDVD\CDVD.cpp	2727	rust\translations\pcsx2/CDVD/CDVD.rs	translated	agent-batch-fillin-002	2026-06-19T05.29.11	agent-batch-004-005
+pcsx2\CDVD\CDVD.h	159	rust\translations\pcsx2/CDVD/CDVD.rs	translated	agent-batch-fillin-002	2026-06-19T05.29.11	agent-batch-004-005
+pcsx2\CDVD\CDVDcommon.cpp	518	rust\translations\pcsx2/CDVD/CDVDcommon.rs	pending				
+pcsx2\CDVD\CDVDcommon.h	175	rust\translations\pcsx2/CDVD/CDVDcommon.rs	pending				
+pcsx2\CDVD\CDVDdiscReader.cpp	474	rust\translations\pcsx2/CDVD/CDVDdiscReader.rs	pending				
+pcsx2\CDVD\CDVDdiscReader.h	67	rust\translations\pcsx2/CDVD/CDVDdiscReader.rs	pending				
+pcsx2\CDVD\CDVDdiscThread.cpp	344	rust\translations\pcsx2/CDVD/CDVDdiscThread.rs	translated			2026-06-19T06.11.11	agent-batch-008-009
+pcsx2\CDVD\CDVDisoReader.cpp	346	rust\translations\pcsx2/CDVD/CDVDisoReader.rs	pending				
+pcsx2\CDVD\ChdFileReader.cpp	451	rust\translations\pcsx2/CDVD/ChdFileReader.rs	pending				
+pcsx2\CDVD\ChdFileReader.h	25	rust\translations\pcsx2/CDVD/ChdFileReader.rs	pending				
+pcsx2\CDVD\CsoFileReader.cpp	263	rust\translations\pcsx2/CDVD/CsoFileReader.rs	pending				
+pcsx2\CDVD\CsoFileReader.h	38	rust\translations\pcsx2/CDVD/CsoFileReader.rs	pending				
+pcsx2\CDVD\Darwin\DriveUtility.cpp	91	rust\translations\pcsx2/CDVD/Darwin/DriveUtility.rs	pending				
+pcsx2\CDVD\Darwin\IOCtlSrc.cpp	228	rust\translations\pcsx2/CDVD/Darwin/IOCtlSrc.rs	pending				
+pcsx2\CDVD\FlatFileReader.cpp	91	rust\translations\pcsx2/CDVD/FlatFileReader.rs	pending				
+pcsx2\CDVD\FlatFileReader.h	21	rust\translations\pcsx2/CDVD/FlatFileReader.rs	pending				
+pcsx2\CDVD\GzippedFileReader.cpp	204	rust\translations\pcsx2/CDVD/GzippedFileReader.rs	pending				
+pcsx2\CDVD\GzippedFileReader.h	26	rust\translations\pcsx2/CDVD/GzippedFileReader.rs	pending				
+pcsx2\CDVD\InputIsoFile.cpp	253	rust\translations\pcsx2/CDVD/InputIsoFile.rs	pending				
+pcsx2\CDVD\IsoFileFormats.h	98	rust\translations\pcsx2/CDVD/IsoFileFormats.rs	pending				
+pcsx2\CDVD\IsoHasher.cpp	156	rust\translations\pcsx2/CDVD/IsoHasher.rs	pending				
+pcsx2\CDVD\IsoHasher.h	40	rust\translations\pcsx2/CDVD/IsoHasher.rs	pending				
+pcsx2\CDVD\IsoReader.cpp	253	rust\translations\pcsx2/CDVD/IsoReader.rs	pending				
+pcsx2\CDVD\IsoReader.h	141	rust\translations\pcsx2/CDVD/IsoReader.rs	pending				
+pcsx2\CDVD\Linux\DriveUtility.cpp	61	rust\translations\pcsx2/CDVD/Linux/DriveUtility.rs	pending				
+pcsx2\CDVD\Linux\IOCtlSrc.cpp	195	rust\translations\pcsx2/CDVD/Linux/IOCtlSrc.rs	pending				
+pcsx2\CDVD\OutputIsoFile.cpp	103	rust\translations\pcsx2/CDVD/OutputIsoFile.rs	pending				
+pcsx2\CDVD\Ps1CD.cpp	956	rust\translations\pcsx2/CDVD/Ps1CD.rs	pending				
+pcsx2\CDVD\Ps1CD.h	73	rust\translations\pcsx2/CDVD/Ps1CD.rs	pending				
+pcsx2\CDVD\ThreadedFileReader.cpp	366	rust\translations\pcsx2/CDVD/ThreadedFileReader.rs	pending				
+pcsx2\CDVD\ThreadedFileReader.h	107	rust\translations\pcsx2/CDVD/ThreadedFileReader.rs	pending				
+pcsx2\CDVD\Windows\DriveUtility.cpp	37	rust\translations\pcsx2/CDVD/Windows/DriveUtility.rs	pending				
+pcsx2\CDVD\Windows\IOCtlSrc.cpp	301	rust\translations\pcsx2/CDVD/Windows/IOCtlSrc.rs	pending				
+pcsx2\CDVD\zlib_indexed.h	442	rust\translations\pcsx2/CDVD/zlib_indexed.rs	pending				
+pcsx2\Common.h	16	rust\translations\pcsx2/Common.rs	pending				
+pcsx2\Config.h	1315	rust\translations\pcsx2/Config.rs	pending				
+pcsx2\COP0.cpp	597	rust\translations\pcsx2/COP0.rs	translated	agent-batch-fillin-002		2026-06-19T05.14.26	agent-batch-003
+pcsx2\COP0.h	12	rust\translations\pcsx2/COP0.rs	translated	agent-batch-fillin-002		2026-06-19T05.14.26	agent-batch-003
+pcsx2\COP2.cpp	62	rust\translations\pcsx2/COP2.rs	translated	agent-batch-fillin-002		2026-06-19T05.14.26	agent-batch-003	verified 2026-06-20; Cop2.rs exists; cargo check ok for this module (unrelated errors in Achievements.rs)
+pcsx2\Counters.cpp	864	rust\translations\pcsx2/Counters.rs	translated	agent-batch-fillin-002		2026-06-19T05.14.26	agent-batch-003
+pcsx2\Counters.h	109	rust\translations\pcsx2/Counters.rs	translated	agent-batch-fillin-002		2026-06-19T05.14.26	agent-batch-003
+pcsx2\DebugTools\BiosDebugData.cpp	89	rust\translations\pcsx2/DebugTools/BiosDebugData.rs	pending				
+pcsx2\DebugTools\BiosDebugData.h	194	rust\translations\pcsx2/DebugTools/BiosDebugData.rs	pending				
+pcsx2\DebugTools\Breakpoints.cpp	444	rust\translations\pcsx2/DebugTools/Breakpoints.rs	pending				
+pcsx2\DebugTools\Breakpoints.h	150	rust\translations\pcsx2/DebugTools/Breakpoints.rs	pending				
+pcsx2\DebugTools\Debug.h	220	rust\translations\pcsx2/DebugTools/Debug.rs	pending				
+pcsx2\DebugTools\DebugInterface.cpp	1227	rust\translations\pcsx2/DebugTools/DebugInterface.rs	pending				
+pcsx2\DebugTools\DebugInterface.h	209	rust\translations\pcsx2/DebugTools/DebugInterface.rs	pending				
+pcsx2\DebugTools\DisASM.h	31	rust\translations\pcsx2/DebugTools/DisASM.rs	pending				
+pcsx2\DebugTools\DisassemblyManager.cpp	907	rust\translations\pcsx2/DebugTools/DisassemblyManager.rs	pending				
+pcsx2\DebugTools\DisassemblyManager.h	182	rust\translations\pcsx2/DebugTools/DisassemblyManager.rs	pending				
+pcsx2\DebugTools\DisR3000A.cpp	260	rust\translations\pcsx2/DebugTools/DisR3000A.rs	pending				
+pcsx2\DebugTools\DisR5900asm.cpp	1291	rust\translations\pcsx2/DebugTools/DisR5900asm.rs	pending				
+pcsx2\DebugTools\DisVU0Micro.cpp	56	rust\translations\pcsx2/DebugTools/DisVU0Micro.rs	pending				
+pcsx2\DebugTools\DisVU1Micro.cpp	87	rust\translations\pcsx2/DebugTools/DisVU1Micro.rs	pending				
+pcsx2\DebugTools\DisVUmicro.h	191	rust\translations\pcsx2/DebugTools/DisVUmicro.rs	pending				
+pcsx2\DebugTools\DisVUops.h	179	rust\translations\pcsx2/DebugTools/DisVUops.rs	pending				
+pcsx2\DebugTools\ExpressionParser.cpp	572	rust\translations\pcsx2/DebugTools/ExpressionParser.rs	pending				
+pcsx2\DebugTools\ExpressionParser.h	25	rust\translations\pcsx2/DebugTools/ExpressionParser.rs	pending				
+pcsx2\DebugTools\MIPSAnalyst.cpp	502	rust\translations\pcsx2/DebugTools/MIPSAnalyst.rs	pending				
+pcsx2\DebugTools\MIPSAnalyst.h	51	rust\translations\pcsx2/DebugTools/MIPSAnalyst.rs	pending				
+pcsx2\DebugTools\MipsAssembler.cpp	625	rust\translations\pcsx2/DebugTools/MipsAssembler.rs	pending				
+pcsx2\DebugTools\MipsAssembler.h	66	rust\translations\pcsx2/DebugTools/MipsAssembler.rs	pending				
+pcsx2\DebugTools\MipsAssemblerTables.cpp	697	rust\translations\pcsx2/DebugTools/MipsAssemblerTables.rs	pending				
+pcsx2\DebugTools\MipsAssemblerTables.h	77	rust\translations\pcsx2/DebugTools/MipsAssemblerTables.rs	pending				
+pcsx2\DebugTools\MipsStackWalk.cpp	200	rust\translations\pcsx2/DebugTools/MipsStackWalk.rs	pending				
+pcsx2\DebugTools\MipsStackWalk.h	19	rust\translations\pcsx2/DebugTools/MipsStackWalk.rs	pending				
+pcsx2\DebugTools\SymbolGuardian.cpp	203	rust\translations\pcsx2/DebugTools/SymbolGuardian.rs	pending				
+pcsx2\DebugTools\SymbolGuardian.h	80	rust\translations\pcsx2/DebugTools/SymbolGuardian.rs	pending				
+pcsx2\DebugTools\SymbolImporter.cpp	567	rust\translations\pcsx2/DebugTools/SymbolImporter.rs	pending				
+pcsx2\DebugTools\SymbolImporter.h	72	rust\translations\pcsx2/DebugTools/SymbolImporter.rs	pending				
+pcsx2\DEV9\AdapterUtils.cpp	523	rust\translations\pcsx2/DEV9/AdapterUtils.rs	pending				
+pcsx2\DEV9\AdapterUtils.h	48	rust\translations\pcsx2/DEV9/AdapterUtils.rs	pending				
+pcsx2\DEV9\ATA\ATA_Info.cpp	386	rust\translations\pcsx2/DEV9/ATA/ATA_Info.rs	pending				
+pcsx2\DEV9\ATA\ATA_State.cpp	593	rust\translations\pcsx2/DEV9/ATA/ATA_State.rs	pending				
+pcsx2\DEV9\ATA\ATA_Transfer.cpp	438	rust\translations\pcsx2/DEV9/ATA/ATA_Transfer.rs	pending				
+pcsx2\DEV9\ATA\ATA.h	230	rust\translations\pcsx2/DEV9/ATA/ATA.rs	pending				
+pcsx2\DEV9\ATA\Commands\ATA_CmdDMA.cpp	150	rust\translations\pcsx2/DEV9/ATA/Commands/ATA_CmdDMA.rs	pending				
+pcsx2\DEV9\ATA\Commands\ATA_CmdExecuteDeviceDiag.cpp	45	rust\translations\pcsx2/DEV9/ATA/Commands/ATA_CmdExecuteDeviceDiag.rs	pending				
+pcsx2\DEV9\ATA\Commands\ATA_CmdNoData.cpp	221	rust\translations\pcsx2/DEV9/ATA/Commands/ATA_CmdNoData.rs	pending				
+pcsx2\DEV9\ATA\Commands\ATA_CmdPIOData.cpp	125	rust\translations\pcsx2/DEV9/ATA/Commands/ATA_CmdPIOData.rs	pending				
+pcsx2\DEV9\ATA\Commands\ATA_CmdSMART.cpp	138	rust\translations\pcsx2/DEV9/ATA/Commands/ATA_CmdSMART.rs	pending				
+pcsx2\DEV9\ATA\Commands\ATA_Command.cpp	184	rust\translations\pcsx2/DEV9/ATA/Commands/ATA_Command.rs	pending				
+pcsx2\DEV9\ATA\Commands\ATA_SCE.cpp	40	rust\translations\pcsx2/DEV9/ATA/Commands/ATA_SCE.rs	pending				
+pcsx2\DEV9\ATA\HddCreate.cpp	235	rust\translations\pcsx2/DEV9/ATA/HddCreate.rs	pending				
+pcsx2\DEV9\ATA\HddCreate.h	29	rust\translations\pcsx2/DEV9/ATA/HddCreate.rs	pending				
+pcsx2\DEV9\DEV9.cpp	996	rust\translations\pcsx2/DEV9/DEV9.rs	pending				
+pcsx2\DEV9\DEV9.h	590	rust\translations\pcsx2/DEV9/DEV9.rs	pending				
+pcsx2\DEV9\flash.cpp	295	rust\translations\pcsx2/DEV9/flash.rs	pending				
+pcsx2\DEV9\InternalServers\DHCP_Logger.cpp	318	rust\translations\pcsx2/DEV9/InternalServers/DHCP_Logger.rs	pending				
+pcsx2\DEV9\InternalServers\DHCP_Logger.h	40	rust\translations\pcsx2/DEV9/InternalServers/DHCP_Logger.rs	pending				
+pcsx2\DEV9\InternalServers\DHCP_Server.cpp	333	rust\translations\pcsx2/DEV9/InternalServers/DHCP_Server.rs	pending				
+pcsx2\DEV9\InternalServers\DHCP_Server.h	53	rust\translations\pcsx2/DEV9/InternalServers/DHCP_Server.rs	pending				
+pcsx2\DEV9\InternalServers\DNS_Logger.cpp	141	rust\translations\pcsx2/DEV9/InternalServers/DNS_Logger.rs	pending				
+pcsx2\DEV9\InternalServers\DNS_Logger.h	22	rust\translations\pcsx2/DEV9/InternalServers/DNS_Logger.rs	pending				
+pcsx2\DEV9\InternalServers\DNS_Server.cpp	344	rust\translations\pcsx2/DEV9/InternalServers/DNS_Server.rs	pending				
+pcsx2\DEV9\InternalServers\DNS_Server.h	85	rust\translations\pcsx2/DEV9/InternalServers/DNS_Server.rs	pending				
+pcsx2\DEV9\net.cpp	385	rust\translations\pcsx2/DEV9/net.rs	pending				
+pcsx2\DEV9\net.h	121	rust\translations\pcsx2/DEV9/net.rs	pending				
+pcsx2\DEV9\PacketReader\ARP\ARP_Packet.cpp	72	rust\translations\pcsx2/DEV9/PacketReader/ARP/ARP_Packet.rs	pending				
+pcsx2\DEV9\PacketReader\ARP\ARP_Packet.h	27	rust\translations\pcsx2/DEV9/PacketReader/ARP/ARP_Packet.rs	pending				
+pcsx2\DEV9\PacketReader\ARP\ARP_PacketEditor.cpp	58	rust\translations\pcsx2/DEV9/PacketReader/ARP/ARP_PacketEditor.rs	pending				
+pcsx2\DEV9\PacketReader\ARP\ARP_PacketEditor.h	24	rust\translations\pcsx2/DEV9/PacketReader/ARP/ARP_PacketEditor.rs	pending				
+pcsx2\DEV9\PacketReader\EthernetFrame.cpp	37	rust\translations\pcsx2/DEV9/PacketReader/EthernetFrame.rs	pending				
+pcsx2\DEV9\PacketReader\EthernetFrame.h	36	rust\translations\pcsx2/DEV9/PacketReader/EthernetFrame.rs	pending				
+pcsx2\DEV9\PacketReader\EthernetFrameEditor.cpp	43	rust\translations\pcsx2/DEV9/PacketReader/EthernetFrameEditor.rs	pending				
+pcsx2\DEV9\PacketReader\EthernetFrameEditor.h	26	rust\translations\pcsx2/DEV9/PacketReader/EthernetFrameEditor.rs	pending				
+pcsx2\DEV9\PacketReader\IP\ICMP\ICMP_Packet.cpp	107	rust\translations\pcsx2/DEV9/PacketReader/IP/ICMP/ICMP_Packet.rs	pending				
+pcsx2\DEV9\PacketReader\IP\ICMP\ICMP_Packet.h	44	rust\translations\pcsx2/DEV9/PacketReader/IP/ICMP/ICMP_Packet.rs	pending				
+pcsx2\DEV9\PacketReader\IP\IP_Address.h	17	rust\translations\pcsx2/DEV9/PacketReader/IP/IP_Address.rs	pending				
+pcsx2\DEV9\PacketReader\IP\IP_Options.cpp	47	rust\translations\pcsx2/DEV9/PacketReader/IP/IP_Options.rs	pending				
+pcsx2\DEV9\PacketReader\IP\IP_Options.h	70	rust\translations\pcsx2/DEV9/PacketReader/IP/IP_Options.rs	pending				
+pcsx2\DEV9\PacketReader\IP\IP_Packet.cpp	272	rust\translations\pcsx2/DEV9/PacketReader/IP/IP_Packet.rs	pending				
+pcsx2\DEV9\PacketReader\IP\IP_Packet.h	109	rust\translations\pcsx2/DEV9/PacketReader/IP/IP_Packet.rs	pending				
+pcsx2\DEV9\PacketReader\IP\IP_Payload.h	103	rust\translations\pcsx2/DEV9/PacketReader/IP/IP_Payload.rs	pending				
+pcsx2\DEV9\PacketReader\IP\TCP\TCP_Options.cpp	55	rust\translations\pcsx2/DEV9/PacketReader/IP/TCP/TCP_Options.rs	pending				
+pcsx2\DEV9\PacketReader\IP\TCP\TCP_Options.h	64	rust\translations\pcsx2/DEV9/PacketReader/IP/TCP/TCP_Options.rs	pending				
+pcsx2\DEV9\PacketReader\IP\TCP\TCP_Packet.cpp	259	rust\translations\pcsx2/DEV9/PacketReader/IP/TCP/TCP_Packet.rs	pending				
+pcsx2\DEV9\PacketReader\IP\TCP\TCP_Packet.h	63	rust\translations\pcsx2/DEV9/PacketReader/IP/TCP/TCP_Packet.rs	pending				
+pcsx2\DEV9\PacketReader\IP\UDP\DHCP\DHCP_Options.cpp	383	rust\translations\pcsx2/DEV9/PacketReader/IP/UDP/DHCP/DHCP_Options.rs	pending				
+pcsx2\DEV9\PacketReader\IP\UDP\DHCP\DHCP_Options.h	308	rust\translations\pcsx2/DEV9/PacketReader/IP/UDP/DHCP/DHCP_Options.rs	pending				
+pcsx2\DEV9\PacketReader\IP\UDP\DHCP\DHCP_Packet.cpp	213	rust\translations\pcsx2/DEV9/PacketReader/IP/UDP/DHCP/DHCP_Packet.rs	pending				
+pcsx2\DEV9\PacketReader\IP\UDP\DHCP\DHCP_Packet.h	38	rust\translations\pcsx2/DEV9/PacketReader/IP/UDP/DHCP/DHCP_Packet.rs	pending				
+pcsx2\DEV9\PacketReader\IP\UDP\DNS\DNS_Classes.cpp	116	rust\translations\pcsx2/DEV9/PacketReader/IP/UDP/DNS/DNS_Classes.rs	pending				
+pcsx2\DEV9\PacketReader\IP\UDP\DNS\DNS_Classes.h	35	rust\translations\pcsx2/DEV9/PacketReader/IP/UDP/DNS/DNS_Classes.rs	pending				
+pcsx2\DEV9\PacketReader\IP\UDP\DNS\DNS_Enums.h	29	rust\translations\pcsx2/DEV9/PacketReader/IP/UDP/DNS/DNS_Enums.rs	pending				
+pcsx2\DEV9\PacketReader\IP\UDP\DNS\DNS_Packet.cpp	161	rust\translations\pcsx2/DEV9/PacketReader/IP/UDP/DNS/DNS_Packet.rs	pending				
+pcsx2\DEV9\PacketReader\IP\UDP\DNS\DNS_Packet.h	53	rust\translations\pcsx2/DEV9/PacketReader/IP/UDP/DNS/DNS_Packet.rs	pending				
+pcsx2\DEV9\PacketReader\IP\UDP\UDP_Packet.cpp	106	rust\translations\pcsx2/DEV9/PacketReader/IP/UDP/UDP_Packet.rs	pending				
+pcsx2\DEV9\PacketReader\IP\UDP\UDP_Packet.h	31	rust\translations\pcsx2/DEV9/PacketReader/IP/UDP/UDP_Packet.rs	pending				
+pcsx2\DEV9\PacketReader\MAC_Address.h	23	rust\translations\pcsx2/DEV9/PacketReader/MAC_Address.rs	pending				
+pcsx2\DEV9\PacketReader\NetLib.h	79	rust\translations\pcsx2/DEV9/PacketReader/NetLib.rs	pending				
+pcsx2\DEV9\PacketReader\Payload.h	120	rust\translations\pcsx2/DEV9/PacketReader/Payload.rs	pending				
+pcsx2\DEV9\pcap_io.cpp	401	rust\translations\pcsx2/DEV9/pcap_io.rs	pending				
+pcsx2\DEV9\pcap_io.h	40	rust\translations\pcsx2/DEV9/pcap_io.rs	pending				
+pcsx2\DEV9\Sessions\BaseSession.cpp	33	rust\translations\pcsx2/DEV9/Sessions/BaseSession.rs	pending				
+pcsx2\DEV9\Sessions\BaseSession.h	63	rust\translations\pcsx2/DEV9/Sessions/BaseSession.rs	pending				
+pcsx2\DEV9\Sessions\ICMP_Session\ICMP_Session.cpp	807	rust\translations\pcsx2/DEV9/Sessions/ICMP_Session/ICMP_Session.rs	pending				
+pcsx2\DEV9\Sessions\ICMP_Session\ICMP_Session.h	70	rust\translations\pcsx2/DEV9/Sessions/ICMP_Session/ICMP_Session.rs	pending				
+pcsx2\DEV9\Sessions\TCP_Session\TCP_Session_In.cpp	231	rust\translations\pcsx2/DEV9/Sessions/TCP_Session/TCP_Session_In.rs	pending				
+pcsx2\DEV9\Sessions\TCP_Session\TCP_Session_Out.cpp	539	rust\translations\pcsx2/DEV9/Sessions/TCP_Session/TCP_Session_Out.rs	pending				
+pcsx2\DEV9\Sessions\TCP_Session\TCP_Session.cpp	148	rust\translations\pcsx2/DEV9/Sessions/TCP_Session/TCP_Session.rs	pending				
+pcsx2\DEV9\Sessions\TCP_Session\TCP_Session.h	123	rust\translations\pcsx2/DEV9/Sessions/TCP_Session/TCP_Session.rs	pending				
+pcsx2\DEV9\Sessions\UDP_Session\UDP_BaseSession.h	17	rust\translations\pcsx2/DEV9/Sessions/UDP_Session/UDP_BaseSession.rs	pending				
+pcsx2\DEV9\Sessions\UDP_Session\UDP_Common.cpp	169	rust\translations\pcsx2/DEV9/Sessions/UDP_Session/UDP_Common.rs	pending				
+pcsx2\DEV9\Sessions\UDP_Session\UDP_Common.h	27	rust\translations\pcsx2/DEV9/Sessions/UDP_Session/UDP_Common.rs	pending				
+pcsx2\DEV9\Sessions\UDP_Session\UDP_FixedPort.cpp	168	rust\translations\pcsx2/DEV9/Sessions/UDP_Session/UDP_FixedPort.rs	pending				
+pcsx2\DEV9\Sessions\UDP_Session\UDP_FixedPort.h	42	rust\translations\pcsx2/DEV9/Sessions/UDP_Session/UDP_FixedPort.rs	pending				
+pcsx2\DEV9\Sessions\UDP_Session\UDP_Session.cpp	230	rust\translations\pcsx2/DEV9/Sessions/UDP_Session/UDP_Session.rs	pending				
+pcsx2\DEV9\Sessions\UDP_Session\UDP_Session.h	47	rust\translations\pcsx2/DEV9/Sessions/UDP_Session/UDP_Session.rs	pending				
+pcsx2\DEV9\SimpleQueue.h	84	rust\translations\pcsx2/DEV9/SimpleQueue.rs	pending				
+pcsx2\DEV9\smap.cpp	781	rust\translations\pcsx2/DEV9/smap.rs	pending				
+pcsx2\DEV9\smap.h	13	rust\translations\pcsx2/DEV9/smap.rs	pending				
+pcsx2\DEV9\sockets.cpp	532	rust\translations\pcsx2/DEV9/sockets.rs	pending				
+pcsx2\DEV9\sockets.h	55	rust\translations\pcsx2/DEV9/sockets.rs	pending				
+pcsx2\DEV9\ThreadSafeMap.h	86	rust\translations\pcsx2/DEV9/ThreadSafeMap.rs	pending				
+pcsx2\DEV9\Win32\pcap_io_win32_funcs.h	95	rust\translations\pcsx2/DEV9/Win32/pcap_io_win32_funcs.rs	pending				
+pcsx2\DEV9\Win32\pcap_io_win32.cpp	92	rust\translations\pcsx2/DEV9/Win32/pcap_io_win32.rs	pending				
+pcsx2\DEV9\Win32\tap-win32.cpp	532	rust\translations\pcsx2/DEV9/Win32/tap-win32.rs	pending				
+pcsx2\DEV9\Win32\tap.h	26	rust\translations\pcsx2/DEV9/Win32/tap.rs	pending				
+pcsx2\Dmac.cpp	507	rust\translations\pcsx2/Dmac.rs	translated	agent-batch-fillin-002	2026-06-19T05.14.26	agent-batch-003
+pcsx2\Dmac.h	493	rust\translations\pcsx2/Dmac.rs	translated	agent-batch-fillin-002	2026-06-19T05.14.26	agent-batch-003
+pcsx2\Elfheader.cpp	287	rust\translations\pcsx2/Elfheader.rs	translated	agent-batch-fillin-002	2026-06-19T05.14.26	2026-06-19T05.14.26	agent-batch-003
+pcsx2\Elfheader.h	129	rust\translations\pcsx2/Elfheader.rs	translated	agent-batch-fillin-002	2026-06-19T05.14.26	2026-06-19T05.14.26	agent-batch-003
+pcsx2\FiFo.cpp	124	rust\translations\pcsx2/FiFo.rs	translated	agent-batch-fillin-003	2026-06-20T00.00.00	2026-06-20T00.00.00	Created Fifo.rs with Fifo<T> VecDeque-backed ring buffer; FIFO_VIF0/VIF1/GIF statics capacity 32; ReadFIFO_VIF1/WriteFIFO_VIF0/WriteFIFO_VIF1/WriteFIFO_GIF wrappers
+pcsx2\FPU.cpp	334	rust\translations\pcsx2/Fpu.rs	pending	agent-batch-fillin-002
+pcsx2\FW.cpp	162	rust\translations\pcsx2/FwSpr.rs	translated	agent-batch-fillin-002		2026-06-19	agent-batch-fillin-002
+pcsx2\FW.h	16	rust\translations\pcsx2/FwSpr.rs	translated	agent-batch-fillin-002		2026-06-19	agent-batch-fillin-002				
+pcsx2\GameDatabase.cpp	1094	rust\translations\pcsx2/GameDatabase.rs	pending				
+pcsx2\GameDatabase.h	143	rust\translations\pcsx2/GameDatabase.rs	pending				
+pcsx2\GameList.cpp	1317	rust\translations\pcsx2/GameList.rs	pending				
+pcsx2\GameList.h	135	rust\translations\pcsx2/GameList.rs	pending				
+pcsx2\Gif_Logger.cpp	64	rust\translations\pcsx2/GifLogger.rs	translated	giflogger-rs	2026-06-20	2026-06-20	Rewrote as idiomatic Rust 2021 module. Module name is GifLogger.rs (not Gif_Logger.rs per TSV column) - the table value is kept unchanged for backwards compatibility. Added GIF_FLG_*, GIF_REG_* consts, GifPath/GifFlg enums, GifTag struct with parse(), GsPacket struct, gif_reg_name helper, parse_log and parse_gs_packet functions. Sink-based LogSink closure, no external crates.
+pcsx2\Gif_Unit.cpp	229	rust\translations\pcsx2/Gif_Unit.rs	pending				
+pcsx2\Gif_Unit.h	832	rust\translations\pcsx2/Gif_Unit.rs	pending				
+pcsx2\Gif.cpp	671	rust\translations\pcsx2/Gif.rs	pending				
+pcsx2\Gif.h	233	rust\translations\pcsx2/Gif.rs	pending				
+pcsx2\GS.cpp	281	rust\translations\pcsx2/GS.rs	pending				
+pcsx2\GS.h	218	rust\translations\pcsx2/GS.rs	pending				
+pcsx2\GS\GS.cpp	1202	rust\translations\pcsx2/GS/GS.rs	pending				
+pcsx2\GS\GS.h	116	rust\translations\pcsx2/GS/GS.rs	pending				
+pcsx2\GS\GSAlignedClass.h	44	rust\translations\pcsx2/GS/GSAlignedClass.rs	pending				
+pcsx2\GS\GSBlock.cpp	19	rust\translations\pcsx2/GS/GSBlock.rs	pending				
+pcsx2\GS\GSBlock.h	1505	rust\translations\pcsx2/GS/GSBlock.rs	pending				
+pcsx2\GS\GSCapture.cpp	1317	rust\translations\pcsx2/GS/GSCapture.rs	pending				
+pcsx2\GS\GSCapture.h	36	rust\translations\pcsx2/GS/GSCapture.rs	pending				
+pcsx2\GS\GSClut.cpp	795	rust\translations\pcsx2/GS/GSClut.rs	pending				
+pcsx2\GS\GSClut.h	108	rust\translations\pcsx2/GS/GSClut.rs	pending				
+pcsx2\GS\GSDrawingContext.cpp	248	rust\translations\pcsx2/GS/GSDrawingContext.rs	pending				
+pcsx2\GS\GSDrawingContext.h	39	rust\translations\pcsx2/GS/GSDrawingContext.rs	pending				
+pcsx2\GS\GSDrawingEnvironment.cpp	117	rust\translations\pcsx2/GS/GSDrawingEnvironment.rs	pending				
+pcsx2\GS\GSDrawingEnvironment.h	25	rust\translations\pcsx2/GS/GSDrawingEnvironment.rs	pending				
+pcsx2\GS\GSDump.cpp	357	rust\translations\pcsx2/GS/GSDump.rs	pending				
+pcsx2\GS\GSDump.h	65	rust\translations\pcsx2/GS/GSDump.rs	pending				
+pcsx2\GS\GSExtra.h	120	rust\translations\pcsx2/GS/GSExtra.rs	pending				
+pcsx2\GS\GSGL.h	51	rust\translations\pcsx2/GS/GSGL.rs	pending				
+pcsx2\GS\GSJobQueue.h	72	rust\translations\pcsx2/GS/GSJobQueue.rs	pending				
+pcsx2\GS\GSLocalMemory.cpp	672	rust\translations\pcsx2/GS/GSLocalMemory.rs	pending				
+pcsx2\GS\GSLocalMemory.h	951	rust\translations\pcsx2/GS/GSLocalMemory.rs	pending				
+pcsx2\GS\GSLocalMemoryMultiISA.cpp	1123	rust\translations\pcsx2/GS/GSLocalMemoryMultiISA.rs	pending				
+pcsx2\GS\GSLzma.cpp	531	rust\translations\pcsx2/GS/GSLzma.rs	pending				
+pcsx2\GS\GSLzma.h	294	rust\translations\pcsx2/GS/GSLzma.rs	pending				
+pcsx2\GS\GSPerfMon.cpp	56	rust\translations\pcsx2/GS/GSPerfMon.rs	pending				
+pcsx2\GS\GSPerfMon.h	59	rust\translations\pcsx2/GS/GSPerfMon.rs	pending				
+pcsx2\GS\GSPng.cpp	108	rust\translations\pcsx2/GS/GSPng.rs	pending				
+pcsx2\GS\GSPng.h	35	rust\translations\pcsx2/GS/GSPng.rs	pending				
+pcsx2\GS\GSRegs.h	1160	rust\translations\pcsx2/GS/GSRegs.rs	pending				
+pcsx2\GS\GSRingHeap.cpp	217	rust\translations\pcsx2/GS/GSRingHeap.rs	pending				
+pcsx2\GS\GSRingHeap.h	231	rust\translations\pcsx2/GS/GSRingHeap.rs	pending				
+pcsx2\GS\GSShaderCompileIndicator.h	77	rust\translations\pcsx2/GS/GSShaderCompileIndicator.rs	pending				
+pcsx2\GS\GSState.cpp	6346	rust\translations\pcsx2/GS/GSState.rs	pending				
+pcsx2\GS\GSState.h	467	rust\translations\pcsx2/GS/GSState.rs	pending				
+pcsx2\GS\GSTables.cpp	285	rust\translations\pcsx2/GS/GSTables.rs	pending				
+pcsx2\GS\GSTables.h	128	rust\translations\pcsx2/GS/GSTables.rs	pending				
+pcsx2\GS\GSUtil.cpp	321	rust\translations\pcsx2/GS/GSUtil.rs	pending				
+pcsx2\GS\GSUtil.h	153	rust\translations\pcsx2/GS/GSUtil.rs	pending				
+pcsx2\GS\GSVector.cpp	184	rust\translations\pcsx2/GS/GSVector.rs	pending				
+pcsx2\GS\GSVector.h	191	rust\translations\pcsx2/GS/GSVector.rs	pending				
+pcsx2\GS\GSVector4_arm64.h	632	rust\translations\pcsx2/GS/GSVector4_arm64.rs	pending				
+pcsx2\GS\GSVector4.h	686	rust\translations\pcsx2/GS/GSVector4.rs	pending				
+pcsx2\GS\GSVector4i_arm64.h	1844	rust\translations\pcsx2/GS/GSVector4i_arm64.rs	pending				
+pcsx2\GS\GSVector4i.h	1854	rust\translations\pcsx2/GS/GSVector4i.rs	pending				
+pcsx2\GS\GSVector8.h	725	rust\translations\pcsx2/GS/GSVector8.rs	pending				
+pcsx2\GS\GSVector8i.h	1455	rust\translations\pcsx2/GS/GSVector8i.rs	pending				
+pcsx2\GS\GSXXH.cpp	28	rust\translations\pcsx2/GS/GSXXH.rs	pending				
+pcsx2\GS\GSXXH.h	28	rust\translations\pcsx2/GS/GSXXH.rs	pending				
+pcsx2\GS\MultiISA.cpp	92	rust\translations\pcsx2/GS/MultiISA.rs	pending				
+pcsx2\GS\MultiISA.h	74	rust\translations\pcsx2/GS/MultiISA.rs	pending				
+pcsx2\GS\Renderers\Common\GSDevice.cpp	1740	rust\translations\pcsx2/GS/Renderers/Common/GSDevice.rs	pending				
+pcsx2\GS\Renderers\Common\GSDevice.h	1498	rust\translations\pcsx2/GS/Renderers/Common/GSDevice.rs	pending				
+pcsx2\GS\Renderers\Common\GSDirtyRect.cpp	73	rust\translations\pcsx2/GS/Renderers/Common/GSDirtyRect.rs	pending				
+pcsx2\GS\Renderers\Common\GSDirtyRect.h	35	rust\translations\pcsx2/GS/Renderers/Common/GSDirtyRect.rs	pending				
+pcsx2\GS\Renderers\Common\GSFastList.h	301	rust\translations\pcsx2/GS/Renderers/Common/GSFastList.rs	pending				
+pcsx2\GS\Renderers\Common\GSFunctionMap.cpp	30	rust\translations\pcsx2/GS/Renderers/Common/GSFunctionMap.rs	pending				
+pcsx2\GS\Renderers\Common\GSFunctionMap.h	160	rust\translations\pcsx2/GS/Renderers/Common/GSFunctionMap.rs	pending				
+pcsx2\GS\Renderers\Common\GSRenderer.cpp	1049	rust\translations\pcsx2/GS/Renderers/Common/GSRenderer.rs	pending				
+pcsx2\GS\Renderers\Common\GSRenderer.h	46	rust\translations\pcsx2/GS/Renderers/Common/GSRenderer.rs	pending				
+pcsx2\GS\Renderers\Common\GSShaderEnums.h	56	rust\translations\pcsx2/GS/Renderers/Common/GSShaderEnums.rs	pending				
+pcsx2\GS\Renderers\Common\GSTexture.cpp	211	rust\translations\pcsx2/GS/Renderers/Common/GSTexture.rs	pending				
+pcsx2\GS\Renderers\Common\GSTexture.h	214	rust\translations\pcsx2/GS/Renderers/Common/GSTexture.rs	pending				
+pcsx2\GS\Renderers\Common\GSVertex.h	66	rust\translations\pcsx2/GS/Renderers/Common/GSVertex.rs	pending				
+pcsx2\GS\Renderers\Common\GSVertexTrace.cpp	141	rust\translations\pcsx2/GS/Renderers/Common/GSVertexTrace.rs	pending				
+pcsx2\GS\Renderers\Common\GSVertexTrace.h	70	rust\translations\pcsx2/GS/Renderers/Common/GSVertexTrace.rs	pending				
+pcsx2\GS\Renderers\Common\GSVertexTraceFMM.cpp	211	rust\translations\pcsx2/GS/Renderers/Common/GSVertexTraceFMM.rs	pending				
+pcsx2\GS\Renderers\DX11\D3D.cpp	488	rust\translations\pcsx2/GS/Renderers/DX11/D3D.rs	pending				
+pcsx2\GS\Renderers\DX11\D3D.h	60	rust\translations\pcsx2/GS/Renderers/DX11/D3D.rs	pending				
+pcsx2\GS\Renderers\DX11\D3D11ShaderCache.cpp	378	rust\translations\pcsx2/GS/Renderers/DX11/D3D11ShaderCache.rs	pending				
+pcsx2\GS\Renderers\DX11\D3D11ShaderCache.h	71	rust\translations\pcsx2/GS/Renderers/DX11/D3D11ShaderCache.rs	pending				
+pcsx2\GS\Renderers\DX11\GSDevice11.cpp	2692	rust\translations\pcsx2/GS/Renderers/DX11/GSDevice11.rs	pending				
+pcsx2\GS\Renderers\DX11\GSDevice11.h	343	rust\translations\pcsx2/GS/Renderers/DX11/GSDevice11.rs	pending				
+pcsx2\GS\Renderers\DX11\GSTexture11.cpp	257	rust\translations\pcsx2/GS/Renderers/DX11/GSTexture11.rs	pending				
+pcsx2\GS\Renderers\DX11\GSTexture11.h	54	rust\translations\pcsx2/GS/Renderers/DX11/GSTexture11.rs	pending				
+pcsx2\GS\Renderers\DX12\D3D12Builders.cpp	319	rust\translations\pcsx2/GS/Renderers/DX12/D3D12Builders.rs	pending				
+pcsx2\GS\Renderers\DX12\D3D12Builders.h	101	rust\translations\pcsx2/GS/Renderers/DX12/D3D12Builders.rs	pending				
+pcsx2\GS\Renderers\DX12\D3D12DescriptorHeapManager.cpp	132	rust\translations\pcsx2/GS/Renderers/DX12/D3D12DescriptorHeapManager.rs	pending				
+pcsx2\GS\Renderers\DX12\D3D12DescriptorHeapManager.h	203	rust\translations\pcsx2/GS/Renderers/DX12/D3D12DescriptorHeapManager.rs	pending				
+pcsx2\GS\Renderers\DX12\D3D12ShaderCache.cpp	518	rust\translations\pcsx2/GS/Renderers/DX12/D3D12ShaderCache.rs	pending				
+pcsx2\GS\Renderers\DX12\D3D12ShaderCache.h	106	rust\translations\pcsx2/GS/Renderers/DX12/D3D12ShaderCache.rs	pending				
+pcsx2\GS\Renderers\DX12\D3D12StreamBuffer.cpp	280	rust\translations\pcsx2/GS/Renderers/DX12/D3D12StreamBuffer.rs	pending				
+pcsx2\GS\Renderers\DX12\D3D12StreamBuffer.h	60	rust\translations\pcsx2/GS/Renderers/DX12/D3D12StreamBuffer.rs	pending				
+pcsx2\GS\Renderers\DX12\GSDevice12.cpp	4004	rust\translations\pcsx2/GS/Renderers/DX12/GSDevice12.rs	pending				
+pcsx2\GS\Renderers\DX12\GSDevice12.h	578	rust\translations\pcsx2/GS/Renderers/DX12/GSDevice12.rs	pending				
+pcsx2\GS\Renderers\DX12\GSTexture12.cpp	1185	rust\translations\pcsx2/GS/Renderers/DX12/GSTexture12.rs	pending				
+pcsx2\GS\Renderers\DX12\GSTexture12.h	126	rust\translations\pcsx2/GS/Renderers/DX12/GSTexture12.rs	pending				
+pcsx2\GS\Renderers\HW\GSHwHack.cpp	1348	rust\translations\pcsx2/GS/Renderers/HW/GSHwHack.rs	pending				
+pcsx2\GS\Renderers\HW\GSHwHack.h	45	rust\translations\pcsx2/GS/Renderers/HW/GSHwHack.rs	pending				
+pcsx2\GS\Renderers\HW\GSRendererHW.cpp	9535	rust\translations\pcsx2/GS/Renderers/HW/GSRendererHW.rs	pending				
+pcsx2\GS\Renderers\HW\GSRendererHW.h	342	rust\translations\pcsx2/GS/Renderers/HW/GSRendererHW.rs	pending				
+pcsx2\GS\Renderers\HW\GSRendererHWMultiISA.cpp	456	rust\translations\pcsx2/GS/Renderers/HW/GSRendererHWMultiISA.rs	pending				
+pcsx2\GS\Renderers\HW\GSTextureCache.cpp	7914	rust\translations\pcsx2/GS/Renderers/HW/GSTextureCache.rs	translated			2026-06-19T06.26.45	agent-batch-010-011
+pcsx2\GS\Renderers\HW\GSTextureCache.h	488	rust\translations\pcsx2/GS/Renderers/HW/GSTextureCache.rs	translated			2026-06-19T06.26.45	agent-batch-010-011
+pcsx2\GS\Renderers\HW\GSTextureReplacementLoaders.cpp	541	rust\translations\pcsx2/GS/Renderers/HW/GSTextureReplacementLoaders.rs	pending				
+pcsx2\GS\Renderers\HW\GSTextureReplacements.cpp	837	rust\translations\pcsx2/GS/Renderers/HW/GSTextureReplacements.rs	pending				
+pcsx2\GS\Renderers\HW\GSTextureReplacements.h	48	rust\translations\pcsx2/GS/Renderers/HW/GSTextureReplacements.rs	pending				
+pcsx2\GS\Renderers\HW\GSVertexHW.h	19	rust\translations\pcsx2/GS/Renderers/HW/GSVertexHW.rs	pending				
+pcsx2\GS\Renderers\Metal\GSDeviceMTL.h	438	rust\translations\pcsx2/GS/Renderers/Metal/GSDeviceMTL.rs	pending				
+pcsx2\GS\Renderers\Metal\GSMetalCPPAccessible.h	12	rust\translations\pcsx2/GS/Renderers/Metal/GSMetalCPPAccessible.rs	pending				
+pcsx2\GS\Renderers\Metal\GSMTLDeviceInfo.h	48	rust\translations\pcsx2/GS/Renderers/Metal/GSMTLDeviceInfo.rs	pending				
+pcsx2\GS\Renderers\Metal\GSMTLShaderCommon.h	46	rust\translations\pcsx2/GS/Renderers/Metal/GSMTLShaderCommon.rs	pending				
+pcsx2\GS\Renderers\Metal\GSMTLSharedHeader.h	208	rust\translations\pcsx2/GS/Renderers/Metal/GSMTLSharedHeader.rs	pending				
+pcsx2\GS\Renderers\Metal\GSTextureMTL.h	56	rust\translations\pcsx2/GS/Renderers/Metal/GSTextureMTL.rs	pending				
+pcsx2\GS\Renderers\Null\GSRendererNull.cpp	16	rust\translations\pcsx2/GS/Renderers/Null/GSRendererNull.rs	pending				
+pcsx2\GS\Renderers\Null\GSRendererNull.h	13	rust\translations\pcsx2/GS/Renderers/Null/GSRendererNull.rs	pending				
+pcsx2\GS\Renderers\OpenGL\GLContext.cpp	62	rust\translations\pcsx2/GS/Renderers/OpenGL/GLContext.rs	pending				
+pcsx2\GS\Renderers\OpenGL\GLContext.h	37	rust\translations\pcsx2/GS/Renderers/OpenGL/GLContext.rs	pending				
+pcsx2\GS\Renderers\OpenGL\GLContextEGL.cpp	459	rust\translations\pcsx2/GS/Renderers/OpenGL/GLContextEGL.rs	pending				
+pcsx2\GS\Renderers\OpenGL\GLContextEGL.h	44	rust\translations\pcsx2/GS/Renderers/OpenGL/GLContextEGL.rs	pending				
+pcsx2\GS\Renderers\OpenGL\GLContextEGLWayland.cpp	94	rust\translations\pcsx2/GS/Renderers/OpenGL/GLContextEGLWayland.rs	pending				
+pcsx2\GS\Renderers\OpenGL\GLContextEGLWayland.h	24	rust\translations\pcsx2/GS/Renderers/OpenGL/GLContextEGLWayland.rs	pending				
+pcsx2\GS\Renderers\OpenGL\GLContextEGLX11.cpp	42	rust\translations\pcsx2/GS/Renderers/OpenGL/GLContextEGLX11.rs	pending				
+pcsx2\GS\Renderers\OpenGL\GLContextEGLX11.h	15	rust\translations\pcsx2/GS/Renderers/OpenGL/GLContextEGLX11.rs	pending				
+pcsx2\GS\Renderers\OpenGL\GLContextWGL.cpp	384	rust\translations\pcsx2/GS/Renderers/OpenGL/GLContextWGL.rs	pending				
+pcsx2\GS\Renderers\OpenGL\GLContextWGL.h	42	rust\translations\pcsx2/GS/Renderers/OpenGL/GLContextWGL.rs	pending				
+pcsx2\GS\Renderers\OpenGL\GLProgram.cpp	445	rust\translations\pcsx2/GS/Renderers/OpenGL/GLProgram.rs	pending				
+pcsx2\GS\Renderers\OpenGL\GLProgram.h	67	rust\translations\pcsx2/GS/Renderers/OpenGL/GLProgram.rs	pending				
+pcsx2\GS\Renderers\OpenGL\GLShaderCache.cpp	449	rust\translations\pcsx2/GS/Renderers/OpenGL/GLShaderCache.rs	pending				
+pcsx2\GS\Renderers\OpenGL\GLShaderCache.h	75	rust\translations\pcsx2/GS/Renderers/OpenGL/GLShaderCache.rs	pending				
+pcsx2\GS\Renderers\OpenGL\GLState.cpp	71	rust\translations\pcsx2/GS/Renderers/OpenGL/GLState.rs	pending				
+pcsx2\GS\Renderers\OpenGL\GLState.h	40	rust\translations\pcsx2/GS/Renderers/OpenGL/GLState.rs	pending				
+pcsx2\GS\Renderers\OpenGL\GLStreamBuffer.cpp	269	rust\translations\pcsx2/GS/Renderers/OpenGL/GLStreamBuffer.rs	pending				
+pcsx2\GS\Renderers\OpenGL\GLStreamBuffer.h	36	rust\translations\pcsx2/GS/Renderers/OpenGL/GLStreamBuffer.rs	pending				
+pcsx2\GS\Renderers\OpenGL\GSDeviceOGL.cpp	2809	rust\translations\pcsx2/GS/Renderers/OpenGL/GSDeviceOGL.rs	pending				
+pcsx2\GS\Renderers\OpenGL\GSDeviceOGL.h	341	rust\translations\pcsx2/GS/Renderers/OpenGL/GSDeviceOGL.rs	pending				
+pcsx2\GS\Renderers\OpenGL\GSTextureOGL.cpp	414	rust\translations\pcsx2/GS/Renderers/OpenGL/GSTextureOGL.rs	pending				
+pcsx2\GS\Renderers\OpenGL\GSTextureOGL.h	68	rust\translations\pcsx2/GS/Renderers/OpenGL/GSTextureOGL.rs	pending				
+pcsx2\GS\Renderers\SW\GSDrawScanline.cpp	1662	rust\translations\pcsx2/GS/Renderers/SW/GSDrawScanline.rs	pending				
+pcsx2\GS\Renderers\SW\GSDrawScanline.h	46	rust\translations\pcsx2/GS/Renderers/SW/GSDrawScanline.rs	pending				
+pcsx2\GS\Renderers\SW\GSDrawScanlineCodeGenerator.all.cpp	2785	rust\translations\pcsx2/GS/Renderers/SW/GSDrawScanlineCodeGenerator.all.rs	pending				
+pcsx2\GS\Renderers\SW\GSDrawScanlineCodeGenerator.all.h	156	rust\translations\pcsx2/GS/Renderers/SW/GSDrawScanlineCodeGenerator.all.rs	pending				
+pcsx2\GS\Renderers\SW\GSDrawScanlineCodeGenerator.arm64.cpp	1932	rust\translations\pcsx2/GS/Renderers/SW/GSDrawScanlineCodeGenerator.arm64.rs	pending				
+pcsx2\GS\Renderers\SW\GSDrawScanlineCodeGenerator.arm64.h	71	rust\translations\pcsx2/GS/Renderers/SW/GSDrawScanlineCodeGenerator.arm64.rs	pending				
+pcsx2\GS\Renderers\SW\GSNewCodeGenerator.h	324	rust\translations\pcsx2/GS/Renderers/SW/GSNewCodeGenerator.rs	pending				
+pcsx2\GS\Renderers\SW\GSRasterizer.cpp	1274	rust\translations\pcsx2/GS/Renderers/SW/GSRasterizer.rs	pending				
+pcsx2\GS\Renderers\SW\GSRasterizer.h	163	rust\translations\pcsx2/GS/Renderers/SW/GSRasterizer.rs	pending				
+pcsx2\GS\Renderers\SW\GSRendererSW.cpp	1362	rust\translations\pcsx2/GS/Renderers/SW/GSRendererSW.rs	pending				
+pcsx2\GS\Renderers\SW\GSRendererSW.h	76	rust\translations\pcsx2/GS/Renderers/SW/GSRendererSW.rs	pending				
+pcsx2\GS\Renderers\SW\GSScanlineEnvironment.h	268	rust\translations\pcsx2/GS/Renderers/SW/GSScanlineEnvironment.rs	pending				
+pcsx2\GS\Renderers\SW\GSSetupPrimCodeGenerator.all.cpp	446	rust\translations\pcsx2/GS/Renderers/SW/GSSetupPrimCodeGenerator.all.rs	pending				
+pcsx2\GS\Renderers\SW\GSSetupPrimCodeGenerator.all.h	44	rust\translations\pcsx2/GS/Renderers/SW/GSSetupPrimCodeGenerator.all.rs	pending				
+pcsx2\GS\Renderers\SW\GSSetupPrimCodeGenerator.arm64.cpp	255	rust\translations\pcsx2/GS/Renderers/SW/GSSetupPrimCodeGenerator.arm64.rs	pending				
+pcsx2\GS\Renderers\SW\GSSetupPrimCodeGenerator.arm64.h	24	rust\translations\pcsx2/GS/Renderers/SW/GSSetupPrimCodeGenerator.arm64.rs	pending				
+pcsx2\GS\Renderers\SW\GSTextureCacheSW.cpp	268	rust\translations\pcsx2/GS/Renderers/SW/GSTextureCacheSW.rs	pending				
+pcsx2\GS\Renderers\SW\GSTextureCacheSW.h	45	rust\translations\pcsx2/GS/Renderers/SW/GSTextureCacheSW.rs	pending				
+pcsx2\GS\Renderers\SW\GSVertexSW.h	220	rust\translations\pcsx2/GS/Renderers/SW/GSVertexSW.rs	pending				
+pcsx2\GS\Renderers\Vulkan\GSDeviceVK.cpp	5614	rust\translations\pcsx2/GS/Renderers/Vulkan/GSDeviceVK.rs	pending				
+pcsx2\GS\Renderers\Vulkan\GSDeviceVK.h	623	rust\translations\pcsx2/GS/Renderers/Vulkan/GSDeviceVK.rs	pending				
+pcsx2\GS\Renderers\Vulkan\GSTextureVK.cpp	849	rust\translations\pcsx2/GS/Renderers/Vulkan/GSTextureVK.rs	pending				
+pcsx2\GS\Renderers\Vulkan\GSTextureVK.h	106	rust\translations\pcsx2/GS/Renderers/Vulkan/GSTextureVK.rs	pending				
+pcsx2\GS\Renderers\Vulkan\vk_mem_alloc.cpp	4	rust\translations\pcsx2/GS/Renderers/Vulkan/vk_mem_alloc.rs	pending				
+pcsx2\GS\Renderers\Vulkan\VKBuilders.cpp	876	rust\translations\pcsx2/GS/Renderers/Vulkan/VKBuilders.rs	pending				
+pcsx2\GS\Renderers\Vulkan\VKBuilders.h	313	rust\translations\pcsx2/GS/Renderers/Vulkan/VKBuilders.rs	pending				
+pcsx2\GS\Renderers\Vulkan\VKEntryPoints.h	16	rust\translations\pcsx2/GS/Renderers/Vulkan/VKEntryPoints.rs	pending				
+pcsx2\GS\Renderers\Vulkan\VKLoader.cpp	113	rust\translations\pcsx2/GS/Renderers/Vulkan/VKLoader.rs	pending				
+pcsx2\GS\Renderers\Vulkan\VKLoader.h	81	rust\translations\pcsx2/GS/Renderers/Vulkan/VKLoader.rs	pending				
+pcsx2\GS\Renderers\Vulkan\VKShaderCache.cpp	596	rust\translations\pcsx2/GS/Renderers/Vulkan/VKShaderCache.rs	pending				
+pcsx2\GS\Renderers\Vulkan\VKShaderCache.h	77	rust\translations\pcsx2/GS/Renderers/Vulkan/VKShaderCache.rs	pending				
+pcsx2\GS\Renderers\Vulkan\VKStreamBuffer.cpp	271	rust\translations\pcsx2/GS/Renderers/Vulkan/VKStreamBuffer.rs	pending				
+pcsx2\GS\Renderers\Vulkan\VKStreamBuffer.h	44	rust\translations\pcsx2/GS/Renderers/Vulkan/VKStreamBuffer.rs	pending				
+pcsx2\GS\Renderers\Vulkan\VKSwapChain.cpp	575	rust\translations\pcsx2/GS/Renderers/Vulkan/VKSwapChain.rs	pending				
+pcsx2\GS\Renderers\Vulkan\VKSwapChain.h	87	rust\translations\pcsx2/GS/Renderers/Vulkan/VKSwapChain.rs	pending				
+pcsx2\GSDumpReplayer.cpp	340	rust\translations\pcsx2/GSDumpReplayer.rs	pending				
+pcsx2\GSDumpReplayer.h	22	rust\translations\pcsx2/GSDumpReplayer.rs	pending				
+pcsx2\Hardware.h	13	rust\translations\pcsx2/Hardware.rs	pending				
+pcsx2\Host.cpp	331	rust\translations\pcsx2/Host.rs	pending				
+pcsx2\Host.h	153	rust\translations\pcsx2/Host.rs	pending				
+pcsx2\Host\AudioStream.cpp	689	rust\translations\pcsx2/Host/AudioStream.rs	pending				
+pcsx2\Host\AudioStream.h	214	rust\translations\pcsx2/Host/AudioStream.rs	pending				
+pcsx2\Host\AudioStreamTypes.h	66	rust\translations\pcsx2/Host/AudioStreamTypes.rs	pending				
+pcsx2\Host\CubebAudioStream.cpp	327	rust\translations\pcsx2/Host/CubebAudioStream.rs	pending				
+pcsx2\Host\SDLAudioStream.cpp	127	rust\translations\pcsx2/Host/SDLAudioStream.rs	pending				
+pcsx2\Hotkeys.cpp	334	rust\translations\pcsx2/Hotkeys.rs	pending				
+pcsx2\Hw.cpp	306	rust\translations\pcsx2/Hw.rs	translated			2026-06-19T05.14.26	agent-batch-003
+pcsx2\Hw.h	304	rust\translations\pcsx2/Hw.rs	translated			2026-06-19T05.14.26	agent-batch-003
+pcsx2\HwRead.cpp	362	rust\translations\pcsx2/HwRead.rs	pending				
+pcsx2\HwWrite.cpp	441	rust\translations\pcsx2/HwWrite.rs	pending				
+pcsx2\ImGui\FullscreenUI_Internal.h	485	rust\translations\pcsx2/ImGui/FullscreenUI_Internal.rs	pending				
+pcsx2\ImGui\FullscreenUI_Settings.cpp	5955	rust\translations\pcsx2/ImGui/FullscreenUI_Settings.rs	pending				
+pcsx2\ImGui\FullscreenUI.cpp	3574	rust\translations\pcsx2/ImGui/FullscreenUI.rs	translated	agent-batch-fillin-002	2026-06-19T05.29.11	agent-batch-004-005
+pcsx2\ImGui\FullscreenUI.h	56	rust\translations\pcsx2/ImGui/FullscreenUI.rs	translated	agent-batch-fillin-002	2026-06-19T05.29.11	agent-batch-004-005
+pcsx2\ImGui\ImGuiAnimated.h	89	rust\translations\pcsx2/ImGui/ImGuiAnimated.rs	pending				
+pcsx2\ImGui\ImGuiFullscreen.cpp	3034	rust\translations\pcsx2/ImGui/ImGuiFullscreen.rs	pending				
+pcsx2\ImGui\ImGuiFullscreen.h	297	rust\translations\pcsx2/ImGui/ImGuiFullscreen.rs	pending				
+pcsx2\ImGui\ImGuiManager.cpp	1270	rust\translations\pcsx2/ImGui/ImGuiManager.rs	pending				
+pcsx2\ImGui\ImGuiManager.h	99	rust\translations\pcsx2/ImGui/ImGuiManager.rs	pending				
+pcsx2\ImGui\ImGuiOverlays.cpp	1584	rust\translations\pcsx2/ImGui/ImGuiOverlays.rs	pending				
+pcsx2\ImGui\ImGuiOverlays.h	40	rust\translations\pcsx2/ImGui/ImGuiOverlays.rs	pending				
+pcsx2\INISettingsInterface.cpp	322	rust\translations\pcsx2/INISettingsInterface.rs	pending				
+pcsx2\INISettingsInterface.h	56	rust\translations\pcsx2/INISettingsInterface.rs	pending				
+pcsx2\Input\DInputSource.cpp	432	rust\translations\pcsx2/Input/DInputSource.rs	pending				
+pcsx2\Input\DInputSource.h	68	rust\translations\pcsx2/Input/DInputSource.rs	pending				
+pcsx2\Input\InputManager.cpp	1607	rust\translations\pcsx2/Input/InputManager.rs	pending				
+pcsx2\Input\InputManager.h	260	rust\translations\pcsx2/Input/InputManager.rs	pending				
+pcsx2\Input\InputSource.cpp	135	rust\translations\pcsx2/Input/InputSource.rs	pending				
+pcsx2\Input\InputSource.h	56	rust\translations\pcsx2/Input/InputSource.rs	pending				
+pcsx2\Input\SDLInputSource.cpp	1586	rust\translations\pcsx2/Input/SDLInputSource.rs	pending				
+pcsx2\Input\SDLInputSource.h	89	rust\translations\pcsx2/Input/SDLInputSource.rs	pending				
+pcsx2\Input\XInputSource.cpp	560	rust\translations\pcsx2/Input/XInputSource.rs	pending				
+pcsx2\Input\XInputSource.h	96	rust\translations\pcsx2/Input/XInputSource.rs	pending				
+pcsx2\InterpRs.cpp	0	rust\translations\pcsx2/InterpRs.rs	translated	agent-batch-fillin-002	2026-06-20	synthetic aggregation of R3000A+R5900+Interpreter sources
+pcsx2\Interpreter.cpp	586	rust\translations\pcsx2/Interpreter.rs	pending				
+pcsx2\IopBios.cpp	1275	rust\translations\pcsx2/IopBios.rs	translated	agent-batch-fillin-002	2026-06-19T05.14.26	agent-batch-003
+pcsx2\IopBios.h	66	rust\translations\pcsx2/IopBios.rs	translated	agent-batch-fillin-002	2026-06-19T05.14.26	agent-batch-003
+pcsx2\IopCounters.cpp	649	rust\translations\pcsx2/IopCounters.rs	translated			2026-06-19T05.14.26	agent-batch-003
+pcsx2\IopCounters.h	57	rust\translations\pcsx2/IopCounters.rs	translated			2026-06-19T05.14.26	agent-batch-003
+pcsx2\IopDma.cpp	229	rust\translations\pcsx2/IopDma.rs	pending				
+pcsx2\IopDma.h	29	rust\translations\pcsx2/IopDma.rs	pending				
+pcsx2\IopGte.cpp	2550	rust\translations\pcsx2/IopGte.rs	translated			2026-06-19T05.14.26	agent-batch-003
+pcsx2\IopGte.h	31	rust\translations\pcsx2/IopGte.rs	translated			2026-06-19T05.14.26	agent-batch-003
+pcsx2\IopHw.cpp	96	rust\translations\pcsx2/IopHw.rs	translated	agent-batch-fillin-002	2026-06-19T05.14.26	agent-batch-003
+pcsx2\IopHw.h	279	rust\translations\pcsx2/IopHw.rs	translated	agent-batch-fillin-002	2026-06-19T05.14.26	agent-batch-003
+pcsx2\IopIrq.cpp	42	rust\translations\pcsx2/IopIrq.rs	pending				
+pcsx2\IopMem.cpp	540	rust\translations\pcsx2/IopMem.rs	translated			2026-06-19T05.14.26	agent-batch-003
+pcsx2\IopMem.h	117	rust\translations\pcsx2/IopMem.rs	translated	agent-batch-fillin-003		2026-06-19T05.14.26	agent-batch-003
+pcsx2\IopModuleNames.cpp	979	rust\translations\pcsx2/IopModuleNames.rs	pending				
+pcsx2\IPU\IPU_Fifo.cpp	139	rust\translations\pcsx2/IPU/IPU_Fifo.rs	translated	agent-batch-fillin-003	2026-06-20T03.48.00	agent-batch-fillin-003
+pcsx2\IPU\IPU_Fifo.h	35	rust\translations\pcsx2/IPU/IPU_Fifo.rs	translated	agent-batch-fillin-003	2026-06-20T03.48.00	agent-batch-fillin-003
+pcsx2\IPU\IPU_MultiISA.cpp	1707	rust\translations\pcsx2/IPU/IPU_MultiISA.rs	pending				
+pcsx2\IPU\IPU_MultiISA.h	130	rust\translations\pcsx2/IPU/IPU_MultiISA.rs	pending				
+pcsx2\IPU\IPU.cpp	431	rust\translations\pcsx2/IPU/IPU.rs	translated			2026-06-19T05.29.11	agent-batch-004-005
+pcsx2\IPU\IPU.h	248	rust\translations\pcsx2/IPU/IPU.rs	translated			2026-06-19T05.29.11	agent-batch-004-005
+pcsx2\IPU\IPUdither.cpp	106	rust\translations\pcsx2/IPU/IPUdither.rs	pending				
+pcsx2\IPU\IPUdma.cpp	246	rust\translations\pcsx2/IPU/IPUdma.rs	pending				
+pcsx2\IPU\IPUdma.h	23	rust\translations\pcsx2/IPU/IPUdma.rs	pending				
+pcsx2\IPU\mpeg2_vlc.h	415	rust\translations\pcsx2/IPU/mpeg2_vlc.rs	pending				
+pcsx2\IPU\yuv2rgb.cpp	210	rust\translations\pcsx2/IPU/yuv2rgb.rs	pending				
+pcsx2\IPU\yuv2rgb.h	12	rust\translations\pcsx2/IPU/yuv2rgb.rs	pending				
+pcsx2\LayeredSettingsInterface.cpp	211	rust\translations\pcsx2/LayeredSettingsInterface.rs	pending				
+pcsx2\LayeredSettingsInterface.h	60	rust\translations\pcsx2/LayeredSettingsInterface.rs	pending				
+pcsx2\Mdec.cpp	430	rust\translations\pcsx2/Mdec.rs	pending				
+pcsx2\Mdec.h	65	rust\translations\pcsx2/Mdec.rs	pending				
+pcsx2\Memory.cpp	1072	rust\translations\pcsx2/Memory.rs	pending				
+pcsx2\Memory.h	168	rust\translations\pcsx2/Memory.rs	pending				
+pcsx2\MemoryTypes.h	56	rust\translations\pcsx2/MemoryTypes.rs	pending				
+pcsx2\MMI.cpp	1283	rust\translations\pcsx2/MMI.rs	pending				
+pcsx2\MTGS.cpp	rust\translations\pcsx2/MTGS.rsttranslatedt2026-06-19tMTGS batch translation
+pcsx2\MTGS.htrust\translations\pcsx2/MTGS.rsttranslatedt2026-06-19tMTGS batch translation
+pcsx2\MTVU.cpp	485	rust\translations\pcsx2/MTVU.rs	pending				
+pcsx2\MTVU.h	87	rust\translations\pcsx2/MTVU.rs	pending				
+pcsx2\Patch.cpp	1655	rust\translations\pcsx2/Patch.rs	pending				
+pcsx2\Patch.h	169	rust\translations\pcsx2/Patch.rs	pending				
+pcsx2\Pcsx2Config.cpp	2070	rust\translations\pcsx2/Pcsx2Config.rs	pending				
+pcsx2\PerformanceMetrics.cpp	307	rust\translations\pcsx2/PerformanceMetrics.rs	translated			2026-06-20T10.00.00	agent-perf-metrics
+pcsx2\PerformanceMetrics.h	49	rust\translations\pcsx2/PerformanceMetrics.rs	translated			2026-06-20T10.00.00	agent-perf-metrics
+pcsx2\PINE.cpp	686	rust\translations\pcsx2/PINE.rs	pending				
+pcsx2\PINE.h	17	rust\translations\pcsx2/PINE.rs	pending				
+pcsx2\PrecompiledHeader.cpp	3	rust\translations\pcsx2/PrecompiledHeader.rs	pending				
+pcsx2\PrecompiledHeader.h	40	rust\translations\pcsx2/PrecompiledHeader.rs	pending				
+pcsx2\ps2\BiosTools.cpp	328	rust\translations\pcsx2/ps2/BiosTools.rs	pending				
+pcsx2\ps2\BiosTools.h	240	rust\translations\pcsx2/ps2/BiosTools.rs	pending				
+pcsx2\ps2\HwInternal.h	37	rust\translations\pcsx2/ps2/HwInternal.rs	pending				
+pcsx2\ps2\Iop\IopHw_Internal.h	196	rust\translations\pcsx2/ps2/Iop/IopHw_Internal.rs	pending				
+pcsx2\ps2\Iop\IopHwRead.cpp	435	rust\translations\pcsx2/ps2/Iop/IopHwRead.rs	pending				
+pcsx2\ps2\Iop\IopHwWrite.cpp	584	rust\translations\pcsx2/ps2/Iop/IopHwWrite.rs	pending				
+pcsx2\ps2\Iop\PsxBios.cpp	90	rust\translations\pcsx2/ps2/Iop/PsxBios.rs	pending				
+pcsx2\ps2\pgif.cpp	658	rust\translations\pcsx2/ps2/pgif.rs	pending				
+pcsx2\ps2\pgif.h	229	rust\translations\pcsx2/ps2/pgif.rs	pending				
+pcsx2\R3000A.cpp	247	rust\translations\pcsx2/R3000A.rs	pending				
+pcsx2\R3000A.h	169	rust\translations\pcsx2/R3000A.rs	pending				
+pcsx2\R3000AInterpreter.cpp	267	rust\translations\pcsx2/R3000AInterpreter.rs	pending				
+pcsx2\R3000AOpcodeTables.cpp	316	rust\translations\pcsx2/R3000AOpcodeTables.rs	pending				
+pcsx2\R5900.cpp	689	rust\translations\pcsx2/R5900.rs	pending				
+pcsx2\R5900.h	377	rust\translations\pcsx2/R5900.rs	pending				
+pcsx2\R5900OpcodeImpl.cpp	1059	rust\translations\pcsx2/R5900OpcodeImpl.rs	pending				
+pcsx2\R5900OpcodeTables.cpp	640	rust\translations\pcsx2/R5900OpcodeTables.rs	translated	agent-batch-fillin-005	2026-06-20
+pcsx2\R5900OpcodeTables.h	885	rust\translations\pcsx2/R5900OpcodeTables.rs	pending
+pcsx2\RDebug\deci2_dbgp.cpp	393	rust\translations\pcsx2/RDebug/deci2_dbgp.rs	pending				
+pcsx2\RDebug\deci2_dbgp.h	7	rust\translations\pcsx2/RDebug/deci2_dbgp.rs	pending				
+pcsx2\RDebug\deci2_dcmp.cpp	60	rust\translations\pcsx2/RDebug/deci2_dcmp.rs	pending				
+pcsx2\RDebug\deci2_dcmp.h	7	rust\translations\pcsx2/RDebug/deci2_dcmp.rs	pending				
+pcsx2\RDebug\deci2_drfp.cpp	28	rust\translations\pcsx2/RDebug/deci2_drfp.rs	pending				
+pcsx2\RDebug\deci2_drfp.h	6	rust\translations\pcsx2/RDebug/deci2_drfp.rs	pending				
+pcsx2\RDebug\deci2_iloadp.cpp	81	rust\translations\pcsx2/RDebug/deci2_iloadp.rs	pending				
+pcsx2\RDebug\deci2_iloadp.h	6	rust\translations\pcsx2/RDebug/deci2_iloadp.rs	pending				
+pcsx2\RDebug\deci2_netmp.cpp	106	rust\translations\pcsx2/RDebug/deci2_netmp.rs	pending				
+pcsx2\RDebug\deci2_netmp.h	6	rust\translations\pcsx2/RDebug/deci2_netmp.rs	pending				
+pcsx2\RDebug\deci2_ttyp.cpp	23	rust\translations\pcsx2/RDebug/deci2_ttyp.rs	pending				
+pcsx2\RDebug\deci2_ttyp.h	7	rust\translations\pcsx2/RDebug/deci2_ttyp.rs	pending				
+pcsx2\RDebug\deci2.cpp	9	rust\translations\pcsx2/RDebug/deci2.rs	pending				
+pcsx2\RDebug\deci2.h	39	rust\translations\pcsx2/RDebug/deci2.rs	pending				
+pcsx2\Recording\InputRecording.cpp	370	rust\translations\pcsx2/Recording/InputRecording.rs	pending				
+pcsx2\Recording\InputRecording.h	53	rust\translations\pcsx2/Recording/InputRecording.rs	pending				
+pcsx2\Recording\InputRecordingControls.cpp	86	rust\translations\pcsx2/Recording/InputRecordingControls.rs	pending				
+pcsx2\Recording\InputRecordingControls.h	24	rust\translations\pcsx2/Recording/InputRecordingControls.rs	pending				
+pcsx2\Recording\InputRecordingFile.cpp	239	rust\translations\pcsx2/Recording/InputRecordingFile.rs	pending				
+pcsx2\Recording\InputRecordingFile.h	83	rust\translations\pcsx2/Recording/InputRecordingFile.rs	pending				
+pcsx2\Recording\PadData.cpp	145	rust\translations\pcsx2/Recording/PadData.rs	pending				
+pcsx2\Recording\PadData.h	45	rust\translations\pcsx2/Recording/PadData.rs	pending				
+pcsx2\Recording\Utilities\InputRecordingLogger.cpp	40	rust\translations\pcsx2/Recording/Utilities/InputRecordingLogger.rs	pending				
+pcsx2\Recording\Utilities\InputRecordingLogger.h	12	rust\translations\pcsx2/Recording/Utilities/InputRecordingLogger.rs	pending				
+pcsx2\SaveState.cpp	1050	rust\translations\pcsx2/SaveStateNew.rs	translated		2026-06-20T00.00.00	agent-savestate-batch
+pcsx2\SaveState.h	291	rust\translations\pcsx2/SaveStateNew.rs	translated		2026-06-20T00.00.00	agent-savestate-batch
+pcsx2\ShaderCacheVersion.h	5	rust\translations\pcsx2/ShaderCacheVersion.rs	pending				
+pcsx2\ShiftJisToUnicode.cpp	812	rust\translations\pcsx2/ShiftJisToUnicode.rs	pending				
+pcsx2\Sif.cpp	19	rust\translations\pcsx2/Sif.rs	pending				
+pcsx2\Sif.h	173	rust\translations\pcsx2/Sif.rs	pending				
+pcsx2\Sif0.cpp	308	rust\translations\pcsx2/Sif0.rs	pending				
+pcsx2\Sif1.cpp	293	rust\translations\pcsx2/Sif1.rs	pending				
+pcsx2\sif2.cpp	320	rust\translations\pcsx2/sif2.rs	pending				
+pcsx2\Sifcmd.h	10	rust\translations\pcsx2/Sifcmd.rs	pending				
+pcsx2\SIO\Memcard\MemoryCardFile.cpp	958	rust\translations\pcsx2/SIO/Memcard/MemoryCardFile.rs	pending				
+pcsx2\SIO\Memcard\MemoryCardFile.h	54	rust\translations\pcsx2/SIO/Memcard/MemoryCardFile.rs	pending				
+pcsx2\SIO\Memcard\MemoryCardFolder.cpp	2053	rust\translations\pcsx2/SIO/Memcard/MemoryCardFolder.rs	pending				
+pcsx2\SIO\Memcard\MemoryCardFolder.h	453	rust\translations\pcsx2/SIO/Memcard/MemoryCardFolder.rs	pending				
+pcsx2\SIO\Memcard\MemoryCardProtocol.cpp	463	rust\translations\pcsx2/SIO/Memcard/MemoryCardProtocol.rs	pending				
+pcsx2\SIO\Memcard\MemoryCardProtocol.h	45	rust\translations\pcsx2/SIO/Memcard/MemoryCardProtocol.rs	pending				
+pcsx2\SIO\Multitap\MultitapProtocol.cpp	123	rust\translations\pcsx2/SIO/Multitap/MultitapProtocol.rs	pending				
+pcsx2\SIO\Multitap\MultitapProtocol.h	32	rust\translations\pcsx2/SIO/Multitap/MultitapProtocol.rs	pending				
+pcsx2\SIO\Pad\Pad.cpp	654	rust\translations\pcsx2/SIO/Pad/Pad.rs	pending				
+pcsx2\SIO\Pad\Pad.h	52	rust\translations\pcsx2/SIO/Pad/Pad.rs	pending				
+pcsx2\SIO\Pad\PadBase.cpp	30	rust\translations\pcsx2/SIO/Pad/PadBase.rs	pending				
+pcsx2\SIO\Pad\PadBase.h	53	rust\translations\pcsx2/SIO/Pad/PadBase.rs	pending				
+pcsx2\SIO\Pad\PadDualshock2.cpp	855	rust\translations\pcsx2/SIO/Pad/PadDualshock2.rs	pending				
+pcsx2\SIO\Pad\PadDualshock2.h	146	rust\translations\pcsx2/SIO/Pad/PadDualshock2.rs	pending				
+pcsx2\SIO\Pad\PadGuitar.cpp	433	rust\translations\pcsx2/SIO/Pad/PadGuitar.rs	pending				
+pcsx2\SIO\Pad\PadGuitar.h	81	rust\translations\pcsx2/SIO/Pad/PadGuitar.rs	pending				
+pcsx2\SIO\Pad\PadJogcon.cpp	475	rust\translations\pcsx2/SIO/Pad/PadJogcon.rs	pending				
+pcsx2\SIO\Pad\PadJogcon.h	106	rust\translations\pcsx2/SIO/Pad/PadJogcon.rs	pending				
+pcsx2\SIO\Pad\PadNegcon.cpp	482	rust\translations\pcsx2/SIO/Pad/PadNegcon.rs	pending				
+pcsx2\SIO\Pad\PadNegcon.h	116	rust\translations\pcsx2/SIO/Pad/PadNegcon.rs	pending				
+pcsx2\SIO\Pad\PadNotConnected.cpp	90	rust\translations\pcsx2/SIO/Pad/PadNotConnected.rs	pending				
+pcsx2\SIO\Pad\PadNotConnected.h	33	rust\translations\pcsx2/SIO/Pad/PadNotConnected.rs	pending				
+pcsx2\SIO\Pad\PadPopn.cpp	506	rust\translations\pcsx2/SIO/Pad/PadPopn.rs	pending				
+pcsx2\SIO\Pad\PadPopn.h	106	rust\translations\pcsx2/SIO/Pad/PadPopn.rs	pending				
+pcsx2\SIO\Pad\PadTypes.h	94	rust\translations\pcsx2/SIO/Pad/PadTypes.rs	pending				
+pcsx2\SIO\Sio.cpp	140	rust\translations\pcsx2/SIO/Sio.rs	pending				
+pcsx2\SIO\Sio.h	106	rust\translations\pcsx2/SIO/Sio.rs	pending				
+pcsx2\SIO\Sio0.cpp	282	rust\translations\pcsx2/SIO/Sio0.rs	pending				
+pcsx2\SIO\Sio0.h	50	rust\translations\pcsx2/SIO/Sio0.rs	pending				
+pcsx2\SIO\Sio2.cpp	475	rust\translations\pcsx2/SIO/Sio2.rs	pending				
+pcsx2\SIO\Sio2.h	55	rust\translations\pcsx2/SIO/Sio2.rs	pending				
+pcsx2\SIO\SioTypes.h	146	rust\translations\pcsx2/SIO/SioTypes.rs	pending				
+pcsx2\SourceLog.cpp	169	rust\translations\pcsx2/SourceLog.rs	pending				
+pcsx2\SPR.cpp	443	rust\translations\pcsx2/FwSpr.rs	translated	agent-batch-fillin-002		2026-06-19	agent-batch-fillin-002
+pcsx2\SPR.h	7	rust\translations\pcsx2/FwSpr.rs	translated	agent-batch-fillin-002		2026-06-19	agent-batch-fillin-002				
+pcsx2\SPU2\ADSR.cpp	149	rust\translations\pcsx2/SPU2/ADSR.rs	pending				
+pcsx2\SPU2\Debug.cpp	510	rust\translations\pcsx2/SPU2/Debug.rs	pending				
+pcsx2\SPU2\Debug.h	81	rust\translations\pcsx2/SPU2/Debug.rs	pending				
+pcsx2\SPU2\defs.h	506	rust\translations\pcsx2/SPU2/defs.rs	pending				
+pcsx2\SPU2\Dma.cpp	427	rust\translations\pcsx2/SPU2/Dma.rs	pending				
+pcsx2\SPU2\Dma.h	13	rust\translations\pcsx2/SPU2/Dma.rs	pending				
+pcsx2\SPU2\interpolate_table.h	302	rust\translations\pcsx2/SPU2/interpolate_table.rs	pending				
+pcsx2\SPU2\Mixer.cpp	490	rust\translations\pcsx2/SPU2/Mixer.rs	pending				
+pcsx2\SPU2\ReadInput.cpp	139	rust\translations\pcsx2/SPU2/ReadInput.rs	pending				
+pcsx2\SPU2\regs.h	131	rust\translations\pcsx2/SPU2/regs.rs	pending				
+pcsx2\SPU2\RegTable.cpp	265	rust\translations\pcsx2/SPU2/RegTable.rs	pending				
+pcsx2\SPU2\Reverb.cpp	121	rust\translations\pcsx2/SPU2/Reverb.rs	pending				
+pcsx2\SPU2\ReverbResample.cpp	208	rust\translations\pcsx2/SPU2/ReverbResample.rs	pending				
+pcsx2\SPU2\spdif.h	73	rust\translations\pcsx2/SPU2/spdif.rs	pending				
+pcsx2\SPU2\spu2.cpp	437	rust\translations\pcsx2/SPU2/spu2.rs	translated			2026-06-19T05.29.11	agent-batch-004-005
+pcsx2\SPU2\spu2.h	59	rust\translations\pcsx2/SPU2/spu2.rs	translated			2026-06-19T05.29.11	agent-batch-004-005
+pcsx2\SPU2\spu2freeze.cpp	136	rust\translations\pcsx2/SPU2/spu2freeze.rs	pending				
+pcsx2\SPU2\spu2sys.cpp	1389	rust\translations\pcsx2/SPU2/spu2sys.rs	pending				
+pcsx2\SPU2\Wavedump_wav.cpp	67	rust\translations\pcsx2/SPU2/Wavedump_wav.rs	pending				
+pcsx2\StateWrapper.cpp	227	rust\translations\pcsx2/StateWrapper.rs	pending				
+pcsx2\StateWrapper.h	234	rust\translations\pcsx2/StateWrapper.rs	pending				
+pcsx2\SupportURLs.h	11	rust\translations\pcsx2/SupportURLs.rs	pending				
+pcsx2\USB\deviceproxy.cpp	81	rust\translations\pcsx2/USB/deviceproxy.rs	pending				
+pcsx2\USB\deviceproxy.h	111	rust\translations\pcsx2/USB/deviceproxy.rs	pending				
+pcsx2\USB\qemu-usb\bus.cpp	107	rust\translations\pcsx2/USB/qemu-usb/bus.rs	pending				
+pcsx2\USB\qemu-usb\core.cpp	793	rust\translations\pcsx2/USB/qemu-usb/core.rs	pending				
+pcsx2\USB\qemu-usb\desc.cpp	795	rust\translations\pcsx2/USB/qemu-usb/desc.rs	pending				
+pcsx2\USB\qemu-usb\desc.h	246	rust\translations\pcsx2/USB/qemu-usb/desc.rs	pending				
+pcsx2\USB\qemu-usb\hid.cpp	757	rust\translations\pcsx2/USB/qemu-usb/hid.rs	pending				
+pcsx2\USB\qemu-usb\hid.h	301	rust\translations\pcsx2/USB/qemu-usb/hid.rs	pending				
+pcsx2\USB\qemu-usb\input-keymap-qcode-to-qnum.cpp	201	rust\translations\pcsx2/USB/qemu-usb/input-keymap-qcode-to-qnum.rs	pending				
+pcsx2\USB\qemu-usb\input-keymap.h	6	rust\translations\pcsx2/USB/qemu-usb/input-keymap.rs	pending				
+pcsx2\USB\qemu-usb\queue.h	515	rust\translations\pcsx2/USB/qemu-usb/queue.rs	pending				
+pcsx2\USB\qemu-usb\qusb.h	489	rust\translations\pcsx2/USB/qemu-usb/qusb.rs	pending				
+pcsx2\USB\qemu-usb\usb-ohci.cpp	1449	rust\translations\pcsx2/USB/qemu-usb/usb-ohci.rs	pending				
+pcsx2\USB\qemu-usb\USBinternal.h	239	rust\translations\pcsx2/USB/qemu-usb/USBinternal.rs	pending				
+pcsx2\USB\shared\ringbuffer.cpp	73	rust\translations\pcsx2/USB/shared/ringbuffer.rs	pending				
+pcsx2\USB\shared\ringbuffer.h	26	rust\translations\pcsx2/USB/shared/ringbuffer.rs	pending				
+pcsx2\USB\usb-eyetoy\cam-jpeg.cpp	135	rust\translations\pcsx2/USB/usb-eyetoy/cam-jpeg.rs	pending				
+pcsx2\USB\usb-eyetoy\cam-jpeg.h	6	rust\translations\pcsx2/USB/usb-eyetoy/cam-jpeg.rs	pending				
+pcsx2\USB\usb-eyetoy\cam-linux.cpp	586	rust\translations\pcsx2/USB/usb-eyetoy/cam-linux.rs	pending				
+pcsx2\USB\usb-eyetoy\cam-linux.h	26	rust\translations\pcsx2/USB/usb-eyetoy/cam-linux.rs	pending				
+pcsx2\USB\usb-eyetoy\cam-macos.h	41	rust\translations\pcsx2/USB/usb-eyetoy/cam-macos.rs	pending				
+pcsx2\USB\usb-eyetoy\cam-noop.cpp	44	rust\translations\pcsx2/USB/usb-eyetoy/cam-noop.rs	pending				
+pcsx2\USB\usb-eyetoy\cam-windows.cpp	523	rust\translations\pcsx2/USB/usb-eyetoy/cam-windows.rs	pending				
+pcsx2\USB\usb-eyetoy\cam-windows.h	93	rust\translations\pcsx2/USB/usb-eyetoy/cam-windows.rs	pending				
+pcsx2\USB\usb-eyetoy\jo_mpeg.cpp	288	rust\translations\pcsx2/USB/usb-eyetoy/jo_mpeg.rs	pending				
+pcsx2\USB\usb-eyetoy\jo_mpeg.h	20	rust\translations\pcsx2/USB/usb-eyetoy/jo_mpeg.rs	pending				
+pcsx2\USB\usb-eyetoy\ov519.h	44	rust\translations\pcsx2/USB/usb-eyetoy/ov519.rs	pending				
+pcsx2\USB\usb-eyetoy\usb-eyetoy-webcam.cpp	500	rust\translations\pcsx2/USB/usb-eyetoy/usb-eyetoy-webcam.rs	pending				
+pcsx2\USB\usb-eyetoy\usb-eyetoy-webcam.h	422	rust\translations\pcsx2/USB/usb-eyetoy/usb-eyetoy-webcam.rs	pending				
+pcsx2\USB\usb-eyetoy\videodev.h	38	rust\translations\pcsx2/USB/usb-eyetoy/videodev.rs	pending				
+pcsx2\USB\usb-hid\usb-hid.cpp	873	rust\translations\pcsx2/USB/usb-hid/usb-hid.rs	pending				
+pcsx2\USB\usb-hid\usb-hid.h	33	rust\translations\pcsx2/USB/usb-hid/usb-hid.rs	pending				
+pcsx2\USB\usb-lightgun\guncon2.cpp	590	rust\translations\pcsx2/USB/usb-lightgun/guncon2.rs	pending				
+pcsx2\USB\usb-lightgun\guncon2.h	21	rust\translations\pcsx2/USB/usb-lightgun/guncon2.rs	pending				
+pcsx2\USB\usb-mic\audio.h	306	rust\translations\pcsx2/USB/usb-mic/audio.rs	pending				
+pcsx2\USB\usb-mic\audiodev-cubeb.cpp	239	rust\translations\pcsx2/USB/usb-mic/audiodev-cubeb.rs	pending				
+pcsx2\USB\usb-mic\audiodev-cubeb.h	42	rust\translations\pcsx2/USB/usb-mic/audiodev-cubeb.rs	pending				
+pcsx2\USB\usb-mic\audiodev-noop.h	33	rust\translations\pcsx2/USB/usb-mic/audiodev-noop.rs	pending				
+pcsx2\USB\usb-mic\audiodev.h	57	rust\translations\pcsx2/USB/usb-mic/audiodev.rs	pending				
+pcsx2\USB\usb-mic\usb-headset.cpp	903	rust\translations\pcsx2/USB/usb-mic/usb-headset.rs	pending				
+pcsx2\USB\usb-mic\usb-headset.h	17	rust\translations\pcsx2/USB/usb-mic/usb-headset.rs	pending				
+pcsx2\USB\usb-mic\usb-mic.cpp	1159	rust\translations\pcsx2/USB/usb-mic/usb-mic.rs	pending				
+pcsx2\USB\usb-mic\usb-mic.h	28	rust\translations\pcsx2/USB/usb-mic/usb-mic.rs	pending				
+pcsx2\USB\usb-msd\usb-msd.cpp	1188	rust\translations\pcsx2/USB/usb-msd/usb-msd.rs	pending				
+pcsx2\USB\usb-msd\usb-msd.h	26	rust\translations\pcsx2/USB/usb-msd/usb-msd.rs	pending				
+pcsx2\USB\usb-pad\lg\lg_ff.cpp	71	rust\translations\pcsx2/USB/usb-pad/lg/lg_ff.rs	pending				
+pcsx2\USB\usb-pad\lg\lg_ff.h	41	rust\translations\pcsx2/USB/usb-pad/lg/lg_ff.rs	pending				
+pcsx2\USB\usb-pad\usb-buzz.cpp	308	rust\translations\pcsx2/USB/usb-pad/usb-buzz.rs	pending				
+pcsx2\USB\usb-pad\usb-buzz.h	85	rust\translations\pcsx2/USB/usb-pad/usb-buzz.rs	pending				
+pcsx2\USB\usb-pad\usb-gametrak.cpp	375	rust\translations\pcsx2/USB/usb-pad/usb-gametrak.rs	pending				
+pcsx2\USB\usb-pad\usb-gametrak.h	75	rust\translations\pcsx2/USB/usb-pad/usb-gametrak.rs	pending				
+pcsx2\USB\usb-pad\usb-pad-ff.cpp	275	rust\translations\pcsx2/USB/usb-pad/usb-pad-ff.rs	pending				
+pcsx2\USB\usb-pad\usb-pad-sdl-ff.cpp	321	rust\translations\pcsx2/USB/usb-pad/usb-pad-sdl-ff.rs	pending				
+pcsx2\USB\usb-pad\usb-pad-sdl-ff.h	38	rust\translations\pcsx2/USB/usb-pad/usb-pad-sdl-ff.rs	pending				
+pcsx2\USB\usb-pad\usb-pad.cpp	892	rust\translations\pcsx2/USB/usb-pad/usb-pad.rs	pending				
+pcsx2\USB\usb-pad\usb-pad.h	1154	rust\translations\pcsx2/USB/usb-pad/usb-pad.rs	pending				
+pcsx2\USB\usb-pad\usb-realplay.cpp	429	rust\translations\pcsx2/USB/usb-pad/usb-realplay.rs	pending				
+pcsx2\USB\usb-pad\usb-realplay.h	81	rust\translations\pcsx2/USB/usb-pad/usb-realplay.rs	pending				
+pcsx2\USB\usb-pad\usb-seamic.cpp	408	rust\translations\pcsx2/USB/usb-pad/usb-seamic.rs	pending				
+pcsx2\USB\usb-pad\usb-train.cpp	694	rust\translations\pcsx2/USB/usb-pad/usb-train.rs	pending				
+pcsx2\USB\usb-pad\usb-train.h	292	rust\translations\pcsx2/USB/usb-pad/usb-train.rs	pending				
+pcsx2\USB\usb-pad\usb-trance-vibrator.cpp	168	rust\translations\pcsx2/USB/usb-pad/usb-trance-vibrator.rs	pending				
+pcsx2\USB\usb-pad\usb-trance-vibrator.h	32	rust\translations\pcsx2/USB/usb-pad/usb-trance-vibrator.rs	pending				
+pcsx2\USB\usb-pad\usb-turntable.cpp	412	rust\translations\pcsx2/USB/usb-pad/usb-turntable.rs	pending				
+pcsx2\USB\usb-pad\usb-turntable.h	87	rust\translations\pcsx2/USB/usb-pad/usb-turntable.rs	pending				
+pcsx2\USB\usb-printer\usb-printer.cpp	329	rust\translations\pcsx2/USB/usb-printer/usb-printer.rs	pending				
+pcsx2\USB\usb-printer\usb-printer.h	121	rust\translations\pcsx2/USB/usb-printer/usb-printer.rs	pending				
+pcsx2\USB\USB.cpp	692	rust\translations\pcsx2/USB/USB.rs	pending				
+pcsx2\USB\USB.h	80	rust\translations\pcsx2/USB/USB.rs	pending				
+pcsx2\Vif_Codes.cpp	719	rust\translations\pcsx2/Vif_Codes.rs	pending				
+pcsx2\Vif_Dma.h	129	rust\translations\pcsx2/VifDma.rs	filled-in	agent-batch-fillin-002	2026-06-19T05.00.00	2026-06-19T05.30.00	consolidated into VifDma.rs alongside Vif0_Dma.cpp/Vif1_Dma.cpp/Vif1_MFIFO.cpp
+pcsx2\Vif_Dynarec.h	32	rust\translations\pcsx2/Vif_Dynarec.rs	pending				
+pcsx2\Vif_HashBucket.h	109	rust\translations\pcsx2/Vif_HashBucket.rs	pending				
+pcsx2\Vif_Transfer.cpp	91	rust\translations\pcsx2/Vif_Transfer.rs	pending				
+pcsx2\Vif_Unpack.cpp	446	rust\translations\pcsx2/Vif_Unpack.rs	pending				
+pcsx2\Vif_Unpack.h	20	rust\translations\pcsx2/Vif_Unpack.rs	pending				
+pcsx2\Vif.cpp	361	rust\translations\pcsx2/Vif.rs	pending				
+pcsx2\Vif.h	218	rust\translations\pcsx2/Vif.rs	pending				
+pcsx2\Vif0_Dma.cpp	268	rust\translations\pcsx2/Vif0_Dma.rs	pending				
+pcsx2\Vif1_Dma.cpp	456	rust\translations\pcsx2/Vif1_Dma.rs	pending				
+pcsx2\Vif1_MFIFO.cpp	339	rust\translations\pcsx2/Vif1_MFIFO.rs	translated	agent-batch-fillin-003	2026-06-20T05.00.00	2026-06-20T05.30.00	Initial standalone translation of Vif1_MFIFO.cpp				
+pcsx2\VMManager.cpp	3267	rust\translations\pcsx2/VMManager.rs	translated			2026-06-19T05.51.54	agent-batch-006-007
+pcsx2\VMManager.h	273	rust\translations\pcsx2/VMManager.rs	translated			2026-06-19T05.51.54	agent-batch-006-007
+pcsx2\vtlb.cpp	1291	rust\translations\pcsx2/vtlb.rs	translated			2026-06-19T05.51.54	agent-batch-006-007
+pcsx2\vtlb.h	203	rust\translations\pcsx2/vtlb.rs	translated			2026-06-19T05.51.54	agent-batch-006-007
+pcsx2\VU.h	195	rust\translations\pcsx2/VU.rs	pending	agent-batch-fillin-003			filled in missing VURegs fields, methods, and vuMem* helpers in pcsx2/Vu0Flags.rs				
+pcsx2\VU0.cpp	166	rust\translations\pcsx2/VU0.rs	pending	agent-batch-fillin-005
+pcsx2\VU0micro.cpp	57	rust\translations\pcsx2/VU0micro.rs	translated	agent-batch-fillin-003		2026-06-20	stub logic merged into pcsx2/Vu0Flags.rs
+pcsx2\VU0microInterp.cpp	265	rust\translations\pcsx2/VU0microInterp.rs	pending				
+pcsx2\VU1micro.cpp	76	rust\translations\pcsx2/VU1micro.rs	translated	agent-batch-fillin-003		2026-06-20	stub logic merged into pcsx2/Vu0Flags.rs
+pcsx2\VU1microInterp.cpp	239	rust\translations\pcsx2/VU1microInterp.rs	pending				
+pcsx2\VUflags.cpp	80	rust\translations\pcsx2/VUflags.rs	pending	agent-batch-fillin-003		2026-06-20	merged into pcsx2/Vu0Flags.rs
+pcsx2\VUflags.h	13	rust\translations\pcsx2/VUflags.rs	pending	agent-batch-fillin-003		2026-06-20	merged into pcsx2/Vu0Flags.rs
+pcsx2\Vu0Flags.cpp	180	rust\translations\pcsx2/Vu0Flags.rs	translated	agent-batch-fillin-003		2026-06-20	merged translation of VU.h/VU0.cpp/VUflags.cpp/VUflags.h
+pcsx2\Vu0Flags.h	200	rust\translations\pcsx2/Vu0Flags.rs	translated	agent-batch-fillin-003		2026-06-20	merged translation of VU.h/VU0.cpp/VUflags.cpp/VUflags.h
+pcsx2\VUmicro.cpp	68	rust\translations\pcsx2/VUmicro.rs	pending				
+pcsx2\VUmicro.h	157	rust\translations\pcsx2/VUmicro.rs	pending				
+pcsx2\VUmicroMem.cpp	132	rust\translations\pcsx2/VUmicroMem.rs	pending				
+pcsx2\VUops.cpp	3576	rust\translations\pcsx2/VUops.rs	pending				
+pcsx2\VUops.h	34	rust\translations\pcsx2/VUops.rs	pending				
+pcsx2\windows\Optimus.cpp	15	rust\translations\pcsx2/windows/Optimus.rs	pending				
+pcsx2\x86\BaseblockEx.cpp	53	rust\translations\pcsx2/x86/BaseblockEx.rs	pending				
+pcsx2\x86\BaseblockEx.h	202	rust\translations\pcsx2/x86/BaseblockEx.rs	pending				
+pcsx2\x86\iCOP0.cpp	311	rust\translations\pcsx2/x86/iCOP0.rs	pending				
+pcsx2\x86\iCOP0.h	29	rust\translations\pcsx2/x86/iCOP0.rs	pending				
+pcsx2\x86\iCore.cpp	819	rust\translations\pcsx2/x86/iCore.rs	pending				
+pcsx2\x86\iCore.h	276	rust\translations\pcsx2/x86/iCore.rs	pending				
+pcsx2\x86\iFPU.cpp	1666	rust\translations\pcsx2/x86/iFPU.rs	pending				
+pcsx2\x86\iFPU.h	48	rust\translations\pcsx2/x86/iFPU.rs	pending				
+pcsx2\x86\iFPUd.cpp	797	rust\translations\pcsx2/x86/iFPUd.rs	pending				
+pcsx2\x86\iMMI.cpp	1999	rust\translations\pcsx2/x86/iMMI.rs	pending				
+pcsx2\x86\iMMI.h	117	rust\translations\pcsx2/x86/iMMI.rs	pending				
+pcsx2\x86\iR3000A.cpp	1489	rust\translations\pcsx2/x86/iR3000A.rs	pending				
+pcsx2\x86\iR3000A.h	98	rust\translations\pcsx2/x86/iR3000A.rs	pending				
+pcsx2\x86\iR3000Atables.cpp	1999	rust\translations\pcsx2/x86/iR3000Atables.rs	pending				
+pcsx2\x86\iR5900.h	151	rust\translations\pcsx2/x86/iR5900.rs	pending				
+pcsx2\x86\iR5900Analysis.cpp	1421	rust\translations\pcsx2/x86/iR5900Analysis.rs	pending				
+pcsx2\x86\iR5900Analysis.h	49	rust\translations\pcsx2/x86/iR5900Analysis.rs	pending				
+pcsx2\x86\iR5900Arit.h	27	rust\translations\pcsx2/x86/iR5900Arit.rs	pending				
+pcsx2\x86\iR5900AritImm.h	22	rust\translations\pcsx2/x86/iR5900AritImm.rs	pending				
+pcsx2\x86\iR5900Branch.h	29	rust\translations\pcsx2/x86/iR5900Branch.rs	pending				
+pcsx2\x86\iR5900Jump.h	17	rust\translations\pcsx2/x86/iR5900Jump.rs	pending				
+pcsx2\x86\iR5900LoadStore.h	38	rust\translations\pcsx2/x86/iR5900LoadStore.rs	pending				
+pcsx2\x86\iR5900Misc.cpp	231	rust\translations\pcsx2/x86/iR5900Misc.rs	pending				
+pcsx2\x86\iR5900Move.h	16	rust\translations\pcsx2/x86/iR5900Move.rs	pending				
+pcsx2\x86\iR5900MultDiv.h	17	rust\translations\pcsx2/x86/iR5900MultDiv.rs	pending				
+pcsx2\x86\iR5900Shift.h	28	rust\translations\pcsx2/x86/iR5900Shift.rs	pending				
+pcsx2\x86\ix86-32\iCore.cpp	497	rust\translations\pcsx2/x86/ix86-32/iCore.rs	pending				
+pcsx2\x86\ix86-32\iR5900.cpp	2339	rust\translations\pcsx2/x86/ix86-32/iR5900.rs	pending				
+pcsx2\x86\ix86-32\iR5900Arit.cpp	590	rust\translations\pcsx2/x86/ix86-32/iR5900Arit.rs	pending				
+pcsx2\x86\ix86-32\iR5900AritImm.cpp	183	rust\translations\pcsx2/x86/ix86-32/iR5900AritImm.rs	pending				
+pcsx2\x86\ix86-32\iR5900Branch.cpp	670	rust\translations\pcsx2/x86/ix86-32/iR5900Branch.rs	pending				
+pcsx2\x86\ix86-32\iR5900Jump.cpp	162	rust\translations\pcsx2/x86/ix86-32/iR5900Jump.rs	pending				
+pcsx2\x86\ix86-32\iR5900LoadStore.cpp	856	rust\translations\pcsx2/x86/ix86-32/iR5900LoadStore.rs	pending				
+pcsx2\x86\ix86-32\iR5900Move.cpp	311	rust\translations\pcsx2/x86/ix86-32/iR5900Move.rs	pending				
+pcsx2\x86\ix86-32\iR5900MultDiv.cpp	596	rust\translations\pcsx2/x86/ix86-32/iR5900MultDiv.rs	pending				
+pcsx2\x86\ix86-32\iR5900Shift.cpp	335	rust\translations\pcsx2/x86/ix86-32/iR5900Shift.rs	pending				
+pcsx2\x86\ix86-32\iR5900Templates.cpp	433	rust\translations\pcsx2/x86/ix86-32/iR5900Templates.rs	pending				
+pcsx2\x86\ix86-32\recVTLB.cpp	926	rust\translations\pcsx2/x86/ix86-32/recVTLB.rs	pending				
+pcsx2\x86\microVU_IR.h	995	rust\translations\pcsx2/x86/microVU_IR.rs	pending				
+pcsx2\x86\microVU_Misc.h	287	rust\translations\pcsx2/x86/microVU_Misc.rs	pending				
+pcsx2\x86\microVU_Profiler.h	138	rust\translations\pcsx2/x86/microVU_Profiler.rs	pending				
+pcsx2\x86\microVU.cpp	425	rust\translations\pcsx2/x86/microVU.rs	pending				
+pcsx2\x86\microVU.h	294	rust\translations\pcsx2/x86/microVU.rs	pending				
+pcsx2\x86\newVif.h	13	rust\translations\pcsx2/x86/newVif.rs	pending				
+pcsx2\x86\R5900_Profiler.h	360	rust\translations\pcsx2/x86/R5900_Profiler.rs	pending				
+pcsx2\x86\Vif_Dynarec.cpp	434	rust\translations\pcsx2/x86/Vif_Dynarec.rs	pending				
+pcsx2\x86\Vif_UnpackSSE.cpp	324	rust\translations\pcsx2/x86/Vif_UnpackSSE.rs	pending				
+pcsx2\x86\Vif_UnpackSSE.h	115	rust\translations\pcsx2/x86/Vif_UnpackSSE.rs	pending				
+tests\ctest\common\byteswap_tests.cpp	12	rust\translations\tests/ctest/common/byteswap_tests.rs	pending				
+tests\ctest\common\filesystem_tests.cpp	46	rust\translations\tests/ctest/common/filesystem_tests.rs	pending				
+tests\ctest\common\path_tests.cpp	318	rust\translations\tests/ctest/common/path_tests.rs	pending				
+tests\ctest\common\small_string_tests.cpp	10	rust\translations\tests/ctest/common/small_string_tests.rs	pending				
+tests\ctest\common\string_util_tests.cpp	103	rust\translations\tests/ctest/common/string_util_tests.rs	pending				
+tests\ctest\common\x86emitter\codegen_tests_main.cpp	736	rust\translations\tests/ctest/common/x86emitter/codegen_tests_main.rs	pending				
+tests\ctest\common\x86emitter\codegen_tests.cpp	27	rust\translations\tests/ctest/common/x86emitter/codegen_tests.rs	pending				
+tests\ctest\common\x86emitter\codegen_tests.h	5	rust\translations\tests/ctest/common/x86emitter/codegen_tests.rs	pending				
+tests\ctest\core\GS\swizzle_test_main.cpp	505	rust\translations\tests/ctest/core/GS/swizzle_test_main.rs	pending				
+tests\ctest\core\MockMemoryInterface.h	53	rust\translations\tests/ctest/core/MockMemoryInterface.rs	pending				
+tests\ctest\core\patch_tests.cpp	561	rust\translations\tests/ctest/core/patch_tests.rs	pending				
+tests\ctest\core\StubHost.cpp	229	rust\translations\tests/ctest/core/StubHost.rs	pending				
+updater\SZErrors.h	28	rust\translations\updater/SZErrors.rs	pending				
+updater\Updater.cpp	367	rust\translations\updater/Updater.rs	pending				
+updater\Updater.h	48	rust\translations\updater/Updater.rs	pending				
+updater\UpdaterExtractor.h	127	rust\translations\updater/UpdaterExtractor.rs	pending				
+updater\Windows\resource.h	15	rust\translations\updater/Windows/resource.rs	pending				
+updater\Windows\WindowsUpdater.cpp	434	rust\translations\updater/Windows/WindowsUpdater.rs	pending
+pcsx2\USBFullEtc.cpp	0	rust\translations\pcsx2/USBFullEtc.rs	source-missing			2026-06-20T10.30.00	source file does not exist on disk; skipped translation
+pcsx2\COP2_FPUFullEtc.cpp	0	rust\translations\pcsx2/COP2FPUFullEtc.rs	source-missing			2026-06-20T10.32.00	source file does not exist on disk; skipped translation (only pcsx2/COP2.cpp present)

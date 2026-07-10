@@ -1,0 +1,1046 @@
+    Checking pcsx2_translations v0.1.0 (E:\project\pcsx2\rust\translations)
+error[E0106]: missing lifetime specifier
+   --> pcsx2\IopModulesSaveState.rs:932:95
+    |
+932 |     pub fn from_reader(mut r: impl Read, version: u32) -> io::Result<(SaveState, StateWrapper<'_>)> {
+    |                                                                                               ^^ expected named lifetime parameter
+    |
+    = help: this function's return type contains a borrowed value, but there is no value for it to be borrowed from
+help: consider using the `'a` lifetime
+    |
+932 -     pub fn from_reader(mut r: impl Read, version: u32) -> io::Result<(SaveState, StateWrapper<'_>)> {
+932 +     pub fn from_reader(mut r: impl Read, version: u32) -> io::Result<(SaveState, StateWrapper<'a>)> {
+    |
+
+error[E0404]: expected trait, found variant `Default`
+   --> common\Console.rs:591:6
+    |
+591 | impl Default for ConsoleWriter {
+    |      ^^^^^^^ not a trait
+    |
+help: consider importing this trait instead
+    |
+ 18 + use std::default::Default;
+    |
+
+error[E0433]: cannot find type `DefaultHasher` in this scope
+  --> common\HeterogeneousContainers.rs:47:21
+   |
+47 |         let mut h = DefaultHasher::new();
+   |                     ^^^^^^^^^^^^^ use of undeclared type `DefaultHasher`
+   |
+help: consider importing this struct
+   |
+22 + use std::hash::DefaultHasher;
+   |
+
+error[E0425]: cannot find value `a` in this scope
+   --> common\StringUtil.rs:512:28
+    |
+512 |         _ => format!("{}", a),
+    |                            ^ not found in this scope
+
+error[E0433]: cannot find `RegClass` in `super`
+   --> common\emitter\X86Emitter.rs:275:23
+    |
+275 |         class: super::RegClass::Gpr,
+    |                       ^^^^^^^^ could not find `RegClass` in `super`
+    |
+help: consider importing this enum
+    |
+ 33 + use crate::thirdparty::xbyak::Xbyak::RegClass;
+    |
+help: if you import `RegClass`, refer to it directly
+    |
+275 -         class: super::RegClass::Gpr,
+275 +         class: RegClass::Gpr,
+    |
+
+error[E0433]: cannot find type `Instant` in this scope
+    --> pcsx2\CdvdMainEtc.rs:4114:13
+     |
+4114 |     let _ = Instant::now;
+     |             ^^^^^^^ use of undeclared type `Instant`
+     |
+     = note: struct `crate::pcsx2_qt::QtWidgetsFull::setting_widget_binder::Instant` exists but is inaccessible
+help: consider importing this struct
+     |
+  21 + use std::time::Instant;
+     |
+
+error[E0425]: cannot find type `GsConfigStub` in the crate root
+   --> pcsx2\GsHwRenderer.rs:287:31
+    |
+287 | pub type Pcsx2Config = crate::GsConfigStub; // resolved by sibling modules
+    |                               ^^^^^^^^^^^^ not found in the crate root
+
+error[E0425]: cannot find type `UnixListener` in this scope
+    --> pcsx2\Ps2HelpersEtc.rs:2260:19
+     |
+2260 |     Unix(PathBuf, UnixListener),
+     |                   ^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `deci2` in this scope
+   --> pcsx2\RDebugFull.rs:298:12
+    |
+298 |         if deci2.socket_set.is_some() {
+    |            ^^^^^
+...
+606 | pub static mut DECI2: Deci2Server = unsafe {
+    | ------------------------------------------ similarly named static `DECI2` defined here
+    |
+help: a static with a similar name exists
+    |
+298 -         if deci2.socket_set.is_some() {
+298 +         if DECI2.socket_set.is_some() {
+    |
+help: consider importing this static
+    |
+ 23 + use crate::pcsx2::RDebugRec::deci2;
+    |
+
+error[E0433]: cannot find module or crate `terminator` in this scope
+    --> pcsx2\SioPad.rs:1690:26
+     |
+1690 |                 m.term = terminator::NOT_READY as u8;
+     |                          ^^^^^^^^^^ use of unresolved module or unlinked crate `terminator`
+     |
+     = help: if you wanted to use a crate named `terminator`, use `cargo add terminator` to add it to your `Cargo.toml`
+help: consider importing one of these modules
+     |
+1666 +     use crate::pcsx2::SioPad::terminator;
+     |
+1666 +     use crate::pcsx2::SioSmall::terminator;
+     |
+
+error[E0433]: cannot find module or crate `ptr` in this scope
+    --> pcsx2\x86\FinalSweepX86.rs:3153:9
+     |
+3153 |         ptr::null_mut()
+     |         ^^^ use of unresolved module or unlinked crate `ptr`
+     |
+     = help: if you wanted to use a crate named `ptr`, use `cargo add ptr` to add it to your `Cargo.toml`
+help: a builtin type with a similar name exists
+     |
+3153 -         ptr::null_mut()
+3153 +         str::null_mut()
+     |
+help: consider importing one of these modules
+     |
+2991 +     use crate::pcsx2::x86::FinalSweepX86::ptr;
+     |
+2991 +     use std::ptr;
+     |
+
+error[E0574]: expected struct, variant or union type, found enum `ImGuiContext`
+   --> thirdparty\imgui\Imgui.rs:803:38
+    |
+803 |     let ctx = Box::into_raw(Box::new(ImGuiContext {}));
+    |                                      ^^^^^^^^^^^^ not a struct, variant or union type
+
+error[E0433]: cannot find `WilCore` in `crate`
+   --> thirdparty\winwil\WilCom.rs:312:39
+    |
+312 |             Err(Error::Hresult(crate::WilCore::E_NOINTERFACE))
+    |                                       ^^^^^^^ unresolved import
+    |
+help: a similar path exists
+    |
+312 |             Err(Error::Hresult(crate::thirdparty::winwil::WilCore::E_NOINTERFACE))
+    |                                       ++++++++++++++++++++
+help: consider importing this module
+    |
+ 26 + use crate::thirdparty::winwil::WilCore;
+    |
+help: if you import `WilCore`, refer to it directly
+    |
+312 -             Err(Error::Hresult(crate::WilCore::E_NOINTERFACE))
+312 +             Err(Error::Hresult(WilCore::E_NOINTERFACE))
+    |
+
+warning: unused doc comment
+   --> common\CrashHandler.rs:208:5
+    |
+208 | /     /// Real Windows binding. We declare it locally because we only have a
+209 | |     /// `libc` shim and the Windows surface lives in system DLLs.
+    | |_________________________________________________________________^
+210 |       #[link(name = "kernel32")]
+211 | /     extern "system" {
+212 | |         fn SetUnhandledExceptionFilter(
+213 | |             filter: Option<ExceptionCallback>,
+214 | |         ) -> Option<ExceptionCallback>;
+215 | |     }
+    | |_____- rustdoc does not generate documentation for extern blocks
+    |
+    = help: use `//` for a plain comment
+    = note: `#[warn(unused_doc_comments)]` (part of `#[warn(unused)]`) on by default
+
+warning: unexpected `cfg` condition name: `PCSX2_DEVBUILD`
+   --> common\Pcsx2Defs.rs:253:11
+    |
+253 | #[cfg(not(PCSX2_DEVBUILD))]
+    |           ^^^^^^^^^^^^^^
+    |
+    = help: expected names are: `docsrs`, `feature`, and `test` and 31 more
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_DEVBUILD)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_DEVBUILD)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: `#[warn(unexpected_cfgs)]` on by default
+
+warning: unexpected `cfg` condition name: `PCSX2_DEVBUILD`
+   --> common\Pcsx2Defs.rs:261:7
+    |
+261 | #[cfg(PCSX2_DEVBUILD)]
+    |       ^^^^^^^^^^^^^^
+    |
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_DEVBUILD)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_DEVBUILD)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `PCSX2_DEVBUILD`
+  --> common\Pcsx2Defs.rs:24:35
+   |
+24 | pub const IsDevBuild: bool = cfg!(PCSX2_DEVBUILD);
+   |                                   ^^^^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_DEVBUILD)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_DEVBUILD)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `PCSX2_DEBUG`
+  --> common\Pcsx2Defs.rs:25:37
+   |
+25 | pub const IsDebugBuild: bool = cfg!(PCSX2_DEBUG);
+   |                                     ^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_DEBUG)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_DEBUG)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `PCSX2_OVERRIDE_HOST_PAGE_SIZE`
+  --> common\Pcsx2Defs.rs:62:11
+   |
+62 |     #[cfg(PCSX2_OVERRIDE_HOST_PAGE_SIZE)]
+   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_OVERRIDE_HOST_PAGE_SIZE)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_OVERRIDE_HOST_PAGE_SIZE)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `PCSX2_OVERRIDE_HOST_PAGE_SIZE`
+  --> common\Pcsx2Defs.rs:66:19
+   |
+66 |     #[cfg(all(not(PCSX2_OVERRIDE_HOST_PAGE_SIZE), target_arch = "aarch64"))]
+   |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_OVERRIDE_HOST_PAGE_SIZE)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_OVERRIDE_HOST_PAGE_SIZE)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `PCSX2_OVERRIDE_HOST_PAGE_SIZE`
+  --> common\Pcsx2Defs.rs:71:13
+   |
+71 |         not(PCSX2_OVERRIDE_HOST_PAGE_SIZE),
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_OVERRIDE_HOST_PAGE_SIZE)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_OVERRIDE_HOST_PAGE_SIZE)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE`
+  --> common\Pcsx2Defs.rs:89:11
+   |
+89 |     #[cfg(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE)]
+   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE`
+  --> common\Pcsx2Defs.rs:94:13
+   |
+94 |         not(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE),
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE`
+   --> common\Pcsx2Defs.rs:101:13
+    |
+101 |         not(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE),
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unused macro definition: `impl_typed_access`
+   --> common\SmallEtc.rs:828:14
+    |
+828 | macro_rules! impl_typed_access {
+    |              ^^^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(unused_macros)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused doc comment
+    --> pcsx2\x86\FinalSweepX86.rs:1272:1
+     |
+1272 | / /// Per-thread X86 and XMM allocation tables. The original C++ is
+1273 | | /// global, but the dynarec is re-entrant; using a thread-local keeps
+1274 | | /// the port simple without losing semantics.
+     | |_--------------------------------------------^
+     |   |
+     |   rustdoc does not generate documentation for macro invocations
+     |
+     = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+
+warning: unused doc comment
+    --> pcsx2\x86\FinalSweepX86.rs:1286:1
+     |
+1286 | /// Per-thread allocation-counter (16-bit wrap).
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ rustdoc does not generate documentation for macro invocations
+     |
+     = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+
+warning: unused doc comment
+    --> pcsx2\x86\FinalSweepX86.rs:1292:1
+     |
+1292 | / /// `g_pCurInstInfo`: pointer to the current instruction's liveness
+1293 | | /// info. The original is a raw pointer; here we use a `RefCell`
+1294 | | /// pointer for safety.
+     | |_----------------------^
+     |   |
+     |   rustdoc does not generate documentation for macro invocations
+     |
+     = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+
+warning: unnecessary parentheses around `if` condition
+    --> pcsx2_qt\DebuggerDocks2.rs:3688:24
+     |
+3688 |                     if (self.selected_nibble_hi = !self.selected_nibble_hi) {
+     |                        ^                                                  ^
+     |
+     = note: `#[warn(unused_parens)]` (part of `#[warn(unused)]`) on by default
+help: remove these parentheses
+     |
+3688 -                     if (self.selected_nibble_hi = !self.selected_nibble_hi) {
+3688 +                     if self.selected_nibble_hi = !self.selected_nibble_hi {
+     |
+
+warning: unnecessary parentheses around `if` condition
+    --> pcsx2_qt\DebuggerDocks2.rs:3691:27
+     |
+3691 |                 } else if (self.selected_nibble_hi = !self.selected_nibble_hi) {
+     |                           ^                                                  ^
+     |
+help: remove these parentheses
+     |
+3691 -                 } else if (self.selected_nibble_hi = !self.selected_nibble_hi) {
+3691 +                 } else if self.selected_nibble_hi = !self.selected_nibble_hi {
+     |
+
+warning: unnecessary parentheses around assigned value
+   --> thirdparty\libzip\Libzip.rs:745:47
+    |
+745 | pub const ZIP_SOURCE_SUPPORTS_READABLE: i64 = (zip_source_make_command_bitmask(ZipSourceCmd::Open)
+    |                                               ^
+...
+750 |     | zip_source_make_command_bitmask(ZipSourceCmd::Free));
+    |                                                          ^
+    |
+help: remove these parentheses
+    |
+745 ~ pub const ZIP_SOURCE_SUPPORTS_READABLE: i64 = zip_source_make_command_bitmask(ZipSourceCmd::Open)
+746 |     | zip_source_make_command_bitmask(ZipSourceCmd::Read)
+...
+749 |     | zip_source_make_command_bitmask(ZipSourceCmd::Error)
+750 ~     | zip_source_make_command_bitmask(ZipSourceCmd::Free);
+    |
+
+warning: unnecessary parentheses around assigned value
+   --> thirdparty\libzip\Libzip.rs:753:47
+    |
+753 | pub const ZIP_SOURCE_SUPPORTS_SEEKABLE: i64 = (ZIP_SOURCE_SUPPORTS_READABLE
+    |                                               ^
+...
+756 |     | zip_source_make_command_bitmask(ZipSourceCmd::Supports));
+    |                                                              ^
+    |
+help: remove these parentheses
+    |
+753 ~ pub const ZIP_SOURCE_SUPPORTS_SEEKABLE: i64 = ZIP_SOURCE_SUPPORTS_READABLE
+754 |     | zip_source_make_command_bitmask(ZipSourceCmd::Seek)
+755 |     | zip_source_make_command_bitmask(ZipSourceCmd::Tell)
+756 ~     | zip_source_make_command_bitmask(ZipSourceCmd::Supports);
+    |
+
+warning: unnecessary parentheses around assigned value
+   --> thirdparty\libzip\Libzip.rs:759:47
+    |
+759 | pub const ZIP_SOURCE_SUPPORTS_WRITABLE: i64 = (ZIP_SOURCE_SUPPORTS_SEEKABLE
+    |                                               ^
+...
+766 |     | zip_source_make_command_bitmask(ZipSourceCmd::Remove));
+    |                                                            ^
+    |
+help: remove these parentheses
+    |
+759 ~ pub const ZIP_SOURCE_SUPPORTS_WRITABLE: i64 = ZIP_SOURCE_SUPPORTS_SEEKABLE
+760 |     | zip_source_make_command_bitmask(ZipSourceCmd::BeginWrite)
+...
+765 |     | zip_source_make_command_bitmask(ZipSourceCmd::TellWrite)
+766 ~     | zip_source_make_command_bitmask(ZipSourceCmd::Remove);
+    |
+
+warning: unexpected `cfg` condition value: `wilcom_tests`
+   --> thirdparty\winwil\WilCom.rs:434:17
+    |
+434 | #[cfg(all(test, feature = "wilcom_tests"))]
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: expected values for `feature` are: `default`, `first_party`, `gs`, `spu2`, `thirdparty`, and `usb`
+    = help: consider adding `wilcom_tests` as a feature in `Cargo.toml`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+error: invalid suffix `u` for number literal
+  --> common\FPControl.rs:50:33
+   |
+50 |     const EXCEPTION_MASK: u32 = 0x3Fu << 7;
+   |                                 ^^^^^ invalid suffix `u`
+   |
+   = help: the suffix must be one of the numeric types (`u32`, `isize`, `f32`, etc.)
+
+error: integer literal is too large
+   --> pcsx2\MmiRecVtlbArm64.rs:778:37
+    |
+778 |         let key = (value as u128) & 0xFFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF_FFFF;
+    |                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: value exceeds limit of `0xffffffffffffffffffffffffffffffff`
+
+warning: use of deprecated function `std::arch::x86_64::_mm_getcsr`: see `_mm_getcsr` documentation - use inline assembly instead
+  --> common\FPControl.rs:14:26
+   |
+14 | use core::arch::x86_64::{_mm_getcsr, _mm_setcsr};
+   |                          ^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated function `std::arch::x86_64::_mm_setcsr`: see `_mm_setcsr` documentation - use inline assembly instead
+  --> common\FPControl.rs:14:38
+   |
+14 | use core::arch::x86_64::{_mm_getcsr, _mm_setcsr};
+   |                                      ^^^^^^^^^^
+
+warning: use of deprecated function `std::arch::x86_64::_mm_getcsr`: see `_mm_getcsr` documentation - use inline assembly instead
+  --> common\FPControl.rs:71:33
+   |
+71 |             let bits = unsafe { _mm_getcsr() };
+   |                                 ^^^^^^^^^^
+
+warning: use of deprecated function `std::arch::x86_64::_mm_setcsr`: see `_mm_setcsr` documentation - use inline assembly instead
+  --> common\FPControl.rs:88:22
+   |
+88 |             unsafe { _mm_setcsr(self.bitmask) };
+   |                      ^^^^^^^^^^
+
+error[E0124]: field `reg_vmixel` is already declared
+    --> pcsx2\Spu2Small.rs:1342:5
+     |
+1341 |     pub reg_vmixel: u16,
+     |     ------------------- `reg_vmixel` first declared here
+1342 |     pub reg_vmixel: u16,
+     |     ^^^^^^^^^^^^^^^^^^^ field already declared
+
+error[E0782]: expected a type, found a trait
+    --> pcsx2_qt\QtDebugger.rs:1125:32
+     |
+1125 |             pub symbol: Option<super::Symbol>,
+     |                                ^^^^^^^^^^^^^
+     |
+help: you can add the `dyn` keyword if you want a trait object
+     |
+1125 |             pub symbol: Option<dyn super::Symbol>,
+     |                                +++
+
+error[E0072]: recursive types `AstKind`, `Stmt` and `AstNode` have infinite size
+   --> thirdparty\ccc\Ccc.rs:277:1
+    |
+277 | pub enum AstKind {
+    | ^^^^^^^^^^^^^^^^
+...
+295 |     Stmt(Stmt),
+    |          ---- recursive without indirection
+...
+321 | pub struct AstNode {
+    | ^^^^^^^^^^^^^^^^^^
+322 |     pub kind: AstKind,
+    |               ------- recursive without indirection
+...
+675 | pub enum Stmt {
+    | ^^^^^^^^^^^^^
+...
+679 |     Decl(AstNode),
+    |          ------- recursive without indirection
+    |
+help: insert some indirection (e.g., a `Box`, `Rc`, or `&`) to break the cycle
+    |
+295 ~     Stmt(Box<Stmt>),
+296 |     /// Anything that couldn't be classified — an `ast::Error` in CCC terms.
+...
+321 | pub struct AstNode {
+322 ~     pub kind: Box<AstKind>,
+323 |     pub name: String,
+...
+678 |     /// `decl;`
+679 ~     Decl(Box<AstNode>),
+    |
+
+error[E0119]: conflicting implementations of trait `Clone` for type `pcsx2::VmManager::AspectRatio`
+   --> pcsx2\VmManager.rs:115:39
+    |
+115 | #[derive(Clone, Debug, Default, Copy, Clone)]
+    |          -----                        ^^^^^ conflicting implementation for `pcsx2::VmManager::AspectRatio`
+    |          |
+    |          first implementation here
+
+error[E0204]: the trait `std::marker::Copy` cannot be implemented for this type
+   --> pcsx2\Dev9PacketsDeep.rs:454:12
+    |
+453 | #[derive(Clone, Copy, Debug)]
+    |                 ---- in this derive macro expansion
+454 | pub struct EthernetFrameEditor<'a> {
+    |            ^^^^^^^^^^^^^^^^^^^
+455 |     pub destination_mac: &'a mut MacAddress,
+    |     --------------------------------------- this field does not implement `std::marker::Copy`
+456 |     pub source_mac: &'a mut MacAddress,
+457 |     pub protocol: &'a mut u16,
+    |     ------------------------- this field does not implement `std::marker::Copy`
+
+error[E0204]: the trait `std::marker::Copy` cannot be implemented for this type
+    --> pcsx2\RDebugRec.rs:1000:12
+     |
+ 999 | #[derive(Clone, Copy, Debug, Default)]
+     |                 ---- in this derive macro expansion
+1000 | pub struct PadFrameWrite {
+     |            ^^^^^^^^^^^^^
+...
+1004 |     pub data: PadData,
+     |     ----------------- this field does not implement `std::marker::Copy`
+
+error[E0204]: the trait `std::marker::Copy` cannot be implemented for this type
+   --> pcsx2\Spu2MainEtc.rs:634:12
+    |
+633 | #[derive(Copy, Clone)]
+    |          ---- in this derive macro expansion
+634 | pub struct SPU2Core {
+    |            ^^^^^^^^
+...
+640 |     pub adpcm: Vec<i16>,
+    |     ------------------- this field does not implement `std::marker::Copy`
+
+error[E0204]: the trait `std::marker::Copy` cannot be implemented for this type
+    --> thirdparty\vulkan\VulkanCore.rs:3798:12
+     |
+3797 | #[derive(Copy, Clone)]
+     |          ---- in this derive macro expansion
+3798 | pub struct VkScreenSurfaceCreateInfoQNX {
+     |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+3802 |     pub context: screen_context_t,
+     |     ----------------------------- this field does not implement `std::marker::Copy`
+
+error[E0119]: conflicting implementations of trait `PartialEq` for type `common::Error::ErrorKind`
+   --> common\Error.rs:38:30
+    |
+ 38 | #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+    |                              ^^^^^^^^^ conflicting implementation for `common::Error::ErrorKind`
+...
+253 | impl PartialEq for ErrorKind { /* derived */ }
+    | ---------------------------- first implementation here
+
+error[E0119]: conflicting implementations of trait `std::default::Default` for type `Ps1Cd`
+    --> pcsx2\CdvdIsos.rs:2276:24
+     |
+2276 | #[derive(Debug, Clone, Default)]
+     |                        ^^^^^^^ conflicting implementation for `Ps1Cd`
+...
+2466 | impl Default for Ps1Cd {
+     | ---------------------- first implementation here
+
+error[E0119]: conflicting implementations of trait `std::default::Default` for type `ValueBuilder`
+   --> thirdparty\rapidjson\RapidJson.rs:510:17
+    |
+510 | #[derive(Debug, Default)]
+    |                 ^^^^^^^ conflicting implementation for `ValueBuilder`
+...
+555 | impl Default for ValueBuilder {
+    | ----------------------------- first implementation here
+
+error[E0038]: the trait `common::ProgressCallback::ProgressCallback` is not dyn compatible
+   --> common\ProgressCallback.rs:294:24
+    |
+294 |     callbacks: Vec<Box<dyn ProgressCallback>>,
+    |                        ^^^^^^^^^^^^^^^^^^^^ `common::ProgressCallback::ProgressCallback` is not dyn compatible
+    |
+note: for a trait to be dyn compatible it needs to allow building a vtable
+      for more information, visit <https://doc.rust-lang.org/reference/items/traits.html#dyn-compatibility>
+   --> common\ProgressCallback.rs:53:8
+    |
+ 47 | pub trait ProgressCallback {
+    |           ---------------- this trait is not dyn compatible...
+...
+ 53 |     fn pop_state();
+    |        ^^^^^^^^^ ...because associated function `pop_state` has no `self` parameter
+    = help: the following types implement `common::ProgressCallback::ProgressCallback`:
+              common::ProgressCallback::ProgressCallbackState
+              common::ProgressCallback::NullProgressCallback
+              common::ProgressCallback::ConsoleProgressCallback
+              common::ProgressCallback::MultiProgressCallback
+            consider defining an enum where each variant holds one of these types,
+            implementing `common::ProgressCallback::ProgressCallback` for this new enum and using it instead
+    = note: `common::ProgressCallback::ProgressCallback` may be implemented in other crates; if you want to support your users passing their own types here, you can't refer to a specific type
+help: consider turning `pop_state` into a method by giving it a `&self` argument
+    |
+ 53 |     fn pop_state(&self);
+    |                  +++++
+help: alternatively, consider constraining `pop_state` so it does not apply to trait objects
+    |
+ 53 |     fn pop_state() where Self: Sized;
+    |                    +++++++++++++++++
+
+error[E0277]: `*mut SmallEtc::HttpRequest` cannot be sent between threads safely
+   --> common\SmallEtc.rs:277:25
+    |
+277 | impl HttpDownloader for WinHttpDownloader {
+    |                         ^^^^^^^^^^^^^^^^^ `*mut SmallEtc::HttpRequest` cannot be sent between threads safely
+    |
+    = help: within `SmallEtc::WinHttpDownloader`, the trait `Send` is not implemented for `*mut SmallEtc::HttpRequest`
+note: required because it appears within the type `PhantomData<*mut SmallEtc::HttpRequest>`
+   --> C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\marker.rs:811:12
+    |
+811 | pub struct PhantomData<T: PointeeSized>;
+    |            ^^^^^^^^^^^
+note: required because it appears within the type `alloc::raw_vec::RawVec<*mut SmallEtc::HttpRequest>`
+   --> C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\raw_vec\mod.rs:73:19
+    |
+ 73 | pub(crate) struct RawVec<T, A: Allocator = Global> {
+    |                   ^^^^^^
+note: required because it appears within the type `Vec<*mut SmallEtc::HttpRequest>`
+   --> C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\vec\mod.rs:438:12
+    |
+438 | pub struct Vec<T, #[unstable(feature = "allocator_api", issue = "32838")] A: Allocator = Global> {
+    |            ^^^
+note: required because it appears within the type `SmallEtc::WinHttpDownloader`
+   --> common\SmallEtc.rs:257:12
+    |
+257 | pub struct WinHttpDownloader {
+    |            ^^^^^^^^^^^^^^^^^
+note: required by a bound in `SmallEtc::HttpDownloader`
+   --> common\SmallEtc.rs:139:27
+    |
+139 | pub trait HttpDownloader: Send {
+    |                           ^^^^ required by this bound in `HttpDownloader`
+
+error[E0081]: discriminant value `0` assigned more than once
+  --> pcsx2\Dmac.rs:41:1
+   |
+41 | pub enum TagId {
+   | ^^^^^^^^^^^^^^
+...
+44 |     Cnts = 0,
+   |            - `0` assigned here
+45 |     Refe = 0,
+   |            - `0` assigned here
+
+error[E0277]: `*const InputHost::InputManager` cannot be shared between threads safely
+    --> pcsx2\InputHost.rs:1441:27
+     |
+1441 | static INPUT_MANAGER_PTR: std::sync::OnceLock<*const InputManager> = std::sync::OnceLock::new();
+     |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `*const InputHost::InputManager` cannot be shared between threads safely
+     |
+     = help: the trait `Sync` is not implemented for `*const InputHost::InputManager`
+     = note: required for `OnceLock<*const InputHost::InputManager>` to implement `Sync`
+     = note: shared static variables must have a type that implements `Sync`
+
+error[E0277]: `*const InputHost::InputManager` cannot be sent between threads safely
+    --> pcsx2\InputHost.rs:1441:27
+     |
+1441 | static INPUT_MANAGER_PTR: std::sync::OnceLock<*const InputManager> = std::sync::OnceLock::new();
+     |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `*const InputHost::InputManager` cannot be sent between threads safely
+     |
+     = help: the trait `Send` is not implemented for `*const InputHost::InputManager`
+     = note: required for `OnceLock<*const InputHost::InputManager>` to implement `Sync`
+     = note: shared static variables must have a type that implements `Sync`
+
+error[E0081]: discriminant value `528486580` assigned more than once
+   --> pcsx2\IopHw.rs:112:1
+    |
+112 | pub enum DmaBcrAddresses {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^
+...
+116 |     HwxDma3Bcr = 0x1F8010B4,
+    |                  ---------- `528486580` assigned here
+117 |     HwxDma3BcrL16 = 0x1F8010B4,
+    |                     ---------- `528486580` assigned here
+
+error[E0277]: `std::cell::RefCell<BusShared>` cannot be shared between threads safely
+   --> pcsx2\SioSmall.rs:347:17
+    |
+347 |     static BUS: OnceLock<RefCell<BusShared>> = OnceLock::new();
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `std::cell::RefCell<BusShared>` cannot be shared between threads safely
+    |
+    = help: the trait `Sync` is not implemented for `std::cell::RefCell<BusShared>`
+    = note: if you want to do aliasing and mutation between multiple threads, use `std::sync::RwLock` instead
+    = note: required for `OnceLock<std::cell::RefCell<BusShared>>` to implement `Sync`
+    = note: shared static variables must have a type that implements `Sync`
+
+error[E0277]: `*mut UsbMicEyetoy::CubebContext` cannot be sent between threads safely
+   --> pcsx2\UsbMicEyetoy.rs:607:23
+    |
+607 | static CUBEB_CONTEXT: Mutex<Option<*mut CubebContext>> = Mutex::new(None);
+    |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `*mut UsbMicEyetoy::CubebContext` cannot be sent between threads safely
+    |
+    = help: within `Option<*mut UsbMicEyetoy::CubebContext>`, the trait `Send` is not implemented for `*mut UsbMicEyetoy::CubebContext`
+note: required because it appears within the type `Option<*mut UsbMicEyetoy::CubebContext>`
+   --> C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\option.rs:600:10
+    |
+600 | pub enum Option<T> {
+    |          ^^^^^^
+    = note: required for `std::sync::Mutex<Option<*mut UsbMicEyetoy::CubebContext>>` to implement `Sync`
+    = note: shared static variables must have a type that implements `Sync`
+
+error[E0277]: `std::rc::Rc<std::cell::RefCell<DebuggerFull::DebuggerView>>` cannot be sent between threads safely
+    --> pcsx2_qt\DebuggerFull.rs:1252:22
+     |
+1252 |     static INSTANCE: OnceLock<Mutex<Vec<Rc<RefCell<DebuggerView>>>>> = OnceLock::new();
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `std::rc::Rc<std::cell::RefCell<DebuggerFull::DebuggerView>>` cannot be sent between threads safely
+     |
+     = help: within `Vec<std::rc::Rc<std::cell::RefCell<DebuggerFull::DebuggerView>>>`, the trait `Send` is not implemented for `std::rc::Rc<std::cell::RefCell<DebuggerFull::DebuggerView>>`
+note: required because it appears within the type `PhantomData<std::rc::Rc<std::cell::RefCell<DebuggerFull::DebuggerView>>>`
+    --> C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\marker.rs:811:12
+     |
+ 811 | pub struct PhantomData<T: PointeeSized>;
+     |            ^^^^^^^^^^^
+note: required because it appears within the type `alloc::raw_vec::RawVec<std::rc::Rc<std::cell::RefCell<DebuggerFull::DebuggerView>>>`
+    --> C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\raw_vec\mod.rs:73:19
+     |
+  73 | pub(crate) struct RawVec<T, A: Allocator = Global> {
+     |                   ^^^^^^
+note: required because it appears within the type `Vec<std::rc::Rc<std::cell::RefCell<DebuggerFull::DebuggerView>>>`
+    --> C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\vec\mod.rs:438:12
+     |
+ 438 | pub struct Vec<T, #[unstable(feature = "allocator_api", issue = "32838")] A: Allocator = Global> {
+     |            ^^^
+     = note: required for `std::sync::Mutex<Vec<std::rc::Rc<std::cell::RefCell<DebuggerFull::DebuggerView>>>>` to implement `Sync`
+     = note: 1 redundant requirement hidden
+     = note: required for `OnceLock<std::sync::Mutex<Vec<std::rc::Rc<std::cell::RefCell<DebuggerFull::DebuggerView>>>>>` to implement `Sync`
+     = note: shared static variables must have a type that implements `Sync`
+
+error[E0081]: discriminant value `0` assigned more than once
+   --> thirdparty\cubeb\Cubeb.rs:105:1
+    |
+105 | pub enum CubebSampleFormat {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+106 |     S16LE = 0,
+    |             - `0` assigned here
+...
+111 |     S16NE = S16LE_VALUE,
+    |             ----------- `0` assigned here
+
+error[E0081]: discriminant value `2` assigned more than once
+   --> thirdparty\cubeb\Cubeb.rs:105:1
+    |
+105 | pub enum CubebSampleFormat {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+108 |     F32LE = 2,
+    |             - `2` assigned here
+...
+113 |     F32NE = F32LE_VALUE,
+    |             ----------- `2` assigned here
+
+error[E0081]: discriminant value `-1` assigned more than once
+   --> thirdparty\include\AnyRs.rs:150:5
+    |
+150 |     pub enum PcapError {
+    |     ^^^^^^^^^^^^^^^^^^
+151 |         Ok = 0,
+152 |         Generic = -1,
+    |                   -- `-1` assigned here
+...
+156 |         Error = -1,
+    |                 -- `-1` assigned here
+
+error[E0081]: discriminant value `8388608` assigned more than once
+   --> thirdparty\vulkan\VulkanCore.rs:877:1
+    |
+877 | pub enum VkBufferUsageFlagBits {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+893 |     VK_BUFFER_USAGE_PUSH_DESCRIPTORS_DESCRIPTOR_BUFFER_BIT_EXT = 0x800000,
+    |                                                                  -------- `8388608` assigned here
+...
+896 |     VK_BUFFER_USAGE_TILE_MEMORY_BIT_QCOM = 0x800000,
+    |                                            -------- `8388608` assigned here
+
+error[E0081]: discriminant value `2147483647` assigned more than once
+   --> thirdparty\vulkan\VulkanCore.rs:906:1
+    |
+906 | pub enum VkShaderStageFlagBits {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+914 |     VK_SHADER_STAGE_ALL = 0x7FFFFFFF,
+    |                           ---------- `2147483647` assigned here
+...
+925 |     VK_SHADER_STAGE_FLAG_BITS_MAX_ENUM = 0x7FFFFFFF,
+    |                                          ---------- `2147483647` assigned here
+
+error[E0081]: discriminant value `0` assigned more than once
+   --> thirdparty\vulkan\VulkanCore.rs:930:1
+    |
+930 | pub enum VkAccessFlagBits {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+948 |     VK_ACCESS_NONE = 0,
+    |                      - `0` assigned here
+...
+963 |     VK_ACCESS_SHADER_BINDING_TABLE_READ_BIT_KHR = 0x100000000 as i64 as u64 as i32,
+    |                                                   -------------------------------- `0` assigned here
+
+error[E0081]: discriminant value `1073741824` assigned more than once
+   --> thirdparty\vulkan\VulkanCore.rs:930:1
+    |
+930 | pub enum VkAccessFlagBits {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+957 |     VK_ACCESS_FRAGMENT_SHADING_RATE_ATTACHMENT_READ_BIT_KHR = 0x40000000 as u32 as i32,
+    |                                                               ------------------------ `1073741824` assigned here
+958 |     VK_ACCESS_VIDEO_DECODE_READ_BIT_KHR = 0x40000000,
+    |                                           ---------- `1073741824` assigned here
+...
+961 |     VK_ACCESS_VIDEO_ENCODE_WRITE_BIT_KHR = 0x40000000,
+    |                                            ---------- `1073741824` assigned here
+
+error[E0081]: discriminant value `-2147483648` assigned more than once
+   --> thirdparty\vulkan\VulkanCore.rs:930:1
+    |
+930 | pub enum VkAccessFlagBits {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+959 |     VK_ACCESS_VIDEO_DECODE_WRITE_BIT_KHR = 0x80000000 as i32,
+    |                                            ----------------- `-2147483648` assigned here
+...
+962 |     VK_ACCESS_INVOCATION_MASK_READ_BIT_HUAWEI = 0x80000000 as i32,
+    |                                                 ----------------- `-2147483648` assigned here
+
+error[E0081]: discriminant value `4096` assigned more than once
+    --> thirdparty\vulkan\VulkanCore.rs:969:1
+     |
+ 969 | pub enum VkPipelineStageFlagBits {
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+ 982 |     VK_PIPELINE_STAGE_TRANSFER_BIT = 0x1000,
+     |                                      ------ `4096` assigned here
+...
+1000 |     VK_PIPELINE_STAGE_RAY_TRACING_SHADER_BINDING_TABLE_BIT_KHR = 0x1000,
+     |                                                                  ------ `4096` assigned here
+
+error[E0081]: discriminant value `536870912` assigned more than once
+    --> thirdparty\vulkan\VulkanCore.rs:969:1
+     |
+ 969 | pub enum VkPipelineStageFlagBits {
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+ 998 |     VK_PIPELINE_STAGE_TASK_SHADER_BIT_EXT = 0x20000000,
+     |                                             ---------- `536870912` assigned here
+...
+1001 |     VK_PIPELINE_STAGE_CLUSTER_CULLING_SHADER_BIT_HUAWEI = 0x20000000,
+     |                                                           ---------- `536870912` assigned here
+
+error[E0081]: discriminant value `1000015000` assigned more than once
+    --> thirdparty\vulkan\VulkanCore.rs:1122:1
+     |
+1122 | pub enum VkFilter {
+     | ^^^^^^^^^^^^^^^^^
+...
+1125 |     VK_FILTER_CUBIC_IMG = 1000015000,
+     |                           ---------- `1000015000` assigned here
+1126 |     VK_FILTER_CUBIC_EXT = 1000015000,
+     |                           ---------- `1000015000` assigned here
+
+error[E0081]: discriminant value `4` assigned more than once
+    --> thirdparty\vulkan\VulkanCore.rs:1148:1
+     |
+1148 | pub enum VkSamplerAddressMode {
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+1153 |     VK_SAMPLER_ADDRESS_MODE_MIRROR_CLAMP_TO_EDGE = 4,
+     |                                                    - `4` assigned here
+1154 |     VK_SAMPLER_ADDRESS_MODE_MIRROR_CLAMP_TO_EDGE_KHR = 4,
+     |                                                        - `4` assigned here
+
+error[E0081]: discriminant value `1000165000` assigned more than once
+    --> thirdparty\vulkan\VulkanCore.rs:1405:1
+     |
+1405 | pub enum VkPipelineBindPoint {
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+1408 |     VK_PIPELINE_BIND_POINT_RAY_TRACING_KHR = 1000165000,
+     |                                              ---------- `1000165000` assigned here
+...
+1411 |     VK_PIPELINE_BIND_POINT_RAY_TRACING_NV = 1000165000,
+     |                                             ---------- `1000165000` assigned here
+
+error[E0081]: discriminant value `1000259000` assigned more than once
+    --> thirdparty\vulkan\VulkanCore.rs:1421:1
+     |
+1421 | pub enum VkDynamicState {
+     | ^^^^^^^^^^^^^^^^^^^^^^^
+...
+1466 |     VK_DYNAMIC_STATE_LINE_STIPPLE_KHR = 1000259000,
+     |                                         ---------- `1000259000` assigned here
+...
+1489 |     VK_DYNAMIC_STATE_LINE_RASTERIZATION_MODE_KHR = 1000259000,
+     |                                                    ---------- `1000259000` assigned here
+
+error[E0081]: discriminant value `1000387000` assigned more than once
+    --> thirdparty\vulkan\VulkanCore.rs:1421:1
+     |
+1421 | pub enum VkDynamicState {
+     | ^^^^^^^^^^^^^^^^^^^^^^^
+...
+1468 |     VK_DYNAMIC_STATE_VIEWPORT_W_SCALING_ENABLE_NV = 1000387000,
+     |                                                     ---------- `1000387000` assigned here
+...
+1480 |     VK_DYNAMIC_STATE_POLYGON_MODE_EXT = 1000387000,
+     |                                         ---------- `1000387000` assigned here
+1481 |     VK_DYNAMIC_STATE_RASTERIZATION_SAMPLES_EXT = 1000387000,
+     |                                                  ---------- `1000387000` assigned here
+1482 |     VK_DYNAMIC_STATE_SAMPLE_MASK_EXT = 1000387000,
+     |                                        ---------- `1000387000` assigned here
+1483 |     VK_DYNAMIC_STATE_ALPHA_TO_COVERAGE_ENABLE_EXT = 1000387000,
+     |                                                     ---------- `1000387000` assigned here
+1484 |     VK_DYNAMIC_STATE_LOGIC_OP_EXT = 1000387000,
+     |                                     ---------- `1000387000` assigned here
+1485 |     VK_DYNAMIC_STATE_COLOR_BLEND_ENABLE_EXT_local = 1000387000,
+     |                                                     ---------- `1000387000` assigned here
+
+error[E0081]: discriminant value `1000301000` assigned more than once
+    --> thirdparty\vulkan\VulkanCore.rs:1636:1
+     |
+1636 | pub enum VkAttachmentStoreOp {
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+1639 |     VK_ATTACHMENT_STORE_OP_NONE = 1000301000,
+     |                                   ---------- `1000301000` assigned here
+1640 |     VK_ATTACHMENT_STORE_OP_NONE_EXT = 1000401000,
+1641 |     VK_ATTACHMENT_STORE_OP_NONE_KHR = 1000301000,
+     |                                       ---------- `1000301000` assigned here
+
+error[E0081]: discriminant value `1073741824` assigned more than once
+    --> thirdparty\vulkan\VulkanCore.rs:1651:1
+     |
+1651 | pub enum VkPipelineCreateFlagBits {
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+1660 |     VK_PIPELINE_CREATE_PROTECTED_ACCESS_ONLY_BIT_EXT = 0x40000000,
+     |                                                        ---------- `1073741824` assigned here
+...
+1669 |     VK_PIPELINE_CREATE_RAY_TRACING_OPACITY_MICROMAP_BIT_ARM = 0x40000000,
+     |                                                               ---------- `1073741824` assigned here
+
+error[E0081]: discriminant value `1000382000` assigned more than once
+    --> thirdparty\vulkan\VulkanCore.rs:1705:1
+     |
+1705 | pub enum VkQueryType {
+     | ^^^^^^^^^^^^^^^^^^^^
+...
+1716 |     VK_QUERY_TYPE_MESH_PRIMITIVES_GENERATED_EXT = 1000382000,
+     |                                                   ---------- `1000382000` assigned here
+1717 |     VK_QUERY_TYPE_PRIMITIVES_GENERATED_EXT = 1000382000,
+     |                                              ---------- `1000382000` assigned here
+
+error[E0081]: discriminant value `4` assigned more than once
+    --> thirdparty\vulkan\VulkanCore.rs:1827:1
+     |
+1827 | pub enum VkPipelineCacheCreateFlagBits {
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1828 |     VK_PIPELINE_CACHE_CREATE_EXTERNALLY_SYNCHRONIZED_BIT_EXT = 0x1,
+1829 |     VK_PIPELINE_CACHE_CREATE_INCREMENTAL_COMPILE_BIT_SEC = 0x4,
+     |                                                            --- `4` assigned here
+1830 |     VK_PIPELINE_CACHE_CREATE_INCREMENTAL_PIPELINE_BINARY_BIT_KHR = 0x4,
+     |                                                                    --- `4` assigned here
+
+error[E0081]: discriminant value `16384` assigned more than once
+    --> thirdparty\vulkan\VulkanCore.rs:1856:1
+     |
+1856 | pub enum VkImageCreateFlagBits {
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+1871 |     VK_IMAGE_CREATE_SUBSAMPLED_BIT_EXT = 0x4000,
+     |                                          ------ `16384` assigned here
+...
+1876 |     VK_IMAGE_CREATE_FRAGMENT_DENSITY_MAP_OFFSET_BIT_EXT = 0x4000,
+     |                                                           ------ `16384` assigned here
+
+error[E0081]: discriminant value `8192` assigned more than once
+    --> thirdparty\vulkan\VulkanCore.rs:3526:1
+     |
+3526 | pub enum VkFormatFeatureFlagBits {
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+3540 |     VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_CUBIC_BIT_IMG = 0x2000,
+     |                                                            ------ `8192` assigned here
+...
+3551 |     VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_CUBIC_BIT_EXT = 0x2000,
+     |                                                            ------ `8192` assigned here
+
+error[E0081]: discriminant value `16` assigned more than once
+    --> thirdparty\vulkan\VulkanCore.rs:3915:1
+     |
+3915 | pub enum VkResolveModeFlagBits {
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+3921 |     VK_RESOLVE_MODE_EXTERNAL_FORMAT_DOWNSAMPLE_ANDROID = 0x10,
+     |                                                          ---- `16` assigned here
+3922 |     VK_RESOLVE_MODE_EXTERNAL_FORMAT_DOWNSAMPLE_HUAWEI = 0x10,
+     |                                                         ---- `16` assigned here
+
+Some errors have detailed explanations: E0038, E0072, E0081, E0106, E0119, E0124, E0204, E0277, E0404...
+For more information about an error, try `rustc --explain E0038`.
+warning: `pcsx2_translations` (lib) generated 25 warnings
+error: could not compile `pcsx2_translations` (lib) due to 57 previous errors; 25 warnings emitted

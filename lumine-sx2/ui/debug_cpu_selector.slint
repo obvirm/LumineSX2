@@ -1,0 +1,43 @@
+import { ComboBox } from "std-widgets.slint";
+
+// ─── CPU Selector ───
+export component CpuSelector inherits Rectangle {
+    in property <string> current-cpu: "EE";
+    in property <[string]> cpus: ["EE", "IOP", "VU0", "VU1"];
+    in property <bool> is-connected: true;
+
+    callback cpu-changed(string /*cpu*/);
+
+    height: 28px;
+    background: #181825;
+    border-radius: 4px;
+
+    HorizontalLayout {
+        padding: 4px;
+        spacing: 8px;
+
+        // Connection indicator
+        Rectangle {
+            width: 8px;
+            height: 8px;
+            border-radius: 4px;
+            background: root.is-connected ? #a6e3a1 : #f38ba8;
+            vertical-alignment: center;
+        }
+
+        // CPU selector
+        cpu-combo := ComboBox {
+            model: root.cpus;
+            current-index: root.current-cpu == "EE" ? 0 : (root.current-cpu == "IOP" ? 1 : (root.current-cpu == "VU0" ? 2 : 3));
+            horizontal-stretch: 1;
+        }
+
+        // Status
+        Text {
+            text: root.is-connected ? "Connected" : "Disconnected";
+            color: root.is-connected ? #a6e3a1 : #f38ba8;
+            font-size: 10px;
+            vertical-alignment: center;
+        }
+    }
+}

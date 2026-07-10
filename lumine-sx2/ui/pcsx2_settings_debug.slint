@@ -1,0 +1,664 @@
+import { ScrollView } from "std-widgets.slint";
+import { Button, Switch, LineEdit, Slider } from "std-widgets.slint";
+
+// SPDX-FileCopyrightText: 2002-2026 PCSX2 Dev Team
+// SPDX-License-Identifier: GPL-3.0+
+
+export struct DebugSettings {
+    // User Interface
+    show-debug-settings-menu: bool,
+    show-debugger: bool,
+    show-logs-main: bool,
+    show-osd-messages: bool,
+    // Logging
+    trace-log-enabled: bool,
+    file-logging-enabled: bool,
+    log-timestamps: bool,
+    verbose-ee: bool,
+    verbose-iop: bool,
+    verbose-gs: bool,
+    log-file-path: string,
+    // Analysis
+    block-linking: bool,
+    function-detection: bool,
+    recursive-descent: bool,
+    fast-analysis: bool,
+    max-instructions: int,
+    analysis-depth: int,
+    // GS
+    dump-gs-data: bool,
+    show-gs-overlay: bool,
+    capture-next-frame: bool,
+    dump-directory: string,
+}
+
+component MaterialCard inherits Rectangle {
+    in property <string> title;
+    in property <string> subtitle: "";
+
+    background: #1D1B20;
+    border-radius: 16px;
+    border-width: 1px;
+    border-color: #49454F4d;
+
+    VerticalLayout {
+        padding: 16px;
+        spacing: 12px;
+        Text {
+            text: title;
+            color: #D0BCFF;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        if (subtitle != "") : Text {
+            text: subtitle;
+            color: #938F99;
+            font-size: 12px;
+            wrap: word-wrap;
+        }
+        VerticalLayout {
+            spacing: 8px;
+            @children
+        }
+    }
+}
+
+component SettingRow inherits Rectangle {
+    in property <string> label;
+    in property <string> hint: "";
+    in property <bool> value;
+    callback toggled(bool);
+
+    height: hint != "" ? 72px : 56px;
+    background: #211F26;
+    border-radius: 12px;
+
+    HorizontalLayout {
+        width: parent.width;
+        height: parent.height;
+        padding-left: 16px;
+        padding-right: 16px;
+        alignment: space-between;
+        VerticalLayout {
+            alignment: center;
+            spacing: 2px;
+            horizontal-stretch: 1;
+            Text {
+                text: label;
+                color: #E6E0E9;
+                font-size: 14px;
+                font-weight: 500;
+            }
+            if (hint != "") : Text {
+                text: hint;
+                color: #938F99;
+                font-size: 11px;
+                wrap: word-wrap;
+            }
+        }
+        Switch {
+            checked: value;
+            toggled => { root.toggled(self.checked); }
+        }
+    }
+}
+
+component PathField inherits Rectangle {
+    in property <string> label;
+    in property <string> value;
+    in property <string> placeholder;
+    callback text-edited(string);
+    callback browse-clicked();
+
+    height: 72px;
+    background: #211F26;
+    border-radius: 12px;
+
+    VerticalLayout {
+        width: parent.width;
+        height: parent.height;
+        padding: 12px;
+        spacing: 6px;
+        Text {
+            text: label;
+            color: #CAC4D0;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        HorizontalLayout {
+            spacing: 8px;
+            alignment: stretch;
+            LineEdit {
+                horizontal-stretch: 1;
+                text: value;
+                placeholder-text: placeholder;
+                edited => { root.text-edited(self.text); }
+            }
+            Rectangle {
+                width: 88px;
+                height: 36px;
+                border-radius: 8px;
+                background: #4A4458;
+                border-width: 1px;
+                border-color: #D0BCFF66;
+                Text {
+                    text: "Browse";
+                    color: #E8DEF8;
+                    font-size: 12px;
+                    font-weight: 600;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+                TouchArea {
+                    width: 100%;
+                    height: 100%;
+                    clicked => { root.browse-clicked(); }
+                }
+            }
+        }
+    }
+}
+
+component NumberField inherits Rectangle {
+    in property <string> label;
+    in property <int> value;
+    in property <int> min: 0;
+    in property <int> max: 999999;
+    callback value-changed(int);
+
+    height: 64px;
+    background: #211F26;
+    border-radius: 12px;
+
+    HorizontalLayout {
+        width: parent.width;
+        height: parent.height;
+        padding-left: 16px;
+        padding-right: 16px;
+        alignment: space-between;
+        Text {
+            text: label;
+            color: #E6E0E9;
+            font-size: 14px;
+            font-weight: 500;
+            vertical-alignment: center;
+            horizontal-stretch: 1;
+        }
+        Rectangle {
+            width: 140px;
+            height: 36px;
+            border-radius: 8px;
+            background: #141218;
+            border-width: 1px;
+            border-color: #49454F;
+            LineEdit {
+                width: parent.width;
+                height: parent.height;
+                text: value;
+                horizontal-alignment: center;
+                input-type: number;
+                edited => { root.value-changed(self.text.to-float() < 0 ? 0 : self.text.to-float()); }
+            }
+        }
+    }
+}
+
+component TabButton inherits Rectangle {
+    in property <string> label;
+    in property <bool> active;
+    in property <int> index;
+    callback clicked();
+
+    height: 44px;
+    horizontal-stretch: 1;
+    border-radius: 22px;
+    background: active ? #4A4458 : transparent;
+    border-width: 1px;
+    border-color: active ? #D0BCFF66 : transparent;
+
+    animate background { duration: 200ms; easing: ease-in-out; }
+    animate border-color { duration: 200ms; easing: ease-in-out; }
+
+    Text {
+        text: label;
+        color: active ? #E8DEF8 : #938F99;
+        font-size: 13px;
+        font-weight: 600;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+        animate color { duration: 200ms; }
+    }
+    TouchArea {
+        width: 100%;
+        height: 100%;
+        clicked => { root.clicked(); }
+    }
+}
+
+export component DebugSettingsView inherits Rectangle {
+    in-out property <DebugSettings> settings: {
+        show-debug-settings-menu: false,
+        show-debugger: false,
+        show-logs-main: false,
+        show-osd-messages: true,
+        trace-log-enabled: false,
+        file-logging-enabled: false,
+        log-timestamps: true,
+        verbose-ee: false,
+        verbose-iop: false,
+        verbose-gs: false,
+        log-file-path: "",
+        block-linking: true,
+        function-detection: true,
+        recursive-descent: false,
+        fast-analysis: true,
+        max-instructions: 5000,
+        analysis-depth: 5,
+        dump-gs-data: false,
+        show-gs-overlay: false,
+        capture-next-frame: false,
+        dump-directory: "",
+    };
+    in-out property <int> current-tab: 0; // 0=Analysis, 1=GS, 2=Logging, 3=UI
+
+    callback tab-changed(int);
+    callback back-clicked();
+    callback setting-changed(string, string);
+    callback browse-log-clicked();
+    callback browse-dump-clicked();
+
+    property <color> bg: #141218;
+    property <color> surface: #1D1B20;
+    property <color> surface-variant: #211F26;
+    property <color> primary: #D0BCFF;
+    property <color> on-primary: #381E72;
+    property <color> text-main: #E6E0E9;
+    property <color> text-muted: #938F99;
+    property <color> text-variant: #CAC4D0;
+    property <color> outline: #49454F;
+
+    background: bg;
+    default-font-family: "Outfit";
+
+    VerticalLayout {
+        spacing: 0px;
+
+        // Header
+        Rectangle {
+            height: 64px;
+            background: bg;
+
+            Rectangle {
+                height: 1px;
+                width: parent.width;
+                background: surface-variant;
+                y: parent.height - 1px;
+            }
+
+            HorizontalLayout {
+                width: parent.width;
+                height: parent.height;
+                padding-left: 16px;
+                padding-right: 16px;
+                alignment: space-between;
+
+                HorizontalLayout {
+                    spacing: 12px;
+                    alignment: start;
+                    VerticalLayout {
+                        alignment: center;
+                        Rectangle {
+                            width: 40px;
+                            height: 40px;
+                            border-radius: 20px;
+                            background: ta-back.has-hover ? #ffffff15 : transparent;
+                            animate background { duration: 150ms; }
+                            Image {
+                                source: @image-url("icons/qt/arrow-left-right-line.svg");
+                                colorize: text-main;
+                                width: 20px;
+                                height: 20px;
+                                x: (parent.width - self.width) / 2;
+                                y: (parent.height - self.height) / 2;
+                            }
+                            ta-back := TouchArea {
+                                width: 100%;
+                                height: 100%;
+                                clicked => { root.back-clicked(); }
+                            }
+                        }
+                    }
+                    VerticalLayout {
+                        alignment: center;
+                        spacing: 2px;
+                        Text {
+                            text: "Debug Settings";
+                            color: text-main;
+                            font-size: 18px;
+                            font-weight: 500;
+                        }
+                        Text {
+                            text: "Configure debugger, analysis, GS, and logging";
+                            color: text-muted;
+                            font-size: 11px;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Tab Bar
+        Rectangle {
+            height: 64px;
+            background: bg;
+
+            HorizontalLayout {
+                width: parent.width;
+                height: parent.height;
+                padding-left: 16px;
+                padding-right: 16px;
+                spacing: 8px;
+                alignment: start;
+
+                TabButton {
+                    label: "Analysis";
+                    index: 0;
+                    active: current-tab == 0;
+                    clicked => {
+                        current-tab = 0;
+                        root.tab-changed(0);
+                    }
+                }
+                TabButton {
+                    label: "GS";
+                    index: 1;
+                    active: current-tab == 1;
+                    clicked => {
+                        current-tab = 1;
+                        root.tab-changed(1);
+                    }
+                }
+                TabButton {
+                    label: "Logging";
+                    index: 2;
+                    active: current-tab == 2;
+                    clicked => {
+                        current-tab = 2;
+                        root.tab-changed(2);
+                    }
+                }
+                TabButton {
+                    label: "User Interface";
+                    index: 3;
+                    active: current-tab == 3;
+                    clicked => {
+                        current-tab = 3;
+                        root.tab-changed(3);
+                    }
+                }
+            }
+        }
+
+        // Content
+        ScrollView {
+            viewport-width: parent.width;
+            viewport-height: content-area.height;
+
+            content-area := VerticalLayout {
+                width: parent.width;
+                padding: 16px;
+                padding-bottom: 96px;
+                spacing: 16px;
+
+                // Analysis Tab
+                if (current-tab == 0) : MaterialCard {
+                    title: "ANALYSIS PASSES";
+                    subtitle: "These settings control what and when analysis passes should be performed on the program running in the virtual machine so that the resultant information can be shown in the debugger.";
+
+                    SettingRow {
+                        label: "Block Linking";
+                        hint: "Link basic blocks to form a control flow graph for the program.";
+                        value: settings.block-linking;
+                        toggled(v) => {
+                            settings.block-linking = v;
+                            root.setting-changed("block-linking", v ? "true" : "false");
+                        }
+                    }
+                    SettingRow {
+                        label: "Function Detection";
+                        hint: "Scan the program for entry points and function prologues.";
+                        value: settings.function-detection;
+                        toggled(v) => {
+                            settings.function-detection = v;
+                            root.setting-changed("function-detection", v ? "true" : "false");
+                        }
+                    }
+                    SettingRow {
+                        label: "Recursive Descent";
+                        hint: "Walk the call graph recursively to discover reachable functions.";
+                        value: settings.recursive-descent;
+                        toggled(v) => {
+                            settings.recursive-descent = v;
+                            root.setting-changed("recursive-descent", v ? "true" : "false");
+                        }
+                    }
+                    SettingRow {
+                        label: "Fast Analysis";
+                        hint: "Skip deeper passes for a quicker, approximate result.";
+                        value: settings.fast-analysis;
+                        toggled(v) => {
+                            settings.fast-analysis = v;
+                            root.setting-changed("fast-analysis", v ? "true" : "false");
+                        }
+                    }
+                    NumberField {
+                        label: "Max Instructions";
+                        value: settings.max-instructions;
+                        min: 1;
+                        max: 99999999;
+                        value-changed(v) => {
+                            settings.max-instructions = v;
+                            root.setting-changed("max-instructions", v);
+                        }
+                    }
+                    Rectangle {
+                        height: 96px;
+                        background: #211F26;
+                        border-radius: 12px;
+                        VerticalLayout {
+                            padding: 12px;
+                            spacing: 8px;
+                            HorizontalLayout {
+                                alignment: space-between;
+                                Text {
+                                    text: "Analysis Depth";
+                                    color: #E6E0E9;
+                                    font-size: 14px;
+                                    font-weight: 500;
+                                    vertical-alignment: center;
+                                }
+                                Text {
+                                    text: settings.analysis-depth;
+                                    color: #D0BCFF;
+                                    font-size: 14px;
+                                    font-weight: 700;
+                                    font-family: "monospace";
+                                    vertical-alignment: center;
+                                }
+                            }
+                            Slider {
+                                value: settings.analysis-depth;
+                                minimum: 1;
+                                maximum: 20;
+                                changed(v) => {
+                                    settings.analysis-depth = Math.round(v);
+                                    root.setting-changed("analysis-depth", Math.round(v));
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // GS Tab
+                if (current-tab == 1) : MaterialCard {
+                    title: "GS DUMP & OVERLAY";
+                    subtitle: "Capture and visualize the GS pipeline.";
+
+                    SettingRow {
+                        label: "Dump GS Data";
+                        hint: "Save GS draw calls, render targets, and texture transfers to disk.";
+                        value: settings.dump-gs-data;
+                        toggled(v) => {
+                            settings.dump-gs-data = v;
+                            root.setting-changed("dump-gs-data", v ? "true" : "false");
+                        }
+                    }
+                    SettingRow {
+                        label: "Show GS Overlay";
+                        hint: "Render GS state information on top of the emulation window.";
+                        value: settings.show-gs-overlay;
+                        toggled(v) => {
+                            settings.show-gs-overlay = v;
+                            root.setting-changed("show-gs-overlay", v ? "true" : "false");
+                        }
+                    }
+                    SettingRow {
+                        label: "Capture Next Frame";
+                        hint: "Snapshot the next rendered frame and save it to the dump directory.";
+                        value: settings.capture-next-frame;
+                        toggled(v) => {
+                            settings.capture-next-frame = v;
+                            root.setting-changed("capture-next-frame", v ? "true" : "false");
+                        }
+                    }
+                    PathField {
+                        label: "DUMP DIRECTORY";
+                        value: settings.dump-directory;
+                        placeholder: "Select output folder for GS dumps...";
+                        text-edited(t) => {
+                            settings.dump-directory = t;
+                            root.setting-changed("dump-directory", t);
+                        }
+                        browse-clicked => { root.browse-dump-clicked(); }
+                    }
+                }
+
+                // Logging Tab
+                if (current-tab == 2) : MaterialCard {
+                    title: "TRACE LOGGING";
+                    subtitle: "Configure file and per-component verbose logging.";
+
+                    SettingRow {
+                        label: "Trace Log Enabled";
+                        hint: "Globally enable or disable trace logging.";
+                        value: settings.trace-log-enabled;
+                        toggled(v) => {
+                            settings.trace-log-enabled = v;
+                            root.setting-changed("trace-log-enabled", v ? "true" : "false");
+                        }
+                    }
+                    SettingRow {
+                        label: "File Logging";
+                        hint: "Mirror log output to a file on disk.";
+                        value: settings.file-logging-enabled;
+                        toggled(v) => {
+                            settings.file-logging-enabled = v;
+                            root.setting-changed("file-logging-enabled", v ? "true" : "false");
+                        }
+                    }
+                    SettingRow {
+                        label: "Log Timestamps";
+                        hint: "Prepend a timestamp to each log line.";
+                        value: settings.log-timestamps;
+                        toggled(v) => {
+                            settings.log-timestamps = v;
+                            root.setting-changed("log-timestamps", v ? "true" : "false");
+                        }
+                    }
+                    SettingRow {
+                        label: "Verbose EE";
+                        hint: "Emit detailed Emotion Engine trace output.";
+                        value: settings.verbose-ee;
+                        toggled(v) => {
+                            settings.verbose-ee = v;
+                            root.setting-changed("verbose-ee", v ? "true" : "false");
+                        }
+                    }
+                    SettingRow {
+                        label: "Verbose IOP";
+                        hint: "Emit detailed IOP trace output.";
+                        value: settings.verbose-iop;
+                        toggled(v) => {
+                            settings.verbose-iop = v;
+                            root.setting-changed("verbose-iop", v ? "true" : "false");
+                        }
+                    }
+                    SettingRow {
+                        label: "Verbose GS";
+                        hint: "Emit detailed Graphics Synthesizer trace output.";
+                        value: settings.verbose-gs;
+                        toggled(v) => {
+                            settings.verbose-gs = v;
+                            root.setting-changed("verbose-gs", v ? "true" : "false");
+                        }
+                    }
+                    PathField {
+                        label: "LOG FILE PATH";
+                        value: settings.log-file-path;
+                        placeholder: "Select destination for log file...";
+                        text-edited(t) => {
+                            settings.log-file-path = t;
+                            root.setting-changed("log-file-path", t);
+                        }
+                        browse-clicked => { root.browse-log-clicked(); }
+                    }
+                }
+
+                // User Interface Tab
+                if (current-tab == 3) : MaterialCard {
+                    title: "DEBUGGER UI";
+                    subtitle: "Toggle debugging affordances in the main interface.";
+
+                    SettingRow {
+                        label: "Show Debug Settings Menu";
+                        hint: "Expose a Debug entry in the main settings list.";
+                        value: settings.show-debug-settings-menu;
+                        toggled(v) => {
+                            settings.show-debug-settings-menu = v;
+                            root.setting-changed("show-debug-settings-menu", v ? "true" : "false");
+                        }
+                    }
+                    SettingRow {
+                        label: "Show Debugger";
+                        hint: "Reveal the debugger panel and dock entry.";
+                        value: settings.show-debugger;
+                        toggled(v) => {
+                            settings.show-debugger = v;
+                            root.setting-changed("show-debugger", v ? "true" : "false");
+                        }
+                    }
+                    SettingRow {
+                        label: "Show Logs In Main Window";
+                        hint: "Surface the log console as a tab in the main window.";
+                        value: settings.show-logs-main;
+                        toggled(v) => {
+                            settings.show-logs-main = v;
+                            root.setting-changed("show-logs-main", v ? "true" : "false");
+                        }
+                    }
+                    SettingRow {
+                        label: "Show OSD Messages";
+                        hint: "Display on-screen notifications for debugger events.";
+                        value: settings.show-osd-messages;
+                        toggled(v) => {
+                            settings.show-osd-messages = v;
+                            root.setting-changed("show-osd-messages", v ? "true" : "false");
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

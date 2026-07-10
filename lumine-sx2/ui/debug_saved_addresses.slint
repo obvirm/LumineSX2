@@ -1,0 +1,79 @@
+import { HorizontalBox, VerticalBox, LineEdit, Button, ComboBox } from "std-widgets.slint";
+
+export struct SavedAddress {
+    address: string,
+    label: string,
+    type: string,
+    value: string,
+    is-selected: bool,
+}
+
+export component SavedAddressesView inherits Rectangle {
+    in property <[SavedAddress]> entries: [];
+    in property <bool> show-labels: true;
+
+    callback entry-selected(int);
+    callback entry-double-clicked(int);
+    callback remove-selected();
+    callback goto-selected();
+    callback add-clicked();
+
+    background: #11111b;
+
+    VerticalBox {
+        padding: 0;
+        spacing: 0;
+
+        // Toolbar
+        Rectangle {
+            height: 32px;
+            background: #181825;
+            HorizontalLayout {
+                padding: 4px;
+                spacing: 4px;
+                Button { text: "Add"; clicked => { root.add-clicked(); } }
+                Button { text: "Remove"; clicked => { root.remove-selected(); } }
+                Button { text: "Go To"; clicked => { root.goto-selected(); } }
+                Rectangle { horizontal-stretch: 1; }
+            }
+        }
+        Rectangle { height: 1px; background: #313244; }
+
+        // Header
+        Rectangle {
+            height: 24px;
+            background: #181825;
+            HorizontalLayout {
+                padding: 4px;
+                Text { text: "Address"; color: #89b4fa; font-size: 10px; font-weight: 600; width: 100px; }
+                if root.show-labels: Text { text: "Label"; color: #89b4fa; font-size: 10px; font-weight: 600; horizontal-stretch: 1; }
+                Text { text: "Type"; color: #89b4fa; font-size: 10px; font-weight: 600; width: 60px; }
+                Text { text: "Value"; color: #89b4fa; font-size: 10px; font-weight: 600; width: 100px; }
+            }
+        }
+        Rectangle { height: 1px; background: #313244; }
+
+        // Entries
+        Flickable {
+            vertical-stretch: 1;
+            viewport-height: entries.length * 20px;
+            for entry[idx] in entries: Rectangle {
+                y: idx * 20px;
+                height: 20px;
+                background: entry.is-selected ? #3b3f54 : (Math.mod(idx, 2) == 0 ? transparent : #181825);
+                TouchArea {
+                    clicked => { root.entry-selected(idx); }
+                    double-clicked => { root.entry-double-clicked(idx); }
+                }
+                HorizontalLayout {
+                    padding: 2px;
+                    padding-left: 4px;
+                    Text { text: entry.address; color: #f9e2af; font-size: 11px; font-family: "Cascadia Code"; width: 100px; }
+                    if root.show-labels: Text { text: entry.label; color: #cdd6f4; font-size: 11px; horizontal-stretch: 1; overflow: elide; }
+                    Text { text: entry.type; color: #6c7086; font-size: 11px; width: 60px; }
+                    Text { text: entry.value; color: #a6e3a1; font-size: 11px; font-family: "Cascadia Code"; width: 100px; }
+                }
+            }
+        }
+    }
+}

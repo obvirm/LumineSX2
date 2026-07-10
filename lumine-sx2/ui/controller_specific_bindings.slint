@@ -1,0 +1,1087 @@
+// Controller-specific binding views: Guitar, Jogcon, Negcon, Pop'n Music, Buzz, GunCon2
+// Based on deep analysis of ControllerBindingWidget .cpp/.h/.ui files
+// All GridLayout uses row/col properties (not columns), proper Slint syntax.
+
+import { VerticalBox, HorizontalBox, ScrollView, LineEdit, ComboBox, Button, CheckBox, Slider, GroupBox, StandardButton } from "std-widgets.slint";
+import { MaterialColors, DetailPage, ToggleRow, SliderRow, ComboRow, TextFieldRow, SectionHeader } from "common.slint";
+
+// ─── Shared Binding Button Component ───
+component BindingButton inherits Rectangle {
+    in property <string> txt;
+    in property <string> binding: "";
+    in property <color> idle-color: MaterialColors.surface-container;
+    in property <color> active-color: MaterialColors.primary-container;
+    in property <color> bound-color: MaterialColors.tertiary-container;
+    in property <int> button-font-size: 12;
+    in property <bool> pressed: false;
+    in property <bool> is-bound: false;
+
+    callback clicked;
+
+    height: 48px;
+    background: pressed ? active-color : (is-bound ? bound-color : idle-color);
+    border-radius: 8px;
+    border-width: pressed ? 2px : 1px;
+    border-color: pressed ? MaterialColors.primary : (is-bound ? MaterialColors.tertiary : MaterialColors.outline);
+
+    VerticalLayout {
+        alignment: center;
+        spacing: 2px;
+        Text {
+            text: txt;
+            color: pressed ? MaterialColors.on-primary-container : (is-bound ? MaterialColors.on-tertiary-container : MaterialColors.on-surface);
+            font-size: button-font-size * 1px;
+            font-weight: 600;
+            horizontal-alignment: center;
+            overflow: elide;
+        }
+        if binding != "" : Text {
+            text: binding;
+            color: MaterialColors.on-surface-variant;
+            font-size: 9px;
+            horizontal-alignment: center;
+            overflow: elide;
+        }
+    }
+
+    ta := TouchArea {
+        clicked => { root.clicked(); }
+    }
+}
+
+// ─── Shared Binding Axis Component ───
+component BindingAxis inherits Rectangle {
+    in property <string> txt;
+    in property <string> direction: "horizontal";
+    in property <string> binding: "";
+    in property <bool> is-bound: false;
+    in property <float> axis-position: 0.5;
+
+    callback clicked;
+
+    height: direction == "horizontal" ? 48px : 64px;
+    background: is-bound ? MaterialColors.tertiary-container : MaterialColors.surface-container;
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: is-bound ? MaterialColors.tertiary : MaterialColors.outline;
+
+    VerticalLayout {
+        alignment: center;
+        spacing: 4px;
+        Text {
+            text: txt;
+            color: is-bound ? MaterialColors.on-tertiary-container : MaterialColors.on-surface;
+            font-size: 11px;
+            font-weight: 500;
+            horizontal-alignment: center;
+        }
+        Rectangle {
+            height: 6px;
+            background: MaterialColors.surface-container-high;
+            border-radius: 3px;
+
+            Rectangle {
+                x: Math.max(0, Math.min(parent.width - 16px, axis-position * parent.width - 8px));
+                width: 16px;
+                height: 100%;
+                background: MaterialColors.primary;
+                border-radius: 3px;
+            }
+        }
+        if binding != "" : Text {
+            text: binding;
+            color: MaterialColors.on-surface-variant;
+            font-size: 9px;
+            horizontal-alignment: center;
+            overflow: elide;
+        }
+    }
+
+    ta := TouchArea {
+        clicked => { root.clicked(); }
+    }
+}
+
+// ─── Fret Button (for Guitar) ───
+component FretButton inherits Rectangle {
+    in property <string> txt;
+    in property <color> fret-color: MaterialColors.primary;
+    in property <bool> pressed: false;
+    in property <bool> is-bound: false;
+    in property <string> binding: "";
+
+    callback clicked;
+
+    width: 52px;
+    height: 60px;
+    background: pressed ? fret-color : (is-bound ? MaterialColors.tertiary-container : MaterialColors.surface-container);
+    border-radius: 12px;
+    border-width: 2px;
+    border-color: pressed ? Colors.white : fret-color;
+
+    VerticalLayout {
+        alignment: center;
+        spacing: 2px;
+        Rectangle {
+            width: 36px;
+            height: 36px;
+            background: fret-color;
+            border-radius: 18px;
+            border-width: 6px;
+            border-color: pressed ? Colors.white : Colors.black;
+        }
+        Text {
+            text: txt;
+            color: pressed ? Colors.white : MaterialColors.on-surface;
+            font-size: 11px;
+            font-weight: 700;
+            horizontal-alignment: center;
+        }
+        if binding != "" : Text {
+            text: binding;
+            color: MaterialColors.on-surface-variant;
+            font-size: 8px;
+            horizontal-alignment: center;
+            overflow: elide;
+        }
+    }
+
+    ta := TouchArea {
+        clicked => { root.clicked(); }
+    }
+}
+
+// ═══════════════════════════════════════════════
+// 1. GUITAR CONTROLLER BINDING VIEW
+// ═══════════════════════════════════════════════
+export component GuitarBindingView inherits DetailPage {
+    title: "Guitar Bindings";
+
+    in-out property <bool> green-pressed: false;
+    in-out property <bool> red-pressed: false;
+    in-out property <bool> yellow-pressed: false;
+    in-out property <bool> blue-pressed: false;
+    in-out property <bool> orange-pressed: false;
+    in-out property <bool> strum-up-pressed: false;
+    in-out property <bool> strum-down-pressed: false;
+    in-out property <bool> whammy-pressed: false;
+    in-out property <bool> tilt-pressed: false;
+    in-out property <bool> select-pressed: false;
+    in-out property <bool> start-pressed: false;
+
+    in-out property <string> green-binding: "";
+    in-out property <string> red-binding: "";
+    in-out property <string> yellow-binding: "";
+    in-out property <string> blue-binding: "";
+    in-out property <string> orange-binding: "";
+    in-out property <string> strum-up-binding: "";
+    in-out property <string> strum-down-binding: "";
+    in-out property <string> whammy-binding: "";
+    in-out property <string> tilt-binding: "";
+    in-out property <string> select-binding: "";
+    in-out property <string> start-binding: "";
+
+    in-out property <float> whammy-position: 0.5;
+
+    callback bind-button(string);
+    callback reset-binding(string);
+
+    VerticalLayout {
+        padding: 16px;
+        spacing: 12px;
+
+        Rectangle {
+            height: 180px;
+            background: MaterialColors.surface-container;
+            border-radius: 16px;
+            border-width: 1px;
+            border-color: MaterialColors.outline;
+
+            VerticalLayout {
+                padding: 12px;
+                spacing: 8px;
+
+                Text {
+                    text: "🎸 Frets";
+                    color: MaterialColors.primary;
+                    font-size: 13px;
+                    font-weight: 600;
+                }
+
+                HorizontalLayout {
+                    spacing: 6px;
+                    alignment: center;
+
+                    FretButton { txt: "G"; fret-color: #22c55e; pressed: green-pressed; is-bound: green-binding != ""; binding: green-binding; clicked => { green-pressed = !green-pressed; bind-button("green"); } }
+                    FretButton { txt: "R"; fret-color: #ef4444; pressed: red-pressed; is-bound: red-binding != ""; binding: red-binding; clicked => { red-pressed = !red-pressed; bind-button("red"); } }
+                    FretButton { txt: "Y"; fret-color: #eab308; pressed: yellow-pressed; is-bound: yellow-binding != ""; binding: yellow-binding; clicked => { yellow-pressed = !yellow-pressed; bind-button("yellow"); } }
+                    FretButton { txt: "B"; fret-color: #3b82f6; pressed: blue-pressed; is-bound: blue-binding != ""; binding: blue-binding; clicked => { blue-pressed = !blue-pressed; bind-button("blue"); } }
+                    FretButton { txt: "O"; fret-color: #f97316; pressed: orange-pressed; is-bound: orange-binding != ""; binding: orange-binding; clicked => { orange-pressed = !orange-pressed; bind-button("orange"); } }
+                }
+
+                HorizontalLayout {
+                    spacing: 16px;
+                    alignment: center;
+
+                    // Strum bar
+                    Rectangle {
+                        width: 40px;
+                        height: 80px;
+                        background: MaterialColors.surface-container-high;
+                        border-radius: 8px;
+                        border-width: 1px;
+                        border-color: MaterialColors.outline;
+
+                        VerticalLayout {
+                            alignment: center;
+                            spacing: 2px;
+
+                            Rectangle {
+                                width: 36px;
+                                height: 32px;
+                                background: strum-up-pressed ? MaterialColors.primary-container : Colors.transparent;
+                                border-radius: 6px;
+                                border-width: 1px;
+                                border-color: strum-up-binding != "" ? MaterialColors.tertiary : Colors.transparent;
+                                Text { text: "▲"; color: strum-up-pressed ? MaterialColors.on-primary-container : MaterialColors.on-surface-variant; font-size: 16px; horizontal-alignment: center; vertical-alignment: center; }
+                                TouchArea { clicked => { strum-up-pressed = !strum-up-pressed; bind-button("strum_up"); } }
+                            }
+                            Rectangle { width: 36px; height: 2px; background: MaterialColors.outline; }
+                            Rectangle {
+                                width: 36px;
+                                height: 32px;
+                                background: strum-down-pressed ? MaterialColors.primary-container : Colors.transparent;
+                                border-radius: 6px;
+                                border-width: 1px;
+                                border-color: strum-down-binding != "" ? MaterialColors.tertiary : Colors.transparent;
+                                Text { text: "▼"; color: strum-down-pressed ? MaterialColors.on-primary-container : MaterialColors.on-surface-variant; font-size: 16px; horizontal-alignment: center; vertical-alignment: center; }
+                                TouchArea { clicked => { strum-down-pressed = !strum-down-pressed; bind-button("strum_down"); } }
+                            }
+                        }
+                    }
+
+                    BindingAxis { txt: "Whammy"; direction: "vertical"; binding: whammy-binding; is-bound: whammy-binding != ""; axis-position: whammy-position; clicked => { whammy-pressed = !whammy-pressed; bind-button("whammy"); } }
+
+                    BindingButton { txt: "🎯 Tilt"; binding: tilt-binding; is-bound: tilt-binding != ""; pressed: tilt-pressed; clicked => { tilt-pressed = !tilt-pressed; bind-button("tilt"); } }
+
+                    VerticalLayout {
+                        spacing: 8px;
+                        BindingButton { txt: "Select"; binding: select-binding; is-bound: select-binding != ""; pressed: select-pressed; clicked => { select-pressed = !select-pressed; bind-button("select"); } }
+                        BindingButton { txt: "Start"; binding: start-binding; is-bound: start-binding != ""; pressed: start-pressed; clicked => { start-pressed = !start-pressed; bind-button("start"); } }
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            height: 48px;
+            background: MaterialColors.surface-container;
+            border-radius: 8px;
+            HorizontalLayout {
+                padding-left: 16px; padding-right: 16px; spacing: 8px;
+                Text {
+                    text: {
+                        let count = (green-binding != "" ? 1 : 0) + (red-binding != "" ? 1 : 0) + (yellow-binding != "" ? 1 : 0) +
+                                    (blue-binding != "" ? 1 : 0) + (orange-binding != "" ? 1 : 0) +
+                                    (strum-up-binding != "" ? 1 : 0) + (strum-down-binding != "" ? 1 : 0) +
+                                    (whammy-binding != "" ? 1 : 0) + (tilt-binding != "" ? 1 : 0) +
+                                    (select-binding != "" ? 1 : 0) + (start-binding != "" ? 1 : 0);
+                        count + "/11 bound";
+                    };
+                    color: MaterialColors.primary; font-size: 13px; font-weight: 600; vertical-alignment: center;
+                }
+                Rectangle { horizontal-stretch: 1; }
+                Button { text: "Auto Map"; clicked => { } }
+                Button {
+                    text: "Clear All";
+                    clicked => {
+                        green-binding = ""; red-binding = ""; yellow-binding = "";
+                        blue-binding = ""; orange-binding = "";
+                        strum-up-binding = ""; strum-down-binding = "";
+                        whammy-binding = ""; tilt-binding = "";
+                        select-binding = ""; start-binding = "";
+                    }
+                }
+            }
+        }
+    }
+}
+
+// ═══════════════════════════════════════════════
+// 2. JOGCON CONTROLLER BINDING VIEW
+// ═══════════════════════════════════════════════
+export component JogconBindingView inherits DetailPage {
+    title: "Jogcon Bindings";
+
+    in-out property <bool> dpad-up: false;
+    in-out property <bool> dpad-down: false;
+    in-out property <bool> dpad-left: false;
+    in-out property <bool> dpad-right: false;
+    in-out property <bool> triangle-pressed: false;
+    in-out property <bool> cross-pressed: false;
+    in-out property <bool> square-pressed: false;
+    in-out property <bool> circle-pressed: false;
+    in-out property <bool> l1-pressed: false;
+    in-out property <bool> l2-pressed: false;
+    in-out property <bool> r1-pressed: false;
+    in-out property <bool> r2-pressed: false;
+    in-out property <bool> select-pressed: false;
+    in-out property <bool> start-pressed: false;
+    in-out property <bool> dial-left: false;
+    in-out property <bool> dial-right: false;
+    in-out property <float> dial-position: 0.5;
+
+    in-out property <string> dpad-up-binding: "";
+    in-out property <string> dpad-down-binding: "";
+    in-out property <string> dpad-left-binding: "";
+    in-out property <string> dpad-right-binding: "";
+    in-out property <string> triangle-binding: "";
+    in-out property <string> cross-binding: "";
+    in-out property <string> square-binding: "";
+    in-out property <string> circle-binding: "";
+    in-out property <string> l1-binding: "";
+    in-out property <string> l2-binding: "";
+    in-out property <string> r1-binding: "";
+    in-out property <string> r2-binding: "";
+    in-out property <string> select-binding: "";
+    in-out property <string> start-binding: "";
+    in-out property <string> dial-left-binding: "";
+    in-out property <string> dial-right-binding: "";
+
+    callback bind-button(string);
+    callback reset-binding(string);
+
+    VerticalLayout {
+        padding: 16px;
+        spacing: 12px;
+
+        Rectangle {
+            height: 300px;
+            background: MaterialColors.surface-container;
+            border-radius: 16px;
+            border-width: 1px;
+            border-color: MaterialColors.outline;
+
+            HorizontalLayout {
+                padding: 12px;
+                spacing: 12px;
+
+                // Left: Jog Dial + D-Pad
+                VerticalLayout {
+                    spacing: 12px;
+                    width: 160px;
+
+                    Text { text: "🕹 Jog Dial"; color: MaterialColors.primary; font-size: 13px; font-weight: 600; }
+
+                    Rectangle {
+                        width: 120px; height: 120px;
+                        background: MaterialColors.surface-container-high;
+                        border-radius: 60px;
+                        border-width: 2px;
+                        border-color: MaterialColors.outline;
+                        Rectangle { x: 60px - 4px; y: 4px; width: 8px; height: 20px; background: dial-left || dial-right ? MaterialColors.primary : MaterialColors.on-surface-variant; border-radius: 4px; }
+                        Text { text: "Dial"; color: MaterialColors.on-surface-variant; font-size: 11px; horizontal-alignment: center; vertical-alignment: center; }
+                    }
+
+                    HorizontalLayout {
+                        spacing: 8px;
+                        BindingButton { txt: "◀ Dial L"; binding: dial-left-binding; is-bound: dial-left-binding != ""; pressed: dial-left; clicked => { dial-left = !dial-left; bind-button("dial_left"); } }
+                        BindingButton { txt: "Dial R ▶"; binding: dial-right-binding; is-bound: dial-right-binding != ""; pressed: dial-right; clicked => { dial-right = !dial-right; bind-button("dial_right"); } }
+                    }
+
+                    Text { text: "D-Pad"; color: MaterialColors.primary; font-size: 12px; font-weight: 600; }
+
+                    GridLayout {
+                        spacing: 4px;
+                        Rectangle { col: 0; row: 0; width: 44px; height: 44px; }
+                        BindingButton { col: 1; row: 0; txt: "▲"; button-font-size: 16; binding: dpad-up-binding; is-bound: dpad-up-binding != ""; pressed: dpad-up; clicked => { dpad-up = !dpad-up; bind-button("up"); } }
+                        Rectangle { col: 2; row: 0; width: 44px; height: 44px; }
+
+                        BindingButton { col: 0; row: 1; txt: "◄"; button-font-size: 16; binding: dpad-left-binding; is-bound: dpad-left-binding != ""; pressed: dpad-left; clicked => { dpad-left = !dpad-left; bind-button("left"); } }
+                        Rectangle { col: 1; row: 1; width: 44px; height: 44px; background: MaterialColors.surface-container-high; border-radius: 6px; }
+                        BindingButton { col: 2; row: 1; txt: "►"; button-font-size: 16; binding: dpad-right-binding; is-bound: dpad-right-binding != ""; pressed: dpad-right; clicked => { dpad-right = !dpad-right; bind-button("right"); } }
+
+                        Rectangle { col: 0; row: 2; width: 44px; height: 44px; }
+                        BindingButton { col: 1; row: 2; txt: "▼"; button-font-size: 16; binding: dpad-down-binding; is-bound: dpad-down-binding != ""; pressed: dpad-down; clicked => { dpad-down = !dpad-down; bind-button("down"); } }
+                        Rectangle { col: 2; row: 2; width: 44px; height: 44px; }
+                    }
+                }
+
+                // Center: Shoulders + System
+                VerticalLayout {
+                    spacing: 8px;
+                    width: 140px;
+                    Text { text: "Shoulders"; color: MaterialColors.primary; font-size: 12px; font-weight: 600; }
+                    BindingButton { txt: "L1"; binding: l1-binding; is-bound: l1-binding != ""; pressed: l1-pressed; clicked => { l1-pressed = !l1-pressed; bind-button("l1"); } }
+                    BindingButton { txt: "L2"; binding: l2-binding; is-bound: l2-binding != ""; pressed: l2-pressed; clicked => { l2-pressed = !l2-pressed; bind-button("l2"); } }
+                    BindingButton { txt: "R1"; binding: r1-binding; is-bound: r1-binding != ""; pressed: r1-pressed; clicked => { r1-pressed = !r1-pressed; bind-button("r1"); } }
+                    BindingButton { txt: "R2"; binding: r2-binding; is-bound: r2-binding != ""; pressed: r2-pressed; clicked => { r2-pressed = !r2-pressed; bind-button("r2"); } }
+                    Rectangle { height: 8px; }
+                    BindingButton { txt: "Select"; button-font-size: 11; binding: select-binding; is-bound: select-binding != ""; pressed: select-pressed; clicked => { select-pressed = !select-pressed; bind-button("select"); } }
+                    BindingButton { txt: "Start"; button-font-size: 11; binding: start-binding; is-bound: start-binding != ""; pressed: start-pressed; clicked => { start-pressed = !start-pressed; bind-button("start"); } }
+                }
+
+                // Right: Face buttons
+                VerticalLayout {
+                    spacing: 4px;
+                    alignment: center;
+                    width: 130px;
+                    Text { text: "Face Buttons"; color: MaterialColors.primary; font-size: 12px; font-weight: 600; }
+
+                    GridLayout {
+                        spacing: 4px;
+                        Rectangle { col: 0; row: 0; width: 44px; height: 44px; }
+                        BindingButton { col: 1; row: 0; txt: "△"; button-font-size: 18; binding: triangle-binding; is-bound: triangle-binding != ""; pressed: triangle-pressed; clicked => { triangle-pressed = !triangle-pressed; bind-button("triangle"); } }
+                        Rectangle { col: 2; row: 0; width: 44px; height: 44px; }
+
+                        BindingButton { col: 0; row: 1; txt: "□"; button-font-size: 18; binding: square-binding; is-bound: square-binding != ""; pressed: square-pressed; clicked => { square-pressed = !square-pressed; bind-button("square"); } }
+                        Rectangle { col: 1; row: 1; width: 44px; height: 44px; background: MaterialColors.surface-container-high; border-radius: 6px; }
+                        BindingButton { col: 2; row: 1; txt: "○"; button-font-size: 18; binding: circle-binding; is-bound: circle-binding != ""; pressed: circle-pressed; clicked => { circle-pressed = !circle-pressed; bind-button("circle"); } }
+
+                        Rectangle { col: 0; row: 2; width: 44px; height: 44px; }
+                        BindingButton { col: 1; row: 2; txt: "✕"; button-font-size: 18; binding: cross-binding; is-bound: cross-binding != ""; pressed: cross-pressed; clicked => { cross-pressed = !cross-pressed; bind-button("cross"); } }
+                        Rectangle { col: 2; row: 2; width: 44px; height: 44px; }
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            height: 40px;
+            background: MaterialColors.surface-container;
+            border-radius: 8px;
+            HorizontalLayout {
+                padding-left: 16px; padding-right: 16px; spacing: 8px;
+                Text { text: "🎮 Jogcon — 18 bindings"; color: MaterialColors.on-surface-variant; font-size: 12px; vertical-alignment: center; }
+                Rectangle { horizontal-stretch: 1; }
+                Button { text: "Auto Map"; clicked => { } }
+                Button {
+                    text: "Clear";
+                    clicked => {
+                        dpad-up-binding = ""; dpad-down-binding = ""; dpad-left-binding = ""; dpad-right-binding = "";
+                        triangle-binding = ""; cross-binding = ""; square-binding = ""; circle-binding = "";
+                        l1-binding = ""; l2-binding = ""; r1-binding = ""; r2-binding = "";
+                        select-binding = ""; start-binding = ""; dial-left-binding = ""; dial-right-binding = "";
+                    }
+                }
+            }
+        }
+    }
+}
+
+// ═══════════════════════════════════════════════
+// 3. NEGCON CONTROLLER BINDING VIEW
+// ═══════════════════════════════════════════════
+export component NegconBindingView inherits DetailPage {
+    title: "Negcon Bindings";
+
+    in-out property <bool> dpad-up: false;
+    in-out property <bool> dpad-down: false;
+    in-out property <bool> dpad-left: false;
+    in-out property <bool> dpad-right: false;
+    in-out property <bool> button-i: false;
+    in-out property <bool> button-ii: false;
+    in-out property <bool> button-a: false;
+    in-out property <bool> button-b: false;
+    in-out property <bool> analog-l: false;
+    in-out property <bool> analog-r: false;
+    in-out property <float> analog-l-pos: 0.5;
+    in-out property <float> analog-r-pos: 0.5;
+    in-out property <bool> start-pressed: false;
+    in-out property <bool> twist-left: false;
+    in-out property <bool> twist-right: false;
+    in-out property <float> twist-position: 0.5;
+
+    in-out property <string> dpad-up-binding: "";
+    in-out property <string> dpad-down-binding: "";
+    in-out property <string> dpad-left-binding: "";
+    in-out property <string> dpad-right-binding: "";
+    in-out property <string> button-i-binding: "";
+    in-out property <string> button-ii-binding: "";
+    in-out property <string> button-a-binding: "";
+    in-out property <string> button-b-binding: "";
+    in-out property <string> analog-l-binding: "";
+    in-out property <string> analog-r-binding: "";
+    in-out property <string> start-binding: "";
+    in-out property <string> twist-left-binding: "";
+    in-out property <string> twist-right-binding: "";
+
+    callback bind-button(string);
+    callback reset-binding(string);
+
+    VerticalLayout {
+        padding: 16px;
+        spacing: 12px;
+
+        Rectangle {
+            height: 320px;
+            background: MaterialColors.surface-container;
+            border-radius: 16px;
+            border-width: 1px;
+            border-color: MaterialColors.outline;
+
+            HorizontalLayout {
+                padding: 12px;
+                spacing: 16px;
+
+                // Left: Twist + D-Pad
+                VerticalLayout {
+                    spacing: 12px;
+                    width: 160px;
+                    Text { text: "🔄 Twist Handle"; color: MaterialColors.error; font-size: 13px; font-weight: 600; }
+
+                    Rectangle {
+                        width: 120px; height: 80px;
+                        background: MaterialColors.surface-container-high;
+                        border-radius: 12px;
+                        border-width: 2px;
+                        border-color: twist-left || twist-right ? MaterialColors.error : MaterialColors.outline;
+                        HorizontalLayout {
+                            padding: 8px; spacing: 8px;
+                            BindingButton { txt: "◄ Twist L"; binding: twist-left-binding; is-bound: twist-left-binding != ""; pressed: twist-left; idle-color: MaterialColors.surface-container; active-color: #fecaca; bound-color: MaterialColors.error-container; clicked => { twist-left = !twist-left; bind-button("twist_left"); } }
+                            Rectangle { width: 6px; background: MaterialColors.outline; border-radius: 3px; }
+                            BindingButton { txt: "Twist R ►"; binding: twist-right-binding; is-bound: twist-right-binding != ""; pressed: twist-right; idle-color: MaterialColors.surface-container; active-color: #fecaca; bound-color: MaterialColors.error-container; clicked => { twist-right = !twist-right; bind-button("twist_right"); } }
+                        }
+                    }
+
+                    Text { text: "D-Pad"; color: MaterialColors.primary; font-size: 12px; font-weight: 600; }
+
+                    GridLayout {
+                        spacing: 3px;
+                        Rectangle { col: 0; row: 0; width: 44px; height: 44px; }
+                        BindingButton { col: 1; row: 0; txt: "▲"; button-font-size: 16; binding: dpad-up-binding; is-bound: dpad-up-binding != ""; pressed: dpad-up; clicked => { dpad-up = !dpad-up; bind-button("up"); } }
+                        Rectangle { col: 2; row: 0; width: 44px; height: 44px; }
+                        BindingButton { col: 0; row: 1; txt: "◄"; button-font-size: 16; binding: dpad-left-binding; is-bound: dpad-left-binding != ""; pressed: dpad-left; clicked => { dpad-left = !dpad-left; bind-button("left"); } }
+                        Rectangle { col: 1; row: 1; width: 44px; height: 44px; background: MaterialColors.surface-container-high; border-radius: 6px; }
+                        BindingButton { col: 2; row: 1; txt: "►"; button-font-size: 16; binding: dpad-right-binding; is-bound: dpad-right-binding != ""; pressed: dpad-right; clicked => { dpad-right = !dpad-right; bind-button("right"); } }
+                        Rectangle { col: 0; row: 2; width: 44px; height: 44px; }
+                        BindingButton { col: 1; row: 2; txt: "▼"; button-font-size: 16; binding: dpad-down-binding; is-bound: dpad-down-binding != ""; pressed: dpad-down; clicked => { dpad-down = !dpad-down; bind-button("down"); } }
+                        Rectangle { col: 2; row: 2; width: 44px; height: 44px; }
+                    }
+                }
+
+                // Center: Analog L/R + Start
+                VerticalLayout {
+                    spacing: 12px;
+                    width: 140px;
+                    Text { text: "Analog Shoulders"; color: MaterialColors.primary; font-size: 12px; font-weight: 600; }
+                    BindingAxis { txt: "Analog L"; direction: "vertical"; binding: analog-l-binding; is-bound: analog-l-binding != ""; axis-position: analog-l-pos; clicked => { analog-l = !analog-l; bind-button("analog_l"); } }
+                    BindingAxis { txt: "Analog R"; direction: "vertical"; binding: analog-r-binding; is-bound: analog-r-binding != ""; axis-position: analog-r-pos; clicked => { analog-r = !analog-r; bind-button("analog_r"); } }
+                    Rectangle { height: 8px; }
+                    BindingButton { txt: "Start"; binding: start-binding; is-bound: start-binding != ""; pressed: start-pressed; clicked => { start-pressed = !start-pressed; bind-button("start"); } }
+                }
+
+                // Right: I, II, A, B
+                VerticalLayout {
+                    spacing: 4px;
+                    alignment: center;
+                    width: 130px;
+                    Text { text: "Face Buttons"; color: MaterialColors.primary; font-size: 12px; font-weight: 600; }
+                    Text { text: "(Negcon: I/II/A/B)"; color: MaterialColors.on-surface-variant; font-size: 10px; }
+
+                    GridLayout {
+                        spacing: 4px;
+                        Rectangle { col: 0; row: 0; width: 44px; height: 44px; }
+                        BindingButton { col: 1; row: 0; txt: "B"; button-font-size: 16; binding: button-b-binding; is-bound: button-b-binding != ""; pressed: button-b; clicked => { button-b = !button-b; bind-button("b"); } }
+                        Rectangle { col: 2; row: 0; width: 44px; height: 44px; }
+                        BindingButton { col: 0; row: 1; txt: "II"; button-font-size: 16; binding: button-ii-binding; is-bound: button-ii-binding != ""; pressed: button-ii; clicked => { button-ii = !button-ii; bind-button("ii"); } }
+                        Rectangle { col: 1; row: 1; width: 44px; height: 44px; background: MaterialColors.surface-container-high; border-radius: 6px; }
+                        BindingButton { col: 2; row: 1; txt: "A"; button-font-size: 16; binding: button-a-binding; is-bound: button-a-binding != ""; pressed: button-a; clicked => { button-a = !button-a; bind-button("a"); } }
+                        Rectangle { col: 0; row: 2; width: 44px; height: 44px; }
+                        BindingButton { col: 1; row: 2; txt: "I"; button-font-size: 16; binding: button-i-binding; is-bound: button-i-binding != ""; pressed: button-i; clicked => { button-i = !button-i; bind-button("i"); } }
+                        Rectangle { col: 2; row: 2; width: 44px; height: 44px; }
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            height: 40px;
+            background: MaterialColors.surface-container;
+            border-radius: 8px;
+            HorizontalLayout {
+                padding-left: 16px; padding-right: 16px; spacing: 8px;
+                Text { text: "🎮 Negcon — 14 bindings (Twist + I/II/A/B)"; color: MaterialColors.on-surface-variant; font-size: 12px; vertical-alignment: center; }
+                Rectangle { horizontal-stretch: 1; }
+                Button { text: "Auto Map"; clicked => { } }
+                Button {
+                    text: "Clear";
+                    clicked => {
+                        dpad-up-binding = ""; dpad-down-binding = ""; dpad-left-binding = ""; dpad-right-binding = "";
+                        button-i-binding = ""; button-ii-binding = ""; button-a-binding = ""; button-b-binding = "";
+                        analog-l-binding = ""; analog-r-binding = ""; start-binding = "";
+                        twist-left-binding = ""; twist-right-binding = "";
+                    }
+                }
+            }
+        }
+    }
+}
+
+// ═══════════════════════════════════════════════
+// 4. POP'N MUSIC CONTROLLER BINDING VIEW
+// ═══════════════════════════════════════════════
+export component PopnBindingView inherits DetailPage {
+    title: "Pop'n Music Bindings";
+
+    in-out property <bool> white-l: false;
+    in-out property <bool> white-r: false;
+    in-out property <bool> yellow-l: false;
+    in-out property <bool> yellow-r: false;
+    in-out property <bool> green-l: false;
+    in-out property <bool> green-r: false;
+    in-out property <bool> blue-l: false;
+    in-out property <bool> blue-r: false;
+    in-out property <bool> red: false;
+    in-out property <bool> select-pressed: false;
+    in-out property <bool> start-pressed: false;
+
+    in-out property <string> white-l-binding: "";
+    in-out property <string> white-r-binding: "";
+    in-out property <string> yellow-l-binding: "";
+    in-out property <string> yellow-r-binding: "";
+    in-out property <string> green-l-binding: "";
+    in-out property <string> green-r-binding: "";
+    in-out property <string> blue-l-binding: "";
+    in-out property <string> blue-r-binding: "";
+    in-out property <string> red-binding: "";
+    in-out property <string> select-binding: "";
+    in-out property <string> start-binding: "";
+
+    callback bind-button(string);
+    callback reset-binding(string);
+
+    VerticalLayout {
+        padding: 16px;
+        spacing: 12px;
+
+        Rectangle {
+            height: 280px;
+            background: MaterialColors.surface-container;
+            border-radius: 16px;
+            border-width: 1px;
+            border-color: MaterialColors.outline;
+
+            VerticalLayout {
+                padding: 16px;
+                spacing: 14px;
+                alignment: center;
+
+                Text { text: "🎵 Pop'n Music Controller"; color: MaterialColors.primary; font-size: 16px; font-weight: 600; horizontal-alignment: center; }
+
+                // Top row: Select + Start
+                HorizontalLayout {
+                    spacing: 16px;
+                    alignment: center;
+                    BindingButton { txt: "Select"; button-font-size: 11; binding: select-binding; is-bound: select-binding != ""; pressed: select-pressed; clicked => { select-pressed = !select-pressed; bind-button("select"); } }
+                    BindingButton { txt: "Start"; button-font-size: 11; binding: start-binding; is-bound: start-binding != ""; pressed: start-pressed; clicked => { start-pressed = !start-pressed; bind-button("start"); } }
+                }
+
+                // Row 1: Yellow L + Yellow R
+                HorizontalLayout {
+                    spacing: 8px; alignment: center;
+                    Rectangle {
+                        width: 64px; height: 64px;
+                        background: yellow-l || yellow-l-binding != "" ? #fef08a : MaterialColors.surface-container-high;
+                        border-radius: 32px;
+                        border-width: 3px;
+                        border-color: yellow-l-binding != "" ? #eab308 : #a16207;
+                        Text { text: "YL"; color: #a16207; font-size: 14px; font-weight: 700; horizontal-alignment: center; vertical-alignment: center; }
+                        TouchArea { clicked => { yellow-l = !yellow-l; bind-button("yellow_l"); } }
+                    }
+                    Rectangle {
+                        width: 64px; height: 64px;
+                        background: yellow-r || yellow-r-binding != "" ? #fef08a : MaterialColors.surface-container-high;
+                        border-radius: 32px;
+                        border-width: 3px;
+                        border-color: yellow-r-binding != "" ? #eab308 : #a16207;
+                        Text { text: "YR"; color: #a16207; font-size: 14px; font-weight: 700; horizontal-alignment: center; vertical-alignment: center; }
+                        TouchArea { clicked => { yellow-r = !yellow-r; bind-button("yellow_r"); } }
+                    }
+                }
+
+                // Row 2: Blue L + Blue R
+                HorizontalLayout {
+                    spacing: 8px; alignment: center;
+                    Rectangle {
+                        width: 64px; height: 64px;
+                        background: blue-l || blue-l-binding != "" ? #bfdbfe : MaterialColors.surface-container-high;
+                        border-radius: 32px;
+                        border-width: 3px;
+                        border-color: blue-l-binding != "" ? #3b82f6 : #1e40af;
+                        Text { text: "BL"; color: #1e40af; font-size: 14px; font-weight: 700; horizontal-alignment: center; vertical-alignment: center; }
+                        TouchArea { clicked => { blue-l = !blue-l; bind-button("blue_l"); } }
+                    }
+                    Rectangle {
+                        width: 64px; height: 64px;
+                        background: blue-r || blue-r-binding != "" ? #bfdbfe : MaterialColors.surface-container-high;
+                        border-radius: 32px;
+                        border-width: 3px;
+                        border-color: blue-r-binding != "" ? #3b82f6 : #1e40af;
+                        Text { text: "BR"; color: #1e40af; font-size: 14px; font-weight: 700; horizontal-alignment: center; vertical-alignment: center; }
+                        TouchArea { clicked => { blue-r = !blue-r; bind-button("blue_r"); } }
+                    }
+                }
+
+                // Row 3: Green L + Red (center) + Green R
+                HorizontalLayout {
+                    spacing: 8px; alignment: center;
+                    Rectangle {
+                        width: 64px; height: 64px;
+                        background: green-l || green-l-binding != "" ? #bbf7d0 : MaterialColors.surface-container-high;
+                        border-radius: 32px;
+                        border-width: 3px;
+                        border-color: green-l-binding != "" ? #22c55e : #166534;
+                        Text { text: "GL"; color: #166534; font-size: 14px; font-weight: 700; horizontal-alignment: center; vertical-alignment: center; }
+                        TouchArea { clicked => { green-l = !green-l; bind-button("green_l"); } }
+                    }
+                    Rectangle {
+                        width: 72px; height: 72px;
+                        background: red || red-binding != "" ? #fecaca : MaterialColors.surface-container-high;
+                        border-radius: 36px;
+                        border-width: 3px;
+                        border-color: red-binding != "" ? #ef4444 : #991b1b;
+                        Text { text: "R"; color: #991b1b; font-size: 18px; font-weight: 700; horizontal-alignment: center; vertical-alignment: center; }
+                        TouchArea { clicked => { red = !red; bind-button("red"); } }
+                    }
+                    Rectangle {
+                        width: 64px; height: 64px;
+                        background: green-r || green-r-binding != "" ? #bbf7d0 : MaterialColors.surface-container-high;
+                        border-radius: 32px;
+                        border-width: 3px;
+                        border-color: green-r-binding != "" ? #22c55e : #166534;
+                        Text { text: "GR"; color: #166534; font-size: 14px; font-weight: 700; horizontal-alignment: center; vertical-alignment: center; }
+                        TouchArea { clicked => { green-r = !green-r; bind-button("green_r"); } }
+                    }
+                }
+
+                // Row 4: White L + White R
+                HorizontalLayout {
+                    spacing: 8px; alignment: center;
+                    Rectangle {
+                        width: 72px; height: 64px;
+                        background: white-l || white-l-binding != "" ? #f5f5f5 : MaterialColors.surface-container-high;
+                        border-radius: 8px;
+                        border-width: 3px;
+                        border-color: white-l-binding != "" ? #9ca3af : #52525b;
+                        Text { text: "WL"; color: #52525b; font-size: 14px; font-weight: 700; horizontal-alignment: center; vertical-alignment: center; }
+                        TouchArea { clicked => { white-l = !white-l; bind-button("white_l"); } }
+                    }
+                    Rectangle {
+                        width: 72px; height: 64px;
+                        background: white-r || white-r-binding != "" ? #f5f5f5 : MaterialColors.surface-container-high;
+                        border-radius: 8px;
+                        border-width: 3px;
+                        border-color: white-r-binding != "" ? #9ca3af : #52525b;
+                        Text { text: "WR"; color: #52525b; font-size: 14px; font-weight: 700; horizontal-alignment: center; vertical-alignment: center; }
+                        TouchArea { clicked => { white-r = !white-r; bind-button("white_r"); } }
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            height: 40px;
+            background: MaterialColors.surface-container;
+            border-radius: 8px;
+            HorizontalLayout {
+                padding-left: 16px; padding-right: 16px; spacing: 8px;
+                Text { text: "🎵 Pop'n Music — 11 bindings"; color: MaterialColors.on-surface-variant; font-size: 12px; vertical-alignment: center; }
+                Rectangle { horizontal-stretch: 1; }
+                Button { text: "Auto Map"; clicked => { } }
+                Button {
+                    text: "Clear";
+                    clicked => {
+                        white-l-binding = ""; white-r-binding = ""; yellow-l-binding = ""; yellow-r-binding = "";
+                        green-l-binding = ""; green-r-binding = ""; blue-l-binding = ""; blue-r-binding = "";
+                        red-binding = ""; select-binding = ""; start-binding = "";
+                    }
+                }
+            }
+        }
+    }
+}
+
+// ═══════════════════════════════════════════════
+// 5. BUZZ! CONTROLLER BINDING VIEW
+// ═══════════════════════════════════════════════
+export component BuzzBindingView inherits DetailPage {
+    title: "Buzz! Controller Bindings";
+
+    in-out property <bool> red-pressed: false;
+    in-out property <bool> blue-pressed: false;
+    in-out property <bool> yellow-pressed: false;
+    in-out property <bool> green-pressed: false;
+
+    in-out property <string> red-binding: "";
+    in-out property <string> blue-binding: "";
+    in-out property <string> yellow-binding: "";
+    in-out property <string> green-binding: "";
+
+    callback bind-button(string);
+    callback reset-binding(string);
+
+    VerticalLayout {
+        padding: 16px;
+        spacing: 12px;
+
+        Rectangle {
+            height: 220px;
+            background: MaterialColors.surface-container;
+            border-radius: 16px;
+            border-width: 1px;
+            border-color: MaterialColors.outline;
+
+            VerticalLayout {
+                padding: 16px;
+                spacing: 16px;
+                alignment: center;
+
+                Text { text: "Buzz! Quiz Controller"; color: MaterialColors.primary; font-size: 16px; font-weight: 600; horizontal-alignment: center; }
+                Text { text: "4 players per dongle"; color: MaterialColors.on-surface-variant; font-size: 11px; horizontal-alignment: center; }
+
+                HorizontalLayout {
+                    spacing: 16px;
+                    alignment: center;
+
+                    // Red
+                    Rectangle {
+                        width: 80px; height: 80px;
+                        background: red-pressed ? #ef4444 : (red-binding != "" ? #fca5a5 : #fecaca);
+                        border-radius: 40px;
+                        border-width: 4px;
+                        border-color: #dc2626;
+                        VerticalLayout {
+                            alignment: center; spacing: 4px;
+                            Rectangle { width: 40px; height: 12px; background: #dc2626; border-radius: 6px; }
+                            Text { text: "BUZZ!"; color: #ffffff; font-size: 11px; font-weight: 700; horizontal-alignment: center; }
+                            if red-binding != "" : Text { text: red-binding; color: #ffffff; font-size: 8px; horizontal-alignment: center; overflow: elide; }
+                        }
+                        TouchArea { clicked => { red-pressed = !red-pressed; bind-button("red"); } }
+                    }
+
+                    // Blue
+                    Rectangle {
+                        width: 80px; height: 80px;
+                        background: blue-pressed ? #3b82f6 : (blue-binding != "" ? #93c5fd : #bfdbfe);
+                        border-radius: 40px;
+                        border-width: 4px;
+                        border-color: #2563eb;
+                        VerticalLayout {
+                            alignment: center; spacing: 4px;
+                            Rectangle { width: 40px; height: 12px; background: #2563eb; border-radius: 6px; }
+                            Text { text: "BUZZ!"; color: #ffffff; font-size: 11px; font-weight: 700; horizontal-alignment: center; }
+                            if blue-binding != "" : Text { text: blue-binding; color: #ffffff; font-size: 8px; horizontal-alignment: center; overflow: elide; }
+                        }
+                        TouchArea { clicked => { blue-pressed = !blue-pressed; bind-button("blue"); } }
+                    }
+
+                    // Yellow
+                    Rectangle {
+                        width: 80px; height: 80px;
+                        background: yellow-pressed ? #eab308 : (yellow-binding != "" ? #fde047 : #fef08a);
+                        border-radius: 40px;
+                        border-width: 4px;
+                        border-color: #ca8a04;
+                        VerticalLayout {
+                            alignment: center; spacing: 4px;
+                            Rectangle { width: 40px; height: 12px; background: #ca8a04; border-radius: 6px; }
+                            Text { text: "BUZZ!"; color: #ffffff; font-size: 11px; font-weight: 700; horizontal-alignment: center; }
+                            if yellow-binding != "" : Text { text: yellow-binding; color: #ffffff; font-size: 8px; horizontal-alignment: center; overflow: elide; }
+                        }
+                        TouchArea { clicked => { yellow-pressed = !yellow-pressed; bind-button("yellow"); } }
+                    }
+
+                    // Green
+                    Rectangle {
+                        width: 80px; height: 80px;
+                        background: green-pressed ? #22c55e : (green-binding != "" ? #86efac : #bbf7d0);
+                        border-radius: 40px;
+                        border-width: 4px;
+                        border-color: #16a34a;
+                        VerticalLayout {
+                            alignment: center; spacing: 4px;
+                            Rectangle { width: 40px; height: 12px; background: #16a34a; border-radius: 6px; }
+                            Text { text: "BUZZ!"; color: #ffffff; font-size: 11px; font-weight: 700; horizontal-alignment: center; }
+                            if green-binding != "" : Text { text: green-binding; color: #ffffff; font-size: 8px; horizontal-alignment: center; overflow: elide; }
+                        }
+                        TouchArea { clicked => { green-pressed = !green-pressed; bind-button("green"); } }
+                    }
+                }
+
+                HorizontalLayout {
+                    spacing: 16px; alignment: center;
+                    Text { text: "Red"; color: #ef4444; font-size: 12px; font-weight: 600; width: 80px; horizontal-alignment: center; }
+                    Text { text: "Blue"; color: #3b82f6; font-size: 12px; font-weight: 600; width: 80px; horizontal-alignment: center; }
+                    Text { text: "Yellow"; color: #eab308; font-size: 12px; font-weight: 600; width: 80px; horizontal-alignment: center; }
+                    Text { text: "Green"; color: #22c55e; font-size: 12px; font-weight: 600; width: 80px; horizontal-alignment: center; }
+                }
+            }
+        }
+
+        Rectangle {
+            height: 40px;
+            background: MaterialColors.surface-container;
+            border-radius: 8px;
+            HorizontalLayout {
+                padding-left: 16px; padding-right: 16px; spacing: 8px;
+                Text { text: "🔴 Buzz! — 4 player buzzer bindings"; color: MaterialColors.on-surface-variant; font-size: 12px; vertical-alignment: center; }
+                Rectangle { horizontal-stretch: 1; }
+                Button { text: "Auto Map"; clicked => { } }
+                Button { text: "Clear"; clicked => { red-binding = ""; blue-binding = ""; yellow-binding = ""; green-binding = ""; } }
+            }
+        }
+    }
+}
+
+// ═══════════════════════════════════════════════
+// 6. GUNCON 2 BINDING VIEW (Light Gun)
+// ═══════════════════════════════════════════════
+export component GunCon2BindingView inherits DetailPage {
+    title: "GunCon 2 Bindings";
+
+    in-out property <bool> trigger-pressed: false;
+    in-out property <bool> reload-pressed: false;
+    in-out property <bool> aim-off-screen: false;
+    in-out property <bool> select-pressed: false;
+    in-out property <bool> start-pressed: false;
+    in-out property <bool> dpad-up: false;
+    in-out property <bool> dpad-down: false;
+    in-out property <bool> dpad-left: false;
+    in-out property <bool> dpad-right: false;
+    in-out property <bool> button-a: false;
+    in-out property <bool> button-b: false;
+
+    in-out property <string> trigger-binding: "";
+    in-out property <string> reload-binding: "";
+    in-out property <string> aim-binding: "";
+    in-out property <string> select-binding: "";
+    in-out property <string> start-binding: "";
+    in-out property <string> dpad-up-binding: "";
+    in-out property <string> dpad-down-binding: "";
+    in-out property <string> dpad-left-binding: "";
+    in-out property <string> dpad-right-binding: "";
+    in-out property <string> button-a-binding: "";
+    in-out property <string> button-b-binding: "";
+
+    callback bind-button(string);
+    callback reset-binding(string);
+
+    VerticalLayout {
+        padding: 16px;
+        spacing: 12px;
+
+        Rectangle {
+            height: 280px;
+            background: MaterialColors.surface-container;
+            border-radius: 16px;
+            border-width: 1px;
+            border-color: MaterialColors.outline;
+
+            HorizontalLayout {
+                padding: 16px;
+                spacing: 16px;
+
+                // Left: Gun body
+                Rectangle {
+                    width: 100px;
+                    height: 200px;
+                    background: MaterialColors.surface-container-high;
+                    border-radius: 12px;
+                    border-width: 2px;
+                    border-color: MaterialColors.outline;
+
+                    y: 40px;
+
+                    VerticalLayout {
+                        spacing: 8px;
+                        alignment: center;
+
+                        Rectangle { width: 20px; height: 50px; background: MaterialColors.surface-container-high; border-radius: 10px; border-width: 1px; border-color: MaterialColors.outline; }
+
+                        Rectangle {
+                            width: 36px; height: 36px;
+                            background: trigger-pressed ? #ef4444 : (trigger-binding != "" ? MaterialColors.error-container : MaterialColors.surface);
+                            border-radius: 18px;
+                            border-width: 2px;
+                            border-color: trigger-binding != "" ? MaterialColors.error : MaterialColors.outline;
+                            Text { text: "🔫"; font-size: 18px; horizontal-alignment: center; vertical-alignment: center; }
+                            TouchArea { clicked => { trigger-pressed = !trigger-pressed; bind-button("trigger"); } }
+                        }
+                        if trigger-binding != "" : Text { text: trigger-binding; color: MaterialColors.on-surface-variant; font-size: 9px; horizontal-alignment: center; }
+
+                        Rectangle {
+                            width: 40px; height: 24px;
+                            background: reload-pressed ? MaterialColors.primary-container : (reload-binding != "" ? MaterialColors.tertiary-container : MaterialColors.surface);
+                            border-radius: 6px;
+                            border-width: 1px;
+                            border-color: reload-binding != "" ? MaterialColors.tertiary : MaterialColors.outline;
+                            Text { text: "Reload"; color: reload-pressed ? MaterialColors.on-primary-container : (reload-binding != "" ? MaterialColors.on-tertiary-container : MaterialColors.on-surface); font-size: 9px; font-weight: 600; horizontal-alignment: center; vertical-alignment: center; }
+                            TouchArea { clicked => { reload-pressed = !reload-pressed; bind-button("reload"); } }
+                        }
+
+                        BindingButton { txt: "Aim Off-Screen"; button-font-size: 10; binding: aim-binding; is-bound: aim-binding != ""; pressed: aim-off-screen; idle-color: MaterialColors.surface; clicked => { aim-off-screen = !aim-off-screen; bind-button("aim"); } }
+                    }
+                }
+
+                // Right: D-Pad + Select/Start + A/B
+                VerticalLayout {
+                    spacing: 12px;
+                    width: 160px;
+                    alignment: center;
+
+                    Text { text: "GunCon 2"; color: MaterialColors.primary; font-size: 16px; font-weight: 600; horizontal-alignment: center; }
+                    Text { text: "Light Gun Controller"; color: MaterialColors.on-surface-variant; font-size: 11px; horizontal-alignment: center; }
+
+                    Text { text: "D-Pad"; color: MaterialColors.primary; font-size: 12px; font-weight: 600; }
+
+                    GridLayout {
+                        spacing: 3px;
+                        Rectangle { col: 0; row: 0; width: 44px; height: 44px; }
+                        BindingButton { col: 1; row: 0; txt: "▲"; button-font-size: 16; binding: dpad-up-binding; is-bound: dpad-up-binding != ""; pressed: dpad-up; clicked => { dpad-up = !dpad-up; bind-button("up"); } }
+                        Rectangle { col: 2; row: 0; width: 44px; height: 44px; }
+                        BindingButton { col: 0; row: 1; txt: "◄"; button-font-size: 16; binding: dpad-left-binding; is-bound: dpad-left-binding != ""; pressed: dpad-left; clicked => { dpad-left = !dpad-left; bind-button("left"); } }
+                        Rectangle { col: 1; row: 1; width: 44px; height: 44px; background: MaterialColors.surface-container-high; border-radius: 6px; }
+                        BindingButton { col: 2; row: 1; txt: "►"; button-font-size: 16; binding: dpad-right-binding; is-bound: dpad-right-binding != ""; pressed: dpad-right; clicked => { dpad-right = !dpad-right; bind-button("right"); } }
+                        Rectangle { col: 0; row: 2; width: 44px; height: 44px; }
+                        BindingButton { col: 1; row: 2; txt: "▼"; button-font-size: 16; binding: dpad-down-binding; is-bound: dpad-down-binding != ""; pressed: dpad-down; clicked => { dpad-down = !dpad-down; bind-button("down"); } }
+                        Rectangle { col: 2; row: 2; width: 44px; height: 44px; }
+                    }
+
+                    HorizontalLayout {
+                        spacing: 8px;
+                        BindingButton { txt: "Select"; button-font-size: 11; binding: select-binding; is-bound: select-binding != ""; pressed: select-pressed; clicked => { select-pressed = !select-pressed; bind-button("select"); } }
+                        BindingButton { txt: "Start"; button-font-size: 11; binding: start-binding; is-bound: start-binding != ""; pressed: start-pressed; clicked => { start-pressed = !start-pressed; bind-button("start"); } }
+                    }
+
+                    HorizontalLayout {
+                        spacing: 8px;
+                        BindingButton { txt: "A"; button-font-size: 14; binding: button-a-binding; is-bound: button-a-binding != ""; pressed: button-a; clicked => { button-a = !button-a; bind-button("a"); } }
+                        BindingButton { txt: "B"; button-font-size: 14; binding: button-b-binding; is-bound: button-b-binding != ""; pressed: button-b; clicked => { button-b = !button-b; bind-button("b"); } }
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            height: 40px;
+            background: MaterialColors.surface-container;
+            border-radius: 8px;
+            HorizontalLayout {
+                padding-left: 16px; padding-right: 16px; spacing: 8px;
+                Text { text: "🔫 GunCon 2 — Light Gun (11 bindings)"; color: MaterialColors.on-surface-variant; font-size: 12px; vertical-alignment: center; }
+                Rectangle { horizontal-stretch: 1; }
+                Button { text: "Auto Map"; clicked => { } }
+                Button {
+                    text: "Clear";
+                    clicked => {
+                        trigger-binding = ""; reload-binding = ""; aim-binding = "";
+                        select-binding = ""; start-binding = "";
+                        dpad-up-binding = ""; dpad-down-binding = ""; dpad-left-binding = ""; dpad-right-binding = "";
+                        button-a-binding = ""; button-b-binding = "";
+                    }
+                }
+            }
+        }
+    }
+}

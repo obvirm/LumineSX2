@@ -1,0 +1,572 @@
+import { VerticalBox, HorizontalBox, ScrollView, LineEdit, ComboBox, Button, CheckBox, Slider, GroupBox, StandardButton } from "std-widgets.slint";
+import { MaterialColors, DetailPage, ToggleRow, SliderRow, ComboRow, TextFieldRow, SectionHeader } from "common.slint";
+
+// Breakpoint Dialog
+export component BreakpointDialog inherits Rectangle {
+    in-out property <bool> dialog-visible: false;
+    in-out property <int> bp-type: 0; // 0=Execute, 1=Read, 2=Write
+    in-out property <string> bp-address: "";
+    in-out property <int> bp-size: 4;
+    in-out property <string> bp-condition: "";
+    in-out property <bool> bp-enabled: true;
+    callback close();
+    callback save();
+
+    if dialog-visible: Rectangle {
+        background: #00000080;
+
+        Rectangle {
+            width: 400px;
+            height: 320px;
+            background: MaterialColors.surface-container-high;
+            border-radius: 16px;
+            border-width: 1px;
+            border-color: MaterialColors.outline;
+
+            VerticalLayout {
+                padding: 16px;
+                spacing: 12px;
+
+                Text {
+                    text: "Add Breakpoint";
+                    color: MaterialColors.on-surface;
+                    font-size: 18px;
+                    font-weight: 600;
+                }
+
+                SectionHeader { txt: "Type"; }
+                HorizontalLayout {
+                    spacing: 8px;
+                    for t[idx] in ["Execute", "Read", "Write"]: Rectangle {
+                        height: 32px;
+                        background: bp-type == idx ? MaterialColors.primary : MaterialColors.surface-container;
+                        border-radius: 8px;
+
+                        Text {
+                            text: t;
+                            color: bp-type == idx ? MaterialColors.on-primary : MaterialColors.on-surface;
+                            font-size: 12px;
+                            horizontal-alignment: center;
+                            vertical-alignment: center;
+                        }
+
+                        TouchArea {
+                            clicked => { bp-type = idx; }
+                        }
+                    }
+                }
+
+                SectionHeader { txt: "Address"; }
+                LineEdit {
+                    text: bp-address;
+                    placeholder-text: "0x100000";
+                    font-family: "Consolas";
+                    height: 32px;
+                }
+
+                if bp-type != 0: SectionHeader { txt: "Size"; }
+                if bp-type != 0: ComboBox {
+                    model: ["1", "2", "4", "8", "16", "32", "64", "128"];
+                    current-index: 2;
+                }
+
+                SectionHeader { txt: "Condition (optional)"; }
+                LineEdit {
+                    text: bp-condition;
+                    placeholder-text: "e.g. R[5] == 0x100";
+                    font-family: "Consolas";
+                    height: 32px;
+                }
+
+                ToggleRow {
+                    label: "Enabled";
+                    checked: bp-enabled;
+                    toggled => { bp-enabled = !bp-enabled; }
+                }
+
+                HorizontalLayout {
+                    spacing: 8px;
+                    Button {
+                        text: "Save";
+                        clicked => { save(); dialog-visible = false; }
+                    }
+                    Button {
+                        text: "Cancel";
+                        clicked => { dialog-visible = false; close(); }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Breakpoint View
+export component BreakpointView inherits Rectangle {
+    in-out property <[string]> breakpoints: ["0x100000 [X] Execute", "0x200000 [R] 4 bytes"];
+    in-out property <int> selected-bp: -1;
+    callback add-breakpoint();
+
+    background: MaterialColors.surface;
+
+    VerticalLayout {
+        Rectangle {
+            height: 32px;
+            background: MaterialColors.surface-container;
+
+            HorizontalLayout {
+                padding-left: 8px;
+                padding-right: 8px;
+                spacing: 8px;
+
+                Text {
+                    text: "Breakpoints";
+                    color: MaterialColors.on-surface;
+                    font-size: 12px;
+                    font-weight: 600;
+                    vertical-alignment: center;
+                }
+                Rectangle { horizontal-stretch: 1; }
+                Button {
+                    text: "+ Add";
+                    clicked => { add-breakpoint(); }
+                }
+                Button {
+                    text: "Delete All";
+                    clicked => { }
+                }
+            }
+        }
+
+        ScrollView {
+            for bp[idx] in breakpoints: Rectangle {
+                height: 28px;
+                background: selected-bp == idx ? MaterialColors.primary-container : (idx % 2 == 0 ? MaterialColors.surface-container-low : Colors.transparent);
+
+                HorizontalLayout {
+                    padding-left: 8px;
+                    padding-right: 8px;
+                    spacing: 8px;
+
+                    Rectangle {
+                        width: 16px;
+                        height: 16px;
+                        y: 6px;
+                        background: MaterialColors.error;
+                        border-radius: 8px;
+                    }
+
+                    Text {
+                        text: bp;
+                        color: MaterialColors.on-surface;
+                        font-size: 11px;
+                        font-family: "Consolas";
+                        vertical-alignment: center;
+                        horizontal-stretch: 1;
+                    }
+
+                    Button {
+                        text: "Go";
+                        clicked => { }
+                    }
+                    Button {
+                        text: "Delete";
+                        clicked => { }
+                    }
+                }
+
+                TouchArea {
+                    clicked => { selected-bp = idx; }
+                }
+            }
+        }
+    }
+}
+
+// Saved Addresses View
+export component SavedAddressesView inherits Rectangle {
+    in-out property <[string]> addresses: ["0x100000 | Main | Entry point", "0x200000 | Loop | Game loop"];
+    in-out property <int> selected-addr: -1;
+    callback add-address();
+    callback paste-csv();
+
+    background: MaterialColors.surface;
+
+    VerticalLayout {
+        Rectangle {
+            height: 32px;
+            background: MaterialColors.surface-container;
+
+            HorizontalLayout {
+                padding-left: 8px;
+                padding-right: 8px;
+                spacing: 8px;
+
+                Text {
+                    text: "Saved Addresses";
+                    color: MaterialColors.on-surface;
+                    font-size: 12px;
+                    font-weight: 600;
+                    vertical-alignment: center;
+                }
+                Rectangle { horizontal-stretch: 1; }
+                Button { text: "+ Add"; clicked => { add-address(); } }
+                Button { text: "Paste CSV"; clicked => { paste-csv(); } }
+                Button { text: "Save"; clicked => { } }
+                Button { text: "Load"; clicked => { } }
+            }
+        }
+
+        // Header
+        Rectangle {
+            height: 24px;
+            background: MaterialColors.surface-container-high;
+
+            HorizontalLayout {
+                padding-left: 8px;
+                spacing: 8px;
+                Text { text: "ADDRESS"; color: MaterialColors.on-surface-variant; font-size: 10px; font-weight: 600; width: 80px; vertical-alignment: center; }
+                Text { text: "LABEL"; color: MaterialColors.on-surface-variant; font-size: 10px; font-weight: 600; width: 80px; vertical-alignment: center; }
+                Text { text: "DESCRIPTION"; color: MaterialColors.on-surface-variant; font-size: 10px; font-weight: 600; vertical-alignment: center; }
+            }
+        }
+
+        ScrollView {
+            for addr[idx] in addresses: Rectangle {
+                height: 24px;
+                background: selected-addr == idx ? MaterialColors.primary-container : (idx % 2 == 0 ? MaterialColors.surface-container-low : Colors.transparent);
+
+                HorizontalLayout {
+                    padding-left: 8px;
+                    spacing: 8px;
+
+                    Text {
+                        text: addr;
+                        color: MaterialColors.on-surface;
+                        font-size: 11px;
+                        font-family: "Consolas";
+                        vertical-alignment: center;
+                    }
+                }
+
+                TouchArea {
+                    clicked => { selected-addr = idx; }
+                    double-clicked => { }
+                }
+            }
+        }
+    }
+}
+
+// Stack View
+export component StackView inherits Rectangle {
+    in-out property <[string]> frames: ["0x100000 main()", "0x100020 game_loop()", "0x100040 render()", "0x100060 update()"];
+    in-out property <int> selected-frame: 0;
+
+    background: MaterialColors.surface;
+
+    VerticalLayout {
+        Rectangle {
+            height: 24px;
+            background: MaterialColors.surface-container;
+
+            HorizontalLayout {
+                padding-left: 8px;
+                Text {
+                    text: "Stack Frames";
+                    color: MaterialColors.on-surface;
+                    font-size: 12px;
+                    font-weight: 600;
+                    vertical-alignment: center;
+                }
+            }
+        }
+
+        ScrollView {
+            for frame[idx] in frames: Rectangle {
+                height: 24px;
+                background: selected-frame == idx ? MaterialColors.primary-container : (idx % 2 == 0 ? MaterialColors.surface-container-low : Colors.transparent);
+
+                HorizontalLayout {
+                    padding-left: 8px;
+                    spacing: 16px;
+
+                    Text {
+                        text: "Frame " + idx;
+                        color: MaterialColors.on-surface-variant;
+                        font-size: 10px;
+                        width: 48px;
+                        vertical-alignment: center;
+                    }
+                    Text {
+                        text: frame;
+                        color: MaterialColors.on-surface;
+                        font-size: 11px;
+                        font-family: "Consolas";
+                        vertical-alignment: center;
+                    }
+                }
+
+                TouchArea {
+                    clicked => { selected-frame = idx; }
+                }
+            }
+        }
+    }
+}
+
+// Thread View
+export component ThreadView inherits Rectangle {
+    in-out property <[string]> threads: ["0x00 EE Main Thread", "0x01 EE VU0 Thread", "0x02 EE VU1 Thread", "0x10 IOP Main"];
+    in-out property <int> selected-thread: 0;
+
+    background: MaterialColors.surface;
+
+    VerticalLayout {
+        Rectangle {
+            height: 24px;
+            background: MaterialColors.surface-container;
+
+            HorizontalLayout {
+                padding-left: 8px;
+                Text {
+                    text: "Threads";
+                    color: MaterialColors.on-surface;
+                    font-size: 12px;
+                    font-weight: 600;
+                    vertical-alignment: center;
+                }
+            }
+        }
+
+        // Header
+        Rectangle {
+            height: 20px;
+            background: MaterialColors.surface-container-high;
+
+            HorizontalLayout {
+                padding-left: 8px;
+                spacing: 8px;
+                Text { text: "ID"; color: MaterialColors.on-surface-variant; font-size: 10px; font-weight: 600; width: 32px; vertical-alignment: center; }
+                Text { text: "PC"; color: MaterialColors.on-surface-variant; font-size: 10px; font-weight: 600; width: 80px; vertical-alignment: center; }
+                Text { text: "Status"; color: MaterialColors.on-surface-variant; font-size: 10px; font-weight: 600; width: 60px; vertical-alignment: center; }
+                Text { text: "Name"; color: MaterialColors.on-surface-variant; font-size: 10px; font-weight: 600; vertical-alignment: center; }
+            }
+        }
+
+        ScrollView {
+            for thread[idx] in threads: Rectangle {
+                height: 22px;
+                background: selected-thread == idx ? MaterialColors.primary-container : (idx % 2 == 0 ? MaterialColors.surface-container-low : Colors.transparent);
+
+                HorizontalLayout {
+                    padding-left: 8px;
+                    spacing: 8px;
+
+                    Text {
+                        text: thread;
+                        color: MaterialColors.on-surface;
+                        font-size: 11px;
+                        font-family: "Consolas";
+                        vertical-alignment: center;
+                    }
+                }
+
+                TouchArea {
+                    clicked => { selected-thread = idx; }
+                }
+            }
+        }
+    }
+}
+
+// Module View
+export component ModuleView inherits Rectangle {
+    in-out property <[string]> modules: ["SIO2MAN", "PADMAN", "MCMAN", "LIBSD", "EESIO"];
+    in-out property <int> selected-module: -1;
+
+    background: MaterialColors.surface;
+
+    VerticalLayout {
+        Rectangle {
+            height: 24px;
+            background: MaterialColors.surface-container;
+
+            HorizontalLayout {
+                padding-left: 8px;
+                Text {
+                    text: "IOP Modules (R3000)";
+                    color: MaterialColors.on-surface;
+                    font-size: 12px;
+                    font-weight: 600;
+                    vertical-alignment: center;
+                }
+            }
+        }
+
+        ScrollView {
+            for module[idx] in modules: Rectangle {
+                height: 22px;
+                background: selected-module == idx ? MaterialColors.primary-container : (idx % 2 == 0 ? MaterialColors.surface-container-low : Colors.transparent);
+
+                HorizontalLayout {
+                    padding-left: 8px;
+                    spacing: 16px;
+
+                    Text {
+                        text: module;
+                        color: MaterialColors.on-surface;
+                        font-size: 11px;
+                        font-family: "Consolas";
+                        vertical-alignment: center;
+                    }
+                }
+
+                TouchArea {
+                    clicked => { selected-module = idx; }
+                }
+            }
+        }
+    }
+}
+
+// Symbol Tree Widget
+export component SymbolTreeWidget inherits Rectangle {
+    in-out property <int> selected-cpu: 0;
+    in-out property <string> filter-text: "";
+    in-out property <int> tree-depth: 0;
+
+    background: MaterialColors.surface;
+
+    VerticalLayout {
+        Rectangle {
+            height: 56px;
+            background: MaterialColors.surface-container;
+
+            VerticalLayout {
+                padding: 8px;
+                spacing: 4px;
+
+                HorizontalLayout {
+                    spacing: 8px;
+                    for cpu[idx] in ["EE", "IOP"]: Rectangle {
+                        width: 48px;
+                        height: 24px;
+                        background: selected-cpu == idx ? MaterialColors.primary-container : MaterialColors.surface-container-high;
+                        border-radius: 4px;
+
+                        Text {
+                            text: cpu;
+                            color: selected-cpu == idx ? MaterialColors.on-primary-container : MaterialColors.on-surface-variant;
+                            font-size: 11px;
+                            horizontal-alignment: center;
+                            vertical-alignment: center;
+                        }
+
+                        TouchArea {
+                            clicked => { selected-cpu = idx; }
+                        }
+                    }
+                }
+
+                LineEdit {
+                    text: filter-text;
+                    placeholder-text: "Filter symbols...";
+                    font-size: 11px;
+                    height: 24px;
+                }
+            }
+        }
+
+        // Tree placeholder
+        ScrollView {
+            for i in 20: Rectangle {
+                height: 20px;
+                background: i % 2 == 0 ? MaterialColors.surface-container-low : Colors.transparent;
+
+                HorizontalLayout {
+                    padding-left: 8px + (i % 3) * 16px;
+                    spacing: 4px;
+
+                    Text {
+                        text: i % 3 == 0 ? "📁" : (i % 3 == 1 ? "📂" : "🔗");
+                        font-size: 10px;
+                        vertical-alignment: center;
+                    }
+                    Text {
+                        text: i % 3 == 0 ? "function_" + i : (i % 3 == 1 ? "struct_" + i : "var_" + i);
+                        color: MaterialColors.on-surface;
+                        font-size: 11px;
+                        font-family: "Consolas";
+                        vertical-alignment: center;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Dock Manager
+export component DockManager inherits Rectangle {
+    in-out property <[string]> layouts: ["Default", "Compact", "Full", "Custom 1"];
+    in-out property <int> selected-layout: 0;
+    in-out property <bool> layout-locked: false;
+    in-out property <int> selected-cpu: 0;
+    callback save-layout();
+    callback delete-layout();
+    callback rename-layout();
+
+    background: MaterialColors.surface;
+
+    VerticalLayout {
+        Rectangle {
+            height: 32px;
+            background: MaterialColors.surface-container;
+
+            HorizontalLayout {
+                padding-left: 8px;
+                padding-right: 8px;
+                spacing: 8px;
+
+                Text {
+                    text: "Layout:";
+                    color: MaterialColors.on-surface-variant;
+                    font-size: 11px;
+                    vertical-alignment: center;
+                }
+
+                ComboBox {
+                    model: layouts;
+                    current-index: selected-layout;
+                    selected => { selected-layout = self.current-index; }
+                }
+
+                Button { text: "Save"; clicked => { save-layout(); } }
+                Button { text: "Rename"; clicked => { rename-layout(); } }
+                Button { text: "Delete"; clicked => { delete-layout(); } }
+                Button { text: "Reset"; clicked => { } }
+
+                Rectangle { horizontal-stretch: 1; }
+
+                // Lock toggle
+                Rectangle {
+                    width: 64px;
+                    height: 24px;
+                    background: layout-locked ? MaterialColors.error-container : MaterialColors.surface-container-high;
+                    border-radius: 4px;
+
+                    Text {
+                        text: layout-locked ? "🔒 Locked" : "🔓 Edit";
+                        color: layout-locked ? MaterialColors.on-error-container : MaterialColors.on-surface-variant;
+                        font-size: 10px;
+                        horizontal-alignment: center;
+                        vertical-alignment: center;
+                    }
+
+                    TouchArea {
+                        clicked => { layout-locked = !layout-locked; }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,177 @@
+// Graphics Settings Page
+import { SettingsRow, ToggleRow, SectionHeader, DetailPage, SliderRow, ComboRow, TextFieldRow } from "./common.slint";
+
+export component GraphicsSettingsView inherits DetailPage {
+    title: "Pengaturan Grafis";
+    
+    in-out property <int> resolution: 0;
+    in-out property <int> aspect-ratio: 0;
+    in-out property <int> renderer: 0;
+    in-out property <int> adapter: 0;
+    in-out property <int> tex-filter: 1;
+    in-out property <int> trilinear: 0;
+    in-out property <int> anisotropic: 0;
+    in-out property <bool> auto-flush: true;
+    in-out property <bool> mipmap: true;
+    in-out property <int> sw-threads: 1;
+    in-out property <bool> shade-boost: false;
+    in-out property <bool> preload-tex: false;
+    in-out property <bool> dump-tex: false;
+    in-out property <bool> load-replacements: false;
+    in-out property <int> accurate-blending: 1;
+    in-out property <bool> gpu-palette-conv: false;
+    in-out property <bool> disable-vertex-cache: false;
+    in-out property <bool> disable-framebuffer-fetch: false;
+    in-out property <bool> edge-aa1: false;
+    in-out property <bool> merge-sprites-sw: false;
+    in-out property <int> tv-shader: 0;
+    in-out property <bool> fxaa: false;
+    in-out property <bool> shader-cache: true;
+    in-out property <bool> dump-mipmaps: false;
+    in-out property <string> preload-tex-dir: "";
+    in-out property <bool> dump-fmv: false;
+    in-out property <int> fmv-aspect: 0;
+    in-out property <bool> disable-readbacks: false;
+    in-out property <int> gs-dump-compression: 1;
+    in-out property <bool> exclusive-fs: false;
+    in-out property <bool> override-tex-barriers: false;
+    in-out property <bool> debug-device: false;
+    in-out property <bool> debug-blend: false;
+    in-out property <bool> software-clut-render: false;
+    in-out property <int> cpu-sprite-render-size: 0;
+    in-out property <int> cas-sharpen: 0;
+    in-out property <float> cas-sharpness: 0.5;
+    in-out property <bool> integer-scaling: false;
+    in-out property <bool> anti-blur: true;
+    in-out property <int> deinterlace: 0;
+
+    // Hardware Fixes
+    in-out property <bool> hw-auto-fix: true;
+    in-out property <bool> texture-preloading: false;
+    in-out property <bool> half-pixel-offset: false;
+    in-out property <bool> round-sprite: false;
+    in-out property <bool> auto-flush-hw: false;
+    in-out property <bool> depth-readback: false;
+    in-out property <bool> cpu-framebuffer: false;
+    in-out property <bool> gpu-palette: false;
+    in-out property <bool> get-dc: false;
+    in-out property <bool> mipmap-hw: false;
+    in-out property <bool> trilinear-hw: false;
+    in-out property <bool> skip-draw: false;
+    in-out property <bool> half-bottom: false;
+    in-out property <bool> preload-frame: false;
+    in-out property <bool> disable-partial-invalidation: false;
+    in-out property <bool> texture-inside-rt: false;
+    in-out property <bool> disable-render-fixes: false;
+
+    // Media Capture
+    in-out property <bool> capture-avi: false;
+    in-out property <bool> capture-png: false;
+    in-out property <int> capture-audio: 0;
+    in-out property <int> screenshot-format: 0;
+    in-out property <int> screenshot-quality: 90;
+    in-out property <int> video-codec: 0;
+    in-out property <int> video-bitrate: 10;
+    in-out property <string> video-resolution: "1920x1080";
+    in-out property <int> half-pixel-offset-mode: 0;
+    in-out property <int> round-sprite-mode: 0;
+    in-out property <int> half-bottom-override: 0;
+    in-out property <int> skip-draw-start: 0;
+    in-out property <int> skip-draw-offset: 0;
+
+    SectionHeader { txt: "Display"; }
+    ComboRow { txt: "Internal Resolution"; model: ["1x Native", "2x Native", "3x Native", "4x Native", "5x Native", "6x Native", "7x Native", "8x Native"]; current-index: resolution; selected(idx) => { resolution = idx; } }
+    ComboRow { txt: "Aspect Ratio"; model: ["Auto (Game Default)", "4:3 (Standard)", "16:9 (Widescreen)", "Custom"]; current-index: aspect-ratio; selected(idx) => { aspect-ratio = idx; } }
+    ComboRow { txt: "Fullscreen Mode"; model: ["Auto", "Exclusive Fullscreen", "Borderless Fullscreen Window", "Borderless Fullscreen Desktop", "Windowed"]; current-index: 1; selected(idx) => { } }
+    ToggleRow { txt: "Integer Scaling"; sub: "Scale to integer multiples for pixel-perfect rendering"; checked: integer-scaling; toggled(v) => { integer-scaling = v; } }
+    ToggleRow { txt: "Anti-Blur"; sub: "Auto-disable texture filtering to reduce blur"; checked: anti-blur; toggled(v) => { anti-blur = v; } }
+    ComboRow { txt: "Deinterlace Mode"; model: ["None", "Weave", "Blend", "Adaptive", "Adaptive (V-Sync)", "Greedy", "Greedy (V-Sync)", "Weave (Field Rate)", "Blend (Field Rate)", "Motion Adaptive"]; current-index: deinterlace; selected(idx) => { deinterlace = idx; } }
+
+    SectionHeader { txt: "Hardware Rendering"; }
+    ComboRow { txt: "Renderer"; model: ["Automatic", "OpenGL", "Vulkan", "Software"]; current-index: renderer; selected(idx) => { renderer = idx; } }
+    ComboRow { txt: "Adapter"; model: ["Default"]; current-index: adapter; selected(idx) => { adapter = idx; } }
+    ComboRow { txt: "Texture Filtering"; model: ["Bilinear", "Bilinear (PS2)", "Nearest Neighbor"]; current-index: tex-filter; selected(idx) => { tex-filter = idx; } }
+    ComboRow { txt: "Trilinear Filtering"; model: ["Automatic", "Off", "On (Force)"]; current-index: trilinear; selected(idx) => { trilinear = idx; } }
+    ComboRow { txt: "Anisotropic Filtering"; model: ["Off", "2x", "4x", "8x", "16x"]; current-index: anisotropic; selected(idx) => { anisotropic = idx; } }
+    ComboRow { txt: "Accurate Blending"; model: ["None", "Basic (Recommended)", "Medium", "High", "Full (Slow)", "Ultra (Very Slow)"]; current-index: accurate-blending; selected(idx) => { accurate-blending = idx; } }
+    ToggleRow { txt: "GPU Palette Conversion"; sub: "Convert palette textures on GPU instead of CPU"; checked: gpu-palette-conv; toggled(v) => { gpu-palette-conv = v; } }
+    ToggleRow { txt: "Disable Vertex Cache"; sub: "Disable vertex shader cache for debugging"; checked: disable-vertex-cache; toggled(v) => { disable-vertex-cache = v; } }
+    ToggleRow { txt: "Disable Framebuffer Fetch"; sub: "Disable framebuffer fetch for graphics debugging"; checked: disable-framebuffer-fetch; toggled(v) => { disable-framebuffer-fetch = v; } }
+    ToggleRow { txt: "Disable Readbacks (Sync GS Thread)"; sub: "Disable GS readbacks by synchronizing the GS thread"; checked: disable-readbacks; toggled(v) => { disable-readbacks = v; } }
+
+    SectionHeader { txt: "Software Rendering"; }
+    ToggleRow { txt: "Auto Flush"; sub: "Force a primitive flush when framebuffer is read"; checked: auto-flush; toggled(v) => { auto-flush = v; } }
+    ToggleRow { txt: "Mipmap"; sub: "Enable software mipmap support"; checked: mipmap; toggled(v) => { mipmap = v; } }
+    ComboRow { txt: "Software Threads"; model: ["1 Thread", "2 Threads", "3 Threads", "4 Threads", "5 Threads", "6 Threads", "7 Threads", "8 Threads"]; current-index: sw-threads; selected(idx) => { sw-threads = idx; } }
+    ToggleRow { txt: "Edge Anti-Aliasing (AA1)"; sub: "Enable edge anti-aliasing for software renderer"; checked: edge-aa1; toggled(v) => { edge-aa1 = v; } }
+    ToggleRow { txt: "Merge Sprites"; sub: "Merge sprite primitives for better SW rendering"; checked: merge-sprites-sw; toggled(v) => { merge-sprites-sw = v; } }
+
+    SectionHeader { txt: "Post Processing"; }
+    ToggleRow { txt: "Shade Boost"; sub: "Enable brightness/contrast/saturation adjustments"; checked: shade-boost; toggled(v) => { shade-boost = v; } }
+    if (shade-boost) : SliderRow { txt: "Brightness"; value: 0.5; changed(v) => { } }
+    if (shade-boost) : SliderRow { txt: "Contrast"; value: 0.5; changed(v) => { } }
+    if (shade-boost) : SliderRow { txt: "Saturation"; value: 0.5; changed(v) => { } }
+    ComboRow { txt: "TV Shader"; model: ["None (Default)", "Scanline Filter", "Diagonal Filter", "Triangular Filter", "Wave Filter", "Lottes CRT", "4xRGSS Downsampling", "NxAGSS Downsampling"]; current-index: tv-shader; selected(idx) => { tv-shader = idx; } }
+    ToggleRow { txt: "FXAA"; sub: "Apply fast approximate anti-aliasing"; checked: fxaa; toggled(v) => { fxaa = v; } }
+    ComboRow { txt: "CAS Mode"; model: ["Off", "Sharpen and Resize (Display Resolution)"]; current-index: cas-sharpen; selected(idx) => { cas-sharpen = idx; } }
+    if cas-sharpen != 0: SliderRow { txt: "CAS Sharpness"; value: cas-sharpness; changed(v) => { cas-sharpness = v; } }
+    ToggleRow { txt: "Shader Cache"; sub: "Cache compiled shaders to disk for faster loading"; checked: shader-cache; toggled(v) => { shader-cache = v; } }
+
+    SectionHeader { txt: "Texture Replacement"; }
+    ToggleRow { txt: "Preload Textures"; sub: "Load all replacement textures at boot"; checked: preload-tex; toggled(v) => { preload-tex = v; } }
+    ToggleRow { txt: "Dump Textures"; sub: "Dump game textures to disk"; checked: dump-tex; toggled(v) => { dump-tex = v; } }
+    ToggleRow { txt: "Load Replacements"; sub: "Load replacement textures from disk"; checked: load-replacements; toggled(v) => { load-replacements = v; } }
+    ToggleRow { txt: "Dump Textures with Mipmaps"; sub: "Include mipmap levels when dumping textures"; checked: dump-mipmaps; toggled(v) => { dump-mipmaps = v; } }
+    ToggleRow { txt: "Dump FMV Textures"; sub: "Dump textures from FMV video sequences"; checked: dump-fmv; toggled(v) => { dump-fmv = v; } }
+    TextFieldRow { txt: "Preload Texture Dir"; value: preload-tex-dir; placeholder: "Path to texture directory..."; edited(v) => { preload-tex-dir = v; } }
+
+    // Hardware Fixes
+    SectionHeader { txt: "Hardware Fixes"; }
+    ToggleRow { txt: "Automatic Hardware Fixes"; sub: "Apply game-specific fixes automatically"; checked: hw-auto-fix; toggled(v) => { hw-auto-fix = v; } }
+
+    if !hw-auto-fix: VerticalLayout {
+        spacing: 4px;
+        ToggleRow { txt: "Texture Preloading"; sub: "Full or partial texture preloading"; checked: texture-preloading; toggled(v) => { texture-preloading = v; } }
+        ToggleRow { txt: "Half-Pixel Offset"; sub: "Offset half-pixel to fix texture alignment"; checked: half-pixel-offset; toggled(v) => { half-pixel-offset = v; } }
+        ToggleRow { txt: "Round Sprite"; sub: "Round sprite coordinates to fix alignment"; checked: round-sprite; toggled(v) => { round-sprite = v; } }
+        ToggleRow { txt: "Auto Flush (HW)"; sub: "Force primitive flush on framebuffer read"; checked: auto-flush-hw; toggled(v) => { auto-flush-hw = v; } }
+        ToggleRow { txt: "Depth Readback"; sub: "Enable depth buffer readback"; checked: depth-readback; toggled(v) => { depth-readback = v; } }
+        ToggleRow { txt: "CPU Framebuffer Conversion"; sub: "Convert framebuffer on CPU"; checked: cpu-framebuffer; toggled(v) => { cpu-framebuffer = v; } }
+        ToggleRow { txt: "GPU Palette Conversion"; sub: "Convert palette on GPU"; checked: gpu-palette; toggled(v) => { gpu-palette = v; } }
+        ToggleRow { txt: "Get DC"; sub: "Force DC offset"; checked: get-dc; toggled(v) => { get-dc = v; } }
+        ToggleRow { txt: "Mipmap (HW)"; sub: "Hardware mipmap support"; checked: mipmap-hw; toggled(v) => { mipmap-hw = v; } }
+        ToggleRow { txt: "Trilinear (HW)"; sub: "Hardware trilinear filtering"; checked: trilinear-hw; toggled(v) => { trilinear-hw = v; } }
+        ToggleRow { txt: "Skip Draw Range"; sub: "Skip draw calls in range"; checked: skip-draw; toggled(v) => { skip-draw = v; } }
+        ToggleRow { txt: "Half-Bottom Override"; sub: "Override half-bottom offset"; checked: half-bottom; toggled(v) => { half-bottom = v; } }
+        ToggleRow { txt: "Preload Frame Data"; sub: "Preload frame data to GPU"; checked: preload-frame; toggled(v) => { preload-frame = v; } }
+        ToggleRow { txt: "Disable Partial Invalidation"; sub: "Disable partial texture invalidation"; checked: disable-partial-invalidation; toggled(v) => { disable-partial-invalidation = v; } }
+        ToggleRow { txt: "Texture Inside RT"; sub: "Allow texture inside render target"; checked: texture-inside-rt; toggled(v) => { texture-inside-rt = v; } }
+        ToggleRow { txt: "Disable Render Fixes"; sub: "Disable all manual hardware renderer fixes"; checked: disable-render-fixes; toggled(v) => { disable-render-fixes = v; } }
+        ToggleRow { txt: "Software CLUT Render"; sub: "Render color lookup table on CPU"; checked: software-clut-render; toggled(v) => { software-clut-render = v; } }
+        ComboRow { txt: "CPU Sprite Render Size"; model: ["Auto", "64x64", "128x128", "256x256"]; current-index: cpu-sprite-render-size; selected(idx) => { cpu-sprite-render-size = idx; } }
+    }
+
+    // Upscaling Fixes
+    SectionHeader { txt: "Upscaling Fixes"; }
+    ComboRow { txt: "Half-Pixel Offset"; model: ["Off", "Normal (Vertex)", "Special (Texture)", "Special (Texture - Aggressive)"]; current-index: half-pixel-offset-mode; selected(idx) => { half-pixel-offset-mode = idx; } }
+    ComboRow { txt: "Round Sprite"; model: ["Off", "Half", "Full"]; current-index: round-sprite-mode; selected(idx) => { round-sprite-mode = idx; } }
+    ComboRow { txt: "Half-Bottom Override"; model: ["Automatic", "Force-Disabled", "Force-Enabled"]; current-index: half-bottom-override; selected(idx) => { half-bottom-override = idx; } }
+    ComboRow { txt: "Texture Preloading"; model: ["None", "Partial", "Full"]; current-index: 0; selected(idx) => { } }
+
+    // Media Capture
+    SectionHeader { txt: "Media Capture"; }
+    ToggleRow { txt: "Capture Video"; sub: "Record video output to file"; checked: capture-avi; toggled(v) => { capture-avi = v; } }
+    ToggleRow { txt: "Capture PNG Sequence"; sub: "Save frames as PNG images"; checked: capture-png; toggled(v) => { capture-png = v; } }
+    ComboRow { txt: "Audio Capture"; model: ["None", "WAV", "MP3"]; current-index: capture-audio; selected(idx) => { capture-audio = idx; } }
+    ComboRow { txt: "Screenshot Format"; model: ["PNG", "JPEG", "BMP", "TGA", "DDS"]; current-index: screenshot-format; selected(idx) => { screenshot-format = idx; } }
+    if screenshot-format == 1: ComboRow { txt: "JPEG Quality"; model: ["Low (50%)", "Medium (75%)", "High (90%)", "Maximum (100%)"]; current-index: 2; selected(idx) => { } }
+    ComboRow { txt: "Video Codec"; model: ["H.264", "HEVC (H.265)", "VP9", "AV1", "FFV1"]; current-index: video-codec; selected(idx) => { video-codec = idx; } }
+    TextFieldRow { txt: "Video Resolution"; value: video-resolution; placeholder: "WidthxHeight"; edited(v) => { video-resolution = v; } }
+
+    SectionHeader { txt: "Advanced"; }
+    ComboRow { txt: "GS Dump Compression"; model: ["Uncompressed", "Zstandard", "LZMA"]; current-index: gs-dump-compression; selected(idx) => { gs-dump-compression = idx; } }
+    ToggleRow { txt: "Allow Exclusive Fullscreen"; sub: "Use exclusive fullscreen mode (may reduce input lag)"; checked: exclusive-fs; toggled(v) => { exclusive-fs = v; } }
+    ToggleRow { txt: "Override Texture Barriers"; sub: "Override texture barrier behavior (debug)"; checked: override-tex-barriers; toggled(v) => { override-tex-barriers = v; } }
+    ToggleRow { txt: "Use Debug Device"; sub: "Enable graphics debug device for debugging"; checked: debug-device; toggled(v) => { debug-device = v; } }
+    ToggleRow { txt: "Use Debug Blend"; sub: "Enable debug blend operations"; checked: debug-blend; toggled(v) => { debug-blend = v; } }
+}

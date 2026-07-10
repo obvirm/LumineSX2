@@ -1,0 +1,64 @@
+import { HorizontalBox, VerticalBox } from "std-widgets.slint";
+
+export struct ThreadEntry {
+    id: int,
+    pc: string,
+    name: string,
+    state: string,
+    priority: int,
+    cycles: string,
+}
+
+export component ThreadView inherits Rectangle {
+    in property <[ThreadEntry]> entries: [];
+    callback entry-clicked(int);
+    callback entry-double-clicked(int);
+    callback suspend-thread(int);
+    callback resume-thread(int);
+
+    background: #11111b;
+
+    VerticalBox {
+        padding: 0;
+        spacing: 0;
+
+        Rectangle {
+            height: 24px;
+            background: #181825;
+            HorizontalLayout {
+                padding: 4px;
+                Text { text: "ID"; color: #89b4fa; font-size: 10px; font-weight: 600; width: 40px; }
+                Text { text: "PC"; color: #89b4fa; font-size: 10px; font-weight: 600; width: 90px; }
+                Text { text: "Name"; color: #89b4fa; font-size: 10px; font-weight: 600; horizontal-stretch: 1; }
+                Text { text: "State"; color: #89b4fa; font-size: 10px; font-weight: 600; width: 70px; }
+                Text { text: "Priority"; color: #89b4fa; font-size: 10px; font-weight: 600; width: 50px; }
+                Text { text: "Cycles"; color: #89b4fa; font-size: 10px; font-weight: 600; width: 90px; }
+            }
+        }
+        Rectangle { height: 1px; background: #313244; }
+
+        Flickable {
+            vertical-stretch: 1;
+            viewport-height: entries.length * 20px;
+            for entry[idx] in entries: Rectangle {
+                y: idx * 20px;
+                height: 20px;
+                background: Math.mod(idx, 2) == 0 ? transparent : #181825;
+                TouchArea {
+                    clicked => { root.entry-clicked(idx); }
+                    double-clicked => { root.entry-double-clicked(idx); }
+                }
+                HorizontalLayout {
+                    padding: 2px;
+                    padding-left: 4px;
+                    Text { text: entry.id; color: #cdd6f4; font-size: 11px; font-family: "Cascadia Code"; width: 40px; }
+                    Text { text: entry.pc; color: #89b4fa; font-size: 11px; font-family: "Cascadia Code"; width: 90px; }
+                    Text { text: entry.name; color: #a6e3a1; font-size: 11px; horizontal-stretch: 1; overflow: elide; }
+                    Text { text: entry.state; color: entry.state == "Running" ? #a6e3a1 : #f9e2af; font-size: 11px; width: 70px; }
+                    Text { text: entry.priority; color: #cdd6f4; font-size: 11px; width: 50px; }
+                    Text { text: entry.cycles; color: #6c7086; font-size: 11px; font-family: "Cascadia Code"; width: 90px; }
+                }
+            }
+        }
+    }
+}

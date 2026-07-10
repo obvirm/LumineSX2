@@ -1,0 +1,64 @@
+// Controller settings pages
+import { SettingsRow, ToggleRow, SectionHeader, DetailPage, SliderRow, ComboRow, TextFieldRow, MaterialColors } from "./common.slint";
+
+// 1. Controller Settings
+export component ControllerSettingsView inherits DetailPage {
+    title: "Pengaturan Pengontrol";
+    
+    in-out property <bool> sdl-input: true;
+    in-out property <int> port1-type: 0;
+    in-out property <int> port2-type: 0;
+    in-out property <int> usb1-device: 0;
+    in-out property <int> usb2-device: 0;
+
+    SectionHeader { txt: "Global Settings"; }
+    ToggleRow { txt: "Enable SDL Input"; sub: "Use SDL for controller input"; checked: sdl-input; toggled(v) => { sdl-input = v; } }
+    SettingsRow { txt: "LED Settings"; sub: "Configure controller LED colors"; ico: @image-url("icons/qt/settings-3-line.svg"); show-arrow: true; }
+    SettingsRow { txt: "Mouse Settings"; sub: "Mouse sensitivity and mapping"; ico: @image-url("icons/qt/settings-3-line.svg"); show-arrow: true; }
+
+    SectionHeader { txt: "Per-Port Controller"; }
+    SettingsRow { txt: "Port 1"; sub: "DualShock 2 (Configured)"; ico: @image-url("icons/qt/controller-line.svg"); show-arrow: true; }
+    SettingsRow { txt: "Port 2"; sub: "Not Connected"; ico: @image-url("icons/qt/controller-line.svg"); show-arrow: true; }
+    SettingsRow { txt: "Port 3"; sub: "Not Connected"; ico: @image-url("icons/qt/controller-line.svg"); }
+    SettingsRow { txt: "Port 4"; sub: "Not Connected"; ico: @image-url("icons/qt/controller-line.svg"); }
+
+    SectionHeader { txt: "Hotkey Settings"; }
+    SettingsRow { txt: "Hotkey Bindings"; sub: "Configure keyboard/controller hotkeys"; ico: @image-url("icons/qt/settings-3-line.svg"); show-arrow: true; }
+
+    SectionHeader { txt: "USB Devices"; }
+    ComboRow { txt: "Port 1 USB"; model: ["None", "GunCon2", "USB Keyboard", "USB Mouse"]; current-index: usb1-device; selected(idx) => { usb1-device = idx; } }
+    ComboRow { txt: "Port 2 USB"; model: ["None", "GunCon2", "USB Keyboard", "USB Mouse"]; current-index: usb2-device; selected(idx) => { usb2-device = idx; } }
+}
+
+// 2. Controller Binding View
+export component ControllerBindingView inherits DetailPage {
+    title: "DualShock 2 — Port 1";
+    
+    SectionHeader { txt: "D-Pad"; }
+    SettingsRow { txt: "Up"; sub: "D-Pad Up"; ico: @image-url("icons/qt/controller-line.svg"); }
+    SettingsRow { txt: "Down"; sub: "D-Pad Down"; ico: @image-url("icons/qt/controller-line.svg"); }
+    SettingsRow { txt: "Left"; sub: "D-Pad Left"; ico: @image-url("icons/qt/controller-line.svg"); }
+    SettingsRow { txt: "Right"; sub: "D-Pad Right"; ico: @image-url("icons/qt/controller-line.svg"); }
+
+    SectionHeader { txt: "Face Buttons"; }
+    SettingsRow { txt: "Triangle"; sub: "△"; ico: @image-url("icons/qt/controller-line.svg"); }
+    SettingsRow { txt: "Cross"; sub: "✕"; ico: @image-url("icons/qt/controller-line.svg"); }
+    SettingsRow { txt: "Square"; sub: "□"; ico: @image-url("icons/qt/controller-line.svg"); }
+    SettingsRow { txt: "Circle"; sub: "○"; ico: @image-url("icons/qt/controller-line.svg"); }
+
+    SectionHeader { txt: "Shoulder Buttons"; }
+    SettingsRow { txt: "L1"; sub: "Left Bumper"; ico: @image-url("icons/qt/controller-line.svg"); }
+    SettingsRow { txt: "L2"; sub: "Left Trigger"; ico: @image-url("icons/qt/controller-line.svg"); }
+    SettingsRow { txt: "R1"; sub: "Right Bumper"; ico: @image-url("icons/qt/controller-line.svg"); }
+    SettingsRow { txt: "R2"; sub: "Right Trigger"; ico: @image-url("icons/qt/controller-line.svg"); }
+
+    SectionHeader { txt: "Special"; }
+    SettingsRow { txt: "Start"; ico: @image-url("icons/qt/controller-line.svg"); }
+    SettingsRow { txt: "Select"; ico: @image-url("icons/qt/controller-line.svg"); }
+    SettingsRow { txt: "L3"; sub: "Left Stick Press"; ico: @image-url("icons/qt/controller-line.svg"); }
+    SettingsRow { txt: "R3"; sub: "Right Stick Press"; ico: @image-url("icons/qt/controller-line.svg"); }
+
+    SectionHeader { txt: "Actions"; }
+    SettingsRow { txt: "Auto Map"; sub: "Automatically map buttons"; ico: @image-url("icons/qt/settings-3-line.svg"); }
+    SettingsRow { txt: "Reset to Default"; ico: @image-url("icons/qt/refresh-line.svg"); }
+}

@@ -1,0 +1,71 @@
+import { HorizontalBox, VerticalBox } from "std-widgets.slint";
+
+export struct StackEntry {
+    entry: int,
+    label: string,
+    pc: string,
+    opcode: string,
+    sp: string,
+    size: string,
+}
+
+export component StackView inherits Rectangle {
+    in property <[StackEntry]> entries: [];
+    callback entry-clicked(int);
+    callback entry-double-clicked(int);
+
+    background: #11111b;
+
+    VerticalBox {
+        padding: 0;
+        spacing: 0;
+
+        // Header
+        Rectangle {
+            height: 24px;
+            background: #181825;
+
+            HorizontalLayout {
+                padding: 4px;
+                spacing: 0;
+                Text { text: "#"; color: #89b4fa; font-size: 10px; font-weight: 600; width: 30px; }
+                Text { text: "Label"; color: #89b4fa; font-size: 10px; font-weight: 600; horizontal-stretch: 1; }
+                Text { text: "PC"; color: #89b4fa; font-size: 10px; font-weight: 600; width: 90px; }
+                Text { text: "Opcode"; color: #89b4fa; font-size: 10px; font-weight: 600; horizontal-stretch: 1; }
+                Text { text: "SP"; color: #89b4fa; font-size: 10px; font-weight: 600; width: 90px; }
+                Text { text: "Size"; color: #89b4fa; font-size: 10px; font-weight: 600; width: 60px; }
+            }
+        }
+
+        Rectangle { height: 1px; background: #313244; }
+
+        // Entries
+        Flickable {
+            vertical-stretch: 1;
+            viewport-height: entries.length * 20px;
+
+            for entry[idx] in entries: Rectangle {
+                y: idx * 20px;
+                height: 20px;
+                background: Math.mod(idx, 2) == 0 ? transparent : #181825;
+
+                TouchArea {
+                    clicked => { root.entry-clicked(idx); }
+                    double-clicked => { root.entry-double-clicked(idx); }
+                }
+
+                HorizontalLayout {
+                    padding: 2px;
+                    padding-left: 4px;
+                    spacing: 0;
+                    Text { text: entry.entry; color: #cdd6f4; font-size: 11px; font-family: "Cascadia Code"; width: 30px; }
+                    Text { text: entry.label; color: #a6e3a1; font-size: 11px; font-family: "Cascadia Code"; horizontal-stretch: 1; overflow: elide; }
+                    Text { text: entry.pc; color: #89b4fa; font-size: 11px; font-family: "Cascadia Code"; width: 90px; }
+                    Text { text: entry.opcode; color: #cdd6f4; font-size: 11px; font-family: "Cascadia Code"; horizontal-stretch: 1; overflow: elide; }
+                    Text { text: entry.sp; color: #6c7086; font-size: 11px; font-family: "Cascadia Code"; width: 90px; }
+                    Text { text: entry.size; color: #6c7086; font-size: 11px; font-family: "Cascadia Code"; width: 60px; }
+                }
+            }
+        }
+    }
+}

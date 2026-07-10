@@ -1,0 +1,5 @@
+??$GetSymbol@P6A?AUAVRational@@NH@Z@DynamicLibrary@@QEBA_NPEBDPEAP6A?AUAVRational@@NH@Z@Z
+?Close@DynamicLibrary@@QEAAXXZ
+?GetSymbolAddress@DynamicLibrary@@QEBAPEAXPEBD@Z
+?GetVersionedFilename@DynamicLibrary@@SA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEBDHH@Z
+?Open@DynamicLibrary@@QEAA_NPEBDPEAVError@@@Z

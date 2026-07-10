@@ -1,0 +1,6 @@
+??$IdempotentWrite@E@MemoryInterface@@QEAA_NIE@Z
+?IdempotentWrite16@MemoryInterface@@QEAA_NIG@Z
+?IdempotentWrite32@MemoryInterface@@QEAA_NII@Z
+?IdempotentWrite64@MemoryInterface@@QEAA_NI_K@Z
+?IdempotentWrite8@MemoryInterface@@QEAA_NIE@Z
+?IdempotentWriteBytes@MemoryInterface@@QEAA_NIPEAXI@Z

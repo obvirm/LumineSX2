@@ -1,0 +1,188 @@
+// BIOS Settings Page — standalone layout
+import { ToggleRow } from "./common.slint";
+import { ScrollView } from "std-widgets.slint";
+
+export struct BiosEntry {
+    filename: string,
+    description: string,
+    region: int,
+    region-label: string,
+    valid: bool,
+}
+
+export component BiosSettingsView inherits Rectangle {
+    in property <string> title: "Pengaturan BIOS";
+
+    in-out property <string> bios-dir: "bios";
+    in-out property <bool> fast-boot: true;
+    in-out property <bool> fast-forward-boot: false;
+    in-out property <int> selected-bios-idx: -1;
+    in-out property <[BiosEntry]> bios-entries: [];
+
+    callback back-clicked;
+    callback browse-bios-folder();
+    callback reset-bios-folder();
+    callback open-bios-folder();
+    callback refresh-bios-list();
+    callback select-bios(int);
+
+    pure function region-label-fn(region: int) -> string {
+        region == 0 ? "JPN" : region == 1 ? "USA" : region == 2 ? "EUR" :
+        region == 3 ? "OCE" : region == 4 ? "ASI" : region == 5 ? "RUS" :
+        region == 6 ? "CHN" : region == 7 ? "MEX" : "???"
+    }
+
+    background: #141218;
+    clip: true;
+
+    VerticalLayout {
+        // Top bar
+        HorizontalLayout {
+            height: 48px; spacing: 12px; padding-left: 16px; padding-right: 16px;
+            Rectangle {
+                width: 36px; height: 36px; border-radius: 18px;
+                background: back-ta.has-hover ? #ffffff10 : transparent;
+                Image { source: @image-url("icons/qt/arrow-left-right-line.svg"); colorize: #CAC4D0; width: 18px; height: 18px; x: 9px; y: 9px; }
+                back-ta := TouchArea { clicked => { root.back-clicked(); } }
+            }
+            Text { text: title; color: #E6E0E9; font-size: 18px; font-weight: 500; vertical-alignment: center; }
+        }
+        Rectangle { height: 1px; background: #211F26; }
+
+        // Content
+        ScrollView {
+            VerticalLayout {
+                // BIOS Directory header
+                HorizontalLayout {
+                    height: 28px; padding-left: 20px;
+                    Text { text: "BIOS Directory"; color: #D0BCFF; font-size: 12px; font-weight: 600; vertical-alignment: center; }
+                }
+
+                // Input row
+                HorizontalLayout {
+                    height: 44px; spacing: 8px; padding-left: 20px; padding-right: 20px;
+                    Rectangle {
+                        horizontal-stretch: 1; height: 36px; border-radius: 8px;
+                        background: #1D1B20; border-width: 1px; border-color: #49454F;
+                        HorizontalLayout {
+                            padding-left: 12px; padding-right: 12px;
+                            Text { text: bios-dir; color: #CAC4D0; font-size: 13px; vertical-alignment: center; overflow: elide; }
+                        }
+                    }
+                    Rectangle {
+                        width: 36px; height: 36px; border-radius: 8px;
+                        background: ta-browse.has-hover ? #36343B : #2B2930;
+                        Image { source: @image-url("icons/qt/folder-open-line.svg"); colorize: #CAC4D0; width: 18px; height: 18px; }
+                        ta-browse := TouchArea { clicked => { root.browse-bios-folder(); } }
+                    }
+                    Rectangle {
+                        width: 36px; height: 36px; border-radius: 8px;
+                        background: ta-reset.has-hover ? #36343B : #2B2930;
+                        Image { source: @image-url("icons/qt/restart-line.svg"); colorize: #CAC4D0; width: 18px; height: 18px; }
+                        ta-reset := TouchArea { clicked => { root.reset-bios-folder(); } }
+                    }
+                }
+                Rectangle { height: 1px; background: #211F26; x: 20px; }
+
+                // Boot Options header
+                HorizontalLayout {
+                    height: 28px; padding-left: 20px;
+                    Text { text: "Boot Options"; color: #D0BCFF; font-size: 12px; font-weight: 600; vertical-alignment: center; }
+                }
+
+                // Fast Boot
+                ToggleRow {
+                    txt: "Fast Boot"; sub: "Lewati animasi boot BIOS";
+                    checked: fast-boot;
+                    toggled(v) => { fast-boot = v; if (!fast-boot) { fast-forward-boot = false; } }
+                }
+
+                // Fast Forward Boot
+                ToggleRow {
+                    txt: "Fast Forward Boot"; sub: "Hapus throttle sampai game mulai";
+                    checked: fast-forward-boot;
+                    opacity: fast-boot ? 1.0 : 0.38;
+                    toggled(v) => { if (fast-boot) { fast-forward-boot = v; } }
+                }
+
+                // BIOS list header (only when entries exist)
+                if (bios-entries.length > 0) : HorizontalLayout {
+                    height: 28px; padding-left: 20px;
+                    Text { text: "BIOS Terdeteksi"; color: #D0BCFF; font-size: 12px; font-weight: 600; vertical-alignment: center; }
+                }
+
+                if (bios-entries.length > 0) : HorizontalLayout {
+                    height: 32px; padding-left: 20px; padding-right: 20px; spacing: 8px;
+                    Text { text: bios-entries.length + " file"; color: #CAC4D0; font-size: 13px; horizontal-stretch: 1; vertical-alignment: center; }
+                    Rectangle {
+                        width: 28px; height: 28px; border-radius: 6px;
+                        background: ta-open2.has-hover ? #36343B : #2B2930;
+                        Image { source: @image-url("icons/qt/folder-open-line.svg"); colorize: #CAC4D0; width: 16px; height: 16px; }
+                        ta-open2 := TouchArea { clicked => { root.open-bios-folder(); } }
+                    }
+                    Rectangle {
+                        width: 28px; height: 28px; border-radius: 6px;
+                        background: ta-refresh2.has-hover ? #36343B : #2B2930;
+                        Image { source: @image-url("icons/qt/refresh-line.svg"); colorize: #CAC4D0; width: 16px; height: 16px; }
+                        ta-refresh2 := TouchArea { clicked => { root.refresh-bios-list(); } }
+                    }
+                }
+
+                // Empty state
+                if (bios-entries.length == 0) : HorizontalLayout {
+                    height: 36px; padding-left: 20px; padding-right: 20px; spacing: 8px;
+                    Image { source: @image-url("icons/qt/folder-open-line.svg"); colorize: #49454F; width: 16px; height: 16px; vertical-alignment: center; }
+                    Text { text: "Belum ada BIOS"; color: #938F99; font-size: 12px; horizontal-stretch: 1; vertical-alignment: center; }
+                    // Refresh button (always visible)
+                    Rectangle {
+                        width: 28px; height: 28px; border-radius: 6px;
+                        background: ta-refresh.has-hover ? #36343B : #2B2930;
+                        Image { source: @image-url("icons/qt/refresh-line.svg"); colorize: #CAC4D0; width: 16px; height: 16px; }
+                        ta-refresh := TouchArea { clicked => { root.refresh-bios-list(); } }
+                    }
+                    // Open folder button
+                    Rectangle {
+                        width: 28px; height: 28px; border-radius: 6px;
+                        background: ta-open.has-hover ? #36343B : #2B2930;
+                        Image { source: @image-url("icons/qt/folder-open-line.svg"); colorize: #CAC4D0; width: 16px; height: 16px; }
+                        ta-open := TouchArea { clicked => { root.open-bios-folder(); } }
+                    }
+                }
+
+                // BIOS entries
+                for entry[idx] in bios-entries : Rectangle {
+                    height: 48px;
+                    background: selected-bios-idx == idx ? #D0BCFF10 : ta-entry.has-hover ? #ffffff05 : transparent;
+                    HorizontalLayout {
+                        padding-left: 20px; padding-right: 20px; spacing: 12px;
+                        VerticalLayout { alignment: center; width: 28px;
+                            Rectangle {
+                                width: 20px; height: 20px; border-radius: 10px;
+                                background: selected-bios-idx == idx ? #D0BCFF : transparent;
+                                border-width: 2px; border-color: selected-bios-idx == idx ? #D0BCFF : #49454F;
+                                Text { text: "✓"; color: #381E72; font-size: 12px; font-weight: 700; horizontal-alignment: center; vertical-alignment: center; opacity: selected-bios-idx == idx ? 1.0 : 0.0; }
+                            }
+                        }
+                        VerticalLayout { alignment: center; width: 32px;
+                            Rectangle {
+                                width: 32px; height: 18px; border-radius: 4px;
+                                background: entry.region == 0 ? #1A237E20 : entry.region == 1 ? #B71C1C20 : entry.region == 2 ? #0D47A120 : #455A6420;
+                                Text { text: region-label-fn(entry.region); color: #CAC4D0; font-size: 9px; font-weight: 700; horizontal-alignment: center; vertical-alignment: center; }
+                            }
+                        }
+                        VerticalLayout {
+                            horizontal-stretch: 1; alignment: center; spacing: 1px;
+                            Text { text: entry.filename; color: #E6E0E9; font-size: 12px; font-weight: 500; overflow: elide; }
+                            Text { text: entry.description + (entry.valid ? " • " + entry.region-label : ""); color: #938F99; font-size: 10px; }
+                        }
+                    }
+                    ta-entry := TouchArea { clicked => { selected-bios-idx = idx; root.select-bios(idx); } }
+                    Rectangle { height: 1px; background: #211F26; y: parent.height - 1px; x: 52px; }
+                }
+
+                // Bottom padding
+                Rectangle { height: 16px; }
+            }
+        }
+    }
+}

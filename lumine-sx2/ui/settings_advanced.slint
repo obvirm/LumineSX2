@@ -1,0 +1,91 @@
+// Advanced Settings Page
+import { ToggleRow, SectionHeader, DetailPage, ComboRow } from "./common.slint";
+
+export component AdvancedSettingsView inherits DetailPage {
+    title: "Lanjutan";
+    
+    in-out property <int> ee-clamp: 0;
+    in-out property <int> ee-round: 0;
+    in-out property <bool> ee-recompiler: true;
+    in-out property <bool> ee-cache: false;
+    in-out property <int> ee-div-round: 0;
+    in-out property <bool> intc-spin: true;
+    in-out property <bool> wait-loop: true;
+    in-out property <int> fast-mem: 0;
+    in-out property <bool> pause-on-tlb: false;
+    in-out property <bool> extended-ram: false;
+    in-out property <int> vu0-clamp: 0;
+    in-out property <int> vu0-round: 0;
+    in-out property <int> vu1-clamp: 0;
+    in-out property <int> vu1-round: 0;
+    in-out property <bool> vu0-recompiler: true;
+    in-out property <bool> vu1-recompiler: true;
+    in-out property <bool> mvu-flag: true;
+    in-out property <bool> instant-vu1: false;
+    in-out property <bool> iop-recompiler: true;
+    in-out property <int> compression-method: 1;
+    in-out property <int> compression-level: 2;
+    in-out property <bool> backup-savestates: true;
+    in-out property <bool> host-fs: false;
+    in-out property <bool> pine-enabled: false;
+    in-out property <int> pine-slot: 0;
+
+    // Disclaimer
+    Rectangle {
+        height: 36px;
+        HorizontalLayout {
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            Text {
+                text: "⚠ Advanced settings can cause instability and break games. Change only if you know what you're doing.";
+                color: #F2B8B5;
+                font-size: 12px;
+                wrap: word-wrap;
+                vertical-alignment: center;
+            }
+        }
+    }
+
+    SectionHeader { txt: "EE Recompiler"; }
+    ToggleRow { txt: "EE Recompiler"; sub: "Enable Emotion Engine recompiler (disable = interpreter)"; checked: ee-recompiler; toggled(v) => { ee-recompiler = v; } }
+    ToggleRow { txt: "EE Cache"; sub: "Enable EE recompiler cache (diagnostic only)"; checked: ee-cache; toggled(v) => { ee-cache = v; } }
+    ComboRow { txt: "Division Rounding"; model: ["Nearest", "Negative Infinity", "Positive Infinity", "Chop (Truncate)"]; current-index: ee-div-round; selected(idx) => { ee-div-round = idx; } }
+
+    SectionHeader { txt: "EE (Emotion Engine) — Clamp/Round"; }
+    ComboRow { txt: "EE FPU Clamp Mode"; model: ["Disabled", "Normal", "Extra + Sign", "Full"]; current-index: ee-clamp; selected(idx) => { ee-clamp = idx; } }
+    ComboRow { txt: "EE FPU Round Mode"; model: ["Nearest", "Negative Infinity", "Positive Infinity", "Chop (Truncate)"]; current-index: ee-round; selected(idx) => { ee-round = idx; } }
+
+    SectionHeader { txt: "Speed Hacks"; }
+    ToggleRow { txt: "INTC Spin Detection"; sub: "Detect and skip unnecessary interrupt handler loops"; checked: intc-spin; toggled(v) => { intc-spin = v; } }
+    ToggleRow { txt: "Wait Loop Detection"; sub: "Detect and accelerate busy-wait loops"; checked: wait-loop; toggled(v) => { wait-loop = v; } }
+    ComboRow { txt: "Fast Memory Access"; model: ["Normal", "Fast", "Aggressive", "None"]; current-index: fast-mem; selected(idx) => { fast-mem = idx; } }
+
+    SectionHeader { txt: "VU (Vector Units)"; }
+    ToggleRow { txt: "VU0 Recompiler"; sub: "Enable VU0 recompiler (disable = interpreter)"; checked: vu0-recompiler; toggled(v) => { vu0-recompiler = v; } }
+    ToggleRow { txt: "VU1 Recompiler"; sub: "Enable VU1 recompiler (disable = interpreter)"; checked: vu1-recompiler; toggled(v) => { vu1-recompiler = v; } }
+    ToggleRow { txt: "mVU Flag Hack"; sub: "Optimize microVU flag handling"; checked: mvu-flag; toggled(v) => { mvu-flag = v; } }
+    ToggleRow { txt: "Instant VU1"; sub: "Run VU1 synchronously instead of pipelined"; checked: instant-vu1; toggled(v) => { instant-vu1 = v; } }
+    ComboRow { txt: "VU0 Clamp Mode"; model: ["Disabled", "Normal", "Extra + Sign", "Full"]; current-index: vu0-clamp; selected(idx) => { vu0-clamp = idx; } }
+    ComboRow { txt: "VU0 Round Mode"; model: ["Nearest", "Negative Infinity", "Positive Infinity", "Chop (Truncate)"]; current-index: vu0-round; selected(idx) => { vu0-round = idx; } }
+    ComboRow { txt: "VU1 Clamp Mode"; model: ["Disabled", "Normal", "Extra + Sign", "Full"]; current-index: vu1-clamp; selected(idx) => { vu1-clamp = idx; } }
+    ComboRow { txt: "VU1 Round Mode"; model: ["Nearest", "Negative Infinity", "Positive Infinity", "Chop (Truncate)"]; current-index: vu1-round; selected(idx) => { vu1-round = idx; } }
+
+    SectionHeader { txt: "IOP"; }
+    ToggleRow { txt: "IOP Recompiler"; sub: "Enable IOP recompiler (disable = interpreter)"; checked: iop-recompiler; toggled(v) => { iop-recompiler = v; } }
+
+    SectionHeader { txt: "Debug"; }
+    ToggleRow { txt: "Pause on TLB Miss"; sub: "Pause emulation on TLB miss (debug feature)"; checked: pause-on-tlb; toggled(v) => { pause-on-tlb = v; } }
+    ToggleRow { txt: "Enable Extended RAM"; sub: "Enable 256MB extended RAM (Dev Console games)"; checked: extended-ram; toggled(v) => { extended-ram = v; } }
+
+    SectionHeader { txt: "Savestate"; }
+    ComboRow { txt: "Compression Method"; model: ["Uncompressed", "Deflate", "Zstandard"]; current-index: compression-method; selected(idx) => { compression-method = idx; } }
+    if compression-method != 0: ComboRow { txt: "Compression Level"; model: ["Fast", "Normal", "High", "Max"]; current-index: compression-level; selected(idx) => { compression-level = idx; } }
+    ToggleRow { txt: "Backup Savestates"; sub: "Create .backup copy when overwriting a savestate"; checked: backup-savestates; toggled(v) => { backup-savestates = v; } }
+    ToggleRow { txt: "Host Filesystem"; sub: "Allow access to host filesystem from VM"; checked: host-fs; toggled(v) => { host-fs = v; } }
+
+    SectionHeader { txt: "Developer"; }
+    ToggleRow { txt: "Enable PINE"; sub: "PCSX2 Integrated Network Environment (IPC for external tools)"; checked: pine-enabled; toggled(v) => { pine-enabled = v; } }
+    if pine-enabled: ComboRow { txt: "PINE Slot"; model: ["Slot 0", "Slot 1", "Slot 2", "Slot 3"]; current-index: pine-slot; selected(idx) => { pine-slot = idx; } }
+}

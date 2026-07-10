@@ -1,0 +1,51 @@
+// Game Fixes Settings Page
+import { ToggleRow, SectionHeader, DetailPage } from "./common.slint";
+
+export component GameFixesSettingsView inherits DetailPage {
+    title: "Game Fixes";
+    
+    in-out property <bool> fpu-mul-hack: false;
+    in-out property <bool> fpu-full-mode: false;
+    in-out property <bool> xgkick-hack: false;
+    in-out property <bool> ee-timing-hack: false;
+    in-out property <bool> skip-mpeg-hack: false;
+    in-out property <bool> oph-flag-hack: false;
+    in-out property <bool> blit-invalidate-hack: false;
+    in-out property <bool> vU0-branch-hack: false;
+    in-out property <bool> vu-add-sub-hack: false;
+    in-out property <bool> vu-compare-hack: false;
+    in-out property <bool> vu-max-hack: false;
+    in-out property <bool> vu-min-hack: false;
+    in-out property <bool> auto-flush-gs: false;
+    in-out property <bool> conservative-framebuffer: false;
+    in-out property <bool> texture-inside-rt: false;
+    in-out property <bool> dma-busy-hack: false;
+    in-out property <bool> gif-fifo-hack: false;
+    in-out property <bool> goemon-tlb-hack: false;
+
+    SectionHeader { txt: "EE Hacks"; }
+    ToggleRow { txt: "FPU Multiply Hack"; sub: "Fix FPU multiplication issues"; checked: fpu-mul-hack; toggled(v) => { fpu-mul-hack = v; } }
+    ToggleRow { txt: "FPU Full Mode"; sub: "Use full FPU precision"; checked: fpu-full-mode; toggled(v) => { fpu-full-mode = v; } }
+    ToggleRow { txt: "XGKick Hack"; sub: "Fix XGKick instruction timing"; checked: xgkick-hack; toggled(v) => { xgkick-hack = v; } }
+    ToggleRow { txt: "EE Timing Hack"; sub: "Fix EE cycle timing issues"; checked: ee-timing-hack; toggled(v) => { ee-timing-hack = v; } }
+    ToggleRow { txt: "Skip MPEG Hack"; sub: "Skip MPEG video sequences"; checked: skip-mpeg-hack; toggled(v) => { skip-mpeg-hack = v; } }
+    ToggleRow { txt: "OPH Flag Hack"; sub: "Fix OPH flag handling"; checked: oph-flag-hack; toggled(v) => { oph-flag-hack = v; } }
+    ToggleRow { txt: "Blit Invalidate Hack"; sub: "Fix blit invalidation issues"; checked: blit-invalidate-hack; toggled(v) => { blit-invalidate-hack = v; } }
+    ToggleRow { txt: "VU0 Branch Hack"; sub: "Fix VU0 branch handling"; checked: vU0-branch-hack; toggled(v) => { vU0-branch-hack = v; } }
+
+    SectionHeader { txt: "VU Hacks"; }
+    ToggleRow { txt: "VU Add/Sub Hack"; sub: "Fix VU add/subtract precision"; checked: vu-add-sub-hack; toggled(v) => { vu-add-sub-hack = v; } }
+    ToggleRow { txt: "VU Compare Hack"; sub: "Fix VU compare operations"; checked: vu-compare-hack; toggled(v) => { vu-compare-hack = v; } }
+    ToggleRow { txt: "VU Max Hack"; sub: "Fix VU max instruction"; checked: vu-max-hack; toggled(v) => { vu-max-hack = v; } }
+    ToggleRow { txt: "VU Min Hack"; sub: "Fix VU min instruction"; checked: vu-min-hack; toggled(v) => { vu-min-hack = v; } }
+
+    SectionHeader { txt: "GS Hacks"; }
+    ToggleRow { txt: "Auto Flush (GS)"; sub: "Force primitive flush"; checked: auto-flush-gs; toggled(v) => { auto-flush-gs = v; } }
+    ToggleRow { txt: "Conservative Framebuffer"; sub: "Use conservative framebuffer allocation"; checked: conservative-framebuffer; toggled(v) => { conservative-framebuffer = v; } }
+    ToggleRow { txt: "Texture Inside RT"; sub: "Allow texture inside render target"; checked: texture-inside-rt; toggled(v) => { texture-inside-rt = v; } }
+
+    SectionHeader { txt: "Other Hacks"; }
+    ToggleRow { txt: "DMA Busy Hack"; sub: "Fix DMA busy flag issues"; checked: dma-busy-hack; toggled(v) => { dma-busy-hack = v; } }
+    ToggleRow { txt: "GIF FIFO Hack"; sub: "Fix GIF FIFO behavior"; checked: gif-fifo-hack; toggled(v) => { gif-fifo-hack = v; } }
+    ToggleRow { txt: "Goemon TLB Hack"; sub: "Fix TLB issues for Goemon games"; checked: goemon-tlb-hack; toggled(v) => { goemon-tlb-hack = v; } }
+}

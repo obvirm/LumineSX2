@@ -1,0 +1,308 @@
+import { Button, HorizontalBox, VerticalBox, ComboBox, ScrollView } from "std-widgets.slint";
+import { DisassemblyView, DisassemblyLine, BranchLine } from "debug_disassembly.slint";
+import { RegisterView, RegisterEntry, Register128, Register64 } from "debug_registers.slint";
+import { StackView, StackEntry } from "debug_stack.slint";
+import { ThreadView, ThreadEntry } from "debug_threads.slint";
+import { ModuleView, ModuleEntry } from "debug_modules.slint";
+import { MemoryView, MemoryLine } from "debug_memory.slint";
+import { BreakpointView, BreakpointEntry } from "debug_breakpoints.slint";
+import { SymbolView, SymbolEntry } from "debug_symbols.slint";
+import { MemorySearchView, SearchResult } from "debug_memory_search.slint";
+import { SavedAddressesView, SavedAddress } from "debug_saved_addresses.slint";
+import { DockTabBar, DockTab, DockSplitterView, DockSplitter, DockLayoutManager, DockLayout } from "debug_docking.slint";
+
+// Re-export types for main.slint
+export { DisassemblyLine, BranchLine } from "debug_disassembly.slint";
+export { RegisterEntry, Register128, Register64 } from "debug_registers.slint";
+export { StackEntry } from "debug_stack.slint";
+export { ThreadEntry } from "debug_threads.slint";
+export { ModuleEntry } from "debug_modules.slint";
+export { MemoryLine } from "debug_memory.slint";
+export { BreakpointEntry } from "debug_breakpoints.slint";
+export { SymbolEntry } from "debug_symbols.slint";
+
+// ─── Debug Page ───
+export component DebugPage inherits Rectangle {
+    // ─── State ───
+    in property <string> current-cpu: "EE";
+    in property <bool> is-running: false;
+    in property <bool> is-paused: false;
+    in property <bool> is-locked: true;
+    in property <int> current-layout: 0;
+
+    // ─── Data ───
+    in property <[DisassemblyLine]> disasm-lines: [];
+    in property <[BranchLine]> branch-lines: [];
+    in property <string> disasm-title: "";
+    in property <int> disasm-title-r: 137;
+    in property <int> disasm-title-g: 180;
+    in property <int> disasm-title-b: 250;
+    in property <string> current-pc: "0x00000000";
+    in property <bool> show-instruction-bytes: true;
+
+    in property <[string]> reg-categories: ["EE", "VU0", "VU1", "FPR", "COP0", "IOP"];
+    in property <int> reg-category: 0;
+    in property <[RegisterEntry]> regs32: [];
+    in property <[Register128]> regs128: [];
+    in property <[Register64]> regs64: [];
+    in property <int> reg-size: 32;
+    in property <bool> reg-show-float: false;
+
+    in property <[StackEntry]> stack-entries: [];
+    in property <[ThreadEntry]> thread-entries: [];
+    in property <[ModuleEntry]> module-entries: [];
+    in property <[MemoryLine]> memory-lines: [];
+    in property <[BreakpointEntry]> bp-entries: [];
+    in property <[SymbolEntry]> symbol-entries: [];
+    in property <[SearchResult]> search-results: [];
+    in property <[SavedAddress]> saved-addresses: [];
+    in property <int> search-result-count: 0;
+
+    // ─── Layout Config ───
+    in property <[DockLayout]> layouts: [
+        { name: "R5900", cpu: "EE", is-default: true, is-current: true },
+        { name: "R3000", cpu: "IOP", is-default: true, is-current: false },
+    ];
+
+    // ─── Callbacks ───
+    callback run-pause();
+    callback step-into();
+    callback step-over();
+    callback step-out();
+    callback analyze();
+    callback cpu-changed(string /*cpu*/);
+    callback layout-changed(int /*index*/);
+    callback layout-new();
+    callback layout-save();
+    callback lock-toggled();
+
+    // ─── Main Layout ───
+    background: #11111b;
+
+    VerticalBox {
+        padding: 0px;
+        spacing: 0px;
+
+        // ─── Toolbar ───
+        Rectangle {
+            height: 40px;
+            background: #1e1e2e;
+
+            HorizontalLayout {
+                padding: 4px;
+                spacing: 4px;
+
+                // CPU selector
+                cpu-combo := ComboBox {
+                    model: ["EE", "IOP"];
+                    current-index: 0;
+                    width: 70px;
+                }
+
+                Rectangle { width: 1px; background: #313244; }
+
+                // Control buttons
+                Button {
+                    text: root.is-running ? "⏸ Pause" : "▶ Run";
+                    clicked => { root.run-pause(); }
+                    min-width: 80px;
+                }
+                Button {
+                    text: "Step Into";
+                    clicked => { root.step-into(); }
+                    min-width: 80px;
+                }
+                Button {
+                    text: "Step Over";
+                    clicked => { root.step-over(); }
+                    min-width: 80px;
+                }
+                Button {
+                    text: "Step Out";
+                    clicked => { root.step-out(); }
+                    min-width: 80px;
+                }
+
+                Rectangle { horizontal-stretch: 1; }
+
+                // PC display
+                Text {
+                    text: "PC: " + root.current-pc;
+                    color: #89b4fa;
+                    font-size: 12px;
+                    font-family: "Cascadia Code";
+                    vertical-alignment: center;
+                }
+
+                Rectangle { width: 8px; }
+            }
+        }
+
+        // ─── Layout Manager ───
+        DockLayoutManager {
+            layouts: root.layouts;
+            current-layout: root.current-layout;
+            is-locked: root.is-locked;
+            layout-changed(idx) => { root.layout-changed(idx); }
+            layout-new() => { root.layout-new(); }
+            layout-save() => { root.layout-save(); }
+            lock-toggled() => { root.lock-toggled(); }
+        }
+
+        // ─── Main Content Area ───
+        // Default R5900 layout:
+        // +------------------+------------------+
+        // |    Registers     |   Disassembly    |
+        // |    + Symbols     |                  |
+        // +------------------+------------------+
+        // | Stack | Threads  |     Memory       |
+        // | Modules| BPs    |                  |
+        // +------------------+------------------+
+
+        HorizontalLayout {
+            vertical-stretch: 1;
+            spacing: 0px;
+
+            // ─── Left Panel (Registers, Stack, etc.) ───
+            VerticalLayout {
+                horizontal-stretch: 30;
+                spacing: 0px;
+
+                // Top left: Registers + Symbols
+                VerticalLayout {
+                    vertical-stretch: 50;
+                    spacing: 0px;
+
+                    left-top-tabs := DockTabBar {
+                        tabs: [
+                            { id: "regs", title: "Registers", panel-type: 1, is-active: true },
+                            { id: "symbols", title: "Symbols", panel-type: 7, is-active: false },
+                            { id: "mem-search", title: "Memory Search", panel-type: 8, is-active: false },
+                        ];
+                        active-index: 0;
+                    }
+
+                    // Content
+                    if left-top-tabs.active-index == 0: RegisterView {
+                        vertical-stretch: 1;
+                        categories: root.reg-categories;
+                        selected-category: root.reg-category;
+                        register-size: root.reg-size;
+                        show-float: root.reg-show-float;
+                        regs32: root.regs32;
+                        regs128: root.regs128;
+                        regs64: root.regs64;
+                    }
+
+                    if left-top-tabs.active-index == 1: SymbolView {
+                        vertical-stretch: 1;
+                        entries: root.symbol-entries;
+                    }
+
+                    if left-top-tabs.active-index == 2: MemorySearchView {
+                        vertical-stretch: 1;
+                        results: root.search-results;
+                        result-count: root.search-result-count;
+                    }
+                }
+
+                // Splitter
+                Rectangle { height: 4px; background: #313244; }
+
+                // Bottom left: Stack, Threads, Modules, Breakpoints
+                VerticalLayout {
+                    vertical-stretch: 50;
+                    spacing: 0px;
+
+                    left-bottom-tabs := DockTabBar {
+                        tabs: [
+                            { id: "stack", title: "Stack", panel-type: 3, is-active: true },
+                            { id: "threads", title: "Threads", panel-type: 4, is-active: false },
+                            { id: "modules", title: "Modules", panel-type: 5, is-active: false },
+                            { id: "bps", title: "Breakpoints", panel-type: 6, is-active: false },
+                        ];
+                        active-index: 0;
+                        is-top: false;
+                    }
+
+                    // Content
+                    if left-bottom-tabs.active-index == 0: StackView {
+                        vertical-stretch: 1;
+                        entries: root.stack-entries;
+                    }
+
+                    if left-bottom-tabs.active-index == 1: ThreadView {
+                        vertical-stretch: 1;
+                        entries: root.thread-entries;
+                    }
+
+                    if left-bottom-tabs.active-index == 2: ModuleView {
+                        vertical-stretch: 1;
+                        entries: root.module-entries;
+                    }
+
+                    if left-bottom-tabs.active-index == 3: BreakpointView {
+                        vertical-stretch: 1;
+                        entries: root.bp-entries;
+                    }
+                }
+            }
+
+            // ─── Vertical Splitter ───
+            Rectangle { width: 4px; background: #313244; }
+
+            // ─── Right Panel (Disassembly + Memory) ───
+            VerticalLayout {
+                horizontal-stretch: 70;
+                spacing: 0px;
+
+                // Top right: Disassembly
+                VerticalLayout {
+                    vertical-stretch: 50;
+                    spacing: 0px;
+
+                    DisassemblyView {
+                        vertical-stretch: 1;
+                        lines: root.disasm-lines;
+                        branch-lines: root.branch-lines;
+                        title-line: root.disasm-title;
+                        title-color-r: root.disasm-title-r;
+                        title-color-g: root.disasm-title-g;
+                        title-color-b: root.disasm-title-b;
+                        current-pc: root.current-pc;
+                        show-instruction-bytes: root.show-instruction-bytes;
+                    }
+                }
+
+                // Splitter
+                Rectangle { height: 4px; background: #313244; }
+
+                // Bottom right: Memory
+                VerticalLayout {
+                    vertical-stretch: 50;
+                    spacing: 0px;
+
+                    right-bottom-tabs := DockTabBar {
+                        tabs: [
+                            { id: "memory", title: "Memory", panel-type: 2, is-active: true },
+                            { id: "saved", title: "Saved Addresses", panel-type: 9, is-active: false },
+                        ];
+                        active-index: 0;
+                        is-top: false;
+                    }
+
+                    if right-bottom-tabs.active-index == 0: MemoryView {
+                        vertical-stretch: 1;
+                        memory-lines: root.memory-lines;
+                        address-input: root.current-pc;
+                    }
+
+                    if right-bottom-tabs.active-index == 1: SavedAddressesView {
+                        vertical-stretch: 1;
+                        entries: root.saved-addresses;
+                    }
+                }
+            }
+        }
+    }
+}

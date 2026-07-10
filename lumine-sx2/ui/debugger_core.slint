@@ -1,0 +1,710 @@
+import { VerticalBox, HorizontalBox, ScrollView, LineEdit, ComboBox, Button, CheckBox, Slider, GroupBox, StandardButton } from "std-widgets.slint";
+import { MaterialColors, DetailPage, ToggleRow, SliderRow, ComboRow, TextFieldRow, SectionHeader } from "common.slint";
+
+// Debugger Main Window
+export component DebuggerWindow inherits Window {
+    title: "PCSX2 Debugger";
+    preferred-width: 1200px;
+    preferred-height: 800px;
+    in-out property <int> selected-cpu: 0; // 0=EE, 1=IOP, 2=VU0, 3=VU1
+    in-out property <bool> is-running: false;
+    in-out property <string> status-text: "Paused";
+
+    VerticalLayout {
+        // Toolbar
+        Rectangle {
+            height: 48px;
+            background: MaterialColors.surface-container;
+
+            HorizontalLayout {
+                padding: 4px;
+                spacing: 4px;
+
+                Button {
+                    text: is-running ? "⏸ Pause" : "▶ Run";
+                    clicked => { is-running = !is-running; }
+                }
+                Button {
+                    text: "⏭ Step";
+                    clicked => { }
+                }
+                Button {
+                    text: "⏭ Step Over";
+                    clicked => { }
+                }
+                Button {
+                    text: "⏭ Step Out";
+                    clicked => { }
+                }
+                Button {
+                    text: "🔄 Reset";
+                    clicked => { }
+                }
+
+                Rectangle { width: 16px; }
+
+                // CPU Selector
+                for cpu[idx] in ["EE", "IOP", "VU0", "VU1"]: Rectangle {
+                    width: 56px;
+                    height: 36px;
+                    background: selected-cpu == idx ? MaterialColors.primary : MaterialColors.surface-container-high;
+                    border-radius: 8px;
+
+                    Text {
+                        text: cpu;
+                        color: selected-cpu == idx ? MaterialColors.on-primary : MaterialColors.on-surface;
+                        font-size: 12px;
+                        font-weight: 600;
+                        horizontal-alignment: center;
+                        vertical-alignment: center;
+                    }
+
+                    TouchArea {
+                        clicked => { selected-cpu = idx; }
+                    }
+                }
+
+                Rectangle { horizontal-stretch: 1; }
+
+                // Layout selector
+                ComboBox {
+                    model: ["Default", "Compact", "Full", "Custom"];
+                    current-index: 0;
+                }
+
+                Button {
+                    text: "⚙ Settings";
+                    clicked => { }
+                }
+            }
+        }
+
+        // Status bar
+        Rectangle {
+            height: 24px;
+            background: MaterialColors.surface-container-low;
+
+            HorizontalLayout {
+                padding-left: 8px;
+                padding-right: 8px;
+                Text {
+                    text: status-text;
+                    color: MaterialColors.on-surface-variant;
+                    font-size: 11px;
+                    vertical-alignment: center;
+                }
+                Rectangle { horizontal-stretch: 1; }
+                Text {
+                    text: "CPU: " + ["EE", "IOP", "VU0", "VU1"][selected-cpu];
+                    color: MaterialColors.on-surface-variant;
+                    font-size: 11px;
+                    vertical-alignment: center;
+                }
+            }
+        }
+
+        // Main debugger area (placeholder for docking system)
+        Rectangle {
+            background: MaterialColors.surface;
+
+            HorizontalLayout {
+                // Disassembly panel (left)
+                Rectangle {
+                    horizontal-stretch: 3;
+                    border-width: 1px;
+                    border-color: MaterialColors.outline-variant;
+
+                    VerticalLayout {
+                        Rectangle {
+                            height: 28px;
+                            background: MaterialColors.surface-container;
+
+                            Text {
+                                text: "Disassembly";
+                                color: MaterialColors.on-surface;
+                                font-size: 12px;
+                                font-weight: 600;
+                                vertical-alignment: center;
+                                padding-left: 8px;
+                            }
+                        }
+
+                        // Instruction list placeholder
+                        for i in 20: Rectangle {
+                            height: 20px;
+                            background: i == 0 ? MaterialColors.primary-container : Colors.transparent;
+
+                            HorizontalLayout {
+                                padding-left: 4px;
+                                spacing: 8px;
+                                Text {
+                                    text: "0x" + i * 4;
+                                    color: MaterialColors.primary;
+                                    font-size: 11px;
+                                    font-family: "Consolas";
+                                    vertical-alignment: center;
+                                }
+                                Text {
+                                    text: "NOP";
+                                    color: MaterialColors.on-surface;
+                                    font-size: 11px;
+                                    font-family: "Consolas";
+                                    vertical-alignment: center;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Registers panel (right top)
+                Rectangle {
+                    horizontal-stretch: 2;
+                    border-width: 1px;
+                    border-color: MaterialColors.outline-variant;
+
+                    VerticalLayout {
+                        Rectangle {
+                            height: 28px;
+                            background: MaterialColors.surface-container;
+
+                            HorizontalLayout {
+                                padding-left: 4px;
+                                spacing: 2px;
+                                for tab[idx] in ["GPR", "CP0", "FPR", "FCR", "VU0F", "VU0I", "GS"]: Rectangle {
+                                    width: 48px;
+                                    height: 24px;
+                                    background: idx == 0 ? MaterialColors.primary-container : Colors.transparent;
+                                    border-radius: 4px;
+
+                                    Text {
+                                        text: tab;
+                                        color: idx == 0 ? MaterialColors.on-primary-container : MaterialColors.on-surface-variant;
+                                        font-size: 10px;
+                                        horizontal-alignment: center;
+                                        vertical-alignment: center;
+                                    }
+
+                                    TouchArea {
+                                        clicked => { }
+                                    }
+                                }
+                            }
+                        }
+
+                        // Register values placeholder
+                        for i in 32: Rectangle {
+                            height: 18px;
+                            background: i % 2 == 0 ? MaterialColors.surface-container-low : Colors.transparent;
+
+                            HorizontalLayout {
+                                padding-left: 4px;
+                                spacing: 8px;
+                                Text {
+                                    text: "R" + i;
+                                    color: MaterialColors.primary;
+                                    font-size: 10px;
+                                    font-family: "Consolas";
+                                    vertical-alignment: center;
+                                    width: 32px;
+                                }
+                                Text {
+                                    text: "00000000";
+                                    color: MaterialColors.on-surface;
+                                    font-size: 10px;
+                                    font-family: "Consolas";
+                                    vertical-alignment: center;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Memory panel (right bottom)
+                Rectangle {
+                    horizontal-stretch: 2;
+                    border-width: 1px;
+                    border-color: MaterialColors.outline-variant;
+
+                    VerticalLayout {
+                        Rectangle {
+                            height: 28px;
+                            background: MaterialColors.surface-container;
+
+                            HorizontalLayout {
+                                padding-left: 8px;
+                                spacing: 8px;
+                                Text {
+                                    text: "Memory";
+                                    color: MaterialColors.on-surface;
+                                    font-size: 12px;
+                                    font-weight: 600;
+                                    vertical-alignment: center;
+                                }
+                                LineEdit {
+                                    placeholder-text: "Go to address...";
+                                    font-size: 11px;
+                                    height: 22px;
+                                }
+                                ComboBox {
+                                    model: ["Hex8", "Hex16", "Hex32", "Hex64", "Float32"];
+                                    current-index: 0;
+                                }
+                            }
+                        }
+
+                        // Hex view placeholder
+                        for i in 16: Rectangle {
+                            height: 18px;
+                            background: i % 2 == 0 ? MaterialColors.surface-container-low : Colors.transparent;
+
+                            HorizontalLayout {
+                                padding-left: 4px;
+                                spacing: 4px;
+                                Text {
+                                    text: "0x" + i * 16;
+                                    color: MaterialColors.primary;
+                                    font-size: 10px;
+                                    font-family: "Consolas";
+                                    vertical-alignment: center;
+                                    width: 64px;
+                                }
+                                Text {
+                                    text: "00 00 00 00 00 00 00 00";
+                                    color: MaterialColors.on-surface;
+                                    font-size: 10px;
+                                    font-family: "Consolas";
+                                    vertical-alignment: center;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Standalone Disassembly View
+export component DisassemblyView inherits Rectangle {
+    in-out property <int> selected-cpu: 0;
+    in-out property <[string]> instructions;
+    in-out property <int> selected-line: 0;
+    in-out property <[bool]> breakpoints;
+    in-out property <string> current-address: "0x100000";
+
+    background: MaterialColors.surface;
+
+    VerticalLayout {
+        // Address bar
+        Rectangle {
+            height: 32px;
+            background: MaterialColors.surface-container;
+
+            HorizontalLayout {
+                padding-left: 8px;
+                padding-right: 8px;
+                spacing: 8px;
+                Text {
+                    text: "Address:";
+                    color: MaterialColors.on-surface-variant;
+                    font-size: 12px;
+                    vertical-alignment: center;
+                }
+                LineEdit {
+                    text: current-address;
+                    font-size: 12px;
+                    font-family: "Consolas";
+                    height: 24px;
+                    width: 120px;
+                    accepted => { }
+                }
+                Button {
+                    text: "Go";
+                    clicked => { }
+                }
+                Rectangle { horizontal-stretch: 1; }
+                Text {
+                    text: "PC: 0x100000";
+                    color: MaterialColors.primary;
+                    font-size: 11px;
+                    font-family: "Consolas";
+                    vertical-alignment: center;
+                }
+            }
+        }
+
+        // Instructions
+        ScrollView {
+            for i in 50: Rectangle {
+                height: 20px;
+                background: selected-line == i ? MaterialColors.primary-container : (i % 2 == 0 ? MaterialColors.surface-container-low : Colors.transparent);
+
+                HorizontalLayout {
+                    padding-left: 4px;
+                    spacing: 8px;
+
+                    // Breakpoint marker
+                    Rectangle {
+                        width: 12px;
+                        height: 12px;
+                        y: 4px;
+                        background: i < breakpoints.length && breakpoints[i] ? MaterialColors.error : Colors.transparent;
+                        border-radius: 6px;
+                    }
+
+                    Text {
+                        text: "0x" + (4096 + i * 4);
+                        color: MaterialColors.primary;
+                        font-size: 11px;
+                        font-family: "Consolas";
+                        vertical-alignment: center;
+                        width: 80px;
+                    }
+                    Text {
+                        text: "00000000";
+                        color: MaterialColors.on-surface-variant;
+                        font-size: 11px;
+                        font-family: "Consolas";
+                        vertical-alignment: center;
+                        width: 80px;
+                    }
+                    Text {
+                        text: "NOP";
+                        color: MaterialColors.on-surface;
+                        font-size: 11px;
+                        font-family: "Consolas";
+                        vertical-alignment: center;
+                    }
+                }
+
+                TouchArea {
+                    clicked => { selected-line = i; }
+                }
+            }
+        }
+    }
+}
+
+// Register View
+export component RegisterView inherits Rectangle {
+    in-out property <int> selected-category: 0; // 0=GPR, 1=CP0, 2=FPR, 3=FCR, 4=VU0F, 5=VU0I, 6=GS
+    in-out property <bool> float-mode: false;
+    in-out property <int> selected-register: 0;
+
+    background: MaterialColors.surface;
+
+    VerticalLayout {
+        // Category tabs
+        Rectangle {
+            height: 32px;
+            background: MaterialColors.surface-container;
+
+            HorizontalLayout {
+                padding-left: 4px;
+                spacing: 2px;
+                for cat[idx] in ["GPR", "CP0", "FPR", "FCR", "VU0F", "VU0I", "GS"]: Rectangle {
+                    width: 52px;
+                    height: 28px;
+                    background: selected-category == idx ? MaterialColors.primary-container : Colors.transparent;
+                    border-radius: 4px;
+
+                    Text {
+                        text: cat;
+                        color: selected-category == idx ? MaterialColors.on-primary-container : MaterialColors.on-surface-variant;
+                        font-size: 11px;
+                        horizontal-alignment: center;
+                        vertical-alignment: center;
+                    }
+
+                    TouchArea {
+                        clicked => { selected-category = idx; }
+                    }
+                }
+
+                Rectangle { horizontal-stretch: 1; }
+
+                // Float toggle
+                Rectangle {
+                    width: 60px;
+                    height: 24px;
+                    y: 4px;
+                    background: float-mode ? MaterialColors.primary-container : MaterialColors.surface-container-high;
+                    border-radius: 4px;
+
+                    Text {
+                        text: "Float";
+                        color: float-mode ? MaterialColors.on-primary-container : MaterialColors.on-surface-variant;
+                        font-size: 10px;
+                        horizontal-alignment: center;
+                        vertical-alignment: center;
+                    }
+
+                    TouchArea {
+                        clicked => { float-mode = !float-mode; }
+                    }
+                }
+            }
+        }
+
+        // Register values
+        ScrollView {
+            for i in 32: Rectangle {
+                height: 20px;
+                background: selected-register == i ? MaterialColors.primary-container : (i % 2 == 0 ? MaterialColors.surface-container-low : Colors.transparent);
+
+                HorizontalLayout {
+                    padding-left: 8px;
+                    spacing: 12px;
+
+                    Text {
+                        text: selected-category == 0 ? "R" + i : (selected-category == 2 ? "F" + i : "Reg" + i);
+                        color: MaterialColors.primary;
+                        font-size: 11px;
+                        font-family: "Consolas";
+                        vertical-alignment: center;
+                        width: 40px;
+                    }
+
+                    // 32-bit registers
+                    if selected-category != 4: Text {
+                        text: "00000000";
+                        color: MaterialColors.on-surface;
+                        font-size: 11px;
+                        font-family: "Consolas";
+                        vertical-alignment: center;
+                    }
+
+                    // 128-bit VU registers (4 segments)
+                    if selected-category == 4: HorizontalLayout {
+                        spacing: 4px;
+                        for seg in ["X", "Y", "Z", "W"]: Text {
+                            text: "00000000";
+                            color: MaterialColors.on-surface;
+                            font-size: 10px;
+                            font-family: "Consolas";
+                            vertical-alignment: center;
+                        }
+                    }
+                }
+
+                TouchArea {
+                    clicked => { selected-register = i; }
+                }
+            }
+        }
+    }
+}
+
+// Memory View
+export component MemoryViewWidget inherits Rectangle {
+    in-out property <int> display-mode: 0; // 0=Hex8, 1=Hex16, 2=Hex32, 3=Hex64, 4=Float32
+    in-out property <bool> big-endian: false;
+    in-out property <string> current-address: "0x100000";
+    in-out property <int> selected-row: -1;
+    in-out property <int> selected-col: -1;
+
+    background: MaterialColors.surface;
+
+    VerticalLayout {
+        // Toolbar
+        Rectangle {
+            height: 32px;
+            background: MaterialColors.surface-container;
+
+            HorizontalLayout {
+                padding-left: 8px;
+                padding-right: 8px;
+                spacing: 8px;
+
+                LineEdit {
+                    text: current-address;
+                    font-size: 11px;
+                    font-family: "Consolas";
+                    height: 24px;
+                    width: 100px;
+                    placeholder-text: "Address";
+                }
+                Button { text: "Go"; }
+                Rectangle { width: 8px; }
+
+                for mode[idx] in ["8", "16", "32", "64", "F32"]: Rectangle {
+                    width: 36px;
+                    height: 24px;
+                    background: display-mode == idx ? MaterialColors.primary-container : Colors.transparent;
+                    border-radius: 4px;
+
+                    Text {
+                        text: mode;
+                        color: display-mode == idx ? MaterialColors.on-primary-container : MaterialColors.on-surface-variant;
+                        font-size: 10px;
+                        horizontal-alignment: center;
+                        vertical-alignment: center;
+                    }
+
+                    TouchArea {
+                        clicked => { display-mode = idx; }
+                    }
+                }
+
+                Rectangle { horizontal-stretch: 1; }
+
+                // Endian toggle
+                Rectangle {
+                    width: 72px;
+                    height: 24px;
+                    background: big-endian ? MaterialColors.primary-container : MaterialColors.surface-container-high;
+                    border-radius: 4px;
+
+                    Text {
+                        text: big-endian ? "Big" : "Little";
+                        color: big-endian ? MaterialColors.on-primary-container : MaterialColors.on-surface-variant;
+                        font-size: 10px;
+                        horizontal-alignment: center;
+                        vertical-alignment: center;
+                    }
+
+                    TouchArea {
+                        clicked => { big-endian = !big-endian; }
+                    }
+                }
+            }
+        }
+
+        // Hex view
+        ScrollView {
+            for row in 32: Rectangle {
+                height: 18px;
+                background: selected-row == row ? MaterialColors.primary-container : (row % 2 == 0 ? MaterialColors.surface-container-low : Colors.transparent);
+
+                HorizontalLayout {
+                    padding-left: 4px;
+                    spacing: 2px;
+
+                    Text {
+                        text: "0x" + row * 16;
+                        color: MaterialColors.primary;
+                        font-size: 10px;
+                        font-family: "Consolas";
+                        vertical-alignment: center;
+                        width: 64px;
+                    }
+
+                    for col in 16: Rectangle {
+                        width: 24px;
+                        height: 18px;
+                        background: selected-row == row && selected-col == col ? MaterialColors.primary : Colors.transparent;
+
+                        Text {
+                            text: "00";
+                            color: selected-row == row && selected-col == col ? MaterialColors.on-primary : MaterialColors.on-surface;
+                            font-size: 10px;
+                            font-family: "Consolas";
+                            horizontal-alignment: center;
+                            vertical-alignment: center;
+                        }
+
+                        TouchArea {
+                            clicked => {
+                                selected-row = row;
+                                selected-col = col;
+                            }
+                        }
+                    }
+
+                    Text {
+                        text: "................";
+                        color: MaterialColors.on-surface-variant;
+                        font-size: 10px;
+                        font-family: "Consolas";
+                        vertical-alignment: center;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Memory Search View
+export component MemorySearchView inherits Rectangle {
+    in-out property <int> search-type: 0; // 0=u8, 1=u16, 2=u32, 3=u64, 4=s8..7=s64, 8=float, 9=string
+    in-out property <int> comparison: 0; // 0=exact, 1=greater, 2=less, 3=not equal, 4=changed, 5=unchanged
+    in-out property <string> search-value: "";
+    in-out property <[string]> results;
+
+    background: MaterialColors.surface;
+
+    VerticalLayout {
+        // Search controls
+        Rectangle {
+            height: 80px;
+            background: MaterialColors.surface-container;
+
+            VerticalLayout {
+                padding: 8px;
+                spacing: 6px;
+
+                HorizontalLayout {
+                    spacing: 8px;
+                    ComboBox {
+                        model: ["u8", "u16", "u32", "u64", "s8", "s16", "s32", "s64", "float", "string"];
+                        current-index: search-type;
+                        selected => { search-type = self.current-index; }
+                    }
+                    ComboBox {
+                        model: ["Exact", "Greater", "Less", "Not Equal", "Changed", "Unchanged"];
+                        current-index: comparison;
+                        selected => { comparison = self.current-index; }
+                    }
+                    LineEdit {
+                        text: search-value;
+                        placeholder-text: "Value";
+                        font-size: 12px;
+                        width: 120px;
+                    }
+                    Button {
+                        text: "Search";
+                        clicked => { }
+                    }
+                    Button {
+                        text: "Next";
+                        clicked => { }
+                    }
+                    Button {
+                        text: "Reset";
+                        clicked => { }
+                    }
+                }
+
+                Text {
+                    text: results.length + " results found";
+                    color: MaterialColors.on-surface-variant;
+                    font-size: 11px;
+                }
+            }
+        }
+
+        // Results list
+        ScrollView {
+            for result[idx] in results: Rectangle {
+                height: 20px;
+                background: idx % 2 == 0 ? MaterialColors.surface-container-low : Colors.transparent;
+
+                HorizontalLayout {
+                    padding-left: 8px;
+                    spacing: 16px;
+                    Text {
+                        text: result;
+                        color: MaterialColors.on-surface;
+                        font-size: 11px;
+                        font-family: "Consolas";
+                        vertical-alignment: center;
+                    }
+                }
+
+                TouchArea {
+                    double-clicked => { }
+                }
+            }
+        }
+    }
+}

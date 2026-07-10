@@ -1,0 +1,349 @@
+// Game List Feature Components
+import { LineEdit } from "std-widgets.slint";
+import { DetailPage, ToggleRow, SectionHeader, SliderRow, ComboRow } from "common.slint";
+
+// ─── GameListColumnPicker ───
+// Shows/hides table columns. 10 togglable columns (Cover always hidden).
+export component GameListColumnPicker inherits DetailPage {
+    title: "Kolom Daftar Game";
+
+    in property <bool> col-type: true;
+    in property <bool> col-code: true;
+    in property <bool> col-title: true;
+    in property <bool> col-file-title: false;
+    in property <bool> col-crc: false;
+    in property <bool> col-time-played: true;
+    in property <bool> col-last-played: true;
+    in property <bool> col-size: true;
+    in property <bool> col-region: true;
+    in property <bool> col-compatibility: true;
+
+    callback col-toggled(string, bool);
+    callback reset-columns;
+
+    SectionHeader { txt: "Kolom Terlihat"; }
+
+    ToggleRow { txt: "Tipe"; checked: col-type; toggled(v) => { col-toggled("Type", v); } }
+    ToggleRow { txt: "Kode"; checked: col-code; toggled(v) => { col-toggled("Code", v); } }
+    ToggleRow { txt: "Judul"; checked: col-title; toggled(v) => { col-toggled("Title", v); } }
+    ToggleRow { txt: "Judul File"; checked: col-file-title; toggled(v) => { col-toggled("FileTitle", v); } }
+    ToggleRow { txt: "CRC"; checked: col-crc; toggled(v) => { col-toggled("CRC", v); } }
+    ToggleRow { txt: "Waktu Main"; checked: col-time-played; toggled(v) => { col-toggled("TimePlayed", v); } }
+    ToggleRow { txt: "Terakhir Main"; checked: col-last-played; toggled(v) => { col-toggled("LastPlayed", v); } }
+    ToggleRow { txt: "Ukuran"; checked: col-size; toggled(v) => { col-toggled("Size", v); } }
+    ToggleRow { txt: "Wilayah"; checked: col-region; toggled(v) => { col-toggled("Region", v); } }
+    ToggleRow { txt: "Kompatibilitas"; checked: col-compatibility; toggled(v) => { col-toggled("Compatibility", v); } }
+
+    SectionHeader { txt: ""; }
+    Rectangle {
+        height: 48px;
+        HorizontalLayout {
+            padding-left: 20px; padding-right: 20px;
+            alignment: end;
+            Rectangle {
+                width: 140px; height: 36px; border-radius: 18px;
+                background: reset-ta.has-hover ? #D0BCFF22 : #D0BCFF11;
+                reset-ta := TouchArea {
+                    clicked => { root.reset-columns(); }
+                }
+                Text {
+                    text: "Reset Kolom";
+                    color: #D0BCFF;
+                    font-size: 13px;
+                    font-weight: 500;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+            }
+        }
+    }
+}
+
+// ─── GameListContextMenu ───
+// Floating context menu for right-click on a game entry.
+export component GameListContextMenu inherits Rectangle {
+    in property <bool> open: false;
+    in property <float> menu-x: 0;
+    in property <float> menu-y: 0;
+
+    callback play;
+    callback properties;
+    callback open-folder;
+    callback add-favorites;
+    callback remove-from-list;
+    callback create-shortcut;
+    callback set-cover;
+    callback remove-cover;
+    callback close-menu;
+
+    visible: open;
+    width: 100%;
+    height: 100%;
+
+    // Backdrop to close menu
+    backdrop := TouchArea {
+        clicked => { close-menu(); }
+    }
+
+    if open : menu-bg := Rectangle {
+        x: Math.clamp(root.menu-x, 0px, parent.width - self.width);
+        y: Math.clamp(root.menu-y, 0px, parent.height - self.height);
+        width: 220px;
+        height: menu-content.preferred-height;
+        background: #211F26;
+        border-radius: 12px;
+        drop-shadow-color: #00000080;
+        drop-shadow-blur: 16px;
+        clip: true;
+
+        menu-content := VerticalLayout {
+            padding: 4px;
+            spacing: 2px;
+
+            MenuItem { txt: "▶  Mainkan"; close => { root.play(); root.close-menu(); } }
+            MenuItem { txt: "📋  Properti"; close => { root.properties(); root.close-menu(); } }
+            MenuItem { txt: "📂  Buka Folder"; close => { root.open-folder(); root.close-menu(); } }
+            Rectangle { height: 1px; background: #49454F33; margin: 4px; }
+            MenuItem { txt: "⭐  Tambah Favorit"; close => { root.add-favorites(); root.close-menu(); } }
+            MenuItem { txt: "❌  Hapus dari Daftar"; close => { root.remove-from-list(); root.close-menu(); } }
+            Rectangle { height: 1px; background: #49454F33; margin: 4px; }
+            MenuItem { txt: "🔗  Buat Shortcut"; close => { root.create-shortcut(); root.close-menu(); } }
+            MenuItem { txt: "🖼️  Set Sampul"; close => { root.set-cover(); root.close-menu(); } }
+            MenuItem { txt: "🗑️  Hapus Sampul"; close => { root.remove-cover(); root.close-menu(); } }
+        }
+    }
+}
+
+component MenuItem inherits Rectangle {
+    in property <string> txt;
+    callback close;
+    height: 40px;
+    border-radius: 8px;
+    background: item-ta.has-hover ? #ffffff0d : transparent;
+    animate background { duration: 100ms; }
+
+    HorizontalLayout {
+        padding-left: 16px; padding-right: 16px;
+        alignment: start;
+        Text {
+            text: txt;
+            color: #CAC4D0;
+            font-size: 14px;
+            vertical-alignment: center;
+        }
+    }
+    item-ta := TouchArea { clicked => { root.close(); } }
+}
+
+// ─── GameListGridZoom ───
+// Zoom slider for grid/cover view (50%-200%).
+export component GameListGridZoom inherits Rectangle {
+    in property <float> zoom: 0.45; // 0.1 - 2.0 range
+    callback zoom-changed(float);
+
+    height: 56px;
+    background: #1D1B20;
+
+    HorizontalLayout {
+        spacing: 12px; padding-left: 20px; padding-right: 20px;
+        alignment: center;
+
+        Text { text: "🔍"; font-size: 16px; vertical-alignment: center; width: 24px; }
+
+        Rectangle {
+            vertical-stretch: 1;
+            height: 4px;
+            border-radius: 2px;
+            background: #49454F;
+
+            Rectangle {
+                width: parent.width * (root.zoom - 0.1) / 1.9;
+                height: parent.height;
+                border-radius: 2px;
+                background: #D0BCFF;
+            }
+
+            TouchArea {
+                changed has-hover => { self.mouse-cursor: has-hover ? pointer : default; }
+                clicked => {
+                    root.zoom-changed(Math.clamp(0.1 + (self.mouse-x / self.width) * 1.9, 0.1, 2.0));
+                }
+            }
+        }
+
+        Text {
+            text: Math.round(zoom * 100) + "%";
+            color: #D0BCFF;
+            font-size: 13px;
+            font-family: "monospace";
+            vertical-alignment: center;
+            width: 48px;
+            horizontal-alignment: right;
+        }
+    }
+}
+
+// ─── GameListBackgroundPicker ───
+// Background image picker with opacity slider and scale mode.
+export component GameListBackgroundPicker inherits DetailPage {
+    title: "Latar Belakang";
+
+    in property <string> background-path: "";
+    in property <float> opacity: 1.0;
+    in property <int> scale-mode: 0; // 0=Fit, 1=Fill, 2=Stretch, 3=Center, 4=Tile
+    in property <[string]> scale-modes: ["Fit", "Fill", "Stretch", "Center", "Tile"];
+
+    callback path-changed(string);
+    callback opacity-changed(float);
+    callback scale-mode-changed(int);
+    callback browse-background;
+    callback clear-background;
+
+    SectionHeader { txt: "Gambar Latar"; }
+
+    // Current background display
+    Rectangle {
+        height: 80px;
+        horizontal-stretch: 1;
+        HorizontalLayout {
+            padding-left: 20px; padding-right: 20px; spacing: 12px;
+            Rectangle {
+                horizontal-stretch: 1;
+                border-radius: 12px;
+                background: #211F26;
+                border-width: 1px;
+                border-color: #49454F;
+
+                HorizontalLayout {
+                    padding: 12px;
+                    Text {
+                        text: background-path == "" ? "Tidak ada gambar" : background-path;
+                        color: background-path == "" ? #938F99 : #CAC4D0;
+                        font-size: 13px;
+                        overflow: elide;
+                        vertical-alignment: center;
+                    }
+                }
+            }
+        }
+    }
+
+    // Action buttons
+    Rectangle {
+        height: 48px;
+        HorizontalLayout {
+            padding-left: 20px; padding-right: 20px; spacing: 12px;
+
+            Rectangle {
+                horizontal-stretch: 1;
+                height: 36px; border-radius: 18px;
+                background: browse-ta.has-hover ? #D0BCFF33 : #D0BCFF22;
+                browse-ta := TouchArea { clicked => { root.browse-background(); } }
+                Text {
+                    text: "Pilih Gambar";
+                    color: #D0BCFF;
+                    font-size: 13px;
+                    font-weight: 500;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+            }
+
+            Rectangle {
+                horizontal-stretch: 1;
+                height: 36px; border-radius: 18px;
+                background: clear-ta.has-hover ? #F2B8B533 : #F2B8B522;
+                clear-ta := TouchArea { clicked => { root.clear-background(); } }
+                Text {
+                    text: "Hapus";
+                    color: #F2B8B5;
+                    font-size: 13px;
+                    font-weight: 500;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+            }
+        }
+    }
+
+    SectionHeader { txt: "Transparansi"; }
+    SliderRow {
+        txt: "Opacity";
+        value: opacity;
+        minimum: 0.0;
+        maximum: 1.0;
+        changed(v) => { root.opacity-changed(v); }
+    }
+
+    SectionHeader { txt: "Mode Skala"; }
+    ComboRow {
+        txt: "Skala";
+        model: scale-modes;
+        current-index: scale-mode;
+        selected(idx) => { root.scale-mode-changed(idx); }
+    }
+}
+
+// ─── GameListSearchBar ───
+// Enhanced search bar with Ctrl+F shortcut indicator.
+export component GameListSearchBar inherits Rectangle {
+    in property <string> query: "";
+    in property <bool> active: false;
+
+    callback search-changed(string);
+    callback focus-requested;
+
+    height: 52px;
+    background: active ? #211F26 : transparent;
+    animate background { duration: 150ms; }
+
+    HorizontalLayout {
+        spacing: 8px; padding-left: 16px; padding-right: 16px;
+        alignment: center;
+
+        Text {
+            text: "🔍";
+            font-size: 16px;
+            vertical-alignment: center;
+            color: active ? #D0BCFF : #938F99;
+        }
+
+        search-input := LineEdit {
+            horizontal-stretch: 1;
+            text: query;
+            placeholder-text: "Cari game...";
+            font-size: 14px;
+            accepted => { }
+            edited(text) => { root.search-changed(text); }
+        }
+
+        // Ctrl+F shortcut badge
+        Rectangle {
+            width: ctrl-text.preferred-width + 12px;
+            height: 24px;
+            border-radius: 6px;
+            background: #49454F33;
+            vertical-alignment: center;
+
+            ctrl-text := Text {
+                text: "Ctrl+F";
+                color: #938F99;
+                font-size: 11px;
+                font-family: "monospace";
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+        }
+    }
+
+    Rectangle {
+        height: 1px;
+        y: parent.height - 1px;
+        background: active ? #D0BCFF33 : #211F26;
+        animate background { duration: 150ms; }
+    }
+
+    TouchArea {
+        clicked => { root.focus-requested; }
+    }
+}

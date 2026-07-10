@@ -1,0 +1,1301 @@
+import { ScrollView, Button, Switch, Slider, LineEdit, ComboBox, ProgressIndicator } from "std-widgets.slint";
+import "./fonts/Outfit-Regular.ttf";
+import "./fonts/Outfit-Medium.ttf";
+import "./fonts/Outfit-Bold.ttf";
+
+export struct DnsHost {
+    hostname: string,
+    ip: string,
+}
+
+export struct Dev9Settings {
+    enabled: bool,
+    network-device: string,
+    intercept-dhcp: bool,
+    internal-dns: [DnsHost],
+    dns1-mode: string,
+    dns2-mode: string,
+    hdd-file: string,
+    hdd-lba48: bool,
+    hdd-size-gb: int,
+}
+
+export struct HddCreate {
+    name: string,
+    size-mb: int,
+    partition-type: string,
+    format: string,
+    progress: float,
+}
+
+export struct Achievement {
+    id: int,
+    name: string,
+    description: string,
+    points: int,
+    unlocked: bool,
+    progress: float,
+}
+
+component SwitchRow inherits Rectangle {
+    in property <string> title;
+    in property <string> sub: "";
+    in property <string> ico;
+    in-out property <bool> checked;
+    in property <bool> enabled: true;
+
+    height: sub != "" ? 72px : 56px;
+    background: surface;
+    border-radius: 12px;
+    border-width: 1px;
+    border-color: #49454F4d;
+    opacity: enabled ? 1.0 : 0.5;
+
+    HorizontalLayout {
+        width: parent.width;
+        height: parent.height;
+        padding-left: 16px;
+        padding-right: 16px;
+        spacing: 12px;
+        alignment: space-between;
+
+        HorizontalLayout {
+            spacing: 12px;
+            alignment: start;
+            vertical-stretch: 1;
+            VerticalLayout {
+                alignment: center;
+                horizontal-stretch: 0;
+                Rectangle {
+                    width: 36px; height: 36px;
+                    border-radius: 18px;
+                    background: badge;
+                    Image {
+                        source: ico;
+                        colorize: primary;
+                        width: 18px; height: 18px;
+                        x: (parent.width - self.width) / 2;
+                        y: (parent.height - self.height) / 2;
+                    }
+                }
+            }
+            VerticalLayout {
+                horizontal-stretch: 1;
+                alignment: center;
+                spacing: 2px;
+                Text { text: title; color: text-main; font-size: 14px; font-weight: 500; }
+                if (sub != "") : Text { text: sub; color: text-muted; font-size: 11px; wrap: word-wrap; }
+            }
+        }
+
+        VerticalLayout {
+            alignment: center;
+            horizontal-stretch: 0;
+            Switch {
+                checked: checked;
+                enabled: enabled;
+                toggled => { checked = self.checked; }
+            }
+        }
+    }
+}
+
+component SectionHeader inherits Rectangle {
+    in property <string> text;
+    height: 24px;
+    Text {
+        text: text;
+        color: primary;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        vertical-alignment: center;
+    }
+}
+
+component Card inherits Rectangle {
+    in property <string> title: "";
+    in property <string> sub: "";
+    background: surface;
+    border-radius: 16px;
+    border-width: 1px;
+    border-color: #49454F4d;
+    VerticalLayout {
+        width: parent.width;
+        padding: 16px;
+        spacing: 12px;
+        if (title != "") : VerticalLayout {
+            spacing: 2px;
+            Text { text: title; color: text-main; font-size: 15px; font-weight: 600; }
+            if (sub != "") : Text { text: sub; color: text-muted; font-size: 11px; }
+        }
+        @children
+    }
+}
+
+component FilledButton inherits Rectangle {
+    in property <string> label;
+    in property <bool> primary: true;
+    in property <bool> enabled: true;
+    callback clicked();
+    height: 40px;
+    border-radius: 20px;
+    background: !enabled ? #2a2830 :
+                 primary ? (btn-ta.pressed ? primary.darker(15%) : primary) :
+                 (btn-ta.pressed ? #ffffff20 : #ffffff10);
+    border-width: primary ? 0px : 1px;
+    border-color: #ffffff20;
+    opacity: enabled ? 1.0 : 0.5;
+
+    animate background { duration: 150ms; }
+
+    Text {
+        text: label;
+        color: primary ? on-primary : text-main;
+        font-size: 13px;
+        font-weight: 600;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+    }
+    btn-ta := TouchArea {
+        width: 100%; height: 100%;
+        enabled: parent.enabled;
+        clicked => { root.clicked(); }
+    }
+}
+
+component TextField inherits Rectangle {
+    in property <string> placeholder;
+    in-out property <string> text: "";
+    in property <bool> enabled: true;
+    height: 40px;
+    border-radius: 8px;
+    background: surface-variant;
+    border-width: 1px;
+    border-color: tf.has-focus ? primary : #49454F66;
+    opacity: enabled ? 1.0 : 0.5;
+
+    animate border-color { duration: 150ms; }
+
+    HorizontalLayout {
+        width: parent.width; height: parent.height;
+        padding-left: 12px; padding-right: 12px;
+        Text {
+            text: tf.text == "" ? root.placeholder : tf.text;
+            color: tf.text == "" ? text-muted : text-main;
+            font-size: 13px;
+            vertical-alignment: center;
+            horizontal-stretch: 1;
+        }
+    }
+    tf := TextInput {
+        width: 100%; height: 100%;
+        text: root.text;
+        enabled: root.enabled;
+        color: text-main;
+        font-size: 13px;
+        edited => { root.text = self.text; }
+    }
+}
+
+component SecretField inherits Rectangle {
+    in property <string> placeholder;
+    in-out property <string> text: "";
+    in-out property <bool> reveal: false;
+    height: 40px;
+    border-radius: 8px;
+    background: surface-variant;
+    border-width: 1px;
+    border-color: tf.has-focus ? primary : #49454F66;
+
+    animate border-color { duration: 150ms; }
+
+    HorizontalLayout {
+        width: parent.width; height: parent.height;
+        padding-left: 12px; padding-right: 4px;
+        Text {
+            text: {
+                if (root.text == "") {
+                    return root.placeholder;
+                }
+                if (root.reveal) {
+                    return root.text;
+                }
+                var masked = "";
+                for _ in root.text.length : { masked += "•"; }
+                return masked;
+            }
+            color: root.text == "" ? text-muted : text-main;
+            font-size: 13px;
+            vertical-alignment: center;
+            horizontal-stretch: 1;
+        }
+        Rectangle {
+            width: 32px; height: 32px;
+            border-radius: 16px;
+            background: transparent;
+            horizontal-stretch: 0;
+            Text {
+                text: root.reveal ? "Hide" : "Show";
+                color: text-variant;
+                font-size: 10px;
+                font-weight: 600;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+            TouchArea {
+                width: 100%; height: 100%;
+                clicked => { root.reveal = !root.reveal; }
+            }
+        }
+    }
+    tf := TextInput {
+        width: 100%; height: 100%;
+        text: root.text;
+        color: text-main;
+        font-size: 13px;
+        echo-mode: root.reveal ? TextInputEchoMode.normal : TextInputEchoMode.password;
+        edited => { root.text = self.text; }
+    }
+}
+
+component SegmentedToggle inherits Rectangle {
+    in property <[string]> options;
+    in-out property <int> selected: 0;
+    in property <bool> enabled: true;
+    height: 36px;
+    border-radius: 18px;
+    background: surface-variant;
+    border-width: 1px;
+    border-color: #49454F66;
+    opacity: enabled ? 1.0 : 0.5;
+
+    HorizontalLayout {
+        width: parent.width; height: parent.height;
+        padding: 3px;
+        spacing: 0;
+        for opt[idx] in options : Rectangle {
+            horizontal-stretch: 1;
+            border-radius: 15px;
+            background: selected == idx ? primary : transparent;
+            animate background { duration: 180ms; easing: ease-in-out; }
+            Text {
+                text: opt;
+                color: selected == idx ? on-primary : text-variant;
+                font-size: 12px;
+                font-weight: 600;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+            TouchArea {
+                width: 100%; height: 100%;
+                enabled: parent.enabled;
+                clicked => { selected = idx; }
+            }
+        }
+    }
+}
+
+component DnsRow inherits Rectangle {
+    in property <DnsHost> host;
+    in property <int> index;
+    callback remove-clicked(int);
+    height: 56px;
+    border-radius: 12px;
+    background: surface-variant;
+    border-width: 1px;
+    border-color: #49454F4d;
+
+    HorizontalLayout {
+        width: parent.width; height: parent.height;
+        padding-left: 14px; padding-right: 8px;
+        spacing: 12px;
+        alignment: space-between;
+
+        VerticalLayout {
+            alignment: center;
+            horizontal-stretch: 1;
+            spacing: 2px;
+            Text { text: host.hostname == "" ? "unnamed host" : host.hostname; color: text-main; font-size: 13px; font-weight: 600; overflow: elide; }
+            Text { text: host.ip == "" ? "0.0.0.0" : host.ip; color: text-muted; font-size: 11px; font-family: "monospace"; }
+        }
+
+        VerticalLayout {
+            alignment: center;
+            horizontal-stretch: 0;
+            Rectangle {
+                width: 32px; height: 32px;
+                border-radius: 16px;
+                background: rm-ta.has-hover ? #f43f5e30 : #f43f5e15;
+                animate background { duration: 150ms; }
+                Text {
+                    text: "Remove";
+                    color: #f87171;
+                    font-size: 9px;
+                    font-weight: 700;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+                rm-ta := TouchArea {
+                    width: 100%; height: 100%;
+                    clicked => { root.remove-clicked(root.index); }
+                }
+            }
+        }
+    }
+}
+
+export component NetworkSettingsView inherits Rectangle {
+    in-out property <Dev9Settings> settings: {
+        enabled: false,
+        network-device: "eth0",
+        intercept-dhcp: false,
+        internal-dns: [],
+        dns1-mode: "Auto",
+        dns2-mode: "Auto",
+        hdd-file: "DEV9hdd.raw",
+        hdd-lba48: false,
+        hdd-size-gb: 40,
+    };
+
+    in property <[string]> network-devices: ["eth0", "eth1", "wlan0", "auto"];
+    in property <[string]> dns-modes: ["Manual", "Auto", "Internal"];
+
+    callback back-clicked();
+    callback add-dns-clicked();
+    callback remove-dns-clicked(int);
+    callback hdd-create-clicked(string, int);
+    callback browse-hdd-clicked();
+
+    property <color> bg: #141218;
+    property <color> surface: #1D1B20;
+    property <color> surface-variant: #211F26;
+    property <color> primary: #D0BCFF;
+    property <color> on-primary: #381E72;
+    property <color> primary-container: #4A4458;
+    property <color> on-primary-container: #E8DEF8;
+    property <color> outline: #49454F;
+    property <color> text-main: #E6E0E9;
+    property <color> text-muted: #938F99;
+    property <color> text-variant: #CAC4D0;
+    property <color> badge: #332D41;
+
+    background: bg;
+    default-font-family: "Outfit";
+
+    VerticalLayout {
+        width: parent.width; height: parent.height;
+
+        Rectangle {
+            height: 56px;
+            background: bg;
+            Rectangle {
+                height: 1px; width: parent.width;
+                background: surface-variant;
+                y: 55px;
+            }
+            HorizontalLayout {
+                width: parent.width; height: parent.height;
+                padding-left: 8px; padding-right: 16px;
+                alignment: space-between;
+
+                HorizontalLayout {
+                    spacing: 8px;
+                    alignment: start;
+                    VerticalLayout { alignment: center;
+                        Rectangle {
+                            width: 40px; height: 40px; border-radius: 20px;
+                            background: ta-back.has-hover ? #ffffff10 : transparent;
+                            animate background { duration: 150ms; }
+                            Text {
+                                text: "<-";
+                                color: text-main;
+                                font-size: 18px;
+                                font-weight: 700;
+                                horizontal-alignment: center;
+                                vertical-alignment: center;
+                            }
+                            ta-back := TouchArea {
+                                width: 100%; height: 100%;
+                                clicked => { root.back-clicked(); }
+                            }
+                        }
+                    }
+                    VerticalLayout { alignment: center;
+                        Text {
+                            text: "Network / DEV9 / HDD";
+                            color: text-main;
+                            font-size: 18px;
+                            font-weight: 500;
+                            vertical-alignment: center;
+                        }
+                    }
+                }
+            }
+        }
+
+        ScrollView {
+            vertical-stretch: 1;
+            viewport-width: parent.width;
+
+            VerticalLayout {
+                width: parent.width;
+                padding-left: 16px; padding-right: 16px; padding-top: 12px; padding-bottom: 96px;
+                spacing: 20px;
+
+                SectionHeader { text: "DEV9 EMULATION"; }
+
+                Card {
+                    title: "Enable DEV9";
+                    sub: "Turn on Ethernet and HDD emulation for PS2 games that need online or storage features.";
+
+                    SwitchRow {
+                        title: "Enable DEV9";
+                        sub: "Required for PS2 network and HDD support";
+                        ico: @image-url("icons/qt/chip-line.svg");
+                        checked: settings.enabled;
+                        toggled => { settings.enabled = self.checked; }
+                    }
+                }
+
+                SectionHeader { text: "NETWORK DEVICE"; }
+
+                Card {
+                    title: "Adapter";
+                    sub: "Choose the network interface used for PS2 traffic.";
+
+                    VerticalLayout {
+                        spacing: 12px;
+                        Text { text: "Network Device"; color: text-variant; font-size: 12px; font-weight: 500; }
+                        SegmentedToggle {
+                            options: network-devices;
+                            selected: Math.max(0, network-devices.index-of(settings.network-device));
+                            enabled: settings.enabled;
+                            selected-changed(idx) => {
+                                if (idx >= 0 && idx < network-devices.length) {
+                                    settings.network-device = network-devices[idx];
+                                }
+                            }
+                        }
+                    }
+                }
+
+                SectionHeader { text: "DHCP"; }
+
+                Card {
+                    SwitchRow {
+                        title: "Intercept DHCP";
+                        sub: "Handle DHCP requests inside PCSX2 instead of the host";
+                        ico: @image-url("icons/qt/refresh-line.svg");
+                        checked: settings.intercept-dhcp;
+                        enabled: settings.enabled;
+                        toggled => { settings.intercept-dhcp = self.checked; }
+                    }
+                }
+
+                SectionHeader { text: "DNS"; }
+
+                Card {
+                    title: "Internal DNS Hosts";
+                    sub: "Override DNS responses for selected hostnames.";
+
+                    VerticalLayout {
+                        spacing: 10px;
+                        HorizontalLayout {
+                            spacing: 8px; alignment: space-between;
+                            Text { text: "Internal DNS Hosts (" + settings.internal-dns.length + ")"; color: text-variant; font-size: 12px; font-weight: 500; vertical-alignment: center; }
+                            FilledButton {
+                                label: "Add Host";
+                                primary: true;
+                                enabled: settings.enabled;
+                                clicked => { root.add-dns-clicked(); }
+                            }
+                        }
+
+                        if (settings.internal-dns.length == 0) : Rectangle {
+                            height: 72px;
+                            border-radius: 12px;
+                            background: surface-variant;
+                            border-width: 1px;
+                            border-color: #49454F4d;
+                            VerticalLayout {
+                                alignment: center;
+                                Text { text: "No hosts yet. Add one to override DNS."; color: text-muted; font-size: 12px; horizontal-alignment: center; }
+                            }
+                        }
+
+                        for host[idx] in settings.internal-dns : DnsRow {
+                            host: host;
+                            index: idx;
+                            remove-clicked(i) => { root.remove-dns-clicked(i); }
+                        }
+                    }
+                }
+
+                Card {
+                    title: "DNS Mode";
+                    sub: "Pick the resolver for each DNS server slot.";
+
+                    VerticalLayout {
+                        spacing: 12px;
+                        VerticalLayout {
+                            spacing: 6px;
+                            Text { text: "DNS 1"; color: text-variant; font-size: 12px; font-weight: 500; }
+                            SegmentedToggle {
+                                options: dns-modes;
+                                selected: Math.max(0, dns-modes.index-of(settings.dns1-mode));
+                                enabled: settings.enabled;
+                                selected-changed(idx) => {
+                                    if (idx >= 0 && idx < dns-modes.length) {
+                                        settings.dns1-mode = dns-modes[idx];
+                                    }
+                                }
+                            }
+                        }
+                        VerticalLayout {
+                            spacing: 6px;
+                            Text { text: "DNS 2"; color: text-variant; font-size: 12px; font-weight: 500; }
+                            SegmentedToggle {
+                                options: dns-modes;
+                                selected: Math.max(0, dns-modes.index-of(settings.dns2-mode));
+                                enabled: settings.enabled;
+                                selected-changed(idx) => {
+                                    if (idx >= 0 && idx < dns-modes.length) {
+                                        settings.dns2-mode = dns-modes[idx];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                SectionHeader { text: "VIRTUAL HARD DISK"; }
+
+                Card {
+                    title: "HDD Image";
+                    sub: "Mount a virtual HDD so PS2 games can store data.";
+
+                    VerticalLayout {
+                        spacing: 12px;
+                        Text { text: "HDD File"; color: text-variant; font-size: 12px; font-weight: 500; }
+                        HorizontalLayout {
+                            spacing: 8px;
+                            TextField {
+                                placeholder: "DEV9hdd.raw";
+                                text: settings.hdd-file;
+                                enabled: settings.enabled;
+                                edited => { settings.hdd-file = self.text; }
+                                horizontal-stretch: 1;
+                            }
+                            FilledButton {
+                                label: "Browse";
+                                primary: false;
+                                enabled: settings.enabled;
+                                clicked => { root.browse-hdd-clicked(); }
+                            }
+                        }
+
+                        SwitchRow {
+                            title: "LBA48 (Large HDD)";
+                            sub: "Allow HDD image larger than 120 GB";
+                            ico: @image-url("icons/qt/save-3-line.svg");
+                            checked: settings.hdd-lba48;
+                            enabled: settings.enabled;
+                            toggled => {
+                                settings.hdd-lba48 = self.checked;
+                                if (!self.checked && settings.hdd-size-gb > 120) {
+                                    settings.hdd-size-gb = 120;
+                                }
+                                if (self.checked && settings.hdd-size-gb < 100) {
+                                    settings.hdd-size-gb = 100;
+                                }
+                            }
+                        }
+
+                        VerticalLayout {
+                            spacing: 6px;
+                            HorizontalLayout {
+                                alignment: space-between;
+                                Text { text: "Size"; color: text-variant; font-size: 12px; font-weight: 500; }
+                                Text { text: settings.hdd-size-gb + " GB"; color: primary; font-size: 12px; font-weight: 600; font-family: "monospace"; }
+                            }
+                            slider-min := settings.hdd-lba48 ? 100 : 40;
+                            slider-max := settings.hdd-lba48 ? 2000 : 120;
+                            if (settings.hdd-size-gb < slider-min) : settings.hdd-size-gb = slider-min;
+                            if (settings.hdd-size-gb > slider-max) : settings.hdd-size-gb = slider-max;
+                            Slider {
+                                value: settings.hdd-size-gb;
+                                minimum: slider-min;
+                                maximum: slider-max;
+                                step: 5;
+                                enabled: settings.enabled;
+                                changed(value) => { settings.hdd-size-gb = value; }
+                            }
+                            HorizontalLayout {
+                                alignment: space-between;
+                                Text { text: slider-min + " GB"; color: text-muted; font-size: 10px; font-family: "monospace"; }
+                                Text { text: slider-max + " GB"; color: text-muted; font-size: 10px; font-family: "monospace"; }
+                            }
+                        }
+
+                        FilledButton {
+                            label: "Create HDD Image";
+                            primary: true;
+                            enabled: settings.enabled;
+                            clicked => { root.hdd-create-clicked(settings.hdd-file, settings.hdd-size-gb); }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+export component Dev9DnsHostDialogView inherits Rectangle {
+    in-out property <string> hostname: "";
+    in-out property <string> ip: "0.0.0.0";
+    in-out property <[DnsHost]> hosts: [];
+
+    callback add-clicked(string, string);
+    callback remove-clicked(int);
+    callback ok-clicked();
+    callback cancel-clicked();
+
+    property <color> bg: #141218;
+    property <color> surface: #1D1B20;
+    property <color> surface-variant: #211F26;
+    property <color> primary: #D0BCFF;
+    property <color> on-primary: #381E72;
+    property <color> primary-container: #4A4458;
+    property <color> on-primary-container: #E8DEF8;
+    property <color> outline: #49454F;
+    property <color> text-main: #E6E0E9;
+    property <color> text-muted: #938F99;
+    property <color> text-variant: #CAC4D0;
+    property <color> badge: #332D41;
+    property <color> scrim: #000000b3;
+
+    background: scrim;
+    default-font-family: "Outfit";
+
+    TouchArea { width: 100%; height: 100%; }
+
+    Rectangle {
+        x: (parent.width - self.width) / 2;
+        y: (parent.height - self.height) / 2;
+        width: min(440px, parent.width - 32px);
+        height: min(560px, parent.height - 64px);
+        background: surface;
+        border-radius: 20px;
+        border-width: 1px;
+        border-color: #ffffff1a;
+
+        VerticalLayout {
+            width: parent.width; height: parent.height;
+            padding: 20px;
+            spacing: 14px;
+
+            HorizontalLayout {
+                alignment: space-between;
+                VerticalLayout {
+                    spacing: 2px;
+                    Text { text: "Internal DNS Hosts"; color: text-main; font-size: 18px; font-weight: 600; }
+                    Text { text: "Override PS2 DNS responses for selected hostnames."; color: text-muted; font-size: 11px; }
+                }
+                Text {
+                    text: "X";
+                    color: text-variant;
+                    font-size: 14px;
+                    font-weight: 700;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                    width: 28px; height: 28px;
+                }
+                TouchArea {
+                    width: 28px; height: 28px;
+                    clicked => { root.cancel-clicked(); }
+                }
+            }
+
+            Card {
+                title: "";
+                sub: "";
+                VerticalLayout {
+                    spacing: 10px;
+                    VerticalLayout {
+                        spacing: 4px;
+                        Text { text: "Hostname"; color: text-variant; font-size: 11px; font-weight: 500; }
+                        TextField {
+                            placeholder: "e.g. ps2.example.com";
+                            text: hostname;
+                            edited => { hostname = self.text; }
+                        }
+                    }
+                    VerticalLayout {
+                        spacing: 4px;
+                        Text { text: "IP Address"; color: text-variant; font-size: 11px; font-weight: 500; }
+                        TextField {
+                            placeholder: "0.0.0.0";
+                            text: ip;
+                            edited => { ip = self.text; }
+                        }
+                    }
+                    FilledButton {
+                        label: "Add Host";
+                        primary: true;
+                        enabled: hostname != "" && ip != "";
+                        clicked => { root.add-clicked(hostname, ip); hostname = ""; ip = "0.0.0.0"; }
+                    }
+                }
+            }
+
+            Text { text: "Configured Hosts (" + hosts.length + ")"; color: text-variant; font-size: 11px; font-weight: 600; }
+
+            Rectangle {
+                vertical-stretch: 1;
+                border-radius: 12px;
+                background: surface-variant;
+                border-width: 1px;
+                border-color: #49454F4d;
+                clip: true;
+
+                if (hosts.length == 0) : VerticalLayout {
+                    alignment: center;
+                    Text { text: "No hosts configured yet."; color: text-muted; font-size: 12px; horizontal-alignment: center; }
+                }
+                if (hosts.length > 0) : ScrollView {
+                    width: parent.width; height: parent.height;
+                    VerticalLayout {
+                        width: parent.width;
+                        padding: 8px;
+                        spacing: 6px;
+                        for h[idx] in hosts : DnsRow {
+                            host: h;
+                            index: idx;
+                            remove-clicked(i) => { root.remove-clicked(i); }
+                        }
+                    }
+                }
+            }
+
+            HorizontalLayout {
+                spacing: 10px;
+                alignment: end;
+                FilledButton {
+                    label: "Cancel";
+                    primary: false;
+                    clicked => { root.cancel-clicked(); }
+                }
+                FilledButton {
+                    label: "Done";
+                    primary: true;
+                    clicked => { root.ok-clicked(); }
+                }
+            }
+        }
+    }
+}
+
+export component HddCreateView inherits Rectangle {
+    in-out property <HddCreate> hdd: {
+        name: "DEV9hdd.raw",
+        size-mb: 40 * 1024,
+        partition-type: "MBR",
+        format: "RAW",
+        progress: 0.0,
+    };
+    in property <bool> busy: false;
+
+    callback create-clicked(string, int, string, string);
+    callback cancel-clicked();
+    callback back-clicked();
+
+    property <color> bg: #141218;
+    property <color> surface: #1D1B20;
+    property <color> surface-variant: #211F26;
+    property <color> primary: #D0BCFF;
+    property <color> on-primary: #381E72;
+    property <color> primary-container: #4A4458;
+    property <color> on-primary-container: #E8DEF8;
+    property <color> outline: #49454F;
+    property <color> text-main: #E6E0E9;
+    property <color> text-muted: #938F99;
+    property <color> text-variant: #CAC4D0;
+    property <color> badge: #332D41;
+
+    background: bg;
+    default-font-family: "Outfit";
+
+    VerticalLayout {
+        width: parent.width; height: parent.height;
+
+        Rectangle {
+            height: 56px;
+            background: bg;
+            Rectangle {
+                height: 1px; width: parent.width;
+                background: surface-variant;
+                y: 55px;
+            }
+            HorizontalLayout {
+                width: parent.width; height: parent.height;
+                padding-left: 8px; padding-right: 16px;
+                alignment: space-between;
+                HorizontalLayout {
+                    spacing: 8px;
+                    VerticalLayout { alignment: center;
+                        Rectangle {
+                            width: 40px; height: 40px; border-radius: 20px;
+                            background: ta-back.has-hover ? #ffffff10 : transparent;
+                            animate background { duration: 150ms; }
+                            Text { text: "<-"; color: text-main; font-size: 18px; font-weight: 700; horizontal-alignment: center; vertical-alignment: center; }
+                            ta-back := TouchArea { width: 100%; height: 100%; clicked => { root.back-clicked(); } }
+                        }
+                    }
+                    VerticalLayout { alignment: center;
+                        Text { text: "Create HDD Image"; color: text-main; font-size: 18px; font-weight: 500; vertical-alignment: center; }
+                    }
+                }
+            }
+        }
+
+        ScrollView {
+            vertical-stretch: 1;
+            viewport-width: parent.width;
+
+            VerticalLayout {
+                width: parent.width;
+                padding-left: 16px; padding-right: 16px; padding-top: 12px; padding-bottom: 96px;
+                spacing: 16px;
+
+                Card {
+                    title: "Image Properties";
+                    sub: "Pick a file name, size, and layout for the new virtual HDD.";
+
+                    VerticalLayout {
+                        spacing: 14px;
+                        VerticalLayout {
+                            spacing: 6px;
+                            Text { text: "Image File Name"; color: text-variant; font-size: 12px; font-weight: 500; }
+                            TextField {
+                                placeholder: "DEV9hdd.raw";
+                                text: hdd.name;
+                                edited => { hdd.name = self.text; }
+                            }
+                        }
+
+                        VerticalLayout {
+                            spacing: 6px;
+                            HorizontalLayout {
+                                alignment: space-between;
+                                Text { text: "Size (GB)"; color: text-variant; font-size: 12px; font-weight: 500; }
+                                Text { text: Math.round(hdd.size-mb / 1024) + " GB"; color: primary; font-size: 12px; font-weight: 600; font-family: "monospace"; }
+                            }
+                            Slider {
+                                value: Math.round(hdd.size-mb / 1024);
+                                minimum: 40;
+                                maximum: 120;
+                                step: 1;
+                                changed(value) => { hdd.size-mb = value * 1024; }
+                            }
+                            HorizontalLayout {
+                                alignment: space-between;
+                                Text { text: "40 GB"; color: text-muted; font-size: 10px; font-family: "monospace"; }
+                                Text { text: "120 GB"; color: text-muted; font-size: 10px; font-family: "monospace"; }
+                            }
+                        }
+
+                        VerticalLayout {
+                            spacing: 6px;
+                            Text { text: "Partition Type"; color: text-variant; font-size: 12px; font-weight: 500; }
+                            SegmentedToggle {
+                                options: ["MBR", "GPT"];
+                                selected: hdd.partition-type == "GPT" ? 1 : 0;
+                                selected-changed(idx) => { hdd.partition-type = idx == 1 ? "GPT" : "MBR"; }
+                            }
+                        }
+
+                        VerticalLayout {
+                            spacing: 6px;
+                            Text { text: "Format"; color: text-variant; font-size: 12px; font-weight: 500; }
+                            SegmentedToggle {
+                                options: ["RAW", "PFS"];
+                                selected: hdd.format == "PFS" ? 1 : 0;
+                                selected-changed(idx) => { hdd.format = idx == 1 ? "PFS" : "RAW"; }
+                            }
+                        }
+                    }
+                }
+
+                if (busy) : Card {
+                    title: "Creating...";
+                    sub: "Writing the virtual disk image. Please wait.";
+                    VerticalLayout {
+                        spacing: 8px;
+                        ProgressIndicator {
+                            progress: hdd.progress;
+                            indeterminate: false;
+                        }
+                        Text { text: Math.round(hdd.progress * 100) + "%"; color: primary; font-size: 12px; font-weight: 600; font-family: "monospace"; horizontal-alignment: center; }
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            height: 80px;
+            background: bg;
+            Rectangle {
+                height: 1px; width: parent.width;
+                background: surface-variant;
+                y: 0px;
+            }
+            HorizontalLayout {
+                width: parent.width; height: parent.height;
+                padding-left: 16px; padding-right: 16px;
+                spacing: 10px;
+                alignment: end;
+
+                FilledButton {
+                    label: "Cancel";
+                    primary: false;
+                    enabled: !busy;
+                    clicked => { root.cancel-clicked(); }
+                }
+                FilledButton {
+                    label: "Create";
+                    primary: true;
+                    enabled: !busy && hdd.name != "" && hdd.size-mb > 0;
+                    clicked => { root.create-clicked(hdd.name, hdd.size-mb, hdd.partition-type, hdd.format); }
+                }
+            }
+        }
+    }
+}
+
+export component AchievementSettingsView inherits Rectangle {
+    in-out property <bool> enabled: false;
+    in-out property <bool> hardcore: false;
+    in-out property <bool> notifications: true;
+    in-out property <bool> sound-effects: true;
+    in-out property <bool> leaderboard-notifications: true;
+    in-out property <bool> overlays: true;
+    in-out property <bool> logged-in: false;
+    in property <string> username: "";
+
+    in-out property <[Achievement]> achievements: [];
+
+    callback back-clicked();
+    callback login-clicked();
+    callback toggle-changed();
+    callback view-profile-clicked();
+
+    property <color> bg: #141218;
+    property <color> surface: #1D1B20;
+    property <color> surface-variant: #211F26;
+    property <color> primary: #D0BCFF;
+    property <color> on-primary: #381E72;
+    property <color> primary-container: #4A4458;
+    property <color> on-primary-container: #E8DEF8;
+    property <color> outline: #49454F;
+    property <color> text-main: #E6E0E9;
+    property <color> text-muted: #938F99;
+    property <color> text-variant: #CAC4D0;
+    property <color> badge: #332D41;
+    property <color> accent: #4ade80;
+
+    background: bg;
+    default-font-family: "Outfit";
+
+    VerticalLayout {
+        width: parent.width; height: parent.height;
+
+        Rectangle {
+            height: 56px;
+            background: bg;
+            Rectangle {
+                height: 1px; width: parent.width;
+                background: surface-variant;
+                y: 55px;
+            }
+            HorizontalLayout {
+                width: parent.width; height: parent.height;
+                padding-left: 8px; padding-right: 16px;
+                alignment: space-between;
+                HorizontalLayout {
+                    spacing: 8px;
+                    VerticalLayout { alignment: center;
+                        Rectangle {
+                            width: 40px; height: 40px; border-radius: 20px;
+                            background: ta-back.has-hover ? #ffffff10 : transparent;
+                            animate background { duration: 150ms; }
+                            Text { text: "<-"; color: text-main; font-size: 18px; font-weight: 700; horizontal-alignment: center; vertical-alignment: center; }
+                            ta-back := TouchArea { width: 100%; height: 100%; clicked => { root.back-clicked(); } }
+                        }
+                    }
+                    VerticalLayout { alignment: center;
+                        Text { text: "RetroAchievements"; color: text-main; font-size: 18px; font-weight: 500; vertical-alignment: center; }
+                    }
+                }
+            }
+        }
+
+        ScrollView {
+            vertical-stretch: 1;
+            viewport-width: parent.width;
+
+            VerticalLayout {
+                width: parent.width;
+                padding-left: 16px; padding-right: 16px; padding-top: 12px; padding-bottom: 96px;
+                spacing: 16px;
+
+                Card {
+                    title: logged-in ? ("Signed in as " + username) : "Not signed in";
+                    sub: logged-in ? "Login token active. Achievements will be tracked." : "Sign in to RetroAchievements to track game progress.";
+
+                    HorizontalLayout {
+                        spacing: 10px;
+                        alignment: start;
+                        FilledButton {
+                            label: logged-in ? "Logout" : "Login";
+                            primary: true;
+                            clicked => { root.login-clicked(); }
+                        }
+                        if (logged-in) : FilledButton {
+                            label: "View Profile";
+                            primary: false;
+                            clicked => { root.view-profile-clicked(); }
+                        }
+                    }
+                }
+
+                SectionHeader { text: "ACHIEVEMENTS"; }
+
+                Card {
+                    title: "Tracking";
+                    sub: "Configure how RetroAchievements are surfaced in PCSX2.";
+
+                    VerticalLayout {
+                        spacing: 10px;
+                        SwitchRow {
+                            title: "Enable RetroAchievements";
+                            sub: "Scan and unlock achievements while playing supported PS2 games.";
+                            ico: @image-url("icons/info.svg");
+                            checked: enabled;
+                            toggled => { enabled = self.checked; root.toggle-changed(); }
+                        }
+                        SwitchRow {
+                            title: "Enable Hardcore Mode";
+                            sub: "Disables save states, cheats, and slowdown for ranked tracking.";
+                            ico: @image-url("icons/qt/chip-line.svg");
+                            checked: hardcore;
+                            enabled: enabled;
+                            toggled => { hardcore = self.checked; root.toggle-changed(); }
+                        }
+                    }
+                }
+
+                SectionHeader { text: "NOTIFICATIONS & SOUND"; }
+
+                Card {
+                    title: "In-Game Feedback";
+                    sub: "Choose what to show and play when achievement events fire.";
+
+                    VerticalLayout {
+                        spacing: 10px;
+                        SwitchRow {
+                            title: "Achievement Notifications";
+                            sub: "Show toasts when achievements unlock.";
+                            ico: @image-url("icons/info.svg");
+                            checked: notifications;
+                            enabled: enabled;
+                            toggled => { notifications = self.checked; root.toggle-changed(); }
+                        }
+                        SwitchRow {
+                            title: "Sound Effects";
+                            sub: "Play sounds for unlocks and leaderboard events.";
+                            ico: @image-url("icons/qt/settings-3-line.svg");
+                            checked: sound-effects;
+                            enabled: enabled;
+                            toggled => { sound-effects = self.checked; root.toggle-changed(); }
+                        }
+                        SwitchRow {
+                            title: "Leaderboard Notifications";
+                            sub: "Show toasts when starting, submitting, or failing leaderboards.";
+                            ico: @image-url("icons/qt/file-list-line.svg");
+                            checked: leaderboard-notifications;
+                            enabled: enabled;
+                            toggled => { leaderboard-notifications = self.checked; root.toggle-changed(); }
+                        }
+                        SwitchRow {
+                            title: "In-Game Overlays";
+                            sub: "Display challenge icons in the screen when active.";
+                            ico: @image-url("icons/qt/image-fill.svg");
+                            checked: overlays;
+                            enabled: enabled;
+                            toggled => { overlays = self.checked; root.toggle-changed(); }
+                        }
+                    }
+                }
+
+                if (achievements.length > 0) : SectionHeader { text: "RECENT UNLOCKS"; }
+
+                if (achievements.length > 0) : Card {
+                    title: "Latest";
+                    sub: "";
+                    VerticalLayout {
+                        spacing: 8px;
+                        for ach in achievements : Rectangle {
+                            height: 64px;
+                            border-radius: 12px;
+                            background: surface-variant;
+                            border-width: 1px;
+                            border-color: #49454F4d;
+                            HorizontalLayout {
+                                width: parent.width; height: parent.height;
+                                padding: 10px;
+                                spacing: 10px;
+                                Rectangle {
+                                    width: 44px; height: 44px;
+                                    border-radius: 22px;
+                                    background: ach.unlocked ? accent : badge;
+                                    Text {
+                                        text: ach.unlocked ? "OK" : "X";
+                                        color: ach.unlocked ? #052e16 : text-variant;
+                                        font-size: 12px;
+                                        font-weight: 700;
+                                        horizontal-alignment: center;
+                                        vertical-alignment: center;
+                                    }
+                                }
+                                VerticalLayout {
+                                    horizontal-stretch: 1;
+                                    alignment: center;
+                                    spacing: 2px;
+                                    Text { text: ach.name; color: text-main; font-size: 13px; font-weight: 600; overflow: elide; }
+                                    Text { text: ach.description; color: text-muted; font-size: 11px; overflow: elide; }
+                                }
+                                VerticalLayout {
+                                    alignment: center;
+                                    horizontal-stretch: 0;
+                                    Text { text: ach.points + " pts"; color: primary; font-size: 11px; font-weight: 600; font-family: "monospace"; }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+export component AchievementLoginView inherits Rectangle {
+    in-out property <string> username: "";
+    in-out property <string> password: "";
+    in property <string> status: "";
+    in property <bool> busy: false;
+    in property <string> reason: "Login";
+
+    callback login-clicked(string, string);
+    callback cancel-clicked();
+    callback register-clicked();
+
+    property <color> bg: #141218;
+    property <color> surface: #1D1B20;
+    property <color> surface-variant: #211F26;
+    property <color> primary: #D0BCFF;
+    property <color> on-primary: #381E72;
+    property <color> primary-container: #4A4458;
+    property <color> on-primary-container: #E8DEF8;
+    property <color> outline: #49454F;
+    property <color> text-main: #E6E0E9;
+    property <color> text-muted: #938F99;
+    property <color> text-variant: #CAC4D0;
+    property <color> badge: #332D41;
+    property <color> scrim: #000000b3;
+
+    background: scrim;
+    default-font-family: "Outfit";
+
+    TouchArea { width: 100%; height: 100%; }
+
+    Rectangle {
+        x: (parent.width - self.width) / 2;
+        y: (parent.height - self.height) / 2;
+        width: min(400px, parent.width - 32px);
+        height: min(420px, parent.height - 64px);
+        background: surface;
+        border-radius: 20px;
+        border-width: 1px;
+        border-color: #ffffff1a;
+
+        VerticalLayout {
+            width: parent.width; height: parent.height;
+            padding: 24px;
+            spacing: 16px;
+
+            VerticalLayout {
+                spacing: 4px;
+                Text { text: "RetroAchievements " + reason; color: text-main; font-size: 20px; font-weight: 600; }
+                Text { text: "Your password is not stored. An access token is generated after sign in."; color: text-muted; font-size: 11px; wrap: word-wrap; }
+            }
+
+            VerticalLayout {
+                spacing: 14px;
+                VerticalLayout {
+                    spacing: 6px;
+                    Text { text: "Username"; color: text-variant; font-size: 12px; font-weight: 500; }
+                    TextField {
+                        placeholder: "username";
+                        text: username;
+                        enabled: !busy;
+                        edited => { username = self.text; }
+                    }
+                }
+                VerticalLayout {
+                    spacing: 6px;
+                    Text { text: "Password"; color: text-variant; font-size: 12px; font-weight: 500; }
+                    SecretField {
+                        placeholder: "password";
+                        text: password;
+                        edited => { password = self.text; }
+                    }
+                }
+            }
+
+            if (status != "") : Text {
+                text: status;
+                color: text-muted;
+                font-size: 11px;
+                font-style: italic;
+            }
+
+            HorizontalLayout {
+                spacing: 10px;
+                alignment: space-between;
+                FilledButton {
+                    label: "Register";
+                    primary: false;
+                    enabled: !busy;
+                    clicked => { root.register-clicked(); }
+                }
+                HorizontalLayout {
+                    spacing: 10px;
+                    alignment: end;
+                    FilledButton {
+                        label: "Cancel";
+                        primary: false;
+                        enabled: !busy;
+                        clicked => { root.cancel-clicked(); }
+                    }
+                    FilledButton {
+                        label: busy ? "Logging in..." : "Login";
+                        primary: true;
+                        enabled: !busy && username != "" && password != "";
+                        clicked => { root.login-clicked(username, password); }
+                    }
+                }
+            }
+        }
+    }
+}

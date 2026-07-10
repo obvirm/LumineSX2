@@ -1,0 +1,47 @@
+Total errors: 45
+
+[E0428] 28 occurrences
+  - the name `Console` is defined multiple times
+  - the name `DevCon` is defined multiple times
+  - the name `get_entry_sammy` is defined multiple times
+  - the name `get_entry_nihon` is defined multiple times
+  - the name `get_entry_tomy` is defined multiple times
+  - the name `get_entry_imadio` is defined multiple times
+  - the name `GL_BACK` is defined multiple times
+  - the name `GL_FRONT` is defined multiple times
+  - the name `GL_FRONT_AND_BACK` is defined multiple times
+  - the name `gscache_get_target_memory_usage` is defined multiple times
+  - the name `gscache_get_source_memory_usage` is defined multiple times
+  - the name `gscache_get_hash_cache_memory_usage` is defined multiple times
+  - the name `gsdevice_get_pool_memory_usage` is defined multiple times
+  - the name `PSXCLK` is defined multiple times
+  - the name `EYETOY_VENDOR` is defined multiple times
+  - the name `EYETOY_PRODUCT` is defined multiple times
+  - the name `px_assert_rel` is defined multiple times
+  - the name `get_register` is defined multiple times
+  - the name `XXH3_64bits` is defined multiple times
+  - the name `XXH3_128bits` is defined multiple times
+  - the name `XXH128` is defined multiple times
+  - the name `VkColorComponentFlags` is defined multiple times
+  - the name `read_typed_specialized` is defined multiple times
+  - the name `write_typed_specialized` is defined multiple times
+  - the name `GifReg` is defined multiple times
+  - the name `VK_STRUCTURE_TYPE_SPARSE_IMAGE_FORMAT_PROPERTIES_2` is defined multiple times
+  - the name `VK_DYNAMIC_STATE_COLOR_BLEND_ENABLE_EXT` is defined multiple times
+
+[E0665] 12 occurrences
+  - `#[derive(Default)]` on enum with no `#[default]`
+
+[E0463] 2 occurrences
+  - can't find crate for `flate2`
+  - can't find crate for `zip`
+
+[E0753] 1 occurrences
+  - expected outer doc comment
+
+[E0252] 1 occurrences
+  - the name `HTTPDownloader` is defined multiple times
+
+[E0255] 1 occurrences
+  - the name `assume` is defined multiple times
+

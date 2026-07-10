@@ -1,0 +1,10 @@
+?AddPrefix@Error@@SAXPEAV1@V?$basic_string_view@DU?$char_traits@D@std@@@std@@@Z
+?CreateErrno@Error@@SA?AV1@H@Z
+?CreateHResult@Error@@SA?AV1@J@Z
+?SetErrno@Error@@SAXPEAV1@V?$basic_string_view@DU?$char_traits@D@std@@@std@@H@Z
+?SetHResult@Error@@SAXPEAV1@V?$basic_string_view@DU?$char_traits@D@std@@@std@@J@Z
+?SetString@Error@@SAXPEAV1@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+?SetStringView@Error@@SAXPEAV1@V?$basic_string_view@DU?$char_traits@D@std@@@std@@@Z
+?SetWin32@Error@@QEAAXK@Z
+?SetWin32@Error@@SAXPEAV1@K@Z
+?SetWin32@Error@@SAXPEAV1@V?$basic_string_view@DU?$char_traits@D@std@@@std@@K@Z

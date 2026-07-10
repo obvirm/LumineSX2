@@ -1,0 +1,69 @@
+// Audio Settings Page
+import { SettingsRow, ToggleRow, SectionHeader, DetailPage, SliderRow, ComboRow } from "./common.slint";
+
+export component AudioSettingsView inherits DetailPage {
+    title: "Pengaturan Audio";
+    
+    in-out property <int> backend: 0;
+    in-out property <int> driver-index: 0;
+    in-out property <int> device-index: 0;
+    in-out property <float> buffer-ms: 50.0;
+    in-out property <float> output-latency-ms: 20.0;
+    in-out property <bool> output-latency-minimal: false;
+    in-out property <int> sync-mode: 0;
+    in-out property <float> standard-volume: 1.0;
+    in-out property <float> fast-forward-volume: 1.0;
+    in-out property <bool> muted: false;
+    in-out property <int> expansion-mode: 0;
+    in-out property <float> expand-block-size: 0.5;
+    in-out property <float> expand-circular-wrap: 0.5;
+    in-out property <float> expand-shift: 0.5;
+    in-out property <float> expand-depth: 0.5;
+    in-out property <float> expand-focus: 0.5;
+    in-out property <float> expand-center-image: 0.5;
+    in-out property <float> expand-front-separation: 0.5;
+    in-out property <float> expand-rear-separation: 0.5;
+    in-out property <float> expand-low-cutoff: 0.5;
+    in-out property <float> expand-high-cutoff: 0.5;
+    in-out property <float> stretch-sequence-length: 0.5;
+    in-out property <float> stretch-seek-window: 0.5;
+    in-out property <float> stretch-overlap: 0.5;
+    in-out property <bool> stretch-quick-seek: true;
+    in-out property <bool> stretch-aa-filter: true;
+
+    SectionHeader { txt: "Output"; }
+    ComboRow { txt: "Audio Backend"; model: ["Cubeb (Default)", "SDL", "XAudio2", "Null"]; current-index: backend; selected(idx) => { backend = idx; } }
+    ComboRow { txt: "Driver"; model: ["Default"]; current-index: driver-index; selected(idx) => { driver-index = idx; } }
+    ComboRow { txt: "Output Device"; model: ["Default"]; current-index: device-index; selected(idx) => { device-index = idx; } }
+    ComboRow { txt: "Sync Mode"; model: ["TimeStretch", "Async", "None"]; current-index: sync-mode; selected(idx) => { sync-mode = idx; } }
+
+    SectionHeader { txt: "Buffer & Latency"; }
+    SliderRow { txt: "Buffer Size"; value: buffer-ms / 200.0; changed(v) => { buffer-ms = v * 200.0; } }
+    SliderRow { txt: "Output Latency"; value: output-latency-ms / 100.0; changed(v) => { output-latency-ms = v * 100.0; } }
+    ToggleRow { txt: "Minimal Output Latency"; sub: "Use device minimum instead of manual value"; checked: output-latency-minimal; toggled(v) => { output-latency-minimal = v; } }
+
+    SectionHeader { txt: "Volume"; }
+    SliderRow { txt: "Volume"; value: standard-volume; changed(v) => { standard-volume = v; } }
+    SliderRow { txt: "Fast Forward Volume"; value: fast-forward-volume; changed(v) => { fast-forward-volume = v; } }
+    ToggleRow { txt: "Mute"; checked: muted; toggled(v) => { muted = v; } }
+
+    SectionHeader { txt: "Surround Expansion"; }
+    ComboRow { txt: "Expansion Mode"; model: ["Disabled", "Surround (Dolby Pro Logic II)"]; current-index: expansion-mode; selected(idx) => { expansion-mode = idx; } }
+    if (expansion-mode > 0) : SliderRow { txt: "Block Size"; value: expand-block-size; changed(v) => { expand-block-size = v; } }
+    if (expansion-mode > 0) : SliderRow { txt: "Circular Wrap"; value: expand-circular-wrap; changed(v) => { expand-circular-wrap = v; } }
+    if (expansion-mode > 0) : SliderRow { txt: "Shift"; value: expand-shift; changed(v) => { expand-shift = v; } }
+    if (expansion-mode > 0) : SliderRow { txt: "Depth"; value: expand-depth; changed(v) => { expand-depth = v; } }
+    if (expansion-mode > 0) : SliderRow { txt: "Focus"; value: expand-focus; changed(v) => { expand-focus = v; } }
+    if (expansion-mode > 0) : SliderRow { txt: "Center Image"; value: expand-center-image; changed(v) => { expand-center-image = v; } }
+    if (expansion-mode > 0) : SliderRow { txt: "Front Separation"; value: expand-front-separation; changed(v) => { expand-front-separation = v; } }
+    if (expansion-mode > 0) : SliderRow { txt: "Rear Separation"; value: expand-rear-separation; changed(v) => { expand-rear-separation = v; } }
+    if (expansion-mode > 0) : SliderRow { txt: "Low Cutoff"; value: expand-low-cutoff; changed(v) => { expand-low-cutoff = v; } }
+    if (expansion-mode > 0) : SliderRow { txt: "High Cutoff"; value: expand-high-cutoff; changed(v) => { expand-high-cutoff = v; } }
+
+    SectionHeader { txt: "Time-Stretching"; }
+    if (sync-mode == 0) : SliderRow { txt: "Sequence Length"; value: stretch-sequence-length; changed(v) => { stretch-sequence-length = v; } }
+    if (sync-mode == 0) : SliderRow { txt: "Seek Window"; value: stretch-seek-window; changed(v) => { stretch-seek-window = v; } }
+    if (sync-mode == 0) : SliderRow { txt: "Overlap"; value: stretch-overlap; changed(v) => { stretch-overlap = v; } }
+    if (sync-mode == 0) : ToggleRow { txt: "Quick Seek"; checked: stretch-quick-seek; toggled(v) => { stretch-quick-seek = v; } }
+    if (sync-mode == 0) : ToggleRow { txt: "AA Filter"; checked: stretch-aa-filter; toggled(v) => { stretch-aa-filter = v; } }
+}

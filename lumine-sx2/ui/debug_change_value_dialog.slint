@@ -1,0 +1,94 @@
+import { Button, HorizontalBox, VerticalBox, LineEdit, ComboBox } from "std-widgets.slint";
+
+// ─── Change Value Dialog ───
+export component ChangeValueDialog inherits Rectangle {
+    in property <string> title: "Change Value";
+    in property <string> register-name: "";
+    in property <string> current-value: "";
+    in property <string> input-value: "";
+    in property <bool> is-hex: true;
+
+    callback confirmed(string /*value*/);
+    callback cancelled();
+    callback toggle-format();
+
+    background: #11111b;
+
+    Rectangle {
+        width: 350px;
+        height: 180px;
+        x: (parent.width - self.width) / 2;
+        y: (parent.height - self.height) / 2;
+        background: #1e1e2e;
+        border-radius: 8px;
+        border-width: 1px;
+        border-color: #313244;
+
+        VerticalBox {
+            padding: 16px;
+            spacing: 12px;
+
+            Text {
+                text: root.title;
+                color: #cdd6f4;
+                font-size: 14px;
+                font-weight: 700;
+            }
+
+            // Register info
+            if register-name != "": Text {
+                text: root.register-name + " = " + root.current-value;
+                color: #89b4fa;
+                font-size: 12px;
+                font-family: "Cascadia Code", "Consolas", monospace;
+            }
+
+            // Input
+            HorizontalLayout {
+                spacing: 8px;
+                Text {
+                    text: "New value:";
+                    color: #cdd6f4;
+                    font-size: 11px;
+                    vertical-alignment: center;
+                    width: 80px;
+                }
+                LineEdit {
+                    text: root.input-value;
+                    placeholder-text: root.is-hex ? "0x00000000" : "0";
+                    font-size: 11px;
+                    font-family: "Cascadia Code", "Consolas", monospace;
+                    horizontal-stretch: 1;
+                    accepted => { root.confirmed(root.input-value); }
+                }
+            }
+
+            // Format toggle
+            HorizontalLayout {
+                spacing: 8px;
+                Rectangle { width: 80px; }
+                Button {
+                    text: root.is-hex ? "Hex" : "Decimal";
+                    clicked => { root.toggle-format(); }
+                    min-width: 60px;
+                }
+            }
+
+            // Buttons
+            HorizontalLayout {
+                spacing: 8px;
+                Rectangle { horizontal-stretch: 1; }
+                Button {
+                    text: "Cancel";
+                    clicked => { root.cancelled(); }
+                    min-width: 80px;
+                }
+                Button {
+                    text: "Change";
+                    clicked => { root.confirmed(root.input-value); }
+                    min-width: 80px;
+                }
+            }
+        }
+    }
+}

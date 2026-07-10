@@ -1,0 +1,50 @@
+error[E0665]: `#[derive(Default)]` on enum with no `#[default]`
+error[E0119]: conflicting implementations of trait `Clone` for type `pcsx2::VmManager::AspectRatio`
+error[E0204]: the trait `std::marker::Copy` cannot be implemented for this type
+error[E0119]: conflicting implementations of trait `PartialEq` for type `common::Error::ErrorKind`
+error[E0119]: conflicting implementations of trait `Default` for type `ValueBuilder`
+error[E0081]: discriminant value `0` assigned more than once
+error[E0081]: discriminant value `528486580` assigned more than once
+error[E0277]: `std::cell::UnsafeCell<MemoryCardFile>` cannot be shared between threads safely
+error[E0277]: `std::cell::UnsafeCell<MemoryCardFolder>` cannot be shared between threads safely
+error[E0277]: `std::cell::RefCell<BusShared>` cannot be shared between threads safely
+error[E0081]: discriminant value `-1` assigned more than once
+error[E0599]: no method named `allocate` found for struct `System` in the current scope
+error[E0599]: no method named `deallocate` found for struct `System` in the current scope
+error[E0277]: the trait bound `std::fs::File: Clone` is not satisfied
+error[E0599]: no method named `unlock` found for struct `std::sync::Mutex<T>` in the current scope
+error[E0658]: use of unstable library feature `backtrace_frames`
+error[E0599]: no method named `symbols` found for reference `&BacktraceFrame` in the current scope
+error[E0599]: no method named `ip` found for reference `&BacktraceFrame` in the current scope
+error[E0308]: `match` arms have incompatible types
+error[E0369]: no implementation for `&mut u64 << {integer}`
+error[E0277]: can't compare `Q1` with `Q2`
+error[E0308]: mismatched types
+error[E0277]: the trait bound `Value: sealed_dispatch::Read<Value>` is not satisfied
+error[E0277]: the trait bound `Value: sealed_dispatch::Write<Value>` is not satisfied
+error[E0308]: mismatched types
+error[E0599]: no associated function or constant named `from_str_radix` found for type parameter `T` in the current scope
+error[E0308]: mismatched types
+error[E0015]: cannot call non-const associated function `pcsx2::CdvdDiscThread::CDVDState::new` in statics
+error[E0015]: cannot call non-const associated function `Ps1CD::new` in statics
+error[E0308]: mismatched types
+error[E0308]: mismatched types
+error[E0308]: mismatched types
+error[E0600]: cannot apply unary operator `-` to type `u32`
+error[E0308]: mismatched types
+error[E0308]: mismatched types
+error[E0308]: `match` arms have incompatible types
+error[E0308]: `match` arms have incompatible types
+error[E0599]: the method `clone` exists for struct `std::sync::MutexGuard<'_, Vec<Box<(dyn UdpBaseSession + 'static)>>>`, but its trait bounds were not satisfied
+error[E0599]: the method `clone` exists for struct `std::sync::MutexGuard<'_, Vec<Box<(dyn UdpBaseSession + 'static)>>>`, but its trait bounds were not satisfied
+error[E0277]: the trait bound `FullscreenUiContext: Clone` is not satisfied
+error[E0308]: mismatched types
+error[E0277]: the trait bound `GsDeviceDx11Mtl::GsTextureFormat: Default` is not satisfied
+error[E0277]: the trait bound `GsDeviceOpenGl::ShaderConvert: Default` is not satisfied
+error[E0271]: type mismatch resolving `<dyn HostInterface as Pointee>::Metadata == ()`
+error[E0277]: the trait bound `f32: Eq` is not satisfied
+error[E0015]: cannot call non-const associated function `<String as From<&str>>::from` in statics
+error[E0277]: the trait bound `u16: From<usize>` is not satisfied
+error[E0277]: the trait bound `std::time::Instant: Default` is not satisfied
+error[E0308]: mismatched types
+error[E0369]: binary operation `!=` cannot be applied to type `T`

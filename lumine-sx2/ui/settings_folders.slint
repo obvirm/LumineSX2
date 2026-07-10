@@ -1,0 +1,23 @@
+// Folders Settings Page
+import { TextFieldRow, SectionHeader, DetailPage } from "./common.slint";
+
+export component FoldersSettingsView inherits DetailPage {
+    title: "Folder";
+    
+    in-out property <string> saves-dir: "";
+    in-out property <string> snapshots-dir: "";
+    in-out property <string> logs-dir: "";
+    in-out property <string> cheats-dir: "";
+    in-out property <string> patches-dir: "";
+    in-out property <string> textures-dir: "";
+    in-out property <string> memcards-dir: "";
+
+    SectionHeader { txt: "Custom Paths"; }
+    TextFieldRow { txt: "Saves"; value: saves-dir; placeholder: "Default: data_dir/saves"; edited(v) => { saves-dir = v; } }
+    TextFieldRow { txt: "Snapshots"; value: snapshots-dir; placeholder: "Default: data_dir/snapshots"; edited(v) => { snapshots-dir = v; } }
+    TextFieldRow { txt: "Logs"; value: logs-dir; placeholder: "Default: data_dir/logs"; edited(v) => { logs-dir = v; } }
+    TextFieldRow { txt: "Cheats"; value: cheats-dir; placeholder: "Default: data_dir/cheats"; edited(v) => { cheats-dir = v; } }
+    TextFieldRow { txt: "Patches"; value: patches-dir; placeholder: "Default: data_dir/patches"; edited(v) => { patches-dir = v; } }
+    TextFieldRow { txt: "Textures"; value: textures-dir; placeholder: "Default: data_dir/textures"; edited(v) => { textures-dir = v; } }
+    TextFieldRow { txt: "Memory Cards"; value: memcards-dir; placeholder: "Default: data_dir/memcards"; edited(v) => { memcards-dir = v; } }
+}

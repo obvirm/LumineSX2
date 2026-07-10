@@ -1,0 +1,138 @@
+import { HorizontalBox, VerticalBox, LineEdit, Button, ComboBox } from "std-widgets.slint";
+
+export struct MemoryLine {
+    address: string,
+    b00: string, b01: string, b02: string, b03: string,
+    b04: string, b05: string, b06: string, b07: string,
+    b08: string, b09: string, b10: string, b11: string,
+    b12: string, b13: string, b14: string, b15: string,
+    ascii: string,
+    selected-byte: int,
+    is-selected: bool,
+}
+
+export component MemoryView inherits Rectangle {
+    in property <[MemoryLine]> memory-lines: [];
+    in property <string> address-input: "0x00000000";
+    in property <int> bytes-per-group: 1;
+    in property <bool> show-ascii: true;
+    in property <string> endian: "Little";
+    in property <int> selected-row: -1;
+    in property <int> selected-col: -1;
+    in property <string> goto-address: "";
+
+    callback address-changed(string);
+    callback byte-selected(int, int);
+    callback byte-double-clicked(int, int);
+    callback scroll-up();
+    callback scroll-down();
+    callback address-edited(string);
+    callback goto-address-clicked(string);
+    callback endian-changed(string);
+    callback toggle-ascii();
+
+    background: #11111b;
+
+    VerticalBox {
+        padding: 0;
+        spacing: 0;
+
+        // Toolbar
+        Rectangle {
+            height: 36px;
+            background: #181825;
+            HorizontalLayout {
+                padding: 6px;
+                spacing: 6px;
+                Text { text: "Address:"; color: #89b4fa; font-size: 11px; vertical-alignment: center; }
+                LineEdit {
+                    text: root.address-input;
+                    width: 120px;
+                    font-size: 11px;
+                    font-family: "Cascadia Code";
+                    edited(t) => { root.address-edited(t); }
+                    accepted => { root.goto-address-clicked(root.address-input); }
+                }
+                Button {
+                    text: "Go";
+                    width: 40px;
+                    clicked => { root.goto-address-clicked(root.address-input); }
+                }
+                Rectangle { horizontal-stretch: 1; }
+                Button {
+                    text: root.show-ascii ? "ASCII: ON" : "ASCII: OFF";
+                    clicked => { root.toggle-ascii(); }
+                }
+            }
+        }
+        Rectangle { height: 1px; background: #313244; }
+
+        // Column headers
+        Rectangle {
+            height: 20px;
+            background: #181825;
+            HorizontalLayout {
+                padding: 2px;
+                padding-left: 4px;
+                Text { text: "Address"; color: #89b4fa; font-size: 10px; font-weight: 600; width: 100px; }
+                Text { text: "00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F"; color: #89b4fa; font-size: 10px; font-weight: 600; horizontal-stretch: 1; font-family: "Cascadia Code"; }
+                if root.show-ascii: Text { text: "ASCII"; color: #89b4fa; font-size: 10px; font-weight: 600; width: 130px; }
+            }
+        }
+        Rectangle { height: 1px; background: #313244; }
+
+        // Memory rows
+        Flickable {
+            vertical-stretch: 1;
+            viewport-height: memory-lines.length * 20px;
+            for line[idx] in memory-lines: Rectangle {
+                y: idx * 20px;
+                height: 20px;
+                background: line.is-selected ? #3b3f54 : (Math.mod(idx, 2) == 0 ? transparent : #181825);
+                TouchArea {
+                    clicked => { root.byte-selected(idx, 0); }
+                }
+                HorizontalLayout {
+                    padding: 2px;
+                    padding-left: 4px;
+                    Text {
+                        text: line.address;
+                        color: #89b4fa;
+                        font-size: 11px;
+                        font-family: "Cascadia Code";
+                        width: 100px;
+                        vertical-alignment: center;
+                    }
+                    // Bytes
+                    Text { text: line.b00; color: #a6e3a1; font-size: 11px; font-family: "Cascadia Code"; width: 20px; vertical-alignment: center; }
+                    Text { text: line.b01; color: #a6e3a1; font-size: 11px; font-family: "Cascadia Code"; width: 20px; vertical-alignment: center; }
+                    Text { text: line.b02; color: #a6e3a1; font-size: 11px; font-family: "Cascadia Code"; width: 20px; vertical-alignment: center; }
+                    Text { text: line.b03; color: #a6e3a1; font-size: 11px; font-family: "Cascadia Code"; width: 20px; vertical-alignment: center; }
+                    Text { text: " "; width: 8px; }
+                    Text { text: line.b04; color: #a6e3a1; font-size: 11px; font-family: "Cascadia Code"; width: 20px; vertical-alignment: center; }
+                    Text { text: line.b05; color: #a6e3a1; font-size: 11px; font-family: "Cascadia Code"; width: 20px; vertical-alignment: center; }
+                    Text { text: line.b06; color: #a6e3a1; font-size: 11px; font-family: "Cascadia Code"; width: 20px; vertical-alignment: center; }
+                    Text { text: line.b07; color: #a6e3a1; font-size: 11px; font-family: "Cascadia Code"; width: 20px; vertical-alignment: center; }
+                    Text { text: " "; width: 8px; }
+                    Text { text: line.b08; color: #a6e3a1; font-size: 11px; font-family: "Cascadia Code"; width: 20px; vertical-alignment: center; }
+                    Text { text: line.b09; color: #a6e3a1; font-size: 11px; font-family: "Cascadia Code"; width: 20px; vertical-alignment: center; }
+                    Text { text: line.b10; color: #a6e3a1; font-size: 11px; font-family: "Cascadia Code"; width: 20px; vertical-alignment: center; }
+                    Text { text: line.b11; color: #a6e3a1; font-size: 11px; font-family: "Cascadia Code"; width: 20px; vertical-alignment: center; }
+                    Text { text: " "; width: 8px; }
+                    Text { text: line.b12; color: #a6e3a1; font-size: 11px; font-family: "Cascadia Code"; width: 20px; vertical-alignment: center; }
+                    Text { text: line.b13; color: #a6e3a1; font-size: 11px; font-family: "Cascadia Code"; width: 20px; vertical-alignment: center; }
+                    Text { text: line.b14; color: #a6e3a1; font-size: 11px; font-family: "Cascadia Code"; width: 20px; vertical-alignment: center; }
+                    Text { text: line.b15; color: #a6e3a1; font-size: 11px; font-family: "Cascadia Code"; width: 20px; vertical-alignment: center; }
+                    if root.show-ascii: Text {
+                        text: line.ascii;
+                        color: #f9e2af;
+                        font-size: 11px;
+                        font-family: "Cascadia Code";
+                        width: 130px;
+                        vertical-alignment: center;
+                    }
+                }
+            }
+        }
+    }
+}

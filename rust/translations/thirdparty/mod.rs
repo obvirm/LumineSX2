@@ -1,0 +1,23 @@
+//! Module auto-generated for thirdparty
+pub mod ccc;
+pub mod cpuinfo;
+pub mod cubeb;
+pub mod d3d12memalloc;
+pub mod demangler;
+pub mod ffmpeg;
+pub mod fmt;
+pub mod glad;
+pub mod googletest;
+pub mod imgui;
+pub mod include;
+pub mod libchdr;
+pub mod libzip;
+pub mod lzma;
+pub mod more;
+pub mod rapidjson;
+pub mod rcheevos;
+pub mod vixl;
+pub mod vulkan;
+pub mod winwil;
+pub mod xbyak;
+pub mod zydis;

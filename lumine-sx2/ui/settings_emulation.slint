@@ -1,0 +1,97 @@
+// Emulation Settings Page
+import { ToggleRow, SectionHeader, DetailPage, ComboRow, TextFieldRow } from "./common.slint";
+
+export component EmulationSettingsView inherits DetailPage {
+    title: "Pengaturan Emulasi";
+    
+    in-out property <int> speed-preset: 0;
+    in-out property <bool> frame-pacing: true;
+    in-out property <int> vsync-index: 0;
+    in-out property <int> ntsc-mode: 0;
+    in-out property <int> pal-mode: 0;
+    in-out property <bool> real-time-clock: true;
+    in-out property <int> locale-format: 0;
+    
+    in-out property <int> normal-speed: 100;
+    in-out property <int> fast-speed: 200;
+    in-out property <int> slow-speed: 50;
+    in-out property <int> turbo-index: 2;
+    in-out property <int> slowmo-index: 0;
+    in-out property <bool> sync-to-host: false;
+    in-out property <bool> vsync-for-timing: false;
+    in-out property <bool> skip-duplicate-frames: false;
+    in-out property <int> max-frame-latency: 1;
+    in-out property <int> ee-cycle-rate: 0;
+    in-out property <int> ee-cycle-skip: 0;
+    in-out property <bool> mtvu: true;
+    in-out property <bool> thread-pinning: false;
+    in-out property <bool> fast-cdvd: false;
+    in-out property <bool> cdvd-precache: true;
+    in-out property <bool> enable-cheats: false;
+    in-out property <bool> apply-widescreen-patches: false;
+    in-out property <bool> apply-no-interlace-patches: false;
+    in-out property <string> rtc-year: "2026";
+    in-out property <string> rtc-month: "06";
+    in-out property <string> rtc-day: "24";
+    in-out property <string> rtc-hour: "00";
+    in-out property <string> rtc-minute: "00";
+    in-out property <string> rtc-second: "00";
+
+    SectionHeader { txt: "Speed Control"; }
+    ComboRow { txt: "Normal Speed"; model: ["100%", "150%", "200%", "Unlimited", "Custom"]; current-index: speed-preset; selected(idx) => { speed-preset = idx; } }
+    ComboRow { txt: "Turbo Speed"; model: ["150%", "200%", "300%", "500%", "1000%"]; current-index: turbo-index; selected(idx) => { turbo-index = idx; } }
+    ComboRow { txt: "Slow-Mo Speed"; model: ["10%", "25%", "50%", "75%"]; current-index: slowmo-index; selected(idx) => { slowmo-index = idx; } }
+    
+    SectionHeader { txt: "Frame Pacing"; }
+    ToggleRow { txt: "Optimal Frame Pacing"; sub: "Reduce frame time variance for smoother output"; checked: frame-pacing; toggled(v) => { frame-pacing = v; } }
+    ComboRow { txt: "Max Frame Latency"; model: ["1 Frame", "2 Frames", "3 Frames", "4 Frames"]; current-index: max-frame-latency; selected(idx) => { max-frame-latency = idx; } }
+    ToggleRow { txt: "Skip Duplicate Frames"; sub: "Skip rendering duplicate frames for better performance"; checked: skip-duplicate-frames; toggled(v) => { skip-duplicate-frames = v; } }
+
+    SectionHeader { txt: "VSync"; }
+    ComboRow { txt: "Vertical Sync"; model: ["Off", "On", "Adaptive"]; current-index: vsync-index; selected(idx) => { vsync-index = idx; } }
+    ToggleRow { txt: "Sync to Host Refresh"; sub: "Match emulation speed to display refresh rate"; checked: sync-to-host; toggled(v) => { sync-to-host = v; } }
+    if sync-to-host: ToggleRow { txt: "Use VSync for Timing"; sub: "Use VSync timing instead of software timer"; checked: vsync-for-timing; toggled(v) => { vsync-for-timing = v; } }
+
+    SectionHeader { txt: "EE/NTSC Timing"; }
+    ComboRow { txt: "EE Cycle Rate"; model: ["-3", "-2", "-1", "0% (Default)", "+1", "+2", "+3"]; current-index: ee-cycle-rate + 3; selected(idx) => { ee-cycle-rate = idx - 3; } }
+    ComboRow { txt: "EE Cycle Skipping"; model: ["0 (None)", "1 (Moderate)", "2 (Maximum)"]; current-index: ee-cycle-skip; selected(idx) => { ee-cycle-skip = idx; } }
+
+    SectionHeader { txt: "Display Patches"; }
+    ToggleRow { txt: "Apply Widescreen Patches"; sub: "Automatically apply widescreen patches for supported games"; checked: apply-widescreen-patches; toggled(v) => { apply-widescreen-patches = v; } }
+    ToggleRow { txt: "Apply No-Interlacing Patches"; sub: "Automatically apply no-interlacing patches for supported games"; checked: apply-no-interlace-patches; toggled(v) => { apply-no-interlace-patches = v; } }
+
+    SectionHeader { txt: "Region Timing"; }
+    ComboRow { txt: "NTSC Mode"; model: ["Default (59.94 fps)", "Forced 60 Hz"]; current-index: ntsc-mode; selected(idx) => { ntsc-mode = idx; } }
+    ComboRow { txt: "PAL Mode"; model: ["Default (50 fps)", "Forced 50 Hz"]; current-index: pal-mode; selected(idx) => { pal-mode = idx; } }
+
+    SectionHeader { txt: "Multi-Threading"; }
+    ToggleRow { txt: "MTVU (Micro VU1 on Separate Thread)"; sub: "Run VU1 on its own thread for better performance"; checked: mtvu; toggled(v) => { mtvu = v; } }
+    ToggleRow { txt: "Thread Pinning"; sub: "Pin emulator threads to specific CPU cores"; checked: thread-pinning; toggled(v) => { thread-pinning = v; } }
+
+    SectionHeader { txt: "Sistem"; }
+    ToggleRow { txt: "Real-Time Clock"; sub: "Sync PS2 clock with host system time"; checked: real-time-clock; toggled(v) => { real-time-clock = v; } }
+    if !real-time-clock: VerticalLayout {
+        spacing: 4px;
+        HorizontalLayout { padding-left: 20px; padding-top: 8px;
+                Text { text: "RTC Date/Time"; color: #D0BCFF; font-size: 13px; font-weight: 600; }
+            }
+        HorizontalLayout { padding-left: 20px; padding-right: 20px; spacing: 8px;
+            TextFieldRow { txt: "Year"; value: rtc-year; edited(v) => { rtc-year = v; } }
+            TextFieldRow { txt: "Month"; value: rtc-month; edited(v) => { rtc-month = v; } }
+            TextFieldRow { txt: "Day"; value: rtc-day; edited(v) => { rtc-day = v; } }
+        }
+        HorizontalLayout { padding-left: 20px; padding-right: 20px; spacing: 8px;
+            TextFieldRow { txt: "Hour"; value: rtc-hour; edited(v) => { rtc-hour = v; } }
+            TextFieldRow { txt: "Min"; value: rtc-minute; edited(v) => { rtc-minute = v; } }
+            TextFieldRow { txt: "Sec"; value: rtc-second; edited(v) => { rtc-second = v; } }
+        }
+    }
+    ComboRow { txt: "System Locale"; model: ["System Default", "Japanese", "Simplified Chinese", "Traditional Chinese", "Korean", "English", "French", "German", "Italian", "Spanish", "Portuguese", "Russian"]; current-index: locale-format; selected(idx) => { locale-format = idx; } }
+
+    SectionHeader { txt: "Cheats"; }
+    ToggleRow { txt: "Enable Cheats"; sub: "Automatically loads and applies cheats on game start"; checked: enable-cheats; toggled(v) => { enable-cheats = v; } }
+
+    SectionHeader { txt: "CDVD"; }
+    ToggleRow { txt: "Fast CDVD"; sub: "Enable fast CDVD access (per-game only)"; checked: fast-cdvd; toggled(v) => { fast-cdvd = v; } }
+    ToggleRow { txt: "CDVD Precache"; sub: "Cache disc data to memory on game start"; checked: cdvd-precache; toggled(v) => { cdvd-precache = v; } }
+}

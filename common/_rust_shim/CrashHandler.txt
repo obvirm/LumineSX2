@@ -1,0 +1,2 @@
+?Install@CrashHandler@@YA_NXZ
+?SetWriteDirectory@CrashHandler@@YAXV?$basic_string_view@DU?$char_traits@D@std@@@std@@@Z

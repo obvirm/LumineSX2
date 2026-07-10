@@ -1,0 +1,92 @@
+import { Button, HorizontalBox, VerticalBox } from "std-widgets.slint";
+
+// ─── Context Menu Item ───
+export struct ContextMenuItem {
+    label: string,
+    shortcut: string,
+    enabled: bool,
+    separator: bool,
+    is-checked: bool,
+}
+
+// ─── Context Menu ───
+export component ContextMenu inherits Rectangle {
+    in property <[ContextMenuItem]> items: [];
+    in property <length> menu-x: 0px;
+    in property <length> menu-y: 0px;
+    in property <bool> is-visible: false;
+
+    callback item-clicked(int /*index*/);
+    callback menu-closed();
+
+    visible: root.is-visible;
+    background: transparent;
+
+    // Backdrop to catch clicks outside
+    TouchArea {
+        clicked => { root.menu-closed(); }
+    }
+
+    // Menu
+    if is-visible: Rectangle {
+        x: root.menu-x;
+        y: root.menu-y;
+        width: 200px;
+        height: items.length * 28px;
+        background: #1e1e2e;
+        border-radius: 6px;
+        border-width: 1px;
+        border-color: #313244;
+        clip: true;
+
+        for item[idx] in items: Rectangle {
+            y: idx * 28px;
+            height: item.separator ? 1px : 28px;
+            background: transparent;
+
+            if item.separator: Rectangle {
+                height: 1px;
+                background: #313244;
+                x: 8px;
+                width: parent.width - 16px;
+            }
+
+            if !item.separator: HorizontalLayout {
+                padding-left: 12px;
+                padding-right: 12px;
+                spacing: 8px;
+
+                Text {
+                    text: item.label;
+                    color: item.enabled ? #cdd6f4 : #45475a;
+                    font-size: 11px;
+                    vertical-alignment: center;
+                    horizontal-stretch: 1;
+                }
+
+                if item.shortcut != "": Text {
+                    text: item.shortcut;
+                    color: #6c7086;
+                    font-size: 10px;
+                    vertical-alignment: center;
+                }
+
+                if item.is-checked: Text {
+                    text: "✓";
+                    color: #a6e3a1;
+                    font-size: 12px;
+                    vertical-alignment: center;
+                }
+            }
+
+            if !item.separator: TouchArea {
+                clicked => {
+                    if item.enabled {
+                        root.item-clicked(idx);
+                        root.menu-closed();
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,19 @@
+// Cheats Settings Page
+import { SettingsRow, ToggleRow, SectionHeader, DetailPage } from "./common.slint";
+
+export component CheatsSettingsView inherits DetailPage {
+    title: "Cheats";
+    
+    in-out property <string> filter: "";
+
+    SectionHeader { txt: "PNACH Cheats"; }
+    SettingsRow { txt: "Enable All"; }
+    SettingsRow { txt: "Disable All"; }
+
+    SectionHeader { txt: "Cheat List"; }
+    ToggleRow { txt: "Infinite Health"; sub: "Player HP never decreases"; checked: false; }
+    ToggleRow { txt: "Infinite Ammo"; sub: "Unlimited ammunition"; checked: false; }
+    ToggleRow { txt: "Max Money"; sub: "Set money to maximum value"; checked: false; }
+    ToggleRow { txt: "Unlock All"; sub: "Unlock all items and levels"; checked: false; }
+    ToggleRow { txt: "No Clip"; sub: "Walk through walls"; checked: false; }
+}

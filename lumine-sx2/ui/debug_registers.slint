@@ -1,0 +1,151 @@
+import { HorizontalBox, VerticalBox, LineEdit, Button, ComboBox } from "std-widgets.slint";
+
+export struct Register32 {
+    name: string,
+    value-hex: string,
+    value-dec: string,
+    value-float: string,
+    is-modified: bool,
+    is-selected: bool,
+}
+
+export struct Register128 {
+    name: string,
+    seg0-hex: string,
+    seg1-hex: string,
+    seg2-hex: string,
+    seg3-hex: string,
+    seg0-float: string,
+    seg1-float: string,
+    seg2-float: string,
+    seg3-float: string,
+    is-modified: bool,
+    selected-segment: int,
+}
+
+export struct Register64 {
+    name: string,
+    value-hex: string,
+    value-float: string,
+    is-modified: bool,
+    is-selected: bool,
+}
+
+export struct RegisterEntry {
+    name: string,
+    value-hex: string,
+    value-float: string,
+    value-int: string,
+    is-modified: bool,
+    is-selected: bool,
+}
+
+export component RegisterView inherits Rectangle {
+    in property <[string]> categories: ["EE", "VU0", "VU1", "FPR", "COP0", "IOP"];
+    in property <int> selected-category: 0;
+    in property <[RegisterEntry]> regs32: [];
+    in property <[Register128]> regs128: [];
+    in property <[Register64]> regs64: [];
+    in property <int> register-size: 32;
+    in property <bool> show-float: false;
+    in property <int> selected-row: -1;
+    in property <int> selected-segment: 0;
+
+    callback category-changed(int);
+    callback register-selected(int);
+    callback register-double-clicked(int);
+    callback segment-selected(int, int);
+    callback change-value(int, int);
+    callback toggle-float-display();
+
+    background: #11111b;
+
+    VerticalBox {
+        padding: 0;
+        spacing: 0;
+
+        // Category tabs
+        Rectangle {
+            height: 32px;
+            background: #1e1e2e;
+
+            HorizontalLayout {
+                padding: 4px;
+                spacing: 2px;
+
+                for cat[idx] in categories: Rectangle {
+                    height: 24px;
+                    width: 60px;
+                    background: idx == root.selected-category ? #3b3f54 : transparent;
+                    border-radius: 4px;
+
+                    Text {
+                        text: cat;
+                        color: idx == root.selected-category ? #89b4fa : #6c7086;
+                        font-size: 11px;
+                        font-weight: 600;
+                        horizontal-alignment: center;
+                        vertical-alignment: center;
+                    }
+
+                    TouchArea {
+                        clicked => {
+                            root.category-changed(idx);
+                        }
+                    }
+                }
+            }
+        }
+
+        Rectangle { height: 1px; background: #313244; }
+
+        // Register list
+        Flickable {
+            vertical-stretch: 1;
+            viewport-height: regs32.length * 20px;
+
+            for reg[idx] in regs32: Rectangle {
+                y: idx * 20px;
+                height: 20px;
+                background: reg.is-selected ? #3b3f54 : (Math.mod(idx, 2) == 0 ? transparent : #181825);
+
+                TouchArea {
+                    clicked => { root.register-selected(idx); }
+                    double-clicked => { root.register-double-clicked(idx); }
+                }
+
+                HorizontalLayout {
+                    padding: 2px;
+                    padding-left: 6px;
+
+                    Text {
+                        text: reg.name;
+                        color: #f9e2af;
+                        font-size: 11px;
+                        font-family: "Cascadia Code";
+                        width: 80px;
+                        vertical-alignment: center;
+                    }
+
+                    Text {
+                        text: reg.value-hex;
+                        color: reg.is-modified ? #f38ba8 : #a6e3a1;
+                        font-size: 11px;
+                        font-family: "Cascadia Code";
+                        horizontal-stretch: 1;
+                        vertical-alignment: center;
+                    }
+
+                    Text {
+                        text: root.show-float ? reg.value-float : reg.value-int;
+                        color: #cdd6f4;
+                        font-size: 11px;
+                        font-family: "Cascadia Code";
+                        width: 100px;
+                        vertical-alignment: center;
+                    }
+                }
+            }
+        }
+    }
+}

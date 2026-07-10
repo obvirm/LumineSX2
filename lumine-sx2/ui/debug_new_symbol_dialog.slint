@@ -1,0 +1,143 @@
+import { Button, HorizontalBox, VerticalBox, LineEdit, ComboBox } from "std-widgets.slint";
+
+// ─── Symbol Dialog ───
+export struct SymbolDialogData {
+    name: string,
+    address: string,
+    type: string,
+    size: int,
+    is-function: bool,
+}
+
+export component NewSymbolDialog inherits Rectangle {
+    in property <bool> is-edit-mode: false;
+    in property <SymbolDialogData> data: {
+        name: "",
+        address: "0x00000000",
+        type: "uint32_t",
+        size: 4,
+        is-function: false,
+    };
+    in property <[string]> type-options: [
+        "uint8_t", "uint16_t", "uint32_t", "uint64_t",
+        "int8_t", "int16_t", "int32_t", "int64_t",
+        "float", "double", "char", "void"
+    ];
+
+    callback confirmed(SymbolDialogData /*data*/);
+    callback cancelled();
+
+    background: #11111b;
+
+    Rectangle {
+        width: 400px;
+        height: 280px;
+        x: (parent.width - self.width) / 2;
+        y: (parent.height - self.height) / 2;
+        background: #1e1e2e;
+        border-radius: 8px;
+        border-width: 1px;
+        border-color: #313244;
+
+        VerticalBox {
+            padding: 16px;
+            spacing: 12px;
+
+            Text {
+                text: root.is-edit-mode ? "Edit Symbol" : "New Symbol";
+                color: #cdd6f4;
+                font-size: 14px;
+                font-weight: 700;
+            }
+
+            // Name
+            HorizontalLayout {
+                spacing: 8px;
+                Text {
+                    text: "Name:";
+                    color: #cdd6f4;
+                    font-size: 11px;
+                    vertical-alignment: center;
+                    width: 80px;
+                }
+                LineEdit {
+                    text: root.data.name;
+                    placeholder-text: "Symbol name";
+                    font-size: 11px;
+                    horizontal-stretch: 1;
+                }
+            }
+
+            // Address
+            HorizontalLayout {
+                spacing: 8px;
+                Text {
+                    text: "Address:";
+                    color: #cdd6f4;
+                    font-size: 11px;
+                    vertical-alignment: center;
+                    width: 80px;
+                }
+                LineEdit {
+                    text: root.data.address;
+                    font-size: 11px;
+                    horizontal-stretch: 1;
+                }
+            }
+
+            // Type
+            HorizontalLayout {
+                spacing: 8px;
+                Text {
+                    text: "Type:";
+                    color: #cdd6f4;
+                    font-size: 11px;
+                    vertical-alignment: center;
+                    width: 80px;
+                }
+                ComboBox {
+                    model: root.type-options;
+                    current-index: 2;
+                }
+            }
+
+            // Function checkbox
+            HorizontalLayout {
+                spacing: 8px;
+                Rectangle { width: 80px; }
+                Rectangle {
+                    width: 20px;
+                    vertical-alignment: center;
+                    Rectangle {
+                        width: 12px;
+                        height: 12px;
+                        border-radius: 2px;
+                        background: root.data.is-function ? #a6e3a1 : #45475a;
+                    }
+                }
+                Text {
+                    text: "Function";
+                    color: #cdd6f4;
+                    font-size: 11px;
+                    vertical-alignment: center;
+                }
+            }
+
+            // Buttons
+            HorizontalLayout {
+                spacing: 8px;
+                Rectangle { horizontal-stretch: 1; }
+                Button {
+                    text: "Cancel";
+                    clicked => { root.cancelled(); }
+                    min-width: 80px;
+                }
+                Button {
+                    text: root.is-edit-mode ? "Save" : "Add";
+                    clicked => { root.confirmed(root.data); }
+                    min-width: 80px;
+                }
+            }
+        }
+    }
+}

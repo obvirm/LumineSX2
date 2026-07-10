@@ -1,0 +1,1180 @@
+import { ScrollView } from "std-widgets.slint";
+
+import "./fonts/Outfit-Regular.ttf";
+import "./fonts/Outfit-Medium.ttf";
+import "./fonts/Outfit-Bold.ttf";
+import { InterfaceSettingsView } from "./settings_interface.slint";
+import { EmulationSettingsView } from "./settings_emulation.slint";
+import { GameListSettingsView } from "./settings_gamelist.slint";
+import { BiosSettingsView, BiosEntry } from "./settings_bios.slint";
+import { GraphicsSettingsView } from "./settings_graphics.slint";
+import { OsdSettingsView } from "./settings_osd.slint";
+import { PatchesSettingsView } from "./settings_patches.slint";
+import { CheatsSettingsView } from "./settings_cheats.slint";
+import { GameFixesSettingsView } from "./settings_gamefixes.slint";
+import { AudioSettingsView } from "./settings_audio.slint";
+import { MemoryCardSettingsView, MemCardInfo } from "./settings_memorycards.slint";
+import { FoldersSettingsView } from "./settings_folders.slint";
+import { AchievementSettingsView } from "./settings_achievements.slint";
+import { AdvancedSettingsView } from "./settings_advanced.slint";
+import { ControllerSettingsView, ControllerBindingView } from "./settings_controller.slint";
+import { ExperimentalWarningView } from "./experimental_warning.slint";
+import { DebugPage, RegisterEntry, Register128, Register64, DisassemblyLine, BranchLine } from "./debug_main.slint";
+import { StackEntry } from "./debug_stack.slint";
+import { ThreadEntry } from "./debug_threads.slint";
+import { ModuleEntry } from "./debug_modules.slint";
+import { MemoryLine } from "./debug_memory.slint";
+import { BreakpointEntry } from "./debug_breakpoints.slint";
+import { SymbolEntry } from "./debug_symbols.slint";
+
+export struct EmuState {
+    frame: int,
+    ee_pc: int,
+    iop_pc: int,
+    fps: int,
+    speed: int,
+}
+
+export struct GameInfo {
+    title: string,
+    path: string,
+    region: string,
+    code: string,
+    size: string,
+    color: color,
+    favorite: bool,
+    cover: image,
+}
+
+export struct SaveState {
+    game_title: string,
+    timestamp: string,
+    progress: string,
+}
+
+export struct BiosInfo {
+    name: string,
+    status: string,
+    selected: bool,
+}
+
+component SettingsRow inherits Rectangle {
+    in property <string> txt;
+    in property <string> sub: "";
+    in property <image> ico;
+    
+    callback clicked;
+    
+    height: sub != "" ? 64px : 48px;
+    background: ta.pressed ? #ffffff11 : ta.has-hover ? #ffffff05 : transparent;
+    animate background { duration: 150ms; }
+
+    HorizontalLayout {
+        spacing: 16px;
+        padding-left: 20px;
+        padding-right: 20px;
+        
+        VerticalLayout {
+            horizontal-stretch: 0;
+            alignment: center;
+            Rectangle { 
+                width: 32px; 
+                height: 32px; 
+                background: transparent;
+                Image {
+                    source: ico;
+                    colorize: #D0BCFF;
+                    width: 20px; height: 20px;
+                    x: (parent.width - self.width) / 2;
+                    y: (parent.height - self.height) / 2;
+                }
+            }
+        }
+        VerticalLayout { 
+            horizontal-stretch: 1;
+            spacing: sub != "" ? 4px : 0px; 
+            alignment: center;
+            Text { text: txt; color: #E6E0E9; font-size: 15px; font-weight: 500; overflow: elide; }
+            if (sub != "") : Text { text: sub; color: #938F99; font-size: 12px; overflow: elide; }
+        }
+    }
+    Rectangle { height: 1px; background: #211F26; y: parent.height - 1px; x: 68px; width: parent.width - 88px; }
+    
+    ta := TouchArea { clicked => { root.clicked(); } }
+}
+
+component DPadButton inherits Rectangle {
+    in property <string> text;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: ta.pressed ? #ffffff50 : #ffffff15;
+    border-width: 1.5px;
+    border-color: #ffffff30;
+    
+    animate background { duration: 100ms; }
+    
+    Text {
+        text: text;
+        color: #ffffffd0;
+        font-size: 16px;
+        font-weight: 700;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+    }
+    
+    ta := TouchArea {}
+}
+
+component DPad inherits Rectangle {
+    width: 120px;
+    height: 120px;
+    background: #ffffff05;
+    border-radius: 60px;
+    border-width: 1.2px;
+    border-color: #ffffff10;
+    
+    DPadButton { text: "▲"; x: 42px; y: 4px; }
+    DPadButton { text: "▼"; x: 42px; y: 80px; }
+    DPadButton { text: "◀"; x: 4px; y: 42px; }
+    DPadButton { text: "▶"; x: 80px; y: 42px; }
+}
+
+component ActionButton inherits Rectangle {
+    in property <string> label;
+    in property <color> label-color: #ffffff;
+    width: 38px;
+    height: 38px;
+    border-radius: 19px;
+    background: ta.pressed ? #ffffff50 : #ffffff15;
+    border-width: 1.5px;
+    border-color: #ffffff30;
+    
+    animate background { duration: 100ms; }
+    
+    Text {
+        text: label;
+        color: label-color;
+        font-size: 16px;
+        font-weight: 800;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+    }
+    
+    ta := TouchArea {}
+}
+
+component ActionGroup inherits Rectangle {
+    width: 130px;
+    height: 130px;
+    background: #ffffff05;
+    border-radius: 65px;
+    border-width: 1.2px;
+    border-color: #ffffff10;
+    
+    ActionButton { label: "▲"; label-color: #4ade80; x: 46px; y: 4px; } // Triangle (Green)
+    ActionButton { label: "✕"; label-color: #60a5fa; x: 46px; y: 88px; } // Cross (Blue)
+    ActionButton { label: "■"; label-color: #f472b6; x: 4px; y: 46px; }  // Square (Pink)
+    ActionButton { label: "●"; label-color: #f87171; x: 88px; y: 46px; }  // Circle (Red)
+}
+
+component ShoulderButton inherits Rectangle {
+    in property <string> text;
+    width: 54px;
+    height: 32px;
+    border-radius: 6px;
+    background: ta.pressed ? #ffffff50 : #ffffff12;
+    border-width: 1px;
+    border-color: #ffffff20;
+    
+    animate background { duration: 100ms; }
+    
+    Text {
+        text: text;
+        color: #ffffffcc;
+        font-size: 12px;
+        font-weight: 700;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+    }
+    ta := TouchArea {}
+}
+
+component CenterButton inherits Rectangle {
+    in property <string> text;
+    width: 64px;
+    height: 24px;
+    border-radius: 4px;
+    background: ta.pressed ? #ffffff40 : #ffffff12;
+    border-width: 1px;
+    border-color: #ffffff18;
+    
+    animate background { duration: 100ms; }
+    
+    Text {
+        text: text;
+        color: #ffffffa0;
+        font-size: 10px;
+        font-weight: 700;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+    }
+    ta := TouchArea {}
+}
+
+component AnalogStick inherits Rectangle {
+    width: 110px;
+    height: 110px;
+    border-radius: 55px;
+    background: #ffffff0a;
+    border-width: 1.5px;
+    border-color: #ffffff15;
+    
+    property <length> stick-x: ta.pressed ? Math.clamp(ta.mouse-x - 55px, -30px, 30px) : 0px;
+    property <length> stick-y: ta.pressed ? Math.clamp(ta.mouse-y - 55px, -30px, 30px) : 0px;
+    
+    animate stick-x { duration: 80ms; easing: ease-out; }
+    animate stick-y { duration: 80ms; easing: ease-out; }
+    
+    knob := Rectangle {
+        width: 48px;
+        height: 48px;
+        border-radius: 24px;
+        background: ta.pressed ? #ffffff55 : #ffffff25;
+        border-width: 1px;
+        border-color: #ffffff60;
+        
+        x: (parent.width - self.width)/2 + stick-x;
+        y: (parent.height - self.height)/2 + stick-y;
+        
+        animate background { duration: 100ms; }
+    }
+    
+    ta := TouchArea {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+export component MainWindow inherits Window {
+    in-out property <int> current-tab: 0; // 0: Games, 1: States, 2: Settings
+    in-out property <string> status-message: "";
+    in-out property <EmuState> emu-state: { frame: 0, ee_pc: 0, iop_pc: 0, fps: 60, speed: 100 };
+    in-out property <image> framebuffer: @image-url("");
+    
+    callback add-game-folder();
+    callback open-bios-folder();
+    
+    // Game control callbacks
+    callback play-game();
+    callback pause-game();
+    callback stop-game();
+    callback reset-game();
+    callback save-state(int /*slot*/);
+    callback load-state(int /*slot*/);
+    
+    in-out property <int> selected-game: -1;
+    
+    in-out property <[GameInfo]> game-list: [
+        { title: "Final Fantasy X", path: "", region: "NTSC-U", code: "SLUS-20312", size: "3.5 GB", color: #1a237e, favorite: true },
+        { title: "God of War", path: "", region: "NTSC-U", code: "SCUS-97399", size: "4.2 GB", color: #b71c1c, favorite: false },
+        { title: "Shadow of the Colossus", path: "", region: "NTSC-J", code: "SCPS-15097", size: "2.8 GB", color: #1b5e20, favorite: true },
+        { title: "Kingdom Hearts II", path: "", region: "PAL", code: "SLES-54114", size: "4.1 GB", color: #4a148c, favorite: false },
+        { title: "Persona 4", path: "", region: "NTSC-U", code: "SLUS-21782", size: "3.2 GB", color: #e65100, favorite: false },
+        { title: "Metal Gear Solid 3", path: "", region: "NTSC-U", code: "SLUS-21359", size: "4.7 GB", color: #263238, favorite: true },
+        { title: "Devil May Cry 3", path: "", region: "NTSC-J", code: "SLPM-66223", size: "2.9 GB", color: #880e4f, favorite: false },
+        { title: "Okami", path: "", region: "NTSC-U", code: "SLUS-21115", size: "3.8 GB", color: #33691e, favorite: false },
+        { title: "Dragon Quest VIII", path: "", region: "PAL", code: "SLES-53980", size: "3.6 GB", color: #0d47a1, favorite: false },
+        { title: "Gran Turismo 4", path: "", region: "NTSC-U", code: "SCUS-97328", size: "5.1 GB", color: #212121, favorite: false }
+    ];
+    in-out property <[SaveState]> save-states: [
+        { game_title: "God of War II", timestamp: "Today, 14:23", progress: "Boss Battle - Colossus" },
+        { game_title: "GTA: San Andreas", timestamp: "Yesterday, 18:45", progress: "Grove Street Safehouse" }
+    ];
+    in-out property <[BiosInfo]> bios-list: [
+        { name: "SCPH-39001 (USA v01.60)", status: "Valid", selected: true },
+        { name: "SCPH-70008 (Europe v02.00)", status: "Valid", selected: false },
+        { name: "SCPH-10000 (Japan v01.00)", status: "Valid", selected: false }
+    ];
+    in-out property <bool> is-playing: false;
+    in-out property <int> game-list-view: 0; // 0 = grid, 1 = list
+    in-out property <string> region-filter: "All";
+    in-out property <bool> show-quick-menu: false;
+    
+    in-out property <int> settings-page: 0; // 0=main, 1=Graphics, 2=Audio, 3=Controls, 4=System, 5=MemoryCards, 6=Cheats, 7=Debug
+in-out property <int> selected-bios: 0;
+    in-out property <string> bios-dir-path: "bios";
+    in-out property <bool> fast-boot: true;
+    in-out property <bool> fast-forward-boot: false;
+    in-out property <[BiosEntry]> bios-entries: [];
+
+    callback browse-bios-folder();
+    callback reset-bios-folder();
+    callback refresh-bios-list();
+    callback select-bios(int);
+    callback boot-bios();
+
+    // Memory Card callbacks
+    callback memcard-browse-folder();
+    callback memcard-open-folder();
+    callback memcard-reset-folder();
+    callback memcard-refresh-list();
+    callback memcard-create(string /*name*/, int /*size*/, bool /*ntfs*/);
+    callback memcard-rename(string /*new-name*/);
+    callback memcard-delete(int /*index*/);
+    callback memcard-convert(int /*index*/, int /*target-type*/);
+    callback memcard-select(int /*index*/);
+    callback memcard-assign-slot(int /*slot*/, int /*card-index*/);
+    callback memcard-eject(int /*slot*/);
+    callback memcard-swap-slots();
+
+    // Memory Card data
+    in-out property <string> memcard-folder: "memcards/";
+    in-out property <bool> memcard-slot1-enabled: true;
+    in-out property <string> memcard-slot1-card: "Mcd001.ps2";
+    in-out property <string> memcard-slot1-type: "PS2 (8MB)";
+    in-out property <bool> memcard-slot2-enabled: true;
+    in-out property <string> memcard-slot2-card: "Mcd002.ps2";
+    in-out property <string> memcard-slot2-type: "PS2 (8MB)";
+    in-out property <[MemCardInfo]> memcard-list: [];
+
+    property <color> bg: #141218;
+    property <color> surface: #1D1B20;
+    property <color> surface-variant: #211F26;
+    property <color> primary: #D0BCFF;
+    property <color> on-primary: #381E72;
+    property <color> primary-container: #4A4458;
+    property <color> on-primary-container: #E8DEF8;
+    property <color> outline: #49454F;
+    property <color> text-main: #E6E0E9;
+    property <color> text-muted: #938F99;
+    property <color> text-variant: #CAC4D0;
+    property <color> badge: #332D41;
+
+    min-width: 400px;
+    min-height: 700px;
+    title: "LumineSX2";
+    background: bg;
+    default-font-family: "Outfit";
+
+    // Root container - absolute positioning for reliable layout
+    Rectangle {
+        width: parent.width; height: parent.height;
+        background: bg;
+        clip: true;
+
+        // Top bar (56px) - only when not playing
+        if (!is-playing) : Rectangle {
+            x: 0; y: 0; width: parent.width; height: 56px;
+            background: bg;
+            Rectangle {
+                height: 1px; width: parent.width;
+                background: surface-variant;
+                y: 55px;
+            }
+            HorizontalLayout {
+                width: parent.width; height: parent.height;
+                padding-left: 16px; padding-right: 16px;
+                alignment: space-between;
+                HorizontalLayout {
+                    spacing: 12px;
+                    alignment: start;
+                    VerticalLayout {
+                        alignment: center;
+                        Rectangle {
+                            width: 40px; height: 40px;
+                            border-radius: 20px;
+                            Image {
+                                source: @image-url("logo.png");
+                                width: 32px; height: 32px;
+                                x: (parent.width - self.width) / 2;
+                                y: (parent.height - self.height) / 2;
+                            }
+                        }
+                    }
+                    Text { text: "LumineSX2"; color: text-main; font-size: 20px; font-weight: 400; vertical-alignment: center; }
+                    
+                    VerticalLayout {
+                        alignment: center;
+                        Rectangle {
+                            height: 32px;
+                            border-radius: 16px;
+                            border-width: 2.0px;
+                            
+                            property <float> anim-time: 0.0;
+                            
+                            Timer {
+                                interval: 16ms;
+                                running: true;
+                                triggered => {
+                                    anim-time = anim-time + 0.016 >= 6.0 ? 0.0 : anim-time + 0.016;
+                                }
+                            }
+                            
+                            // Cycle value between 0.0 and 6.0 every 6 seconds
+                            property <float> cycle-val: mod(anim-time, 6.0);
+                            
+                            // Blend between Purple (#a855f7) -> Pink (#ec4899) -> Red (#f43f5e) -> Purple
+                            property <color> active-color: 
+                                cycle-val < 2.0 ? #ec4899.mix(#a855f7, cycle-val / 2.0) :
+                                (cycle-val < 4.0 ? #f43f5e.mix(#ec4899, (cycle-val - 2.0) / 2.0) :
+                                #a855f7.mix(#f43f5e, (cycle-val - 4.0) / 2.0));
+
+                            border-color: ta-donate.pressed ? active-color.darker(20%) : active-color;
+                            background: ta-donate.pressed ? active-color.mix(transparent, 0.25) : ta-donate.has-hover ? active-color.mix(transparent, 0.15) : active-color.mix(transparent, 0.06);
+                            
+                            // Pulse opacity smoothly between 0.60 and 1.0 over a 2 second period
+                            opacity: ta-donate.has-hover ? 1.0 : (0.60 + 0.40 * (sin(360deg * anim-time / 2.0) + 1.0) / 2.0);
+                            
+                            animate background { duration: 150ms; }
+
+                            HorizontalLayout {
+                                padding-left: 12px;
+                                padding-right: 12px;
+                                spacing: 6px;
+                                alignment: center;
+                                
+                                VerticalLayout {
+                                    alignment: center;
+                                    Image {
+                                        source: @image-url("icons/donation.svg");
+                                        colorize: active-color;
+                                        width: 16px; height: 16px;
+                                    }
+                                }
+                                Text {
+                                    text: "Donate";
+                                    color: active-color;
+                                    font-size: 13px;
+                                    font-weight: 600;
+                                    vertical-alignment: center;
+                                }
+                            }
+                            ta-donate := TouchArea { width: 100%; height: 100%; }
+                        }
+                    }
+                }
+                
+                HorizontalLayout {
+                    alignment: end;
+                    VerticalLayout {
+                        alignment: center;
+                        Rectangle {
+                            width: (current-tab == 0) ? 40px : 0px;
+                            height: self.width;
+                            border-radius: self.width / 2;
+                            opacity: (current-tab == 0) ? 1 : 0;
+                            visible: (current-tab == 0) || self.opacity > 0.01;
+                            
+                            animate width { duration: 200ms; easing: ease-in-out; }
+                            animate opacity { duration: 150ms; easing: ease-in-out; }
+                            
+                            Image { 
+                                source: game-list-view == 0 ? @image-url("icons/qt/file-list-line.svg") : @image-url("icons/qt/dashboard-line.svg"); 
+                                colorize: text-variant; 
+                                width: parent.width > 20px ? 20px : parent.width; 
+                                height: self.width; 
+                                x: (parent.width - self.width) / 2;
+                                y: (parent.height - self.height) / 2;
+                            }
+                            TouchArea { width: 100%; height: 100%; enabled: current-tab == 0; clicked => { game-list-view = game-list-view == 0 ? 1 : 0; } }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (is-playing) : Rectangle {
+            x: 0; y: 0; width: parent.width; height: parent.height;
+            background: black;
+            if (framebuffer.width > 0) : Image {
+                source: framebuffer;
+                width: parent.width;
+                height: parent.height;
+            }
+            
+            Rectangle {
+                y: 0px; height: 64px; width: parent.width;
+                HorizontalLayout {
+                    width: parent.width; height: parent.height;
+                    padding: 16px;
+                    alignment: space-between;
+                    Rectangle {
+                        width: 40px; height: 40px; border-radius: 20px; background: #00000099; border-width: 1px; border-color: #ffffff1a;
+                        Image {
+                            source: @image-url("icons/qt/arrow-left-right-line.svg");
+                            colorize: white;
+                            width: 24px; height: 24px;
+                            x: (parent.width - self.width) / 2;
+                            y: (parent.height - self.height) / 2;
+                        }
+                        TouchArea { width: 100%; height: 100%; clicked => { root.stop-game(); } }
+                    }
+                    HorizontalLayout {
+                        spacing: 8px;
+                        Rectangle {
+                            width: 40px; height: 40px; border-radius: 20px; background: #00000099; border-width: 1px; border-color: #ffffff1a;
+                            Image {
+                                source: @image-url("icons/qt/settings-3-line.svg");
+                                colorize: white;
+                                width: 20px; height: 20px;
+                                x: (parent.width - self.width) / 2;
+                                y: (parent.height - self.height) / 2;
+                            }
+                            TouchArea { width: 100%; height: 100%; clicked => { show-quick-menu = !show-quick-menu; } }
+                        }
+                    }
+                }
+            }
+
+            Rectangle {
+                x: (parent.width - self.width) / 2; y: 16px;
+                width: 180px; height: 28px;
+                border-radius: 14px; background: #00000099; border-width: 1px; border-color: #ffffff1a;
+                Text { text: "FPS: " + emu-state.fps + " | Spd: " + emu-state.speed + "%"; color: #ffffffcc; font-size: 11px; horizontal-alignment: center; vertical-alignment: center; font-family: "monospace"; }
+            }
+
+            if (show-quick-menu) : Rectangle {
+                x: parent.width - 240px - 16px;
+                y: 70px;
+                width: 240px; height: 200px;
+                background: #1c1b22; border-radius: 16px; border-width: 1px; border-color: #ffffff1a;
+                VerticalLayout {
+                    padding: 16px; spacing: 12px;
+                    Text { text: "QUICK CONTROL PANEL"; color: white; font-size: 12px; font-weight: 600; }
+                    Text { text: "EE Cycle Rate (Speed): " + emu-state.speed + "%"; color: #ffffff99; font-size: 11px; }
+                    Rectangle { height: 4px; background: #ffffff1a; border-radius: 2px;
+                        Rectangle { width: 50%; height: parent.height; background: primary; border-radius: 2px; }
+                    }
+                    Rectangle { height: 1px; background: #ffffff1a; }
+                    Rectangle {
+                        height: 36px; border-radius: 8px; background: #36343b;
+                        Text { text: "Instant Savestate"; color: white; font-size: 13px; font-weight: 500; horizontal-alignment: center; vertical-alignment: center; }
+                        TouchArea { width: 100%; height: 100%; clicked => { show-quick-menu = false; } }
+                    }
+                }
+            }
+
+            // Touch Controller Overlay
+            Rectangle {
+                width: parent.width;
+                height: parent.height;
+                background: transparent;
+                
+                // Shoulder Buttons
+                // L1/L2 on the top left
+                HorizontalLayout {
+                    x: 16px;
+                    y: 72px;
+                    width: 116px;
+                    spacing: 8px;
+                    ShoulderButton { text: "L2"; }
+                    ShoulderButton { text: "L1"; }
+                }
+                
+                // R1/R2 on the top right
+                HorizontalLayout {
+                    x: parent.width - self.width - 16px;
+                    y: 72px;
+                    width: 116px;
+                    spacing: 8px;
+                    ShoulderButton { text: "R1"; }
+                    ShoulderButton { text: "R2"; }
+                }
+                
+                // Left controls: D-Pad and Left Analog Stick
+                VerticalLayout {
+                    x: 24px;
+                    y: parent.height - self.height - 24px;
+                    width: 120px;
+                    spacing: 24px;
+                    
+                    DPad {}
+                    
+                    Rectangle {
+                        width: 120px;
+                        height: 110px;
+                        AnalogStick {
+                            x: (parent.width - self.width)/2;
+                            y: (parent.height - self.height)/2;
+                        }
+                    }
+                }
+                
+                // Right controls: Action Buttons and Right Analog Stick
+                VerticalLayout {
+                    x: parent.width - self.width - 24px;
+                    y: parent.height - self.height - 24px;
+                    width: 130px;
+                    spacing: 24px;
+                    
+                    ActionGroup {}
+                    
+                    Rectangle {
+                        width: 130px;
+                        height: 110px;
+                        AnalogStick {
+                            x: (parent.width - self.width)/2;
+                            y: (parent.height - self.height)/2;
+                        }
+                    }
+                }
+                
+                // Select & Start in the center bottom
+                HorizontalLayout {
+                    x: (parent.width - self.width) / 2;
+                    y: parent.height - self.height - 24px;
+                    width: 144px;
+                    spacing: 16px;
+                    CenterButton { text: "SELECT"; }
+                    CenterButton { text: "START"; }
+                }
+            }
+        }
+
+        // ═══════════════════════════════════════
+        //  MAIN CONTENT AREA — Games / States / Settings
+        //  Horizontal slide animation (desain asli)
+        // ═══════════════════════════════════════
+
+        // ── Games Tab ──
+        games-tab := VerticalLayout {
+            y: 56px; height: parent.height - 56px; width: parent.width;
+            x: (!is-playing && settings-page == 0 && current-tab == 0) ? 0px : -parent.width;
+            opacity: (!is-playing && settings-page == 0 && current-tab == 0) ? 1.0 : 0.0;
+            animate x { duration: 300ms; easing: ease-in-out; }
+            animate opacity { duration: 300ms; easing: ease-in-out; }
+            padding-left: 16px; padding-right: 16px;
+            padding-top: 8px; padding-bottom: 96px;
+            spacing: 12px;
+            alignment: start;
+
+            Rectangle {
+                height: 44px;
+                border-radius: 22px;
+                background: surface-variant;
+                border-width: 1px;
+                border-color: #49454F4d;
+                HorizontalLayout {
+                    width: parent.width; height: parent.height;
+                    padding-left: 16px; spacing: 12px; alignment: start;
+                    VerticalLayout { alignment: center; Image { source: @image-url("icons/qt/search-line.svg"); colorize: text-variant; width: 16px; height: 16px; } }
+                    Text { text: "Search ISO games..."; color: text-muted; font-size: 14px; vertical-alignment: center; }
+                }
+            }
+
+            HorizontalLayout {
+                height: 32px; spacing: 8px; alignment: start;
+                for region in ["All", "NTSC-U", "PAL", "NTSC-J"] : Rectangle {
+                    border-radius: 16px;
+                    background: region-filter == region ? primary : surface-variant;
+                    border-width: 1px;
+                    border-color: region-filter == region ? transparent : #49454F66;
+                    animate background { duration: 200ms; easing: ease-in-out; }
+                    animate border-color { duration: 200ms; easing: ease-in-out; }
+                    width: 80px;
+                    Text {
+                        text: region == "All" ? "All Region" : region;
+                        color: region-filter == region ? on-primary : text-variant;
+                        animate color { duration: 200ms; easing: ease-in-out; }
+                        font-size: 12px; font-weight: 500;
+                        horizontal-alignment: center; vertical-alignment: center;
+                    }
+                    TouchArea { width: 100%; height: 100%; clicked => { region-filter = region; } }
+                }
+            }
+
+            game-list-container := Rectangle {
+                property <int> cols:
+                    self.width < 320px ? 1 :
+                    self.width < 480px ? 2 :
+                    self.width < 640px ? 3 :
+                    self.width < 800px ? 4 :
+                    self.width < 960px ? 5 :
+                    self.width < 1120px ? 6 :
+                    self.width < 1280px ? 7 :
+                    self.width < 1440px ? 8 : 9;
+                property <length> item-width: (self.width - (cols - 1) * 16px) / cols;
+
+                height: game-list.length == 0 ? 0px : (game-list-view == 0 ? Math.ceil(game-list.length / cols) * 216px : game-list.length * 108px);
+                animate height { duration: 350ms; easing: ease-in-out; }
+
+                for game[idx] in game-list : Rectangle {
+                    x: game-list-view == 0 ? Math.mod(idx, cols) * (item-width + 16px) : 0px;
+                    y: game-list-view == 0 ? Math.floor(idx / cols) * 216px : idx * 108px;
+                    width: game-list-view == 0 ? item-width : parent.width;
+                    height: game-list-view == 0 ? 200px : 96px;
+                    border-radius: 16px;
+                    background: ta-card.has-hover ? surface-variant : surface;
+                    border-width: 1px;
+                    border-color: ta-card.has-hover ? #ffffff1c : transparent;
+
+                    animate x { duration: 350ms; easing: ease-in-out; }
+                    animate y { duration: 350ms; easing: ease-in-out; }
+                    animate width { duration: 350ms; easing: ease-in-out; }
+                    animate height { duration: 350ms; easing: ease-in-out; }
+                    animate background { duration: 150ms; }
+                    animate border-color { duration: 150ms; }
+
+                    cover := Rectangle {
+                        clip: true;
+                        x: game-list-view == 0 ? 0px : 12px;
+                        y: game-list-view == 0 ? 0px : 12px;
+                        width: game-list-view == 0 ? parent.width : 64px;
+                        height: game-list-view == 0 ? 140px : 80px;
+                        border-top-left-radius: game-list-view == 0 ? 16px : 12px;
+                        border-top-right-radius: game-list-view == 0 ? 16px : 12px;
+                        border-bottom-left-radius: game-list-view == 0 ? 0px : 12px;
+                        border-bottom-right-radius: game-list-view == 0 ? 0px : 12px;
+                        background: game.color;
+
+                        animate x { duration: 350ms; easing: ease-in-out; }
+                        animate y { duration: 350ms; easing: ease-in-out; }
+                        animate width { duration: 350ms; easing: ease-in-out; }
+                        animate height { duration: 350ms; easing: ease-in-out; }
+                        animate border-top-left-radius { duration: 350ms; }
+                        animate border-top-right-radius { duration: 350ms; }
+                        animate border-bottom-left-radius { duration: 350ms; }
+                        animate border-bottom-right-radius { duration: 350ms; }
+
+                        if (game.cover.width > 0) : Image {
+                            source: game.cover;
+                            width: 100%; height: 100%;
+                            image-fit: ImageFit.cover;
+                        }
+
+                        if (game.cover.width == 0) : Image {
+                            source: @image-url("icons/qt/gamepad-2.svg");
+                            colorize: #ffffff4d;
+                            width: game-list-view == 0 ? 48px : 28px;
+                            height: self.width;
+                            x: (parent.width - self.width) / 2;
+                            y: (parent.height - self.height) / 2;
+                            animate width { duration: 350ms; easing: ease-in-out; }
+                        }
+                    }
+
+                    Rectangle {
+                        x: game-list-view == 0 ? 12px : 88px;
+                        y: game-list-view == 0 ? 152px : 12px;
+                        width: game-list-view == 0 ? parent.width - 24px : parent.width - 100px;
+                        height: game-list-view == 0 ? 44px : parent.height;
+                        clip: true;
+
+                        animate x { duration: 350ms; easing: ease-in-out; }
+                        animate y { duration: 350ms; easing: ease-in-out; }
+                        animate width { duration: 350ms; easing: ease-in-out; }
+
+                    VerticalLayout {
+                        spacing: 0px;
+                        alignment: start;
+
+                        Text { text: game.title; color: text-main; font-size: game-list-view == 0 ? 13px : 15px; font-weight: 500; overflow: elide; animate font-size { duration: 350ms; easing: ease-in-out; } }
+                        HorizontalLayout {
+                            spacing: 8px; alignment: start;
+                            Rectangle {
+                                width: badge-text.width + 12px;
+                                height: game-list-view == 0 ? 18px : 20px;
+                                border-radius: 4px;
+                                background: badge;
+                                badge-text := Text { text: game.region; color: on-primary-container; font-size: 10px; horizontal-alignment: center; vertical-alignment: center; }
+                            }
+                            Text { text: game.size; color: text-variant; font-size: 10px; vertical-alignment: center; }
+                        }
+                    }
+                    }  // clip Rectangle
+
+                    Rectangle {
+                        x: parent.width - 32px; y: game-list-view == 0 ? 8px : 12px;
+                        width: 24px; height: 24px; border-radius: 12px;
+                        background: game.favorite ? #facc15 : #00000066;
+                        border-width: 1px; border-color: game.favorite ? #facc15 : outline;
+
+                        animate y { duration: 350ms; easing: ease-in-out; }
+                        animate background { duration: 350ms; }
+                        animate border-color { duration: 350ms; }
+
+                        if (game.favorite) : Text { text: "★"; color: #000000; font-size: 12px; horizontal-alignment: center; vertical-alignment: center; }
+                    }
+
+                    ta-card := TouchArea { width: 100%; height: 100%; clicked => { root.selected-game = idx; root.play-game(); } }
+                }
+            }
+
+            if (game-list.length == 0) : VerticalLayout {
+                spacing: 16px;
+                padding-top: 32px;
+                width: parent.width;
+                alignment: center;
+
+                Rectangle {
+                    width: 80px; height: 80px; border-radius: 40px; background: #2B2930;
+                    Image { source: @image-url("icons/qt/disc-2-line.svg"); colorize: #938F99; width: 40px; height: 40px; x: (parent.width - self.width) / 2; y: (parent.height - self.height) / 2; }
+                }
+                Text { text: "Belum Ada Game"; color: #E6E0E9; font-size: 18px; font-weight: 600; horizontal-alignment: center; }
+                Text { text: "Tambahkan direktori game PS2 kamu untuk memulai"; color: #938F99; font-size: 14px; horizontal-alignment: center; wrap: word-wrap; }
+                Rectangle {
+                    height: 40px; border-radius: 20px; background: #D0BCFF; width: 200px;
+                    Text { text: "+ Tambah Direktori"; color: #381E72; font-size: 14px; font-weight: 500; horizontal-alignment: center; vertical-alignment: center; }
+                    TouchArea { clicked => { settings-page = 0; current-tab = 2; } }
+                }
+            }
+        }
+        // ── States Tab ──
+        states-tab := VerticalLayout {
+            y: 56px; height: parent.height - 56px; width: parent.width;
+            x: (!is-playing && settings-page == 0 && current-tab == 1) ? 0px : (current-tab < 1 ? parent.width : -parent.width);
+            opacity: (!is-playing && settings-page == 0 && current-tab == 1) ? 1.0 : 0.0;
+            animate x { duration: 300ms; easing: ease-in-out; }
+            animate opacity { duration: 300ms; easing: ease-in-out; }
+            padding-left: 16px; padding-right: 16px;
+            padding-top: 16px; padding-bottom: 96px;
+            spacing: 16px;
+            alignment: start;
+
+            HorizontalLayout {
+                alignment: space-between;
+                Text { text: "STORED SAVE STATES"; color: primary; font-size: 12px; font-weight: 600; letter-spacing: 1px; }
+                Text { text: save-states.length + " Slots Busy"; color: text-muted; font-size: 12px; font-family: "monospace"; }
+            }
+
+            if (save-states.length == 0) : Rectangle {
+                height: 160px; border-radius: 24px; background: surface; border-width: 1px; border-color: #49454F33;
+                VerticalLayout {
+                    alignment: center; spacing: 8px;
+                    Image { source: @image-url("icons/qt/save-3-line.svg"); colorize: text-variant; width: 36px; height: 36px; horizontal-alignment: center; }
+                    Text { text: "No active save states found."; color: text-variant; font-size: 14px; horizontal-alignment: center; }
+                    Text { text: "States can be created during live emulations."; color: text-muted; font-size: 12px; horizontal-alignment: center; }
+                }
+            }
+
+            for state in save-states : Rectangle {
+                height: 88px; border-radius: 16px; background: surface; border-width: 1px; border-color: #49454F4d;
+                HorizontalLayout {
+                    width: parent.width; height: parent.height; padding: 16px; alignment: space-between;
+                    VerticalLayout {
+                        spacing: 4px; alignment: center;
+                        Text { text: state.game_title; color: text-main; font-size: 14px; font-weight: 600; }
+                        Text { text: state.timestamp; color: text-muted; font-size: 12px; }
+                    }
+                    VerticalLayout {
+                        alignment: center;
+                        Text { text: state.progress; color: primary; font-size: 12px; font-weight: 500; }
+                    }
+                }
+            }
+        }
+        // ── Settings Tab ──
+        settings-tab := Rectangle {
+            y: 56px; height: parent.height - 56px; width: parent.width;
+            x: (!is-playing && settings-page == 0 && current-tab == 2) ? 0px : (settings-page > 0 ? -parent.width : parent.width);
+            opacity: 1.0;
+            clip: true;
+            animate x { duration: 300ms; easing: ease-in-out; }
+
+            ScrollView {
+                VerticalLayout {
+                    padding-bottom: 96px;
+                    spacing: 16px;
+                    padding-top: 8px;
+
+                    // BIOS summary + open folder
+                    SettingsRow {
+                        txt: "Folder BIOS PS2";
+                        sub: bios-dir-path != "bios" ? bios-dir-path : bios-list.length + " BIOS found • Klik untuk pilih folder";
+                        ico: @image-url("icons/qt/folder-open-line.svg");
+                        clicked => { root.open-bios-folder(); }
+                    }
+
+                    // Quick actions
+                    VerticalLayout {
+                        padding-left: 16px; padding-right: 16px; spacing: 8px;
+                        SettingsRow { txt: "Mulai File"; ico: @image-url("icons/qt/disc-2-line.svg"); }
+                        SettingsRow { txt: "Mulai BIOS"; ico: @image-url("icons/qt/shut-down-line.svg"); clicked => { root.boot-bios(); } }
+                    }
+
+                    VerticalLayout {
+                        padding-left: 16px; padding-right: 16px; padding-top: 8px; spacing: 8px;
+                        HorizontalLayout { padding-left: 68px; padding-bottom: 4px; Text { text: "Pengaturan Sistem"; color: primary; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; } }
+                        SettingsRow { txt: "Pengaturan Aplikasi"; sub: "Theme, language, confirm on exit"; ico: @image-url("icons/qt/settings-3-line.svg"); clicked => { settings-page = 1; } }
+                        SettingsRow { txt: "Pengaturan Emulasi"; sub: "Speed, frame pacing, VSync, timing"; ico: @image-url("icons/qt/chip-line.svg"); clicked => { settings-page = 4; } }
+                        SettingsRow { txt: "Pengaturan Grafis"; sub: "Renderer, resolution, filtering, post-processing"; ico: @image-url("icons/qt/image-fill.svg"); clicked => { settings-page = 3; } }
+                        SettingsRow { txt: "Pengaturan Audio"; sub: "Backend, volume, latency"; ico: @image-url("icons/qt/settings-3-line.svg"); clicked => { settings-page = 6; } }
+                        SettingsRow { txt: "Pengaturan Pengontrol"; sub: "Virtual Touch mapping, input bind, getaran"; ico: @image-url("icons/qt/controller-line.svg"); clicked => { settings-page = 2; } }
+                        SettingsRow { txt: "Pengaturan BIOS"; sub: "BIOS directory, fast boot"; ico: @image-url("icons/qt/chip-line.svg"); clicked => { settings-page = 5; root.refresh-bios-list(); } }
+                        SettingsRow { txt: "Kartu Memori"; sub: "Port 1/2, card type, size"; ico: @image-url("icons/qt/save-3-line.svg"); clicked => { settings-page = 8; } }
+                        SettingsRow { txt: "On-Screen Display"; sub: "Performance overlay, notifications"; ico: @image-url("icons/qt/settings-3-line.svg"); clicked => { settings-page = 7; } }
+                        SettingsRow { txt: "Achievements"; sub: "RetroAchievements login, tracking"; ico: @image-url("icons/qt/lightbulb-line.svg"); clicked => { settings-page = 9; } }
+                    }
+
+                    VerticalLayout {
+                        padding-left: 16px; padding-right: 16px; padding-top: 8px; spacing: 8px;
+                        HorizontalLayout { padding-left: 68px; padding-bottom: 4px; Text { text: "Advanced"; color: primary; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; } }
+                        SettingsRow { txt: "Lanjutan"; sub: "EE/VU clamp, savestate compression"; ico: @image-url("icons/qt/settings-3-line.svg"); clicked => { settings-page = 14; } }
+                        SettingsRow { txt: "Folder"; sub: "Custom paths for saves, snapshots, logs"; ico: @image-url("icons/qt/folder-open-line.svg"); clicked => { settings-page = 13; } }
+                    }
+
+                    VerticalLayout {
+                        padding-left: 16px; padding-right: 16px; padding-top: 8px; spacing: 8px;
+                        HorizontalLayout { padding-left: 68px; padding-bottom: 4px; Text { text: "Manajemen Data & Sampul"; color: primary; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; } }
+                        SettingsRow { txt: "Pindai Permainan Baru"; ico: @image-url("icons/qt/refresh-line.svg"); }
+                        SettingsRow { txt: "Pindai Ulang Semua Permainan"; ico: @image-url("icons/qt/refresh-line.svg"); }
+                        SettingsRow { txt: "Pengelola Save State"; ico: @image-url("icons/qt/save-3-line.svg"); }
+                        SettingsRow { txt: "Unduh Sampul"; ico: @image-url("icons/qt/image-fill.svg"); }
+                        SettingsRow { txt: "Ganti Latar Belakang"; ico: @image-url("icons/qt/image-fill.svg"); }
+                    }
+
+                    VerticalLayout {
+                        padding-left: 16px; padding-right: 16px; padding-top: 8px; spacing: 8px;
+                        HorizontalLayout { padding-left: 68px; padding-bottom: 4px; Text { text: "Informasi"; color: primary; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; } }
+                        SettingsRow { txt: "Pertanyaan Umum"; ico: @image-url("icons/qt/lightbulb-line.svg"); }
+                        SettingsRow { txt: "Tampilkan Versi"; sub: "LumineSX2 v0.1.0-alpha"; ico: @image-url("icons/info.svg"); }
+                        SettingsRow { txt: "Lisensi Pihak Ketiga"; ico: @image-url("icons/qt/file-line.svg"); }
+                        SettingsRow { txt: "Peringatan Eksperimental"; sub: "Windows-only, Android belum didukung, sedang rewrite ke Rust"; ico: @image-url("icons/qt/error-warning-line.svg"); clicked => { settings-page = 15; } }
+                    }
+                }
+            }
+        }
+        // ── Detail Views (horizontal slide animation) ──
+        Rectangle {
+            x: settings-page == 1 ? 0px : parent.width;
+            animate x { duration: 300ms; easing: ease-in-out; }
+            y: 56px; height: parent.height - 56px; width: parent.width;
+            InterfaceSettingsView { back-clicked => { settings-page = 0; } }
+        }
+        Rectangle {
+            x: settings-page == 2 ? 0px : parent.width;
+            animate x { duration: 300ms; easing: ease-in-out; }
+            y: 56px; height: parent.height - 56px; width: parent.width;
+            ControllerSettingsView { back-clicked => { settings-page = 0; } }
+        }
+        Rectangle {
+            x: settings-page == 3 ? 0px : parent.width;
+            animate x { duration: 300ms; easing: ease-in-out; }
+            y: 56px; height: parent.height - 56px; width: parent.width;
+            GraphicsSettingsView { back-clicked => { settings-page = 0; } }
+        }
+        Rectangle {
+            x: settings-page == 4 ? 0px : parent.width;
+            animate x { duration: 300ms; easing: ease-in-out; }
+            y: 56px; height: parent.height - 56px; width: parent.width;
+            EmulationSettingsView { back-clicked => { settings-page = 0; } }
+        }
+        Rectangle {
+            x: settings-page == 5 ? 0px : parent.width;
+            animate x { duration: 300ms; easing: ease-in-out; }
+            y: 56px; height: parent.height - 56px; width: parent.width;
+            BiosSettingsView {
+                bios-dir: root.bios-dir-path;
+                fast-boot: root.fast-boot;
+                fast-forward-boot: root.fast-forward-boot;
+                selected-bios-idx: root.selected-bios;
+                bios-entries: root.bios-entries;
+                back-clicked => { settings-page = 0; }
+                browse-bios-folder => { root.browse-bios-folder(); }
+                reset-bios-folder => { root.reset-bios-folder(); }
+                open-bios-folder => { root.open-bios-folder(); }
+                refresh-bios-list => { root.refresh-bios-list(); }
+                select-bios(idx) => { root.select-bios(idx); }
+            }
+        }
+        Rectangle {
+            x: settings-page == 6 ? 0px : parent.width;
+            animate x { duration: 300ms; easing: ease-in-out; }
+            y: 56px; height: parent.height - 56px; width: parent.width;
+            AudioSettingsView { back-clicked => { settings-page = 0; } }
+        }
+        Rectangle {
+            x: settings-page == 7 ? 0px : parent.width;
+            animate x { duration: 300ms; easing: ease-in-out; }
+            y: 56px; height: parent.height - 56px; width: parent.width;
+            OsdSettingsView { back-clicked => { settings-page = 0; } }
+        }
+        Rectangle {
+            x: settings-page == 8 ? 0px : parent.width;
+            animate x { duration: 300ms; easing: ease-in-out; }
+            y: 56px; height: parent.height - 56px; width: parent.width;
+            MemoryCardSettingsView {
+                memcard-folder: root.memcard-folder;
+                slot1-enabled: root.memcard-slot1-enabled;
+                slot1-card: root.memcard-slot1-card;
+                slot1-type: root.memcard-slot1-type;
+                slot2-enabled: root.memcard-slot2-enabled;
+                slot2-card: root.memcard-slot2-card;
+                slot2-type: root.memcard-slot2-type;
+                card-list: root.memcard-list;
+                
+                back-clicked => { settings-page = 0; }
+                browse-folder => { root.memcard-browse-folder(); }
+                open-folder => { root.memcard-open-folder(); }
+                reset-folder => { root.memcard-reset-folder(); }
+                refresh-list => { root.memcard-refresh-list(); }
+                create-card(name, size, ntfs) => { root.memcard-create(name, size, ntfs); }
+                rename-card(new-name) => { root.memcard-rename(new-name); }
+                delete-card(idx) => { root.memcard-delete(idx); }
+                convert-card(idx, type) => { root.memcard-convert(idx, type); }
+                select-card(idx) => { root.memcard-select(idx); }
+                assign-slot(slot, idx) => { root.memcard-assign-slot(slot, idx); }
+                eject-slot(slot) => { root.memcard-eject(slot); }
+                swap-slots => { root.memcard-swap-slots(); }
+            }
+        }
+        Rectangle {
+            x: settings-page == 9 ? 0px : parent.width;
+            animate x { duration: 300ms; easing: ease-in-out; }
+            y: 56px; height: parent.height - 56px; width: parent.width;
+            AchievementSettingsView { back-clicked => { settings-page = 0; } }
+        }
+        Rectangle {
+            x: settings-page == 10 ? 0px : parent.width;
+            animate x { duration: 300ms; easing: ease-in-out; }
+            y: 56px; height: parent.height - 56px; width: parent.width;
+            PatchesSettingsView { back-clicked => { settings-page = 0; } }
+        }
+        Rectangle {
+            x: settings-page == 11 ? 0px : parent.width;
+            animate x { duration: 300ms; easing: ease-in-out; }
+            y: 56px; height: parent.height - 56px; width: parent.width;
+            CheatsSettingsView { back-clicked => { settings-page = 0; } }
+        }
+        Rectangle {
+            x: settings-page == 12 ? 0px : parent.width;
+            animate x { duration: 300ms; easing: ease-in-out; }
+            y: 56px; height: parent.height - 56px; width: parent.width;
+            GameFixesSettingsView { back-clicked => { settings-page = 0; } }
+        }
+        Rectangle {
+            x: settings-page == 13 ? 0px : parent.width;
+            animate x { duration: 300ms; easing: ease-in-out; }
+            y: 56px; height: parent.height - 56px; width: parent.width;
+            FoldersSettingsView { back-clicked => { settings-page = 0; } }
+        }
+        Rectangle {
+            x: settings-page == 14 ? 0px : parent.width;
+            animate x { duration: 300ms; easing: ease-in-out; }
+            y: 56px; height: parent.height - 56px; width: parent.width;
+            AdvancedSettingsView { back-clicked => { settings-page = 0; } }
+        }
+        Rectangle {
+            x: settings-page == 15 ? 0px : parent.width;
+            animate x { duration: 300ms; easing: ease-in-out; }
+            y: 56px; height: parent.height - 56px; width: parent.width;
+            ExperimentalWarningView { back-clicked => { settings-page = 0; } }
+        }
+        Rectangle {
+            x: settings-page == 20 ? 0px : parent.width;
+            animate x { duration: 300ms; easing: ease-in-out; }
+            y: 56px; height: parent.height - 56px; width: parent.width;
+            ControllerBindingView { back-clicked => { settings-page = 2; } }
+        }
+    Rectangle {
+        x: parent.width - self.width - 16px;
+        y: parent.height - self.height - 88px;
+        width: (!is-playing && current-tab == 0) ? 56px : 0px;
+        height: self.width;
+        border-radius: self.width / 2;
+        background: primary;
+        opacity: (!is-playing && current-tab == 0) ? 1 : 0;
+        visible: (!is-playing && current-tab == 0) || self.opacity > 0.01;
+
+        animate width { duration: 200ms; easing: ease-in-out; }
+        animate opacity { duration: 150ms; easing: ease-in-out; }
+
+        Image {
+            source: @image-url("icons/qt/plus-line.svg");
+            colorize: on-primary;
+            width: parent.width > 24px ? 24px : parent.width;
+            height: self.width;
+            x: (parent.width - self.width) / 2;
+            y: (parent.height - self.height) / 2;
+        }
+        TouchArea { 
+            width: 100%; height: 100%; 
+            enabled: !is-playing && current-tab == 0; 
+            clicked => { root.add-game-folder(); }
+        }
+    }
+
+    if (!is-playing) : Rectangle {
+        y: parent.height - 80px;
+        height: 80px; width: parent.width;
+        background: bg;
+        
+        HorizontalLayout {
+            width: parent.width; height: parent.height;
+            spacing: 0px; padding-top: 12px; padding-bottom: 16px;
+
+            Rectangle {
+                width: parent.width / 3;
+                VerticalLayout {
+                    spacing: 4px; alignment: center;
+                    Rectangle { 
+                        width: 64px; height: 32px; border-radius: 16px; x: (parent.width - self.width)/2;
+                        background: current-tab == 0 ? primary-container : transparent;
+                        animate background { duration: 200ms; easing: ease-in-out; }
+                        Image {
+                            source: @image-url("icons/qt/controller-line.svg");
+                            colorize: current-tab == 0 ? on-primary-container : text-variant;
+                            width: 20px; height: 20px;
+                            x: (parent.width - self.width) / 2;
+                            y: (parent.height - self.height) / 2;
+                            animate colorize { duration: 200ms; }
+                        }
+                    }
+                    Text { text: "Games"; color: current-tab == 0 ? text-main : text-muted; font-size: 12px; font-weight: 500; horizontal-alignment: center; animate color { duration: 200ms; } }
+                }
+                TouchArea { width: 100%; height: 100%; clicked => { settings-page = 0; current-tab = 0; } }
+            }
+
+            Rectangle {
+                width: parent.width / 3;
+                VerticalLayout {
+                    spacing: 4px; alignment: center;
+                    Rectangle { 
+                        width: 64px; height: 32px; border-radius: 16px; x: (parent.width - self.width)/2;
+                        background: current-tab == 1 ? primary-container : transparent;
+                        animate background { duration: 200ms; easing: ease-in-out; }
+                        Image {
+                            source: @image-url("icons/qt/save-3-line.svg");
+                            colorize: current-tab == 1 ? on-primary-container : text-variant;
+                            width: 20px; height: 20px;
+                            x: (parent.width - self.width) / 2;
+                            y: (parent.height - self.height) / 2;
+                            animate colorize { duration: 200ms; }
+                        }
+                    }
+                    Text { text: "States"; color: current-tab == 1 ? text-main : text-muted; font-size: 12px; font-weight: 500; horizontal-alignment: center; animate color { duration: 200ms; } }
+                }
+                TouchArea { width: 100%; height: 100%; clicked => { settings-page = 0; current-tab = 1; } }
+            }
+
+            Rectangle {
+                width: parent.width / 3;
+                VerticalLayout {
+                    spacing: 4px; alignment: center;
+                    Rectangle { 
+                        width: 64px; height: 32px; border-radius: 16px; x: (parent.width - self.width)/2;
+                        background: current-tab == 2 ? primary-container : transparent;
+                        animate background { duration: 200ms; easing: ease-in-out; }
+                        Image {
+                            source: @image-url("icons/qt/settings-3-line.svg");
+                            colorize: current-tab == 2 ? on-primary-container : text-variant;
+                            width: 20px; height: 20px;
+                            x: (parent.width - self.width) / 2;
+                            y: (parent.height - self.height) / 2;
+                            animate colorize { duration: 200ms; }
+                        }
+                    }
+                    Text { text: "Settings"; color: current-tab == 2 ? text-main : text-muted; font-size: 12px; font-weight: 500; horizontal-alignment: center; animate color { duration: 200ms; } }
+                }
+                TouchArea { width: 100%; height: 100%; clicked => { settings-page = 0; current-tab = 2; } }
+            }
+        }
+
+        // Debug page (hidden by default, accessible via F12 or debug button)
+        if current-tab == 3: DebugPage {
+            visible: true;
+        }
+    }
+}
+}

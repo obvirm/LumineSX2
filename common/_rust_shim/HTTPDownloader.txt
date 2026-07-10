@@ -1,0 +1,9 @@
+?Create@HTTPDownloader@@SA?AV?$unique_ptr@VHTTPDownloader@@U?$default_delete@VHTTPDownloader@@@std@@@std@@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@3@@Z
+?CreatePostRequest@HTTPDownloader@@QEAAXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@0V?$function@$$A6AXHAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$vector@EV?$allocator@E@std@@@2@@Z@3@PEAVProgressCallback@@@Z
+?CreateRequest@HTTPDownloader@@QEAAXV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$function@$$A6AXHAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$vector@EV?$allocator@E@std@@@2@@Z@3@PEAVProgressCallback@@@Z
+?GetExtensionForContentType@HTTPDownloader@@SA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBV23@@Z
+?HasAnyRequests@HTTPDownloader@@QEAA_NXZ
+?PollRequests@HTTPDownloader@@QEAAXXZ
+?SetMaxActiveRequests@HTTPDownloader@@QEAAXI@Z
+?SetTimeout@HTTPDownloader@@QEAAXM@Z
+?WaitForAllRequests@HTTPDownloader@@QEAAXXZ

@@ -1,0 +1,4 @@
+?CreateSharedMemory@HostSys@@YAPEAXPEBD_K@Z
+?DestroySharedMemory@HostSys@@YAXPEAX@Z
+?GetFileMappingName@HostSys@@YA?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEBD@Z
+?MemProtect@HostSys@@YAXPEAX_KAEBVPageProtectionMode@@@Z

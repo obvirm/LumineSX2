@@ -1,0 +1,209 @@
+// Common shared components for LumineSX2 UI
+import { ScrollView, Switch, LineEdit, ComboBox } from "std-widgets.slint";
+
+// ─── Material 3 Color Tokens ───
+export global MaterialColors {
+    out property <color> bg: #141218;
+    out property <color> surface: #1D1B20;
+    out property <color> surface-variant: #211F26;
+    out property <color> primary: #D0BCFF;
+    out property <color> on-primary: #381E72;
+    out property <color> primary-container: #4A4458;
+    out property <color> on-primary-container: #E8DEF8;
+    out property <color> outline: #49454F;
+    out property <color> text-main: #E6E0E9;
+    out property <color> text-muted: #938F99;
+    out property <color> text-variant: #CAC4D0;
+    out property <color> badge: #332D41;
+    out property <color> error: #F2B8B5;
+    out property <color> on-error: #601410;
+    out property <color> error-container: #8C1D18;
+    out property <color> success: #A8DAB5;
+    out property <color> tertiary: #D0BCFF;
+    out property <color> tertiary-container: #4A4458;
+    out property <color> on-tertiary-container: #E8DEF8;
+    out property <color> on-surface: #E6E0E9;
+    out property <color> on-surface-variant: #938F99;
+    out property <color> surface-container: #211F26;
+    out property <color> surface-container-low: #1D1B20;
+    out property <color> surface-container-high: #2B2930;
+    out property <color> outline-variant: #49454F;
+}
+
+// ─── Settings Row (clickable) ───
+export component SettingsRow inherits Rectangle {
+    in property <string> txt;
+    in property <string> sub: "";
+    in property <image> ico;
+    in property <bool> show-arrow: false;
+    
+    callback clicked;
+    
+    height: sub != "" ? 64px : 48px;
+    background: ta.pressed ? #ffffff11 : ta.has-hover ? #ffffff05 : transparent;
+    animate background { duration: 150ms; }
+
+    HorizontalLayout {
+        spacing: 16px;
+        padding-left: 20px;
+        padding-right: 20px;
+        
+        VerticalLayout {
+            horizontal-stretch: 0;
+            alignment: center;
+            Rectangle { 
+                width: 32px; height: 32px;
+                Image { source: ico; colorize: #D0BCFF; width: 20px; height: 20px; x: (parent.width - self.width) / 2; y: (parent.height - self.height) / 2; }
+            }
+        }
+        VerticalLayout { 
+            horizontal-stretch: 1;
+            spacing: sub != "" ? 4px : 0px; 
+            alignment: center;
+            Text { text: txt; color: #E6E0E9; font-size: 15px; font-weight: 500; overflow: elide; }
+            if (sub != "") : Text { text: sub; color: #938F99; font-size: 12px; overflow: elide; }
+        }
+        if (show-arrow) : VerticalLayout {
+            horizontal-stretch: 0;
+            alignment: center;
+            Text { text: "›"; color: #49454F; font-size: 20px; vertical-alignment: center; }
+        }
+    }
+    Rectangle { height: 1px; background: #211F26; y: parent.height - 1px; x: 20px; width: parent.width - 40px; }
+    
+    ta := TouchArea { clicked => { root.clicked(); } }
+}
+
+// ─── Toggle Row (with Switch) ───
+export component ToggleRow inherits Rectangle {
+    in property <string> txt;
+    in property <string> sub: "";
+    in property <bool> checked: false;
+    
+    callback toggled(bool);
+    
+    height: sub != "" ? 64px : 48px;
+
+    HorizontalLayout {
+        spacing: 16px;
+        padding-left: 20px;
+        padding-right: 20px;
+        
+        VerticalLayout { horizontal-stretch: 1; spacing: sub != "" ? 4px : 0px; alignment: center;
+            Text { text: txt; color: #E6E0E9; font-size: 15px; font-weight: 500; overflow: elide; }
+            if (sub != "") : Text { text: sub; color: #938F99; font-size: 12px; overflow: elide; }
+        }
+        VerticalLayout { horizontal-stretch: 0; alignment: center;
+            Switch { checked: root.checked; toggled => { root.toggled(self.checked); } }
+        }
+    }
+    Rectangle { height: 1px; background: #211F26; y: parent.height - 1px; x: 20px; width: parent.width - 40px; }
+}
+
+// ─── Section Header ───
+export component SectionHeader inherits HorizontalLayout {
+    in property <string> txt;
+    padding-left: 20px; padding-right: 20px; padding-top: 8px; padding-bottom: 0px;
+    Text { text: txt; color: #D0BCFF; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; }
+}
+
+// ─── Detail Page Container (fixed header + scrollable content) ───
+export component DetailPage inherits Rectangle {
+    in property <string> title;
+    callback back-clicked;
+    
+    background: #141218;
+    clip: true;
+    
+    VerticalLayout {
+        // Fixed top bar with back button
+        HorizontalLayout {
+            height: 56px; spacing: 12px; padding-left: 16px; padding-right: 16px;
+            Rectangle {
+                width: 40px; height: 40px; border-radius: 20px;
+                background: back-ta.has-hover ? #ffffff10 : transparent;
+                Image { source: @image-url("icons/qt/arrow-left-right-line.svg"); colorize: #CAC4D0; width: 20px; height: 20px; x: (parent.width - self.width) / 2; y: (parent.height - self.height) / 2; }
+                back-ta := TouchArea { clicked => { root.back-clicked(); } }
+            }
+            Text { text: title; color: #E6E0E9; font-size: 20px; font-weight: 400; vertical-alignment: center; }
+        }
+        Rectangle { height: 1px; background: #211F26; }
+        
+        // Content area (no ScrollView — avoids dead space when content is short)
+        VerticalLayout {
+            @children
+        }
+    }
+}
+
+// ─── Slider Row ───
+export component SliderRow inherits Rectangle {
+    in property <string> txt;
+    in property <float> value: 0.5;
+    in property <float> minimum: 0.0;
+    in property <float> maximum: 1.0;
+    
+    callback changed(float);
+    
+    height: 64px;
+
+    VerticalLayout {
+        padding-left: 20px; padding-right: 20px; spacing: 8px; alignment: center;
+        HorizontalLayout {
+            alignment: space-between;
+            Text { text: txt; color: #E6E0E9; font-size: 14px; font-weight: 500; }
+            Text { text: Math.round(value * 100) + "%"; color: #D0BCFF; font-size: 13px; font-family: "monospace"; }
+        }
+        Rectangle {
+            height: 4px; border-radius: 2px; background: #49454F;
+            Rectangle { width: parent.width * (value - minimum) / (maximum - minimum); height: parent.height; border-radius: 2px; background: #D0BCFF; }
+            TouchArea { 
+                clicked => { root.changed(Math.clamp(self.mouse-x / self.width, 0.0, 1.0)); }
+            }
+        }
+    }
+}
+
+// ─── Combo Row ───
+export component ComboRow inherits Rectangle {
+    in property <string> txt;
+    in property <[string]> model;
+    in property <int> current-index: 0;
+    
+    callback selected(int);
+    
+    height: 64px;
+
+    HorizontalLayout {
+        spacing: 16px; padding-left: 20px; padding-right: 20px;
+        VerticalLayout { horizontal-stretch: 1; alignment: center;
+            Text { text: txt; color: #E6E0E9; font-size: 15px; font-weight: 500; overflow: elide; }
+        }
+        VerticalLayout { horizontal-stretch: 0; alignment: center; width: 160px;
+            ComboBox { model: root.model; current-index: root.current-index; selected => { root.selected(self.current-index); } }
+        }
+    }
+    Rectangle { height: 1px; background: #211F26; y: parent.height - 1px; x: 20px; width: parent.width - 40px; }
+}
+
+// ─── Text Field Row ───
+export component TextFieldRow inherits Rectangle {
+    in property <string> txt;
+    in property <string> value: "";
+    in property <string> placeholder: "";
+    
+    callback edited(string);
+    
+    height: 64px;
+
+    HorizontalLayout {
+        spacing: 16px; padding-left: 20px; padding-right: 20px;
+        VerticalLayout { horizontal-stretch: 0; alignment: center; width: 120px;
+            Text { text: txt; color: #E6E0E9; font-size: 14px; font-weight: 500; overflow: elide; }
+        }
+        VerticalLayout { horizontal-stretch: 1; alignment: center;
+            LineEdit { text: value; placeholder-text: placeholder; edited => { root.edited(self.text); } }
+        }
+    }
+    Rectangle { height: 1px; background: #211F26; y: parent.height - 1px; x: 20px; width: parent.width - 40px; }
+}

@@ -1,0 +1,26 @@
+// Achievements Settings Page
+import { SettingsRow, ToggleRow, SectionHeader, DetailPage } from "./common.slint";
+
+export component AchievementSettingsView inherits DetailPage {
+    title: "Achievements";
+    
+    in-out property <bool> enable-ra: false;
+    in-out property <bool> hardcore: false;
+    in-out property <bool> show-notif: true;
+    in-out property <bool> sound-fx: true;
+    in-out property <bool> leaderboard-notif: true;
+    in-out property <bool> show-overlays: true;
+
+    SectionHeader { txt: "RetroAchievements"; }
+    SettingsRow { txt: "Login"; sub: "Sign in to your RetroAchievements account"; ico: @image-url("icons/qt/settings-3-line.svg"); show-arrow: true; }
+
+    SectionHeader { txt: "Tracking"; }
+    ToggleRow { txt: "Enable RetroAchievements"; sub: "Track achievements while playing"; checked: enable-ra; toggled(v) => { enable-ra = v; } }
+    ToggleRow { txt: "Hardcore Mode"; sub: "Disable save states, cheats, and slowdown"; checked: hardcore; toggled(v) => { hardcore = v; } }
+
+    SectionHeader { txt: "Notifications"; }
+    ToggleRow { txt: "Show Notifications"; checked: show-notif; toggled(v) => { show-notif = v; } }
+    ToggleRow { txt: "Sound Effects"; checked: sound-fx; toggled(v) => { sound-fx = v; } }
+    ToggleRow { txt: "Leaderboard Notifications"; checked: leaderboard-notif; toggled(v) => { leaderboard-notif = v; } }
+    ToggleRow { txt: "Show Overlays"; checked: show-overlays; toggled(v) => { show-overlays = v; } }
+}

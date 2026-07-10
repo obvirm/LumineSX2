@@ -1,0 +1,797 @@
+// ═══════════════════════════════════════════════════════════════════
+// Memory Card Settings — Full Qt feature parity
+// ═══════════════════════════════════════════════════════════════════
+import { ScrollView, Switch, LineEdit, ComboBox } from "std-widgets.slint";
+import { SettingsRow, ToggleRow, SectionHeader, DetailPage } from "./common.slint";
+
+// ─── Memory Card Info Struct ───
+export struct MemCardInfo {
+    name: string,
+    type: string,        // "PS2 (8MB)", "PS2 (Folder)", "PS1 (128KB)", etc.
+    formatted: bool,
+    last-modified: string,
+    in-use: bool,
+    is-folder: bool,
+}
+
+// ─── Create Dialog ───
+export component MemCardCreateDialog inherits Rectangle {
+    in property <bool> open: false;
+    callback close();
+    callback create(string /*name*/, int /*size*/, bool /*ntfs*/);
+
+    in-out property <string> card-name: "Mcd001";
+    in-out property <int> selected-size: 0;  // 0=8MB, 1=16MB, 2=32MB, 3=64MB, 4=Folder, 5=128KB PS1
+    in-out property <bool> ntfs-compression: true;
+
+    visible: open;
+    width: 100%; height: 100%;
+    background: #00000099;
+    clip: true;
+
+    // Overlay touch to close
+    TouchArea { clicked => { root.close(); } }
+
+    // Dialog box
+    Rectangle {
+        width: min(480px, parent.width - 48px);
+        height: min(620px, parent.height - 80px);
+        x: (parent.width - self.width) / 2;
+        y: (parent.height - self.height) / 2;
+        border-radius: 16px;
+        background: #2B2930;
+        clip: true;
+
+        // Prevent click-through
+        TouchArea { }
+
+        VerticalLayout {
+            padding: 24px; spacing: 16px;
+
+            // Header
+            HorizontalLayout {
+                height: 32px; spacing: 12px;
+                Image { source: @image-url("icons/qt/memcard-line.svg"); colorize: #D0BCFF; width: 24px; height: 24px; }
+                Text { text: "Create Memory Card"; color: #E6E0E9; font-size: 18px; font-weight: 600; vertical-alignment: center; }
+            }
+
+            // Description
+            Text {
+                text: "Enter the name and choose a size. 8MB or Folder recommended for best compatibility.";
+                color: #938F99; font-size: 13px; wrap: word-wrap;
+            }
+
+            // Name input
+            VerticalLayout {
+                spacing: 6px;
+                Text { text: "Memory Card Name"; color: #CAC4D0; font-size: 13px; }
+                Rectangle {
+                    height: 40px; border-radius: 8px; border-width: 1px; border-color: #49454F;
+                    background: #1D1B20;
+                    HorizontalLayout {
+                        padding-left: 12px; padding-right: 12px;
+                        LineEdit {
+                            text: root.card-name;
+                            placeholder-text: "Mcd001";
+                            edited(v) => { root.card-name = v; }
+                        }
+                    }
+                }
+            }
+
+            // Size options
+            VerticalLayout {
+                spacing: 8px;
+                Text { text: "Size"; color: #CAC4D0; font-size: 13px; }
+
+                // 8MB
+                size-8mb := Rectangle {
+                    height: 52px; border-radius: 8px; border-width: 1px;
+                    border-color: root.selected-size == 0 ? #D0BCFF : #49454F;
+                    background: root.selected-size == 0 ? #4A445820 : transparent;
+                    HorizontalLayout {
+                        padding-left: 12px; padding-right: 12px; spacing: 12px;
+                        Rectangle {
+                            width: 16px; height: 16px; border-radius: 8px; border-width: 2px;
+                            border-color: root.selected-size == 0 ? #D0BCFF : #49454F;
+                            if (root.selected-size == 0) : Rectangle { x: 3px; y: 3px; width: 10px; height: 10px; border-radius: 5px; background: #D0BCFF; }
+                        }
+                        VerticalLayout {
+                            alignment: center; spacing: 2px;
+                            Text { text: "8 MB [Most Compatible]"; color: #E6E0E9; font-size: 13px; font-weight: 500; }
+                            Text { text: "Standard Sony size, all games"; color: #938F99; font-size: 11px; }
+                        }
+                    }
+                    TouchArea { clicked => { root.selected-size = 0; } }
+                }
+
+                // 16MB
+                Rectangle {
+                    height: 52px; border-radius: 8px; border-width: 1px;
+                    border-color: root.selected-size == 1 ? #D0BCFF : #49454F;
+                    background: root.selected-size == 1 ? #4A445820 : transparent;
+                    HorizontalLayout {
+                        padding-left: 12px; padding-right: 12px; spacing: 12px;
+                        Rectangle {
+                            width: 16px; height: 16px; border-radius: 8px; border-width: 2px;
+                            border-color: root.selected-size == 1 ? #D0BCFF : #49454F;
+                            if (root.selected-size == 1) : Rectangle { x: 3px; y: 3px; width: 10px; height: 10px; border-radius: 5px; background: #D0BCFF; }
+                        }
+                        VerticalLayout {
+                            alignment: center; spacing: 2px;
+                            Text { text: "16 MB"; color: #E6E0E9; font-size: 13px; font-weight: 500; }
+                            Text { text: "Third-party card, most games"; color: #938F99; font-size: 11px; }
+                        }
+                    }
+                    TouchArea { clicked => { root.selected-size = 1; } }
+                }
+
+                // 32MB
+                Rectangle {
+                    height: 52px; border-radius: 8px; border-width: 1px;
+                    border-color: root.selected-size == 2 ? #D0BCFF : #49454F;
+                    background: root.selected-size == 2 ? #4A445820 : transparent;
+                    HorizontalLayout {
+                        padding-left: 12px; padding-right: 12px; spacing: 12px;
+                        Rectangle {
+                            width: 16px; height: 16px; border-radius: 8px; border-width: 2px;
+                            border-color: root.selected-size == 2 ? #D0BCFF : #49454F;
+                            if (root.selected-size == 2) : Rectangle { x: 3px; y: 3px; width: 10px; height: 10px; border-radius: 5px; background: #D0BCFF; }
+                        }
+                        VerticalLayout {
+                            alignment: center; spacing: 2px;
+                            Text { text: "32 MB"; color: #E6E0E9; font-size: 13px; font-weight: 500; }
+                            Text { text: "Third-party card, most games"; color: #938F99; font-size: 11px; }
+                        }
+                    }
+                    TouchArea { clicked => { root.selected-size = 2; } }
+                }
+
+                // 64MB
+                Rectangle {
+                    height: 52px; border-radius: 8px; border-width: 1px;
+                    border-color: root.selected-size == 3 ? #D0BCFF : #49454F;
+                    background: root.selected-size == 3 ? #4A445820 : transparent;
+                    HorizontalLayout {
+                        padding-left: 12px; padding-right: 12px; spacing: 12px;
+                        Rectangle {
+                            width: 16px; height: 16px; border-radius: 8px; border-width: 2px;
+                            border-color: root.selected-size == 3 ? #D0BCFF : #49454F;
+                            if (root.selected-size == 3) : Rectangle { x: 3px; y: 3px; width: 10px; height: 10px; border-radius: 5px; background: #D0BCFF; }
+                        }
+                        VerticalLayout {
+                            alignment: center; spacing: 2px;
+                            Text { text: "64 MB"; color: #E6E0E9; font-size: 13px; font-weight: 500; }
+                            Text { text: "Low compatibility, very big"; color: #F2B8B5; font-size: 11px; }
+                        }
+                    }
+                    TouchArea { clicked => { root.selected-size = 3; } }
+                }
+
+                // Folder
+                Rectangle {
+                    height: 52px; border-radius: 8px; border-width: 1px;
+                    border-color: root.selected-size == 4 ? #D0BCFF : #49454F;
+                    background: root.selected-size == 4 ? #4A445820 : transparent;
+                    HorizontalLayout {
+                        padding-left: 12px; padding-right: 12px; spacing: 12px;
+                        Rectangle {
+                            width: 16px; height: 16px; border-radius: 8px; border-width: 2px;
+                            border-color: root.selected-size == 4 ? #D0BCFF : #49454F;
+                            if (root.selected-size == 4) : Rectangle { x: 3px; y: 3px; width: 10px; height: 10px; border-radius: 5px; background: #D0BCFF; }
+                        }
+                        VerticalLayout {
+                            alignment: center; spacing: 2px;
+                            Text { text: "Folder [Recommended]"; color: #E6E0E9; font-size: 13px; font-weight: 500; }
+                            Text { text: "Store on host filesystem"; color: #A8DAB5; font-size: 11px; }
+                        }
+                    }
+                    TouchArea { clicked => { root.selected-size = 4; } }
+                }
+
+                // PS1 128KB
+                Rectangle {
+                    height: 52px; border-radius: 8px; border-width: 1px;
+                    border-color: root.selected-size == 5 ? #D0BCFF : #49454F;
+                    background: root.selected-size == 5 ? #4A445820 : transparent;
+                    HorizontalLayout {
+                        padding-left: 12px; padding-right: 12px; spacing: 12px;
+                        Rectangle {
+                            width: 16px; height: 16px; border-radius: 8px; border-width: 2px;
+                            border-color: root.selected-size == 5 ? #D0BCFF : #49454F;
+                            if (root.selected-size == 5) : Rectangle { x: 3px; y: 3px; width: 10px; height: 10px; border-radius: 5px; background: #D0BCFF; }
+                        }
+                        VerticalLayout {
+                            alignment: center; spacing: 2px;
+                            Text { text: "128 KB (PS1)"; color: #E6E0E9; font-size: 13px; font-weight: 500; }
+                            Text { text: "PS1 games only"; color: #938F99; font-size: 11px; }
+                        }
+                    }
+                    TouchArea { clicked => { root.selected-size = 5; } }
+                }
+            }
+
+            // NTFS compression
+            if (root.selected-size != 4) : HorizontalLayout {
+                spacing: 12px; alignment: start;
+                Switch { checked: root.ntfs-compression; toggled => { root.ntfs-compression = !root.ntfs-compression; } }
+                VerticalLayout {
+                    alignment: center;
+                    Text { text: "NTFS Compression"; color: #E6E0E9; font-size: 13px; }
+                    Text { text: "Fast, reliable compression"; color: #938F99; font-size: 11px; }
+                }
+            }
+
+            // Buttons
+            HorizontalLayout {
+                spacing: 12px; alignment: end;
+                Rectangle {
+                    width: 80px; height: 36px; border-radius: 18px; border-width: 1px; border-color: #49454F;
+                    Text { text: "Cancel"; color: #CAC4D0; font-size: 13px; horizontal-alignment: center; vertical-alignment: center; }
+                    TouchArea { clicked => { root.close(); } }
+                }
+                Rectangle {
+                    width: 80px; height: 36px; border-radius: 18px; background: #D0BCFF;
+                    Text { text: "Create"; color: #381E72; font-size: 13px; font-weight: 600; horizontal-alignment: center; vertical-alignment: center; }
+                    TouchArea { clicked => { root.create(root.card-name, root.selected-size, root.ntfs-compression); root.close(); } }
+                }
+            }
+        }
+    }
+}
+
+// ─── Convert Dialog ───
+export component MemCardConvertDialog inherits Rectangle {
+    in property <bool> open: false;
+    in property <string> card-name: "";
+    callback close();
+    callback convert(int /*target-type*/);
+    callback cancel-convert();
+
+    in-out property <int> selected-type: 0;  // 0=8MB, 1=16MB, 2=32MB, 3=64MB, 4=Folder
+    in-out property <bool> converting: false;
+    in-out property <float> progress: 0.0;
+
+    visible: open;
+    width: 100%; height: 100%;
+    background: #00000099;
+    clip: true;
+
+    TouchArea { clicked => { if (!root.converting) { root.close(); } } }
+
+    Rectangle {
+        width: min(440px, parent.width - 48px);
+        height: min(420px, parent.height - 80px);
+        x: (parent.width - self.width) / 2;
+        y: (parent.height - self.height) / 2;
+        border-radius: 16px;
+        background: #2B2930;
+        clip: true;
+
+        TouchArea { }
+
+        VerticalLayout {
+            padding: 24px; spacing: 16px;
+
+            // Header
+            Text { text: "Convert Memory Card"; color: #E6E0E9; font-size: 18px; font-weight: 600; }
+
+            // Card name
+            Text { text: "Converting: " + root.card-name; color: #938F99; font-size: 13px; }
+
+            // Type selector
+            if (!root.converting) : VerticalLayout {
+                spacing: 8px;
+                Text { text: "Target Format"; color: #CAC4D0; font-size: 13px; }
+
+                for type[i] in ["8 MB File", "16 MB File", "32 MB File", "64 MB File", "Folder"] : Rectangle {
+                    height: 40px; border-radius: 8px; border-width: 1px;
+                    border-color: root.selected-type == i ? #D0BCFF : #49454F;
+                    background: root.selected-type == i ? #4A445820 : transparent;
+                    HorizontalLayout {
+                        padding-left: 12px; padding-right: 12px; spacing: 12px;
+                        Rectangle {
+                            width: 16px; height: 16px; border-radius: 8px; border-width: 2px;
+                            border-color: root.selected-type == i ? #D0BCFF : #49454F;
+                            if (root.selected-type == i) : Rectangle { x: 3px; y: 3px; width: 10px; height: 10px; border-radius: 5px; background: #D0BCFF; }
+                        }
+                        Text { text: type; color: #E6E0E9; font-size: 13px; vertical-alignment: center; }
+                    }
+                    TouchArea { clicked => { root.selected-type = i; } }
+                }
+
+                // Note
+                Rectangle {
+                    height: 56px; border-radius: 8px; background: #4A445820;
+                    HorizontalLayout {
+                        padding-left: 12px; padding-right: 12px;
+                        Text {
+                            text: "Note: Converting creates a COPY of your existing card. It does NOT delete or modify the original.";
+                            color: #CAC4D0; font-size: 12px; wrap: word-wrap; vertical-alignment: center;
+                        }
+                    }
+                }
+            }
+
+            // Progress
+            if (root.converting) : VerticalLayout {
+                spacing: 8px;
+                Text { text: "Converting..."; color: #D0BCFF; font-size: 14px; font-weight: 500; }
+                Rectangle {
+                    height: 4px; border-radius: 2px; background: #49454F;
+                    Rectangle {
+                        width: parent.width * root.progress; height: parent.height; border-radius: 2px; background: #D0BCFF;
+                        animate width { duration: 200ms; }
+                    }
+                }
+                Text { text: Math.round(root.progress * 100) + "%"; color: #938F99; font-size: 12px; }
+            }
+
+            // Spacer
+            Rectangle { vertical-stretch: 1; }
+
+            // Buttons
+            HorizontalLayout {
+                spacing: 12px; alignment: end;
+                Rectangle {
+                    width: 80px; height: 36px; border-radius: 18px; border-width: 1px; border-color: #49454F;
+                    Text { text: root.converting ? "Cancel" : "Close"; color: #CAC4D0; font-size: 13px; horizontal-alignment: center; vertical-alignment: center; }
+                    TouchArea { clicked => { if (root.converting) { root.cancel-convert(); } root.close(); } }
+                }
+                if (!root.converting) : Rectangle {
+                    width: 80px; height: 36px; border-radius: 18px; background: #D0BCFF;
+                    Text { text: "Convert"; color: #381E72; font-size: 13px; font-weight: 600; horizontal-alignment: center; vertical-alignment: center; }
+                    TouchArea { clicked => { root.convert(root.selected-type); } }
+                }
+            }
+        }
+    }
+}
+
+// ─── Rename Dialog ───
+export component MemCardRenameDialog inherits Rectangle {
+    in property <bool> open: false;
+    in property <string> current-name: "";
+    callback close();
+    callback rename(string /*new-name*/);
+
+    in-out property <string> new-name: "";
+
+    visible: open;
+    width: 100%; height: 100%;
+    background: #00000099;
+    clip: true;
+
+    TouchArea { clicked => { root.close(); } }
+
+    Rectangle {
+        width: min(380px, parent.width - 48px);
+        height: 200px;
+        x: (parent.width - self.width) / 2;
+        y: (parent.height - self.height) / 2;
+        border-radius: 16px;
+        background: #2B2930;
+        clip: true;
+
+        TouchArea { }
+
+        VerticalLayout {
+            padding: 24px; spacing: 16px;
+
+            Text { text: "Rename Memory Card"; color: #E6E0E9; font-size: 18px; font-weight: 600; }
+
+            VerticalLayout {
+                spacing: 6px;
+                Text { text: "New Name"; color: #CAC4D0; font-size: 13px; }
+                Rectangle {
+                    height: 40px; border-radius: 8px; border-width: 1px; border-color: #49454F;
+                    background: #1D1B20;
+                    HorizontalLayout {
+                        padding-left: 12px; padding-right: 12px;
+                        LineEdit {
+                            text: root.new-name;
+                            placeholder-text: root.current-name;
+                            edited(v) => { root.new-name = v; }
+                        }
+                    }
+                }
+            }
+
+            HorizontalLayout {
+                spacing: 12px; alignment: end;
+                Rectangle {
+                    width: 80px; height: 36px; border-radius: 18px; border-width: 1px; border-color: #49454F;
+                    Text { text: "Cancel"; color: #CAC4D0; font-size: 13px; horizontal-alignment: center; vertical-alignment: center; }
+                    TouchArea { clicked => { root.close(); } }
+                }
+                Rectangle {
+                    width: 80px; height: 36px; border-radius: 18px; background: #D0BCFF;
+                    Text { text: "Rename"; color: #381E72; font-size: 13px; font-weight: 600; horizontal-alignment: center; vertical-alignment: center; }
+                    TouchArea { clicked => { root.rename(root.new-name); root.close(); } }
+                }
+            }
+        }
+    }
+}
+
+// ─── Delete Confirm Dialog ───
+export component MemCardDeleteDialog inherits Rectangle {
+    in property <bool> open: false;
+    in property <string> card-name: "";
+    callback close();
+    callback confirm-delete();
+
+    visible: open;
+    width: 100%; height: 100%;
+    background: #00000099;
+    clip: true;
+
+    TouchArea { clicked => { root.close(); } }
+
+    Rectangle {
+        width: min(380px, parent.width - 48px);
+        height: 200px;
+        x: (parent.width - self.width) / 2;
+        y: (parent.height - self.height) / 2;
+        border-radius: 16px;
+        background: #2B2930;
+        clip: true;
+
+        TouchArea { }
+
+        VerticalLayout {
+            padding: 24px; spacing: 16px;
+
+            Text { text: "Delete Memory Card"; color: #F2B8B5; font-size: 18px; font-weight: 600; }
+
+            Text {
+                text: "Are you sure you want to delete '" + root.card-name + "'?\nThis cannot be undone.";
+                color: #CAC4D0; font-size: 13px; wrap: word-wrap;
+            }
+
+            Rectangle { vertical-stretch: 1; }
+
+            HorizontalLayout {
+                spacing: 12px; alignment: end;
+                Rectangle {
+                    width: 80px; height: 36px; border-radius: 18px; border-width: 1px; border-color: #49454F;
+                    Text { text: "Cancel"; color: #CAC4D0; font-size: 13px; horizontal-alignment: center; vertical-alignment: center; }
+                    TouchArea { clicked => { root.close(); } }
+                }
+                Rectangle {
+                    width: 80px; height: 36px; border-radius: 18px; background: #F2B8B5;
+                    Text { text: "Delete"; color: #601410; font-size: 13px; font-weight: 600; horizontal-alignment: center; vertical-alignment: center; }
+                    TouchArea { clicked => { root.confirm-delete(); root.close(); } }
+                }
+            }
+        }
+    }
+}
+
+// ─── Main Memory Card Settings View ───
+export component MemoryCardSettingsView inherits DetailPage {
+    title: "Memory Cards";
+
+    // ── Properties ──
+    in-out property <string> memcard-folder: "memcards/";
+    in-out property <bool> slot1-enabled: true;
+    in-out property <string> slot1-card: "Mcd001.ps2";
+    in-out property <string> slot1-type: "PS2 (8MB)";
+    in-out property <bool> slot2-enabled: true;
+    in-out property <string> slot2-card: "Mcd002.ps2";
+    in-out property <string> slot2-type: "PS2 (8MB)";
+
+    // Card list data (would be populated from Rust backend)
+    in-out property <[MemCardInfo]> card-list: [
+        { name: "Mcd001.ps2", type: "PS2 (8MB)", formatted: true, last-modified: "2024-01-15 14:30", in-use: true, is-folder: false },
+        { name: "Mcd002.ps2", type: "PS2 (8MB)", formatted: true, last-modified: "2024-01-15 14:30", in-use: true, is-folder: false },
+        { name: "Backup.ps2", type: "PS2 (16MB)", formatted: true, last-modified: "2024-01-10 09:15", in-use: false, is-folder: false },
+        { name: "Saves/", type: "PS2 (Folder)", formatted: true, last-modified: "2024-01-14 22:45", in-use: false, is-folder: true },
+        { name: "PS1Card.mcd", type: "PS1 (128KB)", formatted: true, last-modified: "2023-12-20 11:00", in-use: false, is-folder: false }
+    ];
+
+    in-out property <int> selected-card: -1;
+
+    // Dialog states
+    in-out property <bool> show-create: false;
+    in-out property <bool> show-convert: false;
+    in-out property <bool> show-rename: false;
+    in-out property <bool> show-delete: false;
+
+    // ── Callbacks ──
+    callback browse-folder();
+    callback open-folder();
+    callback reset-folder();
+    callback refresh-list();
+    callback create-card(string /*name*/, int /*size*/, bool /*ntfs*/);
+    callback rename-card(string /*new-name*/);
+    callback delete-card(int /*index*/);
+    callback convert-card(int /*index*/, int /*target-type*/);
+    callback select-card(int /*index*/);
+    callback assign-slot(int /*slot*/, int /*card-index*/);
+    callback eject-slot(int /*slot*/);
+    callback swap-slots();
+
+    // ── Slots Section ──
+    SectionHeader { txt: "MEMORY CARD SLOTS"; }
+
+    // Slot 1
+    Rectangle {
+        height: 72px;
+        HorizontalLayout {
+            padding-left: 20px; padding-right: 20px; spacing: 12px;
+            VerticalLayout {
+                alignment: center; spacing: 4px;
+                HorizontalLayout {
+                    spacing: 8px;
+                    Switch { checked: root.slot1-enabled; toggled => { root.slot1-enabled = !root.slot1-enabled; } }
+                    Text { text: "Slot 1"; color: #E6E0E9; font-size: 14px; font-weight: 500; vertical-alignment: center; }
+                }
+                Text {
+                    text: root.slot1-card != "" ? root.slot1-card + " [" + root.slot1-type + "]" : "Empty";
+                    color: root.slot1-enabled ? #CAC4D0 : #49454F; font-size: 12px;
+                }
+            }
+            Rectangle { horizontal-stretch: 1; }
+            // Eject button
+            Rectangle {
+                width: 36px; height: 36px; border-radius: 18px;
+                background: eject1-ta.has-hover ? #ffffff10 : transparent;
+                Image { source: @image-url("icons/qt/eject-line.svg"); colorize: #CAC4D0; width: 18px; height: 18px; x: (parent.width - self.width) / 2; y: (parent.height - self.height) / 2; }
+                eject1-ta := TouchArea { clicked => { root.eject-slot(0); } }
+            }
+        }
+        Rectangle { height: 1px; background: #211F26; y: parent.height - 1px; x: 20px; width: parent.width - 40px; }
+    }
+
+    // Swap button
+    Rectangle {
+        height: 40px;
+        HorizontalLayout {
+            alignment: center;
+            Rectangle {
+                width: 36px; height: 36px; border-radius: 18px;
+                background: swap-ta.has-hover ? #ffffff10 : transparent;
+                Image { source: @image-url("icons/qt/arrow-up-down.svg"); colorize: #D0BCFF; width: 18px; height: 18px; x: (parent.width - self.width) / 2; y: (parent.height - self.height) / 2; }
+                swap-ta := TouchArea { clicked => {
+                    root.swap-slots();
+                } }
+            }
+        }
+    }
+
+    // Slot 2
+    Rectangle {
+        height: 72px;
+        HorizontalLayout {
+            padding-left: 20px; padding-right: 20px; spacing: 12px;
+            VerticalLayout {
+                alignment: center; spacing: 4px;
+                HorizontalLayout {
+                    spacing: 8px;
+                    Switch { checked: root.slot2-enabled; toggled => { root.slot2-enabled = !root.slot2-enabled; } }
+                    Text { text: "Slot 2"; color: #E6E0E9; font-size: 14px; font-weight: 500; vertical-alignment: center; }
+                }
+                Text {
+                    text: root.slot2-card != "" ? root.slot2-card + " [" + root.slot2-type + "]" : "Empty";
+                    color: root.slot2-enabled ? #CAC4D0 : #49454F; font-size: 12px;
+                }
+            }
+            Rectangle { horizontal-stretch: 1; }
+            Rectangle {
+                width: 36px; height: 36px; border-radius: 18px;
+                background: eject2-ta.has-hover ? #ffffff10 : transparent;
+                Image { source: @image-url("icons/qt/eject-line.svg"); colorize: #CAC4D0; width: 18px; height: 18px; x: (parent.width - self.width) / 2; y: (parent.height - self.height) / 2; }
+                eject2-ta := TouchArea { clicked => { root.eject-slot(1); } }
+            }
+        }
+        Rectangle { height: 1px; background: #211F26; y: parent.height - 1px; x: 20px; width: parent.width - 40px; }
+    }
+
+    // ── Folder Section ──
+    SectionHeader { txt: "MEMORY CARD FOLDER"; }
+
+    Rectangle {
+        height: 56px;
+        HorizontalLayout {
+            padding-left: 20px; padding-right: 20px; spacing: 12px;
+            VerticalLayout {
+                alignment: center;
+                Text { text: "Folder"; color: #CAC4D0; font-size: 13px; }
+                Text { text: root.memcard-folder; color: #E6E0E9; font-size: 14px; overflow: elide; }
+            }
+            Rectangle { horizontal-stretch: 1; }
+            // Browse
+            Rectangle {
+                width: 36px; height: 36px; border-radius: 18px;
+                background: browse-ta.has-hover ? #ffffff10 : transparent;
+                Image { source: @image-url("icons/qt/folder-open-line.svg"); colorize: #CAC4D0; width: 18px; height: 18px; x: (parent.width - self.width) / 2; y: (parent.height - self.height) / 2; }
+                browse-ta := TouchArea { clicked => { root.browse-folder(); } }
+            }
+            // Open
+            Rectangle {
+                width: 36px; height: 36px; border-radius: 18px;
+                background: open-ta.has-hover ? #ffffff10 : transparent;
+                Image { source: @image-url("icons/qt/file-add-line.svg"); colorize: #CAC4D0; width: 18px; height: 18px; x: (parent.width - self.width) / 2; y: (parent.height - self.height) / 2; }
+                open-ta := TouchArea { clicked => { root.open-folder(); } }
+            }
+            // Reset
+            Rectangle {
+                width: 36px; height: 36px; border-radius: 18px;
+                background: reset-ta.has-hover ? #ffffff10 : transparent;
+                Image { source: @image-url("icons/qt/refresh-line.svg"); colorize: #CAC4D0; width: 18px; height: 18px; x: (parent.width - self.width) / 2; y: (parent.height - self.height) / 2; }
+                reset-ta := TouchArea { clicked => { root.reset-folder(); } }
+            }
+        }
+        Rectangle { height: 1px; background: #211F26; y: parent.height - 1px; x: 20px; width: parent.width - 40px; }
+    }
+
+    // ── Card List Section ──
+    SectionHeader { txt: "MEMORY CARDS"; }
+
+    // List header
+    Rectangle {
+        height: 32px;
+        HorizontalLayout {
+            padding-left: 20px; padding-right: 20px; spacing: 8px;
+            Text { text: "Name"; color: #938F99; font-size: 11px; font-weight: 600; horizontal-stretch: 2; vertical-alignment: center; }
+            Text { text: "Type"; color: #938F99; font-size: 11px; font-weight: 600; horizontal-stretch: 1; vertical-alignment: center; }
+            Text { text: "Fmt"; color: #938F99; font-size: 11px; font-weight: 600; width: 40px; horizontal-alignment: center; vertical-alignment: center; }
+            Text { text: "Modified"; color: #938F99; font-size: 11px; font-weight: 600; width: 120px; horizontal-alignment: right; vertical-alignment: center; }
+        }
+    }
+
+    // Card rows
+    for card[i] in root.card-list : Rectangle {
+        height: 44px;
+        background: root.selected-card == i ? #4A445830 : (card-ta.has-hover ? #ffffff05 : transparent);
+        animate background { duration: 150ms; }
+
+        HorizontalLayout {
+            padding-left: 20px; padding-right: 20px; spacing: 8px;
+            HorizontalLayout {
+                horizontal-stretch: 2; spacing: 8px; alignment: start;
+                Image {
+                    source: card.is-folder ? @image-url("icons/qt/folder-open-line.svg") : @image-url("icons/qt/memcard-line.svg");
+                    colorize: card.in-use ? #49454F : #D0BCFF;
+                    width: 16px; height: 16px;
+                    vertical-alignment: center;
+                }
+                Text {
+                    text: card.name;
+                    color: card.in-use ? #49454F : #E6E0E9;
+                    font-size: 13px;
+                    font-weight: root.selected-card == i ? 600 : 400;
+                    overflow: elide;
+                    vertical-alignment: center;
+                }
+                if (card.in-use) : Text {
+                    text: "(in use)";
+                    color: #49454F;
+                    font-size: 11px;
+                    vertical-alignment: center;
+                }
+            }
+            Text {
+                text: card.type;
+                color: card.in-use ? #49454F : #CAC4D0;
+                font-size: 12px;
+                horizontal-stretch: 1;
+                vertical-alignment: center;
+            }
+            Text {
+                text: card.formatted ? "Yes" : "No";
+                color: card.formatted ? #A8DAB5 : #F2B8B5;
+                font-size: 12px;
+                width: 40px;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+            Text {
+                text: card.last-modified;
+                color: #938F99;
+                font-size: 11px;
+                width: 120px;
+                horizontal-alignment: right;
+                vertical-alignment: center;
+            }
+        }
+
+        Rectangle { height: 1px; background: #211F26; y: parent.height - 1px; x: 20px; width: parent.width - 40px; }
+        card-ta := TouchArea { clicked => { root.selected-card = i; } }
+    }
+
+    // ── Actions ──
+    SectionHeader { txt: "ACTIONS"; }
+
+    Rectangle {
+        height: 56px;
+        HorizontalLayout {
+            padding-left: 20px; padding-right: 20px; spacing: 8px;
+            // Refresh
+            Rectangle {
+                horizontal-stretch: 1; height: 40px; border-radius: 8px; border-width: 1px; border-color: #49454F;
+                background: refresh-ta.has-hover ? #ffffff08 : transparent;
+                HorizontalLayout { spacing: 6px; alignment: center;
+                    Image { source: @image-url("icons/qt/refresh-line.svg"); colorize: #CAC4D0; width: 16px; height: 16px; }
+                    Text { text: "Refresh"; color: #CAC4D0; font-size: 12px; vertical-alignment: center; }
+                }
+                refresh-ta := TouchArea { }
+            }
+            // Create
+            Rectangle {
+                horizontal-stretch: 1; height: 40px; border-radius: 8px;
+                background: create-ta.has-hover ? #D0BCFFcc : #D0BCFF;
+                HorizontalLayout { spacing: 6px; alignment: center;
+                    Image { source: @image-url("icons/qt/plus-line.svg"); colorize: #381E72; width: 16px; height: 16px; }
+                    Text { text: "Create"; color: #381E72; font-size: 12px; font-weight: 600; vertical-alignment: center; }
+                }
+                create-ta := TouchArea { clicked => { root.show-create = true; } }
+            }
+            // Rename
+            Rectangle {
+                horizontal-stretch: 1; height: 40px; border-radius: 8px; border-width: 1px;
+                border-color: root.selected-card >= 0 ? #49454F : #211F26;
+                background: rename-ta.has-hover && root.selected-card >= 0 ? #ffffff08 : transparent;
+                HorizontalLayout { spacing: 6px; alignment: center;
+                    Image { source: @image-url("icons/qt/pencil-line.svg"); colorize: root.selected-card >= 0 ? #CAC4D0 : #49454F; width: 16px; height: 16px; }
+                    Text { text: "Rename"; color: root.selected-card >= 0 ? #CAC4D0 : #49454F; font-size: 12px; vertical-alignment: center; }
+                }
+                rename-ta := TouchArea { clicked => { if (root.selected-card >= 0) { root.show-rename = true; } } }
+            }
+            // Convert
+            Rectangle {
+                horizontal-stretch: 1; height: 40px; border-radius: 8px; border-width: 1px;
+                border-color: root.selected-card >= 0 ? #49454F : #211F26;
+                background: convert-ta.has-hover && root.selected-card >= 0 ? #ffffff08 : transparent;
+                HorizontalLayout { spacing: 6px; alignment: center;
+                    Image { source: @image-url("icons/qt/refresh-line.svg"); colorize: root.selected-card >= 0 ? #CAC4D0 : #49454F; width: 16px; height: 16px; }
+                    Text { text: "Convert"; color: root.selected-card >= 0 ? #CAC4D0 : #49454F; font-size: 12px; vertical-alignment: center; }
+                }
+                convert-ta := TouchArea { clicked => { if (root.selected-card >= 0) { root.show-convert = true; } } }
+            }
+            // Delete
+            Rectangle {
+                horizontal-stretch: 1; height: 40px; border-radius: 8px; border-width: 1px;
+                border-color: root.selected-card >= 0 ? #F2B8B540 : #211F26;
+                background: delete-ta.has-hover && root.selected-card >= 0 ? #F2B8B510 : transparent;
+                HorizontalLayout { spacing: 6px; alignment: center;
+                    Image { source: @image-url("icons/qt/delete-back-2-line.svg"); colorize: root.selected-card >= 0 ? #F2B8B5 : #49454F; width: 16px; height: 16px; }
+                    Text { text: "Delete"; color: root.selected-card >= 0 ? #F2B8B5 : #49454F; font-size: 12px; vertical-alignment: center; }
+                }
+                delete-ta := TouchArea { clicked => { if (root.selected-card >= 0) { root.show-delete = true; } } }
+            }
+        }
+    }
+
+    // Bottom padding
+    Rectangle { height: 32px; }
+
+    // ── Dialogs ──
+    MemCardCreateDialog {
+        open: root.show-create;
+        close => { root.show-create = false; }
+        create(name, size, ntfs) => { root.show-create = false; root.create-card(name, size, ntfs); }
+    }
+
+    MemCardConvertDialog {
+        open: root.show-convert;
+        card-name: root.selected-card >= 0 && root.selected-card < root.card-list.length ? root.card-list[root.selected-card].name : "";
+        close => { root.show-convert = false; }
+        convert(type) => { root.show-convert = false; root.convert-card(root.selected-card, type); }
+    }
+
+    MemCardRenameDialog {
+        open: root.show-rename;
+        current-name: root.selected-card >= 0 && root.selected-card < root.card-list.length ? root.card-list[root.selected-card].name : "";
+        close => { root.show-rename = false; }
+        rename(new-name) => { root.show-rename = false; root.rename-card(new-name); }
+    }
+
+    MemCardDeleteDialog {
+        open: root.show-delete;
+        card-name: root.selected-card >= 0 && root.selected-card < root.card-list.length ? root.card-list[root.selected-card].name : "";
+        close => { root.show-delete = false; }
+        confirm-delete => { root.show-delete = false; root.delete-card(root.selected-card); }
+    }
+}

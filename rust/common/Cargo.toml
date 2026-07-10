@@ -1,0 +1,95 @@
+[package]
+name = "pcsx2_common_rs"
+version = "0.1.0"
+edition = "2021"
+description = "Rust reimplementation of PCSX2's common/ library, consumed via FFI by the C++ core"
+license = "GPL-3.0-or-later OR Apache-2.0"
+
+[lib]
+name = "pcsx2_common_rs"
+crate-type = ["staticlib"]
+
+[features]
+dev-build = []
+debug-build = []
+default = []
+
+[build-dependencies]
+cbindgen = "0.27"
+
+[dependencies]
+libc = "0.2"
+bitflags = "2"
+memmap2 = "0.9"
+log = "0.4"
+env_logger = "0.11"
+anyhow = "1"
+thiserror = "1"
+image = "0.24"
+serde = { version = "1", features = ["derive"] }
+serde_yml = "0.0.12"
+ureq = { version = "2", features = ["tls"] }
+hound = "3.5"
+zip = { version = "0.6", default-features = false }
+once_cell = "1"
+fast-float = "0.2"
+signal-hook = "0.3"
+iced-x86 = "1.21"
+crash-handler = "0.6"
+minidump = "0.26"
+backtrace = "0.3"
+libloading = "0.8"
+
+# x86-only: CPUID-based feature detection. `raw-cpuid` is a thin,
+# actively-maintained, customizable CPUID wrapper used to query
+# vendor / family / model / stepping and CPUID feature bits
+# (SSE4.2, AVX, AVX2, AVX-512F, AES-NI, FMA, BMI1, BMI2, ...).
+#
+# Used by `src/cpu_features.rs` to replace the FreeBSD-only `cpuinfo`
+# library previously pulled from PCSX2 3rdparty in
+# `common/Linux/LnxHostSys.cpp`.
+[target.'cfg(target_arch = "x86_64")'.dependencies]
+raw-cpuid = "11"
+
+# macOS-only desktop-integration crates. Used by `darwin_misc.rs` for
+# NSSound (cocoa), the Objective-C runtime (objc), and Core Graphics
+# event injection (core-graphics).
+[target.'cfg(target_os = "macos")'.dependencies]
+cocoa = "0.25"
+objc = "0.2"
+core-graphics = "0.23"
+
+# Linux-only desktop-integration crates. Used by `linux_misc.rs` for
+# screensaver inhibit (dbus) and mouse warp (x11). `perf-event`
+# wraps the `perf_event_open` syscall for hardware performance
+# counters used by `perf.rs`.
+[target.'cfg(target_os = "linux")'.dependencies]
+dbus = "0.9"
+x11 = "2"
+perf-event = "0.4"
+
+# Windows-only Win32 FFI crate. Used by `windows_threads.rs` and
+# `windows_host_sys.rs` for the various Win32 APIs.
+[target.'cfg(target_os = "windows")'.dependencies]
+windows-sys = { version = "0.61", features = [
+    "Win32_Foundation",
+    "Win32_Media",
+    "Win32_Media_Audio",
+    "Win32_System_Com",
+    "Win32_System_Power",
+    "Win32_System_Threading",
+    "Win32_System_Memory",
+    "Win32_System_SystemInformation",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_Graphics_Dwm",
+] }
+# Some agents pulled in the higher-level `windows` crate for stack walking;
+# provide a fallback when targeting Windows.
+windows = "0.58"
+# On Windows, opt into the OS certificate store (rustls-native-certs)
+# instead of the bundled Mozilla webpki-roots. This matches the
+# behaviour of the original `HTTPDownloaderWinHTTP` which relied on
+# the Windows certificate store by default; an end user with a
+# corporate or custom CA installed will get the same trust decisions
+# in Rust as they did in C++.
+ureq = { version = "2", features = ["tls", "native-certs"] }

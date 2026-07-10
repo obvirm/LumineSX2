@@ -1,0 +1,17 @@
+// Game List Settings Page
+import { SettingsRow, ToggleRow, SectionHeader, DetailPage } from "./common.slint";
+
+export component GameListSettingsView inherits DetailPage {
+    title: "Pengaturan Game List";
+    
+    in-out property <bool> recursive-scan: true;
+
+    SectionHeader { txt: "Search Directories"; }
+    SettingsRow { txt: "Add Game Directory"; sub: "Browse for folder containing PS2 games"; ico: @image-url("icons/qt/folder-open-line.svg"); show-arrow: true; }
+    ToggleRow { txt: "Recursive Scan"; sub: "Scan subdirectories for game files"; checked: recursive-scan; toggled(v) => { recursive-scan = v; } }
+
+    SectionHeader { txt: "Manage"; }
+    SettingsRow { txt: "Scan for New Games"; ico: @image-url("icons/qt/refresh-line.svg"); }
+    SettingsRow { txt: "Rescan All Games"; ico: @image-url("icons/qt/refresh-line.svg"); }
+    SettingsRow { txt: "Excluded Paths"; sub: "Manage paths excluded from scanning"; ico: @image-url("icons/qt/settings-3-line.svg"); show-arrow: true; }
+}

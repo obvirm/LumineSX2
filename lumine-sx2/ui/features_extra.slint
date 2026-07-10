@@ -1,0 +1,1516 @@
+import { VerticalBox, HorizontalBox, ScrollView, LineEdit, ComboBox, Button, CheckBox, Slider, GroupBox, StandardButton } from "std-widgets.slint";
+import { MaterialColors, DetailPage, ToggleRow, SliderRow, ComboRow, TextFieldRow, SectionHeader } from "common.slint";
+
+// Achievement Login Dialog
+export component AchievementLoginDialog inherits Rectangle {
+    in-out property <bool> dialog-visible: false;
+    in-out property <string> username: "";
+    in-out property <string> password: "";
+    in-out property <bool> remember-me: true;
+    in-out property <bool> hardcore-mode: false;
+    in-out property <bool> leaderboards: true;
+    in-out property <bool> is-logged-in: false;
+    in-out property <string> display-name: "";
+    in-out property <int> total-points: 0;
+    in-out property <int> hardcore-points: 0;
+    callback close();
+    callback login();
+    callback logout();
+
+    if dialog-visible: Rectangle {
+        background: #00000080;
+
+        Rectangle {
+            width: 380px;
+            height: is-logged-in ? 300px : 400px;
+            background: MaterialColors.surface-container-high;
+            border-radius: 16px;
+            border-width: 1px;
+            border-color: MaterialColors.outline;
+
+            VerticalLayout {
+                padding: 16px;
+                spacing: 12px;
+
+                Text {
+                    text: "RetroAchievements";
+                    color: MaterialColors.on-surface;
+                    font-size: 18px;
+                    font-weight: 600;
+                }
+
+                if !is-logged-in: VerticalLayout {
+                    spacing: 8px;
+
+                    SectionHeader { txt: "Username"; }
+                    LineEdit {
+                        text: username;
+                        placeholder-text: "RetroAchievements username";
+                        height: 32px;
+                    }
+
+                    SectionHeader { txt: "Password"; }
+                    LineEdit {
+                        text: password;
+                        placeholder-text: "Password";
+                        input-type: password;
+                        height: 32px;
+                    }
+
+                    ToggleRow {
+                        label: "Remember Me";
+                        checked: remember-me;
+                        toggled => { remember-me = !remember-me; }
+                    }
+
+                    SectionHeader { txt: "Options"; }
+                    ToggleRow {
+                        label: "Hardcore Mode";
+                        sub: "Disables save states, cheats, and speed hacks";
+                        checked: hardcore-mode;
+                        toggled => { hardcore-mode = !hardcore-mode; }
+                    }
+
+                    ToggleRow {
+                        label: "Leaderboards";
+                        sub: "Submit scores to leaderboards";
+                        checked: leaderboards;
+                        toggled => { leaderboards = !leaderboards; }
+                    }
+
+                    HorizontalLayout {
+                        spacing: 8px;
+                        Button {
+                            text: "Login";
+                            clicked => { login(); }
+                        }
+                        Button {
+                            text: "Cancel";
+                            clicked => { dialog-visible = false; close(); }
+                        }
+                    }
+                }
+
+                if is-logged-in: VerticalLayout {
+                    spacing: 8px;
+
+                    HorizontalLayout {
+                        spacing: 12px;
+                        Rectangle {
+                            width: 48px;
+                            height: 48px;
+                            background: MaterialColors.primary-container;
+                            border-radius: 24px;
+
+                            Text {
+                                text: "🏆";
+                                font-size: 24px;
+                                horizontal-alignment: center;
+                                vertical-alignment: center;
+                            }
+                        }
+
+                        VerticalLayout {
+                            spacing: 2px;
+                            Text {
+                                text: display-name;
+                                color: MaterialColors.on-surface;
+                                font-size: 16px;
+                                font-weight: 600;
+                            }
+                            Text {
+                                text: "Points: " + total-points + " (Hardcore: " + hardcore-points + ")";
+                                color: MaterialColors.on-surface-variant;
+                                font-size: 12px;
+                            }
+                        }
+                    }
+
+                    HorizontalLayout {
+                        spacing: 8px;
+                        Button {
+                            text: "View Achievements";
+                            clicked => { }
+                        }
+                        Button {
+                            text: "Logout";
+                            clicked => { logout(); }
+                        }
+                        Button {
+                            text: "Close";
+                            clicked => { dialog-visible = false; }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Achievement Overlay
+export component AchievementOverlay inherits Rectangle {
+    in-out property <string> game-title: "";
+    in-out property <int> earned-points: 0;
+    in-out property <int> total-game-points: 0;
+    in-out property <int> achievements-earned: 0;
+    in-out property <int> achievements-total: 0;
+    in-out property <string> last-achievement: "";
+    in-out property <bool> show-notification: false;
+
+    visible: show-notification;
+    width: 280px;
+    height: 72px;
+    background: MaterialColors.surface-container-high;
+    border-radius: 12px;
+    border-width: 1px;
+    border-color: MaterialColors.primary;
+
+    HorizontalLayout {
+        padding: 12px;
+        spacing: 12px;
+
+        Rectangle {
+            width: 48px;
+            height: 48px;
+            background: MaterialColors.primary-container;
+            border-radius: 8px;
+
+            Text {
+                text: "🏆";
+                font-size: 24px;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+        }
+
+        VerticalLayout {
+            spacing: 2px;
+            Text {
+                text: "Achievement Unlocked!";
+                color: MaterialColors.primary;
+                font-size: 12px;
+                font-weight: 600;
+            }
+            Text {
+                text: last-achievement;
+                color: MaterialColors.on-surface;
+                font-size: 13px;
+                overflow: elide;
+            }
+            Text {
+                text: achievements-earned + "/" + achievements-total + " (" + earned-points + " pts)";
+                color: MaterialColors.on-surface-variant;
+                font-size: 11px;
+            }
+        }
+    }
+}
+
+// Network Settings View
+export component NetworkSettingsView inherits DetailPage {
+    title: "Network Settings";
+    in-out property <int> selected-adapter: 0;
+    in-out property <string> dns-primary: "8.8.8.8";
+    in-out property <string> dns-secondary: "8.8.4.4";
+    in-out property <bool> hdd-enabled: false;
+    in-out property <string> hdd-path: "";
+    in-out property <int> hdd-size: 40; // GB
+
+    VerticalLayout {
+        padding: 16px;
+        spacing: 12px;
+
+        SectionHeader { txt: "Network Adapter"; }
+        ComboRow {
+            label: "Adapter";
+            model: ["Auto", "Ethernet", "WiFi", "None"];
+            current-index: selected-adapter;
+            selected(idx) => { selected-adapter = idx; }
+        }
+
+        SectionHeader { txt: "DNS Settings"; }
+        TextFieldRow {
+            label: "Primary DNS";
+            text: dns-primary;
+            changed(v) => { dns-primary = v; }
+        }
+        TextFieldRow {
+            label: "Secondary DNS";
+            text: dns-secondary;
+            changed(v) => { dns-secondary = v; }
+        }
+
+        SectionHeader { txt: "HDD Settings"; }
+        ToggleRow {
+            label: "Enable HDD";
+            sub: "Enable internal hard disk drive emulation";
+            checked: hdd-enabled;
+            toggled => { hdd-enabled = !hdd-enabled; }
+        }
+
+        if hdd-enabled: TextFieldRow {
+            label: "HDD Image Path";
+            text: hdd-path;
+            changed(v) => { hdd-path = v; }
+        }
+
+        if hdd-enabled: SliderRow {
+            label: "HDD Size (GB)";
+            value: hdd-size / 120;
+            changed(v) => { hdd-size = Math.round(v * 120); }
+        }
+
+        if hdd-enabled: HorizontalLayout {
+            spacing: 8px;
+            Button {
+                text: "Create HDD Image";
+                clicked => { }
+            }
+            Button {
+                text: "Expand HDD Image";
+                clicked => { }
+            }
+        }
+    }
+}
+
+// Theme Picker
+export component ThemePicker inherits DetailPage {
+    title: "Theme";
+    in-out property <int> selected-theme: 0;
+    in-out property <string> custom-qss: "";
+
+    property <[string]> themes: [
+        "Dark", "Light", "Midnight Blue", "Ocean", "Forest",
+        "Sunset", "Lavender", "Mint", "Rose Gold", "Charcoal",
+        "Nord", "Dracula", "Monokai", "Solarized Dark", "Solarized Light",
+        "Gruvbox Dark", "One Dark", "Catppuccin"
+    ];
+
+    VerticalLayout {
+        padding: 16px;
+        spacing: 12px;
+
+        SectionHeader { txt: "Built-in Themes"; }
+
+        for theme[idx] in themes: Rectangle {
+            height: 48px;
+            background: selected-theme == idx ? MaterialColors.primary-container : MaterialColors.surface-container;
+            border-radius: 8px;
+            border-width: 1px;
+            border-color: selected-theme == idx ? MaterialColors.primary : MaterialColors.outline-variant;
+
+            HorizontalLayout {
+                padding-left: 16px;
+                padding-right: 16px;
+                spacing: 12px;
+
+                // Theme preview swatch
+                Rectangle {
+                    width: 32px;
+                    height: 32px;
+                    y: 8px;
+                    background: idx < 2 ? (idx == 0 ? #1e1e2e : #ffffff) : MaterialColors.primary;
+                    border-radius: 6px;
+                    border-width: 1px;
+                    border-color: MaterialColors.outline;
+                }
+
+                Text {
+                    text: theme;
+                    color: selected-theme == idx ? MaterialColors.on-primary-container : MaterialColors.on-surface;
+                    font-size: 14px;
+                    vertical-alignment: center;
+                }
+            }
+
+            TouchArea {
+                clicked => { selected-theme = idx; }
+            }
+        }
+
+        SectionHeader { txt: "Custom Theme"; }
+        Text {
+            text: "Drop a .qss file to apply a custom theme";
+            color: MaterialColors.on-surface-variant;
+            font-size: 12px;
+            wrap: word-wrap;
+        }
+
+        HorizontalLayout {
+            spacing: 8px;
+            TextFieldRow {
+                label: "QSS File";
+                text: custom-qss;
+                changed(v) => { custom-qss = v; }
+            }
+            Button {
+                text: "Browse";
+                width: 80px;
+            }
+        }
+    }
+}
+
+// Language Picker
+export component LanguagePicker inherits DetailPage {
+    title: "Language";
+    in-out property <int> selected-language: 0;
+
+    property <[string]> languages: [
+        "English", "日本語", "Deutsch", "Français", "Español",
+        "Italiano", "Português", "Русский", "中文 (简体)", "中文 (繁體)",
+        "한국어", "العربية", "Polski", "Nederlands", "Svenska",
+        "Dansk", "Norsk", "Suomi", "Čeština", "Magyar",
+        "Română", "Ελληνικά", "Türkçe", "ไทย", "Tiếng Việt"
+    ];
+
+    VerticalLayout {
+        padding: 16px;
+        spacing: 4px;
+
+        SectionHeader { txt: "Select Language"; }
+        Text {
+            text: "Language change takes effect after restart";
+            color: MaterialColors.on-surface-variant;
+            font-size: 12px;
+            wrap: word-wrap;
+        }
+
+        for lang[idx] in languages: Rectangle {
+            height: 44px;
+            background: selected-language == idx ? MaterialColors.primary-container : (idx % 2 == 0 ? MaterialColors.surface-container-low : Colors.transparent);
+            border-radius: 8px;
+
+            HorizontalLayout {
+                padding-left: 16px;
+                padding-right: 16px;
+                spacing: 12px;
+
+                Text {
+                    text: idx == 0 ? "🌐" : (idx == 1 ? "🇯🇵" : (idx == 2 ? "🇩🇪" : (idx == 3 ? "🇫🇷" : (idx == 4 ? "🇪🇸" : "🌍"))));
+                    font-size: 16px;
+                    vertical-alignment: center;
+                }
+
+                Text {
+                    text: lang;
+                    color: selected-language == idx ? MaterialColors.on-primary-container : MaterialColors.on-surface;
+                    font-size: 14px;
+                    vertical-alignment: center;
+                }
+            }
+
+            TouchArea {
+                clicked => { selected-language = idx; }
+            }
+        }
+    }
+}
+
+// Big Picture Mode
+// ─── Big Picture Mode — FullscreenUI-style overlay ───
+export component BigPictureMode inherits Window {
+    title: "PCSX2 - Big Picture";
+    preferred-width: 1280px;
+    preferred-height: 720px;
+    
+    // Navigation state
+    in-out property <int> nav-page: 0; // 0=Landing/Grid, 1=PauseMenu, 2=CoverDownloader, 3=About, 4=Exit, 5=SaveStateSelector, 6=LoadStateSelector, 7=SettingsShortcut
+    in-out property <int> selected-game: 0;
+    in-out property <[string]> recent-games: ["Grand Theft Auto: San Andreas", "Final Fantasy X", "God of War II", "Shadow of the Colossus", "Dragon Quest VIII", "Persona 4", "Kingdom Hearts II", "Metal Gear Solid 3"];
+    in-out property <[string]> game-serials: ["SLUS-21270", "SLUS-20312", "SLUS-21001", "SCUS-97495", "SLUS-21368", "SLUS-21782", "SLUS-21205", "SLUS-20915"];
+    in-out property <[string]> game-regions: ["NTSC-U", "NTSC-U", "NTSC-U", "NTSC-U", "NTSC-U", "NTSC-U", "NTSC-U", "NTSC-U"];
+    in-out property <string> search-text: "";
+    in-out property <int> filter-region: 0; // 0=All, 1=NTSC-U, 2=PAL, 3=NTSC-J
+    in-out property <string> status-text: "Ready";
+    
+    // Pause menu state
+    in-out property <int> pause-selection: 0;
+    in-out property <int> save-slot: 1;
+    in-out property <int> load-slot: 1;
+    in-out property <[string]> save-state-slots: ["Slot 1", "Slot 2", "Slot 3", "Slot 4", "Slot 5", "Slot 6", "Slot 7", "Slot 8"];
+    in-out property <[string]> save-state-times: ["5 min ago", "2 hours ago", "Yesterday", "3 days ago", "Last week", "Never", "Never", "Never"];
+    in-out property <[string]> save-state-previews: ["🏙️", "🏰", "🌊", "🎭", "—", "—", "—", "—"];
+    
+    // Cover downloader state
+    in-out property <string> cover-url: "https://";
+    in-out property <float> cover-progress: 0.0;
+    in-out property <bool> cover-downloading: false;
+    in-out property <string> cover-status: "Enter URLs for cover art downloads (one per line)";
+    
+    // Exit dialog state
+    in-out property <int> exit-selection: 0;
+
+    background: #0a0a1a;
+
+    // ===== OVERLAY DIM =====
+    if nav-page >= 1: Rectangle {
+        background: #000000aa;
+        TouchArea {}
+    }
+
+    // ===== MAIN CONTENT =====
+    VerticalLayout {
+        // ─── TOP BAR ───
+        Rectangle {
+            height: 56px;
+            background: #1a1a2e;
+
+            HorizontalLayout {
+                padding-left: 20px;
+                padding-right: 20px;
+                spacing: 16px;
+
+                Text {
+                    text: "🎮 PCSX2";
+                    color: #ffffff;
+                    font-size: 22px;
+                    font-weight: 700;
+                    vertical-alignment: center;
+                }
+
+                // Search bar
+                if nav-page == 0: Rectangle {
+                    width: 300px;
+                    height: 32px;
+                    background: #2a2a4a;
+                    border-radius: 8px;
+                    border-width: 1px;
+                    border-color: #4a4a6a;
+
+                    HorizontalLayout {
+                        padding-left: 12px;
+                        padding-right: 12px;
+                        spacing: 8px;
+
+                        Text {
+                            text: "🔍";
+                            font-size: 14px;
+                            vertical-alignment: center;
+                        }
+
+                        LineEdit {
+                            text: search-text;
+                            placeholder-text: "Search games...";
+                            font-size: 13px;
+                            height: 28px;
+                            background: transparent;
+                            border: none;
+                        }
+                    }
+                }
+
+                Rectangle { horizontal-stretch: 1; }
+
+                // Nav buttons
+                if nav-page == 0: HorizontalLayout {
+                    spacing: 8px;
+
+                    // Region filter
+                    for r[idx] in ["🌍 All", "🇺🇸 NTSC-U", "🇪🇺 PAL", "🇯🇵 NTSC-J"]: Rectangle {
+                        width: 96px;
+                        height: 32px;
+                        background: filter-region == idx ? MaterialColors.primary : Colors.transparent;
+                        border-radius: 6px;
+                        border-width: 1px;
+                        border-color: filter-region == idx ? Colors.transparent : #4a4a6a;
+
+                        Text {
+                            text: r;
+                            color: filter-region == idx ? MaterialColors.on-primary : #aaaaaa;
+                            font-size: 12px;
+                            horizontal-alignment: center;
+                            vertical-alignment: center;
+                        }
+
+                        TouchArea {
+                            clicked => { filter-region = idx; }
+                        }
+                    }
+
+                    Rectangle { width: 12px; }
+
+                    // Menu button
+                    Rectangle {
+                        width: 36px;
+                        height: 36px;
+                        background: MaterialColors.surface-container;
+                        border-radius: 18px;
+
+                        Text {
+                            text: "☰";
+                            color: #ffffff;
+                            font-size: 20px;
+                            horizontal-alignment: center;
+                            vertical-alignment: center;
+                        }
+
+                        TouchArea {
+                            clicked => { nav-page = 1; pause-selection = 0; }
+                        }
+                    }
+
+                    // Cover download button
+                    Rectangle {
+                        width: 36px;
+                        height: 36px;
+                        background: MaterialColors.surface-container;
+                        border-radius: 18px;
+
+                        Text {
+                            text: "⬇";
+                            color: #ffffff;
+                            font-size: 18px;
+                            horizontal-alignment: center;
+                            vertical-alignment: center;
+                        }
+
+                        TouchArea {
+                            clicked => { nav-page = 2; }
+                        }
+                    }
+                }
+
+                Text {
+                    text: status-text;
+                    color: #888888;
+                    font-size: 13px;
+                    vertical-alignment: center;
+                }
+
+                // Settings button
+                Rectangle {
+                    width: 36px;
+                    height: 36px;
+                    background: MaterialColors.surface-container;
+                    border-radius: 18px;
+
+                    Text {
+                        text: "⚙";
+                        color: #ffffff;
+                        font-size: 18px;
+                        horizontal-alignment: center;
+                        vertical-alignment: center;
+                    }
+
+                    TouchArea {
+                        clicked => { nav-page = 7; }
+                    }
+                }
+
+                // Close button
+                Rectangle {
+                    width: 36px;
+                    height: 36px;
+                    background: #ff000033;
+                    border-radius: 18px;
+
+                    Text {
+                        text: "✕";
+                        color: #ff6666;
+                        font-size: 18px;
+                        horizontal-alignment: center;
+                        vertical-alignment: center;
+                    }
+
+                    TouchArea {
+                        clicked => { }
+                    }
+                }
+            }
+        }
+
+        // ─── MAIN AREA ───
+        Rectangle {
+            background: #0f0f23;
+
+            // === LANDING / GAME GRID (nav-page == 0) ===
+            if nav-page == 0: ScrollView {
+                VerticalLayout {
+                    padding: 24px 32px 32px 32px;
+                    spacing: 20px;
+
+                    Text {
+                        text: "Game Library";
+                        color: #ffffff;
+                        font-size: 26px;
+                        font-weight: 700;
+                    }
+
+                    // Game grid - 4 columns
+                    VerticalLayout {
+                        spacing: 20px;
+
+                        for row in 2: HorizontalLayout {
+                            spacing: 20px;
+
+                            for col in 4: Rectangle {
+                                idx := row * 4 + col;
+                                visible: idx < recent-games.length;
+
+                                width: 260px;
+                                height: 320px;
+                                background: selected-game == idx ? #2a2a4a : #1a1a3a;
+                                border-radius: 12px;
+                                border-width: selected-game == idx ? 2px : 1px;
+                                border-color: selected-game == idx ? MaterialColors.primary : #333366;
+
+                                VerticalLayout {
+                                    spacing: 8px;
+
+                                    // Cover art area
+                                    Rectangle {
+                                        height: 200px;
+                                        background: #2a2a4a;
+                                        border-radius: 8px 8px 0 0;
+                                        clip: true;
+
+                                        Text {
+                                            text: "🎮";
+                                            font-size: 56px;
+                                            horizontal-alignment: center;
+                                            vertical-alignment: center;
+                                        }
+
+                                        // Region badge
+                                        Rectangle {
+                                            x: 8px;
+                                            y: 8px;
+                                            width: 40px;
+                                            height: 20px;
+                                            background: game-regions[idx] == "NTSC-U" ? #4a90d9 : (game-regions[idx] == "PAL" ? #4ad94a : #d9b44a);
+                                            border-radius: 4px;
+
+                                            Text {
+                                                text: game-regions[idx];
+                                                color: #ffffff;
+                                                font-size: 9px;
+                                                font-weight: 600;
+                                                horizontal-alignment: center;
+                                                vertical-alignment: center;
+                                            }
+                                        }
+                                    }
+
+                                    // Game title
+                                    Text {
+                                        text: recent-games[idx];
+                                        color: selected-game == idx ? MaterialColors.on-primary-container : #ffffff;
+                                        font-size: 13px;
+                                        font-weight: 600;
+                                        padding-left: 12px;
+                                        padding-right: 12px;
+                                        overflow: elide;
+                                        horizontal-alignment: center;
+                                    }
+
+                                    // Serial
+                                    Text {
+                                        text: game-serials[idx];
+                                        color: #666688;
+                                        font-size: 10px;
+                                        font-family: "Consolas";
+                                        padding-left: 12px;
+                                        padding-right: 12px;
+                                        horizontal-alignment: center;
+                                    }
+                                }
+
+                                ta := TouchArea {
+                                    clicked => { selected-game = idx; }
+                                    double-clicked => {
+                                        selected-game = idx;
+                                        status-text = "Starting " + recent-games[idx] + "...";
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // Empty state
+                    if recent-games.length == 0: Rectangle {
+                        height: 200px;
+
+                        VerticalLayout {
+                            alignment: center;
+                            spacing: 12px;
+
+                            Text {
+                                text: "🎮";
+                                font-size: 64px;
+                                horizontal-alignment: center;
+                            }
+                            Text {
+                                text: "No Games Found";
+                                color: #666688;
+                                font-size: 20px;
+                                horizontal-alignment: center;
+                            }
+                            Text {
+                                text: "Add game directories to start building your library";
+                                color: #444466;
+                                font-size: 14px;
+                                horizontal-alignment: center;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // === PAUSE MENU (nav-page == 1) ===
+            if nav-page == 1: VerticalLayout {
+                alignment: center;
+                horizontal-alignment: center;
+
+                Rectangle {
+                    width: 420px;
+                    height: 480px;
+                    background: #1a1a2e;
+                    border-radius: 16px;
+                    border-width: 1px;
+                    border-color: #333366;
+
+                    VerticalLayout {
+                        padding: 24px;
+                        spacing: 4px;
+
+                        Text {
+                            text: "Pause Menu";
+                            color: #ffffff;
+                            font-size: 24px;
+                            font-weight: 700;
+                            padding-bottom: 16px;
+                            horizontal-alignment: center;
+                        }
+
+                        Text {
+                            text: "Currently: " + (recent-games.length > 0 ? recent-games[selected-game] : "");
+                            color: #8888aa;
+                            font-size: 13px;
+                            padding-bottom: 12px;
+                            horizontal-alignment: center;
+                        }
+
+                        // Menu items
+                        for item[idx] in ["▶ Resume", "💾 Save State", "📂 Load State", "🏆 Achievements", "⚙ Settings", "ℹ About", "🚪 Exit"]: Rectangle {
+                            height: 52px;
+                            background: pause-selection == idx ? MaterialColors.primary-container : Colors.transparent;
+                            border-radius: 10px;
+
+                            HorizontalLayout {
+                                padding-left: 20px;
+                                padding-right: 20px;
+                                spacing: 12px;
+
+                                Text {
+                                    text: item;
+                                    color: pause-selection == idx ? MaterialColors.on-primary-container : #cccccc;
+                                    font-size: 15px;
+                                    font-weight: pause-selection == idx ? 600 : 400;
+                                    vertical-alignment: center;
+                                }
+
+                                Rectangle { horizontal-stretch: 1; }
+
+                                Text {
+                                    text: "›";
+                                    color: pause-selection == idx ? MaterialColors.on-primary-container : #444466;
+                                    font-size: 18px;
+                                    vertical-alignment: center;
+                                }
+                            }
+
+                            TouchArea {
+                                clicked => {
+                                    pause-selection = idx;
+                                    if idx == 0 { nav-page = 0; }
+                                    if idx == 1 { nav-page = 5; save-slot = 1; }
+                                    if idx == 2 { nav-page = 6; load-slot = 1; }
+                                    if idx == 3 { /* Achievements */ }
+                                    if idx == 4 { nav-page = 7; }
+                                    if idx == 5 { nav-page = 3; }
+                                    if idx == 6 { nav-page = 4; exit-selection = 0; }
+                                }
+                            }
+                        }
+
+                        Rectangle { height: 20px; }
+
+                        // Back button
+                        Rectangle {
+                            height: 44px;
+                            background: MaterialColors.surface-container;
+                            border-radius: 10px;
+
+                            Text {
+                                text: "← Back to Game";
+                                color: #8888aa;
+                                font-size: 14px;
+                                horizontal-alignment: center;
+                                vertical-alignment: center;
+                            }
+
+                            TouchArea {
+                                clicked => { nav-page = 0; }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // === SAVE STATE SELECTOR (nav-page == 5) ===
+            if nav-page == 5 || nav-page == 6: VerticalLayout {
+                alignment: center;
+                horizontal-alignment: center;
+
+                Rectangle {
+                    width: 580px;
+                    height: 460px;
+                    background: #1a1a2e;
+                    border-radius: 16px;
+                    border-width: 1px;
+                    border-color: #333366;
+
+                    VerticalLayout {
+                        padding: 24px;
+                        spacing: 4px;
+
+                        Text {
+                            text: nav-page == 5 ? "💾 Save State" : "📂 Load State";
+                            color: #ffffff;
+                            font-size: 22px;
+                            font-weight: 700;
+                            padding-bottom: 12px;
+                        }
+
+                        // Slot grid
+                        ScrollView {
+                            for slot[idx] in save-state-slots: Rectangle {
+                                height: 56px;
+                                background: (nav-page == 5 && save-slot == idx + 1) || (nav-page == 6 && load-slot == idx + 1) ? MaterialColors.primary-container : (idx % 2 == 0 ? #15152a : Colors.transparent);
+                                border-radius: 8px;
+
+                                HorizontalLayout {
+                                    padding-left: 16px;
+                                    padding-right: 16px;
+                                    spacing: 12px;
+
+                                    // Preview
+                                    Rectangle {
+                                        width: 48px;
+                                        height: 48px;
+                                        background: #2a2a4a;
+                                        border-radius: 6px;
+
+                                        Text {
+                                            text: save-state-previews[idx];
+                                            font-size: 20px;
+                                            horizontal-alignment: center;
+                                            vertical-alignment: center;
+                                        }
+                                    }
+
+                                    VerticalLayout {
+                                        spacing: 2px;
+                                        alignment: center;
+
+                                        Text {
+                                            text: slot;
+                                            color: (nav-page == 5 && save-slot == idx + 1) || (nav-page == 6 && load-slot == idx + 1) ? MaterialColors.on-primary-container : #ffffff;
+                                            font-size: 14px;
+                                            font-weight: 500;
+                                        }
+                                        Text {
+                                            text: save-state-times[idx];
+                                            color: #666688;
+                                            font-size: 11px;
+                                        }
+                                    }
+
+                                    Rectangle { horizontal-stretch: 1; }
+
+                                    Text {
+                                        text: nav-page == 5 ? "▶ Save Here" : "▶ Load";
+                                        color: MaterialColors.primary;
+                                        font-size: 12px;
+                                        vertical-alignment: center;
+                                    }
+                                }
+
+                                TouchArea {
+                                    clicked => {
+                                        if nav-page == 5 { save-slot = idx + 1; }
+                                        else { load-slot = idx + 1; }
+                                    }
+                                }
+                            }
+                        }
+
+                        Rectangle { height: 8px; }
+
+                        HorizontalLayout {
+                            spacing: 8px;
+                            Button {
+                                text: "← Back";
+                                clicked => { nav-page = 1; }
+                            }
+                            Rectangle { horizontal-stretch: 1; }
+                            Text {
+                                text: nav-page == 5 ? "Slot " + save-slot + " selected" : "Slot " + load-slot + " selected";
+                                color: #8888aa;
+                                font-size: 12px;
+                                vertical-alignment: center;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // === COVER DOWNLOADER (nav-page == 2) ===
+            if nav-page == 2: VerticalLayout {
+                alignment: center;
+                horizontal-alignment: center;
+
+                Rectangle {
+                    width: 520px;
+                    height: 440px;
+                    background: #1a1a2e;
+                    border-radius: 16px;
+                    border-width: 1px;
+                    border-color: #333366;
+
+                    VerticalLayout {
+                        padding: 24px;
+                        spacing: 12px;
+
+                        Text {
+                            text: "⬇ Download Cover Art";
+                            color: #ffffff;
+                            font-size: 22px;
+                            font-weight: 700;
+                        }
+
+                        Text {
+                            text: cover-status;
+                            color: #8888aa;
+                            font-size: 13px;
+                            wrap: word-wrap;
+                        }
+
+                        // URL input area
+                        Rectangle {
+                            height: 120px;
+                            background: #0f0f23;
+                            border-radius: 8px;
+                            border-width: 1px;
+                            border-color: #333366;
+
+                            ScrollView {
+                                LineEdit {
+                                    text: cover-url;
+                                    placeholder-text: "Enter cover URLs (one per line)...";
+                                    font-size: 12px;
+                                    font-family: "Consolas";
+                                    height: 120px;
+                                    width: 460px;
+                                }
+                            }
+                        }
+
+                        // Progress bar
+                        if cover-downloading: Rectangle {
+                            height: 8px;
+                            background: #333366;
+                            border-radius: 4px;
+
+                            Rectangle {
+                                width: parent.width * cover-progress;
+                                height: 100%;
+                                background: MaterialColors.primary;
+                                border-radius: 4px;
+                            }
+                        }
+
+                        if cover-progress > 0 && cover-progress < 1: Text {
+                            text: Math.round(cover-progress * 100) + "% complete";
+                            color: #8888aa;
+                            font-size: 12px;
+                            horizontal-alignment: center;
+                        }
+
+                        Rectangle { height: 8px; }
+
+                        HorizontalLayout {
+                            spacing: 8px;
+                            Button {
+                                text: "⬇ Download";
+                                clicked => {
+                                    cover-downloading = true;
+                                    cover-progress = 0.0;
+                                    cover-status = "Downloading covers...";
+                                }
+                            }
+                            Text { text: "Use title filenames"; color: #8888aa; font-size: 12px; vertical-alignment: center; }
+                            Rectangle { horizontal-stretch: 1; }
+                            Button {
+                                text: "✕ Cancel";
+                                clicked => { nav-page = 0; }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // === ABOUT WINDOW (nav-page == 3) ===
+            if nav-page == 3: VerticalLayout {
+                alignment: center;
+                horizontal-alignment: center;
+
+                Rectangle {
+                    width: 460px;
+                    height: 400px;
+                    background: #1a1a2e;
+                    border-radius: 16px;
+                    border-width: 1px;
+                    border-color: #333366;
+
+                    VerticalLayout {
+                        padding: 24px;
+                        spacing: 12px;
+                        alignment: center;
+
+                        Text {
+                            text: "🎮";
+                            font-size: 56px;
+                            horizontal-alignment: center;
+                        }
+
+                        Text {
+                            text: "LumineSX2";
+                            color: MaterialColors.primary;
+                            font-size: 28px;
+                            font-weight: 700;
+                            horizontal-alignment: center;
+                        }
+
+                        Text {
+                            text: "PlayStation 2 Emulator (Rust Rewrite)";
+                            color: #8888aa;
+                            font-size: 14px;
+                            horizontal-alignment: center;
+                        }
+
+                        Rectangle { height: 12px; }
+
+                        for info[idx] in ["Version: v2.0.0", "Build Date: 2026-06-24", "Platform: Windows x64", "Git: 1.4.2-1234-g5a678b9c"]: Rectangle {
+                            height: 28px;
+
+                            HorizontalLayout {
+                                padding-left: 40px;
+                                spacing: 12px;
+
+                                Text {
+                                    text: info;
+                                    color: #cccccc;
+                                    font-size: 13px;
+                                    font-family: "Consolas";
+                                    vertical-alignment: center;
+                                }
+                            }
+                        }
+
+                        Rectangle { height: 16px; }
+
+                        Text {
+                            text: "© 2002-2026 PCSX2 Dev Team";
+                            color: #555577;
+                            font-size: 12px;
+                            horizontal-alignment: center;
+                        }
+
+                        Text {
+                            text: "Licensed under GPL-3.0+";
+                            color: #555577;
+                            font-size: 12px;
+                            horizontal-alignment: center;
+                        }
+
+                        Rectangle { height: 12px; }
+
+                        // Experimental warning block (Android-focused project, currently Windows-only)
+                        Rectangle {
+                            width: 392px;
+                            height: 150px;
+                            border-radius: 12px;
+                            background: #2a1a1a;
+                            border-width: 1px;
+                            border-color: #553333;
+                            padding: 12px;
+
+                            VerticalLayout {
+                                spacing: 6px;
+                                alignment: start;
+
+                                Text {
+                                    text: "⚠ Versi Eksperimental";
+                                    color: #ffaa66;
+                                    font-size: 15px;
+                                    font-weight: 700;
+                                    horizontal-alignment: center;
+                                }
+                                Text {
+                                    text: "LumineSX2 adalah emulator PS2 berbasis Slint + Rust dengan visi utama menjalankan PS2 di Android.";
+                                    color: #cccccc;
+                                    font-size: 12px;
+                                    horizontal-alignment: center;
+                                    wrap-mode: word-wrap;
+                                }
+                                Text {
+                                    text: "Build ini hanya bisa berjalan di Windows. Dukungan Android belum tersedia. Proyek ini masih dalam tahap penulisan ulang (rewrite) core ke bahasa Rust.";
+                                    color: #ff9988;
+                                    font-size: 12px;
+                                    horizontal-alignment: center;
+                                    wrap-mode: word-wrap;
+                                }
+                            }
+                        }
+
+                        Rectangle { height: 12px; }
+
+                        HorizontalLayout {
+                            spacing: 12px;
+                            horizontal-alignment: center;
+                            Button {
+                                text: "Website";
+                                clicked => { }
+                            }
+                            Button {
+                                text: "Laporkan Masalah";
+                                clicked => { }
+                            }
+                            Button {
+                                text: "← Kembali";
+                                clicked => { nav-page = 1; }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // === EXIT DIALOG (nav-page == 4) ===
+            if nav-page == 4: VerticalLayout {
+                alignment: center;
+                horizontal-alignment: center;
+
+                Rectangle {
+                    width: 380px;
+                    height: 280px;
+                    background: #1a1a2e;
+                    border-radius: 16px;
+                    border-width: 1px;
+                    border-color: #333366;
+
+                    VerticalLayout {
+                        padding: 24px;
+                        spacing: 12px;
+                        alignment: center;
+
+                        Text {
+                            text: "⚠ Exit PCSX2?";
+                            color: #ff6666;
+                            font-size: 22px;
+                            font-weight: 700;
+                            horizontal-alignment: center;
+                        }
+
+                        Text {
+                            text: "Are you sure you want to exit?";
+                            color: #8888aa;
+                            font-size: 14px;
+                            horizontal-alignment: center;
+                        }
+
+                        Rectangle { height: 8px; }
+
+                        for item[idx] in ["🚪 Shutdown", "💾 Shutdown && Save State", "✕ Cancel"]: Rectangle {
+                            height: 48px;
+                            background: exit-selection == idx ? MaterialColors.primary-container : Colors.transparent;
+                            border-radius: 10px;
+
+                            HorizontalLayout {
+                                padding-left: 20px;
+                                padding-right: 20px;
+                                spacing: 12px;
+
+                                Text {
+                                    text: item;
+                                    color: exit-selection == idx ? MaterialColors.on-primary-container : #cccccc;
+                                    font-size: 15px;
+                                    font-weight: exit-selection == idx ? 600 : 400;
+                                    vertical-alignment: center;
+                                }
+                            }
+
+                            TouchArea {
+                                clicked => {
+                                    exit-selection = idx;
+                                    if idx == 2 { nav-page = 1; }
+                                    if idx == 0 { /* shutdown */ }
+                                    if idx == 1 { /* shutdown + save */ }
+                                }
+                            }
+                        }
+
+                        Rectangle { height: 8px; }
+
+                        Button {
+                            text: "← Back to Pause Menu";
+                            clicked => { nav-page = 1; }
+                        }
+                    }
+                }
+            }
+
+            // === SETTINGS SHORTCUT (nav-page == 7) ===
+            if nav-page == 7: VerticalLayout {
+                alignment: center;
+                horizontal-alignment: center;
+
+                Rectangle {
+                    width: 380px;
+                    height: 320px;
+                    background: #1a1a2e;
+                    border-radius: 16px;
+                    border-width: 1px;
+                    border-color: #333366;
+
+                    VerticalLayout {
+                        padding: 24px;
+                        spacing: 8px;
+                        alignment: center;
+
+                        Text {
+                            text: "⚙ Quick Settings";
+                            color: #ffffff;
+                            font-size: 22px;
+                            font-weight: 700;
+                            horizontal-alignment: center;
+                            padding-bottom: 12px;
+                        }
+
+                        for item[idx] in ["🎮 Controller Settings", "📺 Graphics Settings", "🔊 Audio Settings", "💾 Save State Management", "🏆 Achievements"]: Rectangle {
+                            height: 44px;
+                            background: idx % 2 == 0 ? #15152a : Colors.transparent;
+                            border-radius: 8px;
+
+                            HorizontalLayout {
+                                padding-left: 20px;
+                                spacing: 12px;
+
+                                Text {
+                                    text: item;
+                                    color: #cccccc;
+                                    font-size: 14px;
+                                    vertical-alignment: center;
+                                }
+
+                                Rectangle { horizontal-stretch: 1; }
+
+                                Text {
+                                    text: "›";
+                                    color: #444466;
+                                    font-size: 16px;
+                                    vertical-alignment: center;
+                                }
+                            }
+
+                            TouchArea {
+                                clicked => { }
+                            }
+                        }
+
+                        Rectangle { height: 12px; }
+
+                        Button {
+                            text: "← Back";
+                            clicked => { nav-page = 1; }
+                        }
+                    }
+                }
+            }
+
+            // Fallback for other nav-pages
+            if nav-page >= 1 && nav-page <= 7 && nav-page != 0: Rectangle {}
+
+            // ─── BOTTOM BAR (only in landing) ───
+            if nav-page == 0: Rectangle {
+                height: 44px;
+                background: #1a1a2e;
+                border-top-width: 1px;
+                border-top-color: #2a2a4a;
+
+                HorizontalLayout {
+                    padding-left: 24px;
+                    padding-right: 24px;
+                    spacing: 24px;
+
+                    Text {
+                        text: "🅰 Select    🅱 Back    🆇 Game Properties    🆈 Favorites";
+                        color: #555577;
+                        font-size: 12px;
+                        vertical-alignment: center;
+                    }
+
+                    Rectangle { horizontal-stretch: 1; }
+
+                    Text {
+                        text: "START + 🅱 for Quick Menu";
+                        color: #555577;
+                        font-size: 12px;
+                        vertical-alignment: center;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// BIOS Region Info
+export component BiosRegionInfo inherits DetailPage {
+    title: "BIOS Information";
+    in-out property <string> bios-path: "";
+    in-out property <string> region: "USA";
+    in-out property <string> firmware-version: "2.30";
+    in-out property <string> console-type: "SCPH-77001";
+    in-out property <string> rom-version: "01.90";
+    in-out property <string> rom-date: "2006-02-10";
+
+    property <[string]> regions: ["USA", "Japan", "Europe", "Asia", "Korea", "Hong Kong", "Taiwan", "Australia", "China"];
+    property <[string]> region-flags: ["🇺🇸", "🇯🇵", "🇪🇺", "🌏", "🇰🇷", "🇭🇰", "🇹🇼", "🇦🇺", "🇨🇳"];
+
+    VerticalLayout {
+        padding: 16px;
+        spacing: 12px;
+
+        SectionHeader { txt: "BIOS Details"; }
+
+        // Region flag + name
+        HorizontalLayout {
+            spacing: 12px;
+
+            Rectangle {
+                width: 64px;
+                height: 64px;
+                background: MaterialColors.primary-container;
+                border-radius: 12px;
+
+                Text {
+                    text: "🇺🇸";
+                    font-size: 32px;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+            }
+
+            VerticalLayout {
+                spacing: 4px;
+                Text {
+                    text: region;
+                    color: MaterialColors.on-surface;
+                    font-size: 20px;
+                    font-weight: 700;
+                }
+                Text {
+                    text: console-type;
+                    color: MaterialColors.on-surface-variant;
+                    font-size: 14px;
+                }
+            }
+        }
+
+        SectionHeader { txt: "Version Info"; }
+
+        // Info rows
+        for info[idx] in [
+            ["Firmware", firmware-version],
+            ["ROM Version", rom-version],
+            ["ROM Date", rom-date],
+            ["Console", console-type],
+            ["Region", region]
+        ]: Rectangle {
+            height: 36px;
+            background: idx % 2 == 0 ? MaterialColors.surface-container-low : Colors.transparent;
+            border-radius: 6px;
+
+            HorizontalLayout {
+                padding-left: 12px;
+                padding-right: 12px;
+
+                Text {
+                    text: info[0];
+                    color: MaterialColors.on-surface-variant;
+                    font-size: 13px;
+                    vertical-alignment: center;
+                    width: 120px;
+                }
+                Text {
+                    text: info[1];
+                    color: MaterialColors.on-surface;
+                    font-size: 13px;
+                    font-family: "Consolas";
+                    vertical-alignment: center;
+                }
+            }
+        }
+
+        SectionHeader { txt: "BIOS Path"; }
+        Text {
+            text: bios-path != "" ? bios-path : "No BIOS selected";
+            color: bios-path != "" ? MaterialColors.on-surface : MaterialColors.error;
+            font-size: 12px;
+            font-family: "Consolas";
+            wrap: word-wrap;
+        }
+
+        HorizontalLayout {
+            spacing: 8px;
+            Button {
+                text: "Browse";
+                clicked => { }
+            }
+            Button {
+                text: "Search BIOS Directory";
+                clicked => { }
+            }
+        }
+
+        SectionHeader { txt: "All Regions"; }
+        for r[idx] in regions: Rectangle {
+            height: 32px;
+            background: region == r ? MaterialColors.primary-container : Colors.transparent;
+            border-radius: 6px;
+
+            HorizontalLayout {
+                padding-left: 12px;
+                spacing: 8px;
+
+                Text {
+                    text: region-flags[idx];
+                    font-size: 16px;
+                    vertical-alignment: center;
+                }
+                Text {
+                    text: r;
+                    color: region == r ? MaterialColors.on-primary-container : MaterialColors.on-surface;
+                    font-size: 13px;
+                    vertical-alignment: center;
+                }
+            }
+
+            TouchArea {
+                clicked => { region = r; }
+            }
+        }
+    }
+}

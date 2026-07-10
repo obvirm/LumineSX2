@@ -1,0 +1,336 @@
+pcsx2/GsDeviceVulkan.rs:2963:5	error: module is not supported in `trait`s or `impl`s
+thirdparty/lzma/Lzma.rs:370:40	error: expected `{`, found `::`
+pcsx2/GsDeviceVulkan.rs:2898:5	error[E0428]: the name `PSConstantBuffer` is defined multiple times
+pcsx2/arm64/Arm64Full.rs:131:5	error[E0428]: the name `DevCon` is defined multiple times
+pcsx2/arm64/Arm64Full.rs:151:1	error[E0428]: the name `px_assert_rel` is defined multiple times
+pcsx2/arm64/Arm64Full.rs:340:5	error[E0428]: the name `Label` is defined multiple times
+pcsx2/arm64/Arm64Full.rs:342:5	error[E0428]: the name `Instruction` is defined multiple times
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:2163:45	error: expected parameter name, found `ty` metavariable
+pcsx2/GsDeviceVulkan.rs:3323:45	error[E0665]: `#[derive(Default)]` on enum with no `#[default]`
+pcsx2/arm64/Arm64Full.rs:448:5	error[E0428]: the name `MacroAssembler` is defined multiple times
+common/EnumOps.rs:37:5	error[E0379]: functions in traits cannot be declared const
+common/EnumOps.rs:46:5	error[E0379]: functions in traits cannot be declared const
+common/EnumOps.rs:53:5	error[E0379]: functions in traits cannot be declared const
+common/EnumOps.rs:60:5	error[E0379]: functions in traits cannot be declared const
+common/EnumOps.rs:68:5	error[E0379]: functions in traits cannot be declared const
+common/EnumOps.rs:75:5	error[E0379]: functions in traits cannot be declared const
+common/EnumOps.rs:81:5	error[E0379]: functions in traits cannot be declared const
+common/EnumOps.rs:87:5	error[E0379]: functions in traits cannot be declared const
+common/EnumOps.rs:110:5	error[E0379]: functions in trait impls cannot be declared const
+common/EnumOps.rs:118:5	error[E0379]: functions in trait impls cannot be declared const
+common/EnumOps.rs:126:5	error[E0379]: functions in trait impls cannot be declared const
+common/EnumOps.rs:134:5	error[E0379]: functions in trait impls cannot be declared const
+common/EnumOps.rs:141:5	error[E0379]: functions in trait impls cannot be declared const
+common/EnumOps.rs:148:5	error[E0379]: functions in trait impls cannot be declared const
+common/EnumOps.rs:155:5	error[E0379]: functions in trait impls cannot be declared const
+common/MemoryInterface.rs:14:12	error[E0433]: cannot find `translations` in `crate`
+common/MemoryInterface.rs:27:16	error[E0433]: cannot find `translations` in `crate`
+common/Threading.rs:30:26	error[E0432]: unresolved import `std::sync::JoinHandle`
+pcsx2/GsDeviceDx11Mtl.rs:812:9	error[E0432]: unresolved import `std::arch::is_x86_64`
+pcsx2/Ps2HelpersEtc.rs:34:14	error[E0433]: cannot find `unix` in `os`
+pcsx2/GsVectorSimd.rs:27:17	error[E0432]: unresolved import `core::arch::aarch64`
+pcsx2/Ps2Misc.rs:49:34	error[E0432]: unresolved import `std::sync::RecursiveMutex`
+thirdparty/include/AnyRs.rs:30:9	error[E0432]: unresolved import `crate::Xxh`
+thirdparty/more/FastFloat.rs:241:9	error[E0432]: unresolved import `std::num::FloatErrorKind`
+thirdparty/winwil/WilCom.rs:28:12	error[E0432]: unresolved import `crate::WilCore`
+pcsx2/FinalCore.rs:98:23	error[E0432]: unresolved import `super::_4mb`
+pcsx2/FinalCore.rs:3646:39	error[E0432]: unresolved imports `super::_PC_`, `super::_Funct_`, `super::_Rd_`, `super::_Rt_`, `super::_Rs_`, `super::_Sa_`, `super::_Im_`, `super::_Opcode_`, 
+pcsx2/HwEtcMain.rs:1161:9	error[E0432]: unresolved import `super::IopHw::psxRegs`
+pcsx2/HwEtcMain.rs:1162:9	error[E0432]: unresolved import `super::psxRegs`
+pcsx2/HwEtcMain.rs:1347:9	error[E0432]: unresolved import `super::IopHw::psxRegs`
+pcsx2_qt/FinalQtFull.rs:1036:9	error[E0432]: unresolved import `ctest_byteswap`
+pcsx2_qt/FinalQtFull.rs:1037:9	error[E0432]: unresolved import `ctest_filesystem`
+pcsx2_qt/FinalQtFull.rs:1038:9	error[E0432]: unresolved import `ctest_path`
+pcsx2_qt/FinalQtFull.rs:1039:9	error[E0432]: unresolved import `ctest_small_string`
+pcsx2_qt/FinalQtFull.rs:1040:9	error[E0432]: unresolved import `ctest_string_util`
+pcsx2_qt/FinalQtFull.rs:1041:9	error[E0432]: unresolved import `ctest_codegen`
+pcsx2_qt/FinalQtFull.rs:1042:9	error[E0432]: unresolved import `ctest_swizzle`
+pcsx2_qt/FinalQtFull.rs:1043:9	error[E0432]: unresolved import `ctest_patch`
+pcsx2_qt/FinalQtFull.rs:1044:9	error[E0432]: unresolved import `ctest_stub_host`
+pcsx2/Counters.rs:326:32	error[E0433]: cannot find `Counters` in `$crate`
+pcsx2/Counters.rs:326:32	error[E0433]: cannot find `Counters` in `$crate`
+pcsx2/Counters.rs:326:32	error[E0433]: cannot find `Counters` in `$crate`
+pcsx2/Counters.rs:326:32	error[E0433]: cannot find `Counters` in `$crate`
+pcsx2/Counters.rs:326:32	error[E0433]: cannot find `Counters` in `$crate`
+pcsx2/Counters.rs:326:32	error[E0433]: cannot find `Counters` in `$crate`
+pcsx2/Counters.rs:326:32	error[E0433]: cannot find `Counters` in `$crate`
+pcsx2/Counters.rs:326:32	error[E0433]: cannot find `Counters` in `$crate`
+pcsx2/Counters.rs:326:32	error[E0433]: cannot find `Counters` in `$crate`
+pcsx2/Counters.rs:296:13	error[E0433]: cannot find module or crate `log` in this scope
+pcsx2/FinalPeripherals.rs:730:1	error[E0433]: cannot find module or crate `bitflags` in this scope
+common/FinalCommon.rs:731:1	error: cannot find macro `lazy_static_state` in this scope
+common/FinalSweepCommon.rs:731:1	error: cannot find macro `lazy_static_state` in this scope
+pcsx2/x86/Ix86MainEtc.rs:563:5	error: cannot find macro `lazy_static_log` in this scope
+pcsx2/GsDeviceVulkan.rs:2994:44	error[E0106]: missing lifetime specifier
+pcsx2/GsDeviceVulkan.rs:2995:45	error[E0106]: missing lifetime specifier
+pcsx2/GsFullSweep.rs:1658:34	error: generic parameters may not be used in const operations
+pcsx2/GsFullSweep.rs:1658:39	error: generic parameters may not be used in const operations
+pcsx2/GsFullSweep.rs:1659:48	error: generic parameters may not be used in const operations
+pcsx2/GsFullSweep.rs:1659:53	error: generic parameters may not be used in const operations
+pcsx2/GsFullSweep.rs:1660:27	error: generic parameters may not be used in const operations
+pcsx2/GsFullSweep.rs:1660:32	error: generic parameters may not be used in const operations
+pcsx2/GsFullSweep.rs:1679:39	error: generic parameters may not be used in const operations
+pcsx2/GsFullSweep.rs:1679:44	error: generic parameters may not be used in const operations
+pcsx2/GsFullSweep.rs:1681:53	error: generic parameters may not be used in const operations
+pcsx2/GsFullSweep.rs:1681:58	error: generic parameters may not be used in const operations
+pcsx2/GsRenderersFull.rs:1549:24	error[E0403]: the name `T` is already used for a generic parameter in this item's generic parameters
+pcsx2/GsVectorSimd.rs:467:58	error[E0435]: attempt to use a non-constant value in a constant
+pcsx2/GsVectorSimd.rs:1561:61	error[E0435]: attempt to use a non-constant value in a constant
+pcsx2/GsVectorSimd.rs:1568:63	error: generic parameters may not be used in const operations
+pcsx2/GsVectorSimd.rs:1575:44	error: generic parameters may not be used in const operations
+pcsx2/GsVectorSimd.rs:1582:62	error: generic parameters may not be used in const operations
+pcsx2/GsVectorSimd.rs:1589:43	error: generic parameters may not be used in const operations
+pcsx2/GsVectorSimd.rs:1596:63	error: generic parameters may not be used in const operations
+pcsx2/GsVectorSimd.rs:1603:44	error: generic parameters may not be used in const operations
+pcsx2/GsVectorSimd.rs:1610:63	error: generic parameters may not be used in const operations
+pcsx2/GsVectorSimd.rs:1617:44	error: generic parameters may not be used in const operations
+pcsx2/GsVectorSimd.rs:1626:63	error: generic parameters may not be used in const operations
+pcsx2/GsVectorSimd.rs:1633:44	error: generic parameters may not be used in const operations
+pcsx2/GsVectorSimd.rs:1839:75	error[E0435]: attempt to use a non-constant value in a constant
+pcsx2/GsVectorSimd.rs:2244:61	error[E0435]: attempt to use a non-constant value in a constant
+pcsx2/GsVectorSimd.rs:3172:64	error[E0435]: attempt to use a non-constant value in a constant
+pcsx2/GsVectorSimd.rs:3291:35	error[E0435]: attempt to use a non-constant value in a constant
+pcsx2/GsVectorSimd.rs:3301:78	error: generic parameters may not be used in const operations
+pcsx2/GsVectorSimd.rs:3312:13	error: generic parameters may not be used in const operations
+pcsx2/GsVectorSimd.rs:3327:78	error[E0435]: attempt to use a non-constant value in a constant
+pcsx2/GsVectorSimd.rs:3341:13	error[E0435]: attempt to use a non-constant value in a constant
+pcsx2/GsVectorSimd.rs:3635:58	error[E0435]: attempt to use a non-constant value in a constant
+pcsx2/GsVectorSimd.rs:3642:58	error[E0435]: attempt to use a non-constant value in a constant
+pcsx2/IopModulesSaveState.rs:932:82	error[E0106]: missing lifetime specifier
+updater/UpdaterPrecompiled.rs:295:21	error[E0603]: type alias import `Mem128` is private
+pcsx2_qt/DebuggerFull.rs:594:5	error[E0658]: specialization is experimental
+common/FPControl.rs:50:33	error: invalid suffix `u` for number literal
+pcsx2/MmiRecVtlbArm64.rs:778:37	error: integer literal is too large
+thirdparty/include/AnyRs.rs:149:12	error[E0552]: unrecognized representation hint
+common/Assertions.rs:135:9	error[E0658]: use of unstable library feature `core_intrinsics`: intrinsics are unlikely to ever be stabilized, instead they should be used through stabilized i
+common/Pcsx2Defs.rs:20:5	error[E0658]: use of unstable library feature `core_intrinsics`
+common/Pcsx2Defs.rs:187:9	error[E0658]: use of unstable library feature `core_intrinsics`
+pcsx2/Spu2Small.rs:1342:5	error[E0124]: field `reg_vmixel` is already declared
+common/Pcsx2Types.rs:22:15	error[E0391]: cycle detected when expanding type alias `common::Pcsx2Types::u8`
+common/Pcsx2Types.rs:25:16	error[E0391]: cycle detected when expanding type alias `common::Pcsx2Types::u64`
+pcsx2/GsHwRenderer.rs:531:31	error[E0119]: conflicting implementations of trait `Clone` for type `GsHwRenderer::TextureShuffleChannels`
+pcsx2/VmManager.rs:115:39	error[E0119]: conflicting implementations of trait `Clone` for type `pcsx2::VmManager::AspectRatio`
+pcsx2/GsHwRenderer.rs:531:38	error[E0119]: conflicting implementations of trait `std::marker::Copy` for type `GsHwRenderer::TextureShuffleChannels`
+pcsx2/GsHwRenderer.rs:531:51	error[E0119]: conflicting implementations of trait `StructuralPartialEq` for type `GsHwRenderer::TextureShuffleChannels`
+common/Pcsx2Types.rs:24:16	error[E0391]: cycle detected when expanding type alias `common::Pcsx2Types::u32`
+pcsx2/arm64/Arm64Full.rs:192:31	error[E0391]: cycle detected when expanding type alias `pcsx2::arm64::Arm64Full::a64::MacroAssembler`
+common/EnumOps.rs:107:6	error[E0210]: type parameter `E` must be used as the type parameter for some local type (e.g., `MyStruct<E>`)
+common/EnumOps.rs:115:6	error[E0210]: type parameter `E` must be used as the type parameter for some local type (e.g., `MyStruct<E>`)
+common/EnumOps.rs:123:6	error[E0210]: type parameter `E` must be used as the type parameter for some local type (e.g., `MyStruct<E>`)
+common/EnumOps.rs:131:6	error[E0210]: type parameter `E` must be used as the type parameter for some local type (e.g., `MyStruct<E>`)
+common/EnumOps.rs:139:6	error[E0210]: type parameter `E` must be used as the type parameter for some local type (e.g., `MyStruct<E>`)
+common/EnumOps.rs:146:6	error[E0210]: type parameter `E` must be used as the type parameter for some local type (e.g., `MyStruct<E>`)
+common/EnumOps.rs:153:6	error[E0210]: type parameter `E` must be used as the type parameter for some local type (e.g., `MyStruct<E>`)
+common/HTTPDownloader.rs:111:35	error[E0038]: the trait `common::HTTPDownloader::HTTPDownloader` is not dyn compatible
+common/Pcsx2Defs.rs:155:16	error[E0391]: cycle detected when expanding type alias `common::Pcsx2Defs::u16`
+common/Pcsx2Defs.rs:157:16	error[E0391]: cycle detected when expanding type alias `common::Pcsx2Defs::u64`
+common/Pcsx2Types.rs:23:16	error[E0391]: cycle detected when expanding type alias `common::Pcsx2Types::u16`
+pcsx2/FinalCore.rs:1651:43	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:1685:36	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:1780:54	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:1781:50	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:1782:46	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:1783:53	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:1784:52	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:1785:53	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:1786:46	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:1787:54	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:1788:45	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:1789:46	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:1790:49	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:1791:49	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:1792:48	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:1793:50	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:1794:50	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:1795:52	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:1796:55	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:1797:50	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:1799:60	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2060:35	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2061:27	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2062:27	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2063:39	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2064:39	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2066:34	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2067:54	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2068:50	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2069:46	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2070:52	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2071:53	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2072:53	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2073:46	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2074:54	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2075:45	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2076:46	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2077:48	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2078:50	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2079:50	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2080:52	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2081:55	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2082:50	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2104:39	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2105:37	error[E0782]: expected a type, found a trait
+pcsx2/FinalCore.rs:2451:32	error[E0038]: the trait `FinalCore::StateWrapper` is not dyn compatible
+pcsx2/FinalCore.rs:3304:28	error[E0038]: the trait `FinalCore::StateWrapper` is not dyn compatible
+pcsx2/FinalCore.rs:3448:28	error[E0038]: the trait `FinalCore::StateWrapper` is not dyn compatible
+pcsx2/FinalCore.rs:3470:28	error[E0038]: the trait `FinalCore::StateWrapper` is not dyn compatible
+pcsx2/FinalCore.rs:3530:28	error[E0038]: the trait `FinalCore::StateWrapper` is not dyn compatible
+pcsx2/FinalCore.rs:3560:28	error[E0038]: the trait `FinalCore::StateWrapper` is not dyn compatible
+pcsx2/FinalCore.rs:3593:28	error[E0038]: the trait `FinalCore::StateWrapper` is not dyn compatible
+pcsx2/GsDeviceCommonSw.rs:2282:41	error[E0038]: the trait `GsDeviceCommonSw::GSDevice` is not dyn compatible
+pcsx2/GsDeviceCommonSw.rs:2300:23	error[E0277]: `*mut (dyn GSRendererAbstract + 'static)` cannot be sent between threads safely
+pcsx2/GsDeviceVulkan.rs:3360:5	error[E0658]: inherent associated types are unstable
+pcsx2/GsDeviceVulkan.rs:3361:5	error[E0658]: inherent associated types are unstable
+pcsx2/GsRenderersFull.rs:1548:6	error[E0207]: the type parameter `T` is not constrained by the impl trait, self type, or predicates
+pcsx2/GsRenderersFull.rs:1549:5	error[E0658]: inherent associated types are unstable
+pcsx2/UsbDevices.rs:31:15	error[E0391]: cycle detected when expanding type alias `pcsx2::UsbDevices::u8`
+pcsx2/UsbDevices.rs:32:16	error[E0391]: cycle detected when expanding type alias `pcsx2::UsbDevices::u16`
+pcsx2/UsbDevices.rs:33:16	error[E0391]: cycle detected when expanding type alias `pcsx2::UsbDevices::u32`
+pcsx2/UsbDevices.rs:34:16	error[E0391]: cycle detected when expanding type alias `pcsx2::UsbDevices::u64`
+pcsx2/arm64/Arm64Full.rs:190:28	error[E0391]: cycle detected when expanding type alias `pcsx2::arm64::Arm64Full::a64::Instruction`
+pcsx2/arm64/Arm64Full.rs:191:22	error[E0391]: cycle detected when expanding type alias `pcsx2::arm64::Arm64Full::a64::Label`
+pcsx2/arm64/FinalSweepArm64.rs:235:5	error[E0046]: not all trait items implemented, missing: `drop`
+pcsx2/arm64/FinalSweepArm64.rs:236:5	error[E0046]: not all trait items implemented, missing: `drop`
+pcsx2_qt/DebuggerDocks2.rs:4359:42	error[E0107]: type alias takes 1 generic argument but 2 generic arguments were supplied
+pcsx2_qt/DebuggerFull.rs:1292:18	error[E0277]: `(dyn DebuggerFull::DebugInterface + 'static)` cannot be shared between threads safely
+pcsx2_qt/DebuggerFull.rs:1292:18	error[E0277]: `(dyn DebuggerFull::DebugInterface + 'static)` cannot be sent between threads safely
+pcsx2_qt/DebuggerFull.rs:3024:40	error[E0782]: expected a type, found a trait
+pcsx2_qt/DebuggerFull.rs:501:39	error[E0782]: expected a type, found a trait
+?:?:?	error: could not compile `pcsx2_translations` (lib) due to 335 previous errors; 27 warnings emitted

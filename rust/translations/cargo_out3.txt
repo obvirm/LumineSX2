@@ -1,0 +1,723 @@
+    Blocking waiting for file lock on build directory
+    Checking pcsx2_translations v0.1.0 (E:\project\pcsx2\rust\translations)
+warning: private item shadows public glob re-export
+   --> common\Console.rs:18:5
+    |
+ 18 | use std::default::Default;
+    |     ^^^^^^^^^^^^^^^^^^^^^
+    |
+note: the name `Default` in the type namespace is supposed to be publicly re-exported here
+   --> common\Console.rs:124:9
+    |
+124 | pub use self::ConsoleColors::*;
+    |         ^^^^^^^^^^^^^^^^^^^^^^
+note: but the private item here shadows it
+   --> common\Console.rs:18:5
+    |
+ 18 | use std::default::Default;
+    |     ^^^^^^^^^^^^^^^^^^^^^
+    = note: `#[warn(hidden_glob_reexports)]` on by default
+System.Management.Automation.RemoteException
+warning: unused doc comment
+   --> common\CrashHandler.rs:208:5
+    |
+208 | /     /// Real Windows binding. We declare it locally because we only have a
+209 | |     /// `libc` shim and the Windows surface lives in system DLLs.
+    | |_________________________________________________________________^
+210 |       #[link(name = "kernel32")]
+211 | /     extern "system" {
+212 | |         fn SetUnhandledExceptionFilter(
+213 | |             filter: Option<ExceptionCallback>,
+214 | |         ) -> Option<ExceptionCallback>;
+215 | |     }
+    | |_____- rustdoc does not generate documentation for extern blocks
+    |
+    = help: use `//` for a plain comment
+    = note: `#[warn(unused_doc_comments)]` (part of `#[warn(unused)]`) on by default
+System.Management.Automation.RemoteException
+warning: unexpected `cfg` condition name: `PCSX2_DEVBUILD`
+   --> common\Pcsx2Defs.rs:253:11
+    |
+253 | #[cfg(not(PCSX2_DEVBUILD))]
+    |           ^^^^^^^^^^^^^^
+    |
+    = help: expected names are: `docsrs`, `feature`, and `test` and 31 more
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_DEVBUILD)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_DEVBUILD)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: `#[warn(unexpected_cfgs)]` on by default
+System.Management.Automation.RemoteException
+warning: unexpected `cfg` condition name: `PCSX2_DEVBUILD`
+   --> common\Pcsx2Defs.rs:261:7
+    |
+261 | #[cfg(PCSX2_DEVBUILD)]
+    |       ^^^^^^^^^^^^^^
+    |
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_DEVBUILD)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_DEVBUILD)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+System.Management.Automation.RemoteException
+warning: unexpected `cfg` condition name: `PCSX2_DEVBUILD`
+  --> common\Pcsx2Defs.rs:24:35
+   |
+24 | pub const IsDevBuild: bool = cfg!(PCSX2_DEVBUILD);
+   |                                   ^^^^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_DEVBUILD)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_DEVBUILD)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+System.Management.Automation.RemoteException
+warning: unexpected `cfg` condition name: `PCSX2_DEBUG`
+  --> common\Pcsx2Defs.rs:25:37
+   |
+25 | pub const IsDebugBuild: bool = cfg!(PCSX2_DEBUG);
+   |                                     ^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_DEBUG)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_DEBUG)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+System.Management.Automation.RemoteException
+warning: unexpected `cfg` condition name: `PCSX2_OVERRIDE_HOST_PAGE_SIZE`
+  --> common\Pcsx2Defs.rs:62:11
+   |
+62 |     #[cfg(PCSX2_OVERRIDE_HOST_PAGE_SIZE)]
+   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_OVERRIDE_HOST_PAGE_SIZE)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_OVERRIDE_HOST_PAGE_SIZE)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+System.Management.Automation.RemoteException
+warning: unexpected `cfg` condition name: `PCSX2_OVERRIDE_HOST_PAGE_SIZE`
+  --> common\Pcsx2Defs.rs:66:19
+   |
+66 |     #[cfg(all(not(PCSX2_OVERRIDE_HOST_PAGE_SIZE), target_arch = "aarch64"))]
+   |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_OVERRIDE_HOST_PAGE_SIZE)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_OVERRIDE_HOST_PAGE_SIZE)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+System.Management.Automation.RemoteException
+warning: unexpected `cfg` condition name: `PCSX2_OVERRIDE_HOST_PAGE_SIZE`
+  --> common\Pcsx2Defs.rs:71:13
+   |
+71 |         not(PCSX2_OVERRIDE_HOST_PAGE_SIZE),
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_OVERRIDE_HOST_PAGE_SIZE)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_OVERRIDE_HOST_PAGE_SIZE)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+System.Management.Automation.RemoteException
+warning: unexpected `cfg` condition name: `PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE`
+  --> common\Pcsx2Defs.rs:89:11
+   |
+89 |     #[cfg(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE)]
+   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+System.Management.Automation.RemoteException
+warning: unexpected `cfg` condition name: `PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE`
+  --> common\Pcsx2Defs.rs:94:13
+   |
+94 |         not(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE),
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+System.Management.Automation.RemoteException
+warning: unexpected `cfg` condition name: `PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE`
+   --> common\Pcsx2Defs.rs:101:13
+    |
+101 |         not(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE),
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+System.Management.Automation.RemoteException
+warning: unused macro definition: `impl_typed_access`
+   --> common\SmallEtc.rs:847:14
+    |
+847 | macro_rules! impl_typed_access {
+    |              ^^^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(unused_macros)]` (part of `#[warn(unused)]`) on by default
+System.Management.Automation.RemoteException
+warning: unused doc comment
+    --> pcsx2\x86\FinalSweepX86.rs:1276:1
+     |
+1276 | / /// Per-thread X86 and XMM allocation tables. The original C++ is
+1277 | | /// global, but the dynarec is re-entrant; using a thread-local keeps
+1278 | | /// the port simple without losing semantics.
+     | |_--------------------------------------------^
+     |   |
+     |   rustdoc does not generate documentation for macro invocations
+     |
+     = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+System.Management.Automation.RemoteException
+warning: unused doc comment
+    --> pcsx2\x86\FinalSweepX86.rs:1290:1
+     |
+1290 | /// Per-thread allocation-counter (16-bit wrap).
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ rustdoc does not generate documentation for macro invocations
+     |
+     = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+System.Management.Automation.RemoteException
+warning: unused doc comment
+    --> pcsx2\x86\FinalSweepX86.rs:1296:1
+     |
+1296 | / /// `g_pCurInstInfo`: pointer to the current instruction's liveness
+1297 | | /// info. The original is a raw pointer; here we use a `RefCell`
+1298 | | /// pointer for safety.
+     | |_----------------------^
+     |   |
+     |   rustdoc does not generate documentation for macro invocations
+     |
+     = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+System.Management.Automation.RemoteException
+warning: unused doc comment
+    --> pcsx2_qt\DebuggerFull.rs:1292:1
+     |
+1292 | / /// Global registry of live debugger views, used by the static
+1293 | | /// `sendEvent` / `broadcastEvent` helpers. Mirrors the
+1294 | | /// `g_debugger_window->dockManager().debuggerViews()` lookup.
+1295 | | ///
+1296 | | /// `Rc<RefCell<DebuggerView>>` is `!Send`, so this storage must be
+1297 | | /// thread-local rather than a global `Mutex`-backed `OnceLock`.
+     | |_---------------------------------------------------------------^
+     |   |
+     |   rustdoc does not generate documentation for macro invocations
+     |
+     = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+System.Management.Automation.RemoteException
+warning: unnecessary parentheses around assigned value
+   --> thirdparty\libzip\Libzip.rs:745:47
+    |
+745 | pub const ZIP_SOURCE_SUPPORTS_READABLE: i64 = (zip_source_make_command_bitmask(ZipSourceCmd::Open)
+    |                                               ^
+...
+750 |     | zip_source_make_command_bitmask(ZipSourceCmd::Free));
+    |                                                          ^
+    |
+    = note: `#[warn(unused_parens)]` (part of `#[warn(unused)]`) on by default
+help: remove these parentheses
+    |
+745 ~ pub const ZIP_SOURCE_SUPPORTS_READABLE: i64 = zip_source_make_command_bitmask(ZipSourceCmd::Open)
+746 |     | zip_source_make_command_bitmask(ZipSourceCmd::Read)
+...
+749 |     | zip_source_make_command_bitmask(ZipSourceCmd::Error)
+750 ~     | zip_source_make_command_bitmask(ZipSourceCmd::Free);
+    |
+System.Management.Automation.RemoteException
+warning: unnecessary parentheses around assigned value
+   --> thirdparty\libzip\Libzip.rs:753:47
+    |
+753 | pub const ZIP_SOURCE_SUPPORTS_SEEKABLE: i64 = (ZIP_SOURCE_SUPPORTS_READABLE
+    |                                               ^
+...
+756 |     | zip_source_make_command_bitmask(ZipSourceCmd::Supports));
+    |                                                              ^
+    |
+help: remove these parentheses
+    |
+753 ~ pub const ZIP_SOURCE_SUPPORTS_SEEKABLE: i64 = ZIP_SOURCE_SUPPORTS_READABLE
+754 |     | zip_source_make_command_bitmask(ZipSourceCmd::Seek)
+755 |     | zip_source_make_command_bitmask(ZipSourceCmd::Tell)
+756 ~     | zip_source_make_command_bitmask(ZipSourceCmd::Supports);
+    |
+System.Management.Automation.RemoteException
+warning: unnecessary parentheses around assigned value
+   --> thirdparty\libzip\Libzip.rs:759:47
+    |
+759 | pub const ZIP_SOURCE_SUPPORTS_WRITABLE: i64 = (ZIP_SOURCE_SUPPORTS_SEEKABLE
+    |                                               ^
+...
+766 |     | zip_source_make_command_bitmask(ZipSourceCmd::Remove));
+    |                                                            ^
+    |
+help: remove these parentheses
+    |
+759 ~ pub const ZIP_SOURCE_SUPPORTS_WRITABLE: i64 = ZIP_SOURCE_SUPPORTS_SEEKABLE
+760 |     | zip_source_make_command_bitmask(ZipSourceCmd::BeginWrite)
+...
+765 |     | zip_source_make_command_bitmask(ZipSourceCmd::TellWrite)
+766 ~     | zip_source_make_command_bitmask(ZipSourceCmd::Remove);
+    |
+System.Management.Automation.RemoteException
+warning: unexpected `cfg` condition value: `wilcom_tests`
+   --> thirdparty\winwil\WilCom.rs:434:17
+    |
+434 | #[cfg(all(test, feature = "wilcom_tests"))]
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: expected values for `feature` are: `default`, `first_party`, `gs`, `spu2`, `thirdparty`, and `usb`
+    = help: consider adding `wilcom_tests` as a feature in `Cargo.toml`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+System.Management.Automation.RemoteException
+warning: use of deprecated function `std::arch::x86_64::_mm_getcsr`: see `_mm_getcsr` documentation - use inline assembly instead
+  --> common\FPControl.rs:14:26
+   |
+14 | use core::arch::x86_64::{_mm_getcsr, _mm_setcsr};
+   |                          ^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+System.Management.Automation.RemoteException
+warning: use of deprecated function `std::arch::x86_64::_mm_setcsr`: see `_mm_setcsr` documentation - use inline assembly instead
+  --> common\FPControl.rs:14:38
+   |
+14 | use core::arch::x86_64::{_mm_getcsr, _mm_setcsr};
+   |                                      ^^^^^^^^^^
+System.Management.Automation.RemoteException
+warning: use of deprecated function `std::arch::x86_64::_mm_getcsr`: see `_mm_getcsr` documentation - use inline assembly instead
+  --> common\FPControl.rs:71:33
+   |
+71 |             let bits = unsafe { _mm_getcsr() };
+   |                                 ^^^^^^^^^^
+System.Management.Automation.RemoteException
+warning: use of deprecated function `std::arch::x86_64::_mm_setcsr`: see `_mm_setcsr` documentation - use inline assembly instead
+  --> common\FPControl.rs:88:22
+   |
+88 |             unsafe { _mm_setcsr(self.bitmask) };
+   |                      ^^^^^^^^^^
+System.Management.Automation.RemoteException
+error[E0308]: mismatched types
+    --> pcsx2\arm64\Arm64Full.rs:1413:36
+     |
+1413 |         let is_fill = v_block.cl < wl;
+     |                       ----------   ^^ expected `u8`, found `i32`
+     |                       |
+     |                       expected because this is `u8`
+     |
+help: you can convert `v_block.cl` from `u8` to `i32`, matching the type of `wl`
+     |
+1413 |         let is_fill = i32::from(v_block.cl) < wl;
+     |                       ++++++++++          +
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> common\Pcsx2Defs.rs:191:5
+    |
+191 |     unsafe {
+    |     ^^^^^^ unnecessary `unsafe` block
+    |
+    = note: `#[warn(unused_unsafe)]` (part of `#[warn(unused)]`) on by default
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> common\Pcsx2Defs.rs:315:5
+    |
+315 |     unsafe {
+    |     ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+    --> pcsx2\CdvdDiscThread.rs:1826:5
+     |
+1826 |     unsafe {
+     |     ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+    --> pcsx2\CdvdMainEtc.rs:1171:5
+     |
+1171 |     unsafe { do_cdvd_detect_disk_type() }
+     |     ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+    --> pcsx2\CdvdMainEtc.rs:1200:5
+     |
+1200 |     unsafe {
+     |     ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+    --> pcsx2\CdvdMainEtc.rs:1523:9
+     |
+1523 |         unsafe { do_cdvd_read_sector(buf, lsn, CDVD_MODE_2048) == 0 }
+     |         ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+    --> pcsx2\CdvdMainEtc.rs:1844:17
+     |
+1844 |                 unsafe {
+     |                 ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+    --> pcsx2\CdvdMainEtc.rs:3770:19
+     |
+3739 |     unsafe {
+     |     ------ because it's nested under this `unsafe` block
+...
+3770 |         let src = unsafe { std::slice::from_raw_parts(pbuffer as *const u8, psize) };
+     |                   ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:595:16
+    |
+595 |     let rate = unsafe { EECounts[index].rate };
+    |                ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:600:21
+    |
+600 |         let start = unsafe { EECounts[index].start_cycle };
+    |                     ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:605:21
+    |
+605 |         let count = unsafe { EECounts[index].count };
+    |                     ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:612:17
+    |
+612 |         let _ = unsafe { EECounts[index].start_cycle };
+    |                 ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:619:17
+    |
+619 |     let count = unsafe { EECounts[index].count };
+    |                 ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:645:21
+    |
+645 |             let _ = unsafe { EECounts[index].interrupt };
+    |                     ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:650:5
+    |
+650 |     unsafe {
+    |     ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:665:27
+    |
+665 |     let (count, target) = unsafe { (EECounts[index].count, EECounts[index].target) };
+    |                           ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:685:21
+    |
+685 |             let _ = unsafe { EECounts[index].interrupt };
+    |                     ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:787:9
+    |
+787 |         unsafe { EECounts[index].count },
+    |         ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:788:9
+    |
+788 |         unsafe { EECounts[index].target }
+    |         ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:812:17
+    |
+812 |     let count = unsafe { EECounts[index].count };
+    |                 ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+    --> pcsx2\Dev9MainEtc.rs:1406:13
+     |
+1406 |             unsafe {
+     |             ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+    --> pcsx2\Dev9MainEtc.rs:1430:14
+     |
+1430 |         _ => unsafe { dev9W32(addr, value); },
+     |              ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+    --> pcsx2\Dev9MainEtc.rs:1437:17
+     |
+1437 |     let value = unsafe { wswap(dev9R32(addr)) };
+     |                 ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+    --> pcsx2\Dev9MainEtc.rs:1442:13
+     |
+1442 |             unsafe { dev9W16(SMAP_R_EMAC3_STA_CTRL_H, dev9R16(SMAP_R_EMAC3_STA_CTRL_H) | (SMAP_E3_PHY_OP_COMP as u16)); }
+     |             ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+    --> pcsx2\Dev9MainEtc.rs:1483:5
+     |
+1483 |     unsafe { dev9W32(addr, wswap(v)); }
+     |     ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unreachable pattern
+    --> pcsx2\Dev9PacketsDeep.rs:2080:13
+     |
+2078 | /             Self::Subnet { .. } | Self::Bcip { .. } | Self::ReqIp { .. } | Self::ServIp { .. }
+2079 | |             | Self::IpLt { .. } | Self::Msg { .. } | Self::T1 { .. } | Self::T2 { .. } => 4,
+     | |______________________________________________________________________________________- matches all the relevant values
+2080 |               Self::Msg { .. } => 1,
+     |               ^^^^^^^^^^^^^^^^ no value can reach this
+     |
+     = note: `#[warn(unreachable_patterns)]` (part of `#[warn(unused)]`) on by default
+System.Management.Automation.RemoteException
+warning: unreachable pattern
+   --> pcsx2\GsDeviceDx11Mtl.rs:218:33
+    |
+218 |             ShaderModel::SM51 | _ => match type_index {
+    |                                 ^ no value can reach this
+    |
+note: multiple earlier patterns match some of the same values
+   --> pcsx2\GsDeviceDx11Mtl.rs:218:33
+    |
+203 |             ShaderModel::SM40 => match type_index {
+    |             ----------------- matches some of the same values
+...
+208 |             ShaderModel::SM41 => match type_index {
+    |             ----------------- matches some of the same values
+...
+213 |             ShaderModel::SM50 => match type_index {
+    |             ----------------- matches some of the same values
+...
+218 |             ShaderModel::SM51 | _ => match type_index {
+    |             -----------------   ^ collectively making this unreachable
+    |             |
+    |             matches some of the same values
+System.Management.Automation.RemoteException
+warning: unreachable pattern
+   --> pcsx2\GsRenderersFull.rs:696:13
+    |
+696 |             _ => "Unknown",
+    |             ^ no value can reach this
+    |
+note: multiple earlier patterns match some of the same values
+   --> pcsx2\GsRenderersFull.rs:696:13
+    |
+681 |             GSTextureFormat::Invalid => "Invalid",
+    |             ------------------------ matches some of the same values
+682 |             GSTextureFormat::Color => "Color",
+    |             ---------------------- matches some of the same values
+683 |             GSTextureFormat::ColorHQ => "ColorHQ",
+    |             ------------------------ matches some of the same values
+684 |             GSTextureFormat::ColorHDR => "ColorHDR",
+    |             ------------------------- matches some of the same values
+...
+696 |             _ => "Unknown",
+    |             ^ ...and 11 other patterns collectively make this unreachable
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\HwEtcMain.rs:523:5
+    |
+523 |     unsafe { *psHu32(addr) }
+    |     ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\HwEtcMain.rs:540:5
+    |
+540 |     unsafe { *psHu32(addr) = value; }
+    |     ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\HwEtcMain.rs:561:28
+    |
+561 | pub fn hwIntcIrq(n: i32) { unsafe { *psHu32(EERegisterAddresses::INTC_STAT) |= 1u32 << n; } }
+    |                            ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\HwEtcMain.rs:562:28
+    |
+562 | pub fn hwDmacIrq(n: i32) { unsafe { *psHu32(EERegisterAddresses::DMAC_STAT) |= 1u32 << n; } }
+    |                            ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\HwEtcMain.rs:791:9
+    |
+791 |         unsafe {
+    |         ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\HwEtcMain.rs:812:9
+    |
+812 |         unsafe {
+    |         ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+    --> pcsx2\HwEtcMain.rs:1076:41
+     |
+1076 |     pub fn psxDma4Interrupt()  -> i32 { unsafe { *psxHu32(0x10C8) &= !0x0100_0000; } psxDmaInterrupt(4);  iopIntcIrq(9); 1 }
+     |                                         ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+    --> pcsx2\HwEtcMain.rs:1077:41
+     |
+1077 |     pub fn psxDma7Interrupt()  -> i32 { unsafe { *psxHu32(0x1508) &= !0x0100_0000; } psxDmaInterrupt2(0); 1 }
+     |                                         ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+    --> pcsx2\HwEtcMain.rs:1078:41
+     |
+1078 |     pub fn psxDMA8Interrupt()         { unsafe { if (*psxHu32(0x1518) & 0x0100_0000) != 0 { *psxHu32(0x1518) &= !0x0100_0000; psxD...
+     |                                         ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+    --> pcsx2\HwEtcMain.rs:1079:41
+     |
+1079 |     pub fn psxDMA11Interrupt()        { unsafe { if (*psxHu32(0x1548) & 0x0100_0000) != 0 { *psxHu32(0x1548) &= !0x0100_0000; psxD...
+     |                                         ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+    --> pcsx2\HwEtcMain.rs:1080:41
+     |
+1080 |     pub fn psxDMA12Interrupt()        { unsafe { if (*psxHu32(0x1558) & 0x0100_0000) != 0 { *psxHu32(0x1558) &= !0x0100_0000; psxD...
+     |                                         ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+    --> pcsx2\HwEtcMain.rs:1424:14
+     |
+1424 |         _ => unsafe { *psxHu32(addr) },
+     |              ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+    --> pcsx2\HwEtcMain.rs:1427:9
+     |
+1427 |         unsafe {
+     |         ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\InterpRs.rs:755:5
+    |
+755 |     unsafe {
+    |     ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\Ipu.rs:864:5
+    |
+864 |     unsafe { ipuReset() };
+    |     ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\MemoryMmiMtgs.rs:123:5
+    |
+123 |     unsafe {
+    |     ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\MemoryMmiMtgs.rs:594:5
+    |
+594 |     unsafe {
+    |     ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\MemoryMmiMtgs.rs:664:5
+    |
+664 |     unsafe {
+    |     ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\RDebugRec.rs:815:34
+    |
+810 |             unsafe {
+    |             ------ because it's nested under this `unsafe` block
+...
+815 |                 let conn_bytes = unsafe {
+    |                                  ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+    --> pcsx2\SifMainEtc.rs:1554:28
+     |
+1554 |             0x0100_0201 => unsafe {
+     |                            ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+    --> pcsx2\SifMainEtc.rs:1558:28
+     |
+1558 |             0x0100_0200 => unsafe {
+     |                            ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+    --> pcsx2\SioPad.rs:1908:5
+     |
+1908 |     unsafe {
+     |     ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> pcsx2\VifMainEtc.rs:249:5
+    |
+249 |     unsafe {
+    |     ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unreachable pattern
+    --> pcsx2\x86\Ix86MainEtc.rs:1720:22
+     |
+1699 |         0o15 => {
+     |         ---- matches all the relevant values
+...
+1720 |         4 | 5 | 12 | 13 | 14 => 0,
+     |                      ^^ no value can reach this
+System.Management.Automation.RemoteException
+warning: irrefutable `if let` pattern
+    --> pcsx2_qt\DebuggerFull.rs:2165:20
+     |
+2165 |                 if let Ok(t) = num_traits_from_int::<MemoryViewType>(i) {
+     |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = note: this pattern will always match, so the `if let` is useless
+     = help: consider replacing the `if let` with a `let`
+     = note: `#[warn(irrefutable_let_patterns)]` on by default
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> thirdparty\cpuinfo\Cpuinfo.rs:499:5
+    |
+499 |     unsafe {
+    |     ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unnecessary `unsafe` block
+   --> thirdparty\cpuinfo\Cpuinfo.rs:510:5
+    |
+510 |     unsafe {
+    |     ^^^^^^ unnecessary `unsafe` block
+System.Management.Automation.RemoteException
+warning: unreachable pattern
+   --> thirdparty\cubeb\Cubeb.rs:641:9
+    |
+637 | /         CubebSampleFormat::S16LE
+638 | |         | CubebSampleFormat::S16BE
+639 | |         | CubebSampleFormat::F32LE
+640 | |         | CubebSampleFormat::F32BE => None,
+    | |__________________________________- matches all the relevant values
+641 |           _ => Some(CUBEB_ERROR_INVALID_FORMAT as i32),
+    |           ^ no value can reach this
+System.Management.Automation.RemoteException
+For more information about this error, try `rustc --explain E0308`.
+warning: `pcsx2_translations` (lib) generated 81 warnings
+error: could not compile `pcsx2_translations` (lib) due to 1 previous error; 81 warnings emitted

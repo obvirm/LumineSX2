@@ -1,0 +1,10 @@
+?GetMaxLevel@Log@@YA?AW4LOGLEVEL@@XZ
+?IsConsoleOutputEnabled@Log@@YA_NXZ
+?IsFileOutputEnabled@Log@@YA_NXZ
+?SetConsoleOutputLevel@Log@@YAXW4LOGLEVEL@@@Z
+?SetDebugOutputLevel@Log@@YAXW4LOGLEVEL@@@Z
+?SetFileOutputLevel@Log@@YA_NW4LOGLEVEL@@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z
+?SetTimestampsEnabled@Log@@YAX_N@Z
+?Write@Log@@YAXW4LOGLEVEL@@W4ConsoleColors@@V?$basic_string_view@DU?$char_traits@D@std@@@std@@@Z
+?WriteFmtArgs@Log@@YAXW4LOGLEVEL@@W4ConsoleColors@@V?$basic_string_view@D@v12@fmt@@V?$basic_format_args@Vcontext@v12@fmt@@@56@@Z
+?Writev@Log@@YAXW4LOGLEVEL@@W4ConsoleColors@@PEBDPEAD@Z

@@ -1,0 +1,381 @@
+import { Button, HorizontalBox, VerticalBox, ComboBox, LineEdit } from "std-widgets.slint";
+
+// ─── Docking System Structs ───
+export struct DockPanel {
+    id: string,
+    title: string,
+    icon: string,
+    panel-type: int,  // 0=disasm, 1=registers, 2=memory, 3=stack, 4=threads, 5=modules, 6=breakpoints, 7=symbols, 8=memory-search, 9=saved-addresses
+    is-visible: bool,
+    is-primary: bool,
+}
+
+export struct DockTab {
+    id: string,
+    title: string,
+    panel-type: int,
+    is-active: bool,
+}
+
+export struct DockSplitter {
+    orientation: int,  // 0=horizontal, 1=vertical
+    ratio: float,      // 0.0 - 1.0
+    left-tabs: [DockTab],
+    right-tabs: [DockTab],
+    active-left: int,
+    active-right: int,
+}
+
+export struct DockLayout {
+    name: string,
+    cpu: string,
+    is-default: bool,
+    is-current: bool,
+}
+
+// ─── Dock Tab Bar ───
+export component DockTabBar inherits Rectangle {
+    in property <[DockTab]> tabs: [];
+    in property <int> active-index: 0;
+    in property <bool> is-top: true;
+
+    callback tab-clicked(int /*index*/);
+    callback tab-closed(int /*index*/);
+    callback tab-moved(int /*from*/, int /*to*/);
+    callback add-tab();
+
+    height: 28px;
+    background: #181825;
+
+    HorizontalLayout {
+        padding: 0px;
+        spacing: 0;
+
+        for tab[idx] in tabs: Rectangle {
+            height: 28px;
+            width: 120px;
+            background: idx == root.active-index ? #1e1e2e : transparent;
+            clip: true;
+
+            // Active indicator
+            if idx == root.active-index && root.is-top: Rectangle {
+                y: parent.height - 2px;
+                height: 2px;
+                background: #89b4fa;
+            }
+            if idx == root.active-index && !root.is-top: Rectangle {
+                y: 0;
+                height: 2px;
+                background: #89b4fa;
+            }
+
+            HorizontalLayout {
+                padding-left: 8px;
+                padding-right: 4px;
+                spacing: 4px;
+
+                Text {
+                    text: tab.title;
+                    color: idx == root.active-index ? #cdd6f4 : #6c7086;
+                    font-size: 11px;
+                    vertical-alignment: center;
+                    horizontal-stretch: 1;
+                    overflow: elide;
+                }
+
+                // Close button
+                Rectangle {
+                    width: 16px;
+                    height: 16px;
+                    border-radius: 3px;
+                    background: transparent;
+
+                    Text {
+                        text: "×";
+                        color: #6c7086;
+                        font-size: 12px;
+                        horizontal-alignment: center;
+                        vertical-alignment: center;
+                    }
+
+                    TouchArea {
+                        clicked => { root.tab-closed(idx); }
+                    }
+                }
+            }
+
+            TouchArea {
+                clicked => { root.tab-clicked(idx); }
+            }
+        }
+
+        // Add tab button
+        Rectangle {
+            width: 24px;
+            height: 28px;
+
+            Text {
+                text: "+";
+                color: #6c7086;
+                font-size: 14px;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+
+            TouchArea {
+                clicked => { root.add-tab(); }
+            }
+        }
+    }
+}
+
+// ─── Dock Panel Content ───
+export component DockPanelContent inherits Rectangle {
+    in property <int> panel-type: 0;
+    in property <string> panel-title: "";
+
+    // Placeholder for actual content
+    background: #11111b;
+
+    Text {
+        text: root.panel-title;
+        color: #45475a;
+        font-size: 14px;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+    }
+}
+
+// ─── Dock Splitter ───
+export component DockSplitterView inherits Rectangle {
+    in property <DockSplitter> splitter;
+    in property <bool> is-horizontal: true;
+
+    callback tab-changed(int /*side*/, int /*index*/);
+    callback tab-closed(int /*side*/, int /*index*/);
+    callback splitter-moved(float /*new-ratio*/);
+
+    background: #11111b;
+
+    if root.is-horizontal: HorizontalLayout {
+        spacing: 0;
+
+        // Left panel
+        VerticalLayout {
+            horizontal-stretch: root.splitter.ratio * 100;
+            spacing: 0;
+
+            DockTabBar {
+                tabs: root.splitter.left-tabs;
+                active-index: root.splitter.active-left;
+                is-top: true;
+                tab-clicked(idx) => { root.tab-changed(0, idx); }
+                tab-closed(idx) => { root.tab-closed(0, idx); }
+            }
+
+            DockPanelContent {
+                vertical-stretch: 1;
+                panel-type: root.splitter.left-tabs[root.splitter.active-left].panel-type;
+                panel-title: root.splitter.left-tabs[root.splitter.active-left].title;
+            }
+        }
+
+        // Splitter handle
+        Rectangle {
+            width: 4px;
+            background: #313244;
+
+            TouchArea {
+                // Drag to resize
+                moved => {
+                    // Handle splitter drag
+                }
+            }
+        }
+
+        // Right panel
+        VerticalLayout {
+            horizontal-stretch: (1 - root.splitter.ratio) * 100;
+            spacing: 0;
+
+            DockTabBar {
+                tabs: root.splitter.right-tabs;
+                active-index: root.splitter.active-right;
+                is-top: true;
+                tab-clicked(idx) => { root.tab-changed(1, idx); }
+                tab-closed(idx) => { root.tab-closed(1, idx); }
+            }
+
+            DockPanelContent {
+                vertical-stretch: 1;
+                panel-type: root.splitter.right-tabs[root.splitter.active-right].panel-type;
+                panel-title: root.splitter.right-tabs[root.splitter.active-right].title;
+            }
+        }
+    }
+
+    if !root.is-horizontal: VerticalLayout {
+        spacing: 0;
+
+        // Top panel
+        VerticalLayout {
+            vertical-stretch: root.splitter.ratio * 100;
+            spacing: 0;
+
+            DockTabBar {
+                tabs: root.splitter.left-tabs;
+                active-index: root.splitter.active-left;
+                is-top: true;
+                tab-clicked(idx) => { root.tab-changed(0, idx); }
+                tab-closed(idx) => { root.tab-closed(0, idx); }
+            }
+
+            DockPanelContent {
+                vertical-stretch: 1;
+                panel-type: root.splitter.left-tabs[root.splitter.active-left].panel-type;
+                panel-title: root.splitter.left-tabs[root.splitter.active-left].title;
+            }
+        }
+
+        // Splitter handle
+        Rectangle {
+            height: 4px;
+            background: #313244;
+
+            TouchArea {
+                // Drag to resize
+                moved => {
+                    // Handle splitter drag
+                }
+            }
+        }
+
+        // Bottom panel
+        VerticalLayout {
+            vertical-stretch: (1 - root.splitter.ratio) * 100;
+            spacing: 0;
+
+            DockTabBar {
+                tabs: root.splitter.right-tabs;
+                active-index: root.splitter.active-right;
+                is-top: false;
+                tab-clicked(idx) => { root.tab-changed(1, idx); }
+                tab-closed(idx) => { root.tab-closed(1, idx); }
+            }
+
+            DockPanelContent {
+                vertical-stretch: 1;
+                panel-type: root.splitter.right-tabs[root.splitter.active-right].panel-type;
+                panel-title: root.splitter.right-tabs[root.splitter.active-right].title;
+            }
+        }
+    }
+}
+
+// ─── Layout Manager ───
+export component DockLayoutManager inherits Rectangle {
+    in property <[DockLayout]> layouts: [];
+    in property <int> current-layout: 0;
+    in property <bool> is-locked: true;
+
+    callback layout-changed(int /*index*/);
+    callback layout-new();
+    callback layout-delete(int /*index*/);
+    callback layout-rename(int /*index*/, string /*new-name*/);
+    callback layout-save();
+    callback layout-reset();
+    callback lock-toggled();
+
+    height: 32px;
+    background: #1e1e2e;
+
+    HorizontalLayout {
+        padding: 4px;
+        spacing: 4px;
+
+        // Layout tabs
+        for layout[idx] in layouts: Rectangle {
+            height: 24px;
+            width: 120px;
+            background: idx == root.current-layout ? #3b3f54 : transparent;
+            border-radius: 4px;
+
+            Text {
+                text: layout.name;
+                color: idx == root.current-layout ? #89b4fa : #6c7086;
+                font-size: 11px;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+
+            TouchArea {
+                clicked => {
+                    root.layout-changed(idx);
+                }
+            }
+        }
+
+        // Add layout button
+        Rectangle {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            background: transparent;
+
+            Text {
+                text: "+";
+                color: #6c7086;
+                font-size: 14px;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+
+            TouchArea {
+                clicked => { root.layout-new(); }
+            }
+        }
+
+        // Spacer
+        Rectangle { horizontal-stretch: 1; }
+
+        // Lock toggle
+        Rectangle {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            background: root.is-locked ? transparent : #3b3f54;
+
+            Text {
+                text: root.is-locked ? "🔒" : "🔓";
+                color: root.is-locked ? #6c7086 : #a6e3a1;
+                font-size: 12px;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+
+            TouchArea {
+                clicked => { root.lock-toggled(); }
+            }
+        }
+
+        // Save button
+        Rectangle {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            background: transparent;
+
+            Text {
+                text: "💾";
+                color: #6c7086;
+                font-size: 12px;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+            }
+
+            TouchArea {
+                clicked => { root.layout-save(); }
+            }
+        }
+    }
+}

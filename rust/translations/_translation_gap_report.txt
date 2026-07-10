@@ -1,0 +1,60 @@
+======================================================================
+UNTRANSLATED C/C++ FILES BY DIRECTORY (sorted by LOC)
+======================================================================
+
+[E:\project\pcsx2\pcsx2] 674 files, 56225 total LOC
+    4049 VUops
+    3968 Achievements
+    3847 VMManager
+    2390 Pcsx2Config
+    1854 Patch
+    1620 MMI
+    1565 Config
+    1552 GameList
+    1543 vtlb
+    1279 R5900OpcodeImpl
+    1276 GameDatabase
+    1270 SaveState
+    1268 Memory
+    1085 MTGS
+     983 IopModuleNames
+  ... +100 more
+
+[E:\project\pcsx2\pcsx2-qt] 185 files, 16268 total LOC
+    3906 MainWindow
+    2581 QtHost
+    1435 SettingWidgetBinder
+     917 AutoUpdaterDialog
+     689 Translations
+     643 Themes
+     602 QtKeyCodes
+     591 ShortcutCreationDialog
+     575 SetupWizardDialog
+     553 QtUtils
+     507 LogWindow
+     497 DisplayWidget
+     359 MainWindow
+     356 AsyncDialogs
+     302 QtHost
+  ... +19 more
+
+[E:\project\pcsx2\common] 51 files, 2238 total LOC
+    1229 StackWalker
+     324 HTTPDownloaderWinHTTP
+     206 HTTPDownloaderCurl
+     187 Semaphore
+     181 StackWalker
+      40 HTTPDownloaderWinHTTP
+      37 HTTPDownloaderCurl
+      22 RedtapeWilCom
+       8 PrecompiledHeader
+       4 PrecompiledHeader
+
+[E:\project\pcsx2\3rdparty] 979 files, 0 total LOC
+
+======================================================================
+SUMMARY
+======================================================================
+Total untranslated files: 1889
+Total untranslated LOC: 74731
+Already translated: 210 stems / ~286k LOC

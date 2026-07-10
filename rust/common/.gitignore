@@ -1,0 +1,8 @@
+target/
+*.pdb
+*.rmeta
+test.h
+tmpslsfcu.pdb
+*.d
+*.dep
+pcsx2_crash_out/

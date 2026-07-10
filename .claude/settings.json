@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "view_file": {
+      "deny": [
+        "**/*.png",
+        "**/*.jpg",
+        "**/*.jpeg",
+        "**/*.gif",
+        "**/*.svg",
+        "**/*.webp"
+      ]
+    }
+  }
+}

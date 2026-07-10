@@ -1,0 +1,277 @@
+import { VerticalBox, HorizontalBox, ScrollView, LineEdit, ComboBox, Button, CheckBox, Slider, GroupBox, StandardButton } from "std-widgets.slint";
+import { MaterialColors, DetailPage, ToggleRow, SliderRow, ComboRow, TextFieldRow, SectionHeader } from "common.slint";
+
+// LED Settings for DualSense/DS4
+export component ControllerLedSettings inherits DetailPage {
+    title: "LED Settings";
+    in-out property <bool> player-led: true;
+    in-out property <bool> low-battery-led: true;
+    in-out property <color> led-color: #0060ff;
+    in-out property <float> led-brightness: 0.5;
+
+    VerticalLayout {
+        padding: 16px;
+        spacing: 12px;
+
+        SectionHeader {
+            label: "LED Configuration";
+        }
+
+        ToggleRow {
+            label: "Player LED";
+            sub: "Show player number on controller LED";
+            checked: player-led;
+            toggled => { player-led = !player-led; }
+        }
+
+        ToggleRow {
+            label: "Low Battery LED";
+            sub: "Flash LED when battery is low";
+            checked: low-battery-led;
+            toggled => { low-battery-led = !low-battery-led; }
+        }
+
+        SliderRow {
+            label: "LED Brightness";
+            value: led-brightness;
+            changed(v) => { led-brightness = v; }
+        }
+
+        SectionHeader {
+            label: "LED Color";
+        }
+
+        Rectangle {
+            height: 48px;
+            background: led-color;
+            border-radius: 8px;
+            border-width: 1px;
+            border-color: MaterialColors.outline;
+        }
+
+        HorizontalLayout {
+            spacing: 8px;
+            Button {
+                text: "Blue";
+                clicked => { led-color: #0060ff; }
+            }
+            Button {
+                text: "Red";
+                clicked => { led-color: #ff0000; }
+            }
+            Button {
+                text: "Green";
+                clicked => { led-color: #00ff00; }
+            }
+            Button {
+                text: "Purple";
+                clicked => { led-color: #8000ff; }
+            }
+        }
+    }
+}
+
+// Mouse Mapping Settings
+export component ControllerMouseSettings inherits DetailPage {
+    title: "Mouse Settings";
+    in-out property <float> sensitivity: 0.5;
+    in-out property <float> dead-zone: 0.1;
+    in-out property <bool> acceleration: false;
+    in-out property <bool> raw-input: true;
+
+    VerticalLayout {
+        padding: 16px;
+        spacing: 12px;
+
+        SectionHeader {
+            label: "Mouse Configuration";
+        }
+
+        SliderRow {
+            label: "Sensitivity";
+            value: sensitivity;
+            changed(v) => { sensitivity = v; }
+        }
+
+        SliderRow {
+            label: "Dead Zone";
+            value: dead-zone;
+            changed(v) => { dead-zone = v; }
+        }
+
+        ToggleRow {
+            label: "Mouse Acceleration";
+            sub: "Enable OS mouse acceleration";
+            checked: acceleration;
+            toggled => { acceleration = !acceleration; }
+        }
+
+        ToggleRow {
+            label: "Raw Input";
+            sub: "Bypass OS mouse processing for lower latency";
+            checked: raw-input;
+            toggled => { raw-input = !raw-input; }
+        }
+    }
+}
+
+// Controller Mapping Settings
+export component ControllerMappingSettings inherits DetailPage {
+    title: "Mapping Settings";
+    in-out property <int> selected-port: 0;
+    in-out property <string> mapping-info: "Press a button to begin mapping";
+
+    VerticalLayout {
+        padding: 16px;
+        spacing: 12px;
+
+        SectionHeader {
+            label: "Controller Port";
+        }
+
+        HorizontalLayout {
+            spacing: 8px;
+            for i in 4: Rectangle {
+                height: 40px;
+                background: selected-port == i ? MaterialColors.primary-container : MaterialColors.surface-container;
+                border-radius: 8px;
+                border-width: 1px;
+                border-color: selected-port == i ? MaterialColors.primary : MaterialColors.outline;
+                Text {
+                    text: "Port " + (i + 1);
+                    color: selected-port == i ? MaterialColors.on-primary-container : MaterialColors.on-surface;
+                    font-size: 13px;
+                    horizontal-alignment: center;
+                    vertical-alignment: center;
+                }
+                ta := TouchArea {
+                    clicked => { selected-port = i; }
+                }
+            }
+        }
+
+        SectionHeader {
+            label: "Button Mapping";
+        }
+
+        Rectangle {
+            height: 120px;
+            background: MaterialColors.surface-container;
+            border-radius: 12px;
+
+            VerticalLayout {
+                padding: 16px;
+                alignment: center;
+                Text {
+                    text: mapping-info;
+                    color: MaterialColors.on-surface-variant;
+                    font-size: 14px;
+                    horizontal-alignment: center;
+                    wrap: word-wrap;
+                }
+            }
+        }
+
+        HorizontalLayout {
+            spacing: 8px;
+            Button {
+                text: "Auto Map";
+                clicked => { mapping-info = "Auto-detecting controller..."; }
+            }
+            Button {
+                text: "Clear All";
+                clicked => { mapping-info = "All mappings cleared"; }
+            }
+            Button {
+                text: "Restore Defaults";
+                clicked => { mapping-info = "Default mappings restored"; }
+            }
+        }
+
+        SectionHeader {
+            label: "SDL Controller Database";
+        }
+
+        HorizontalLayout {
+            spacing: 8px;
+            Button {
+                text: "Update Database";
+                clicked => { }
+            }
+            Button {
+                text: "Import Custom DB";
+                clicked => { }
+            }
+        }
+    }
+}
+
+// Controller Profile Manager
+export component ControllerProfileManager inherits DetailPage {
+    title: "Controller Profiles";
+    in-out property <int> selected-profile: 0;
+    in-out property <[string]> profiles: ["Default", "FPS Profile", "Racing Profile", "Fighting Profile"];
+
+    VerticalLayout {
+        padding: 16px;
+        spacing: 12px;
+
+        SectionHeader {
+            label: "Profiles";
+        }
+
+        for profile[idx] in profiles: Rectangle {
+            height: 48px;
+            background: selected-profile == idx ? MaterialColors.primary-container : MaterialColors.surface-container;
+            border-radius: 8px;
+            border-width: 1px;
+            border-color: selected-profile == idx ? MaterialColors.primary : Colors.transparent;
+
+            HorizontalLayout {
+                padding-left: 16px;
+                padding-right: 16px;
+                alignment: space-between;
+                Text {
+                    text: profile;
+                    color: selected-profile == idx ? MaterialColors.on-primary-container : MaterialColors.on-surface;
+                    font-size: 14px;
+                    vertical-alignment: center;
+                }
+                HorizontalLayout {
+                    spacing: 4px;
+                    Button {
+                        text: "Load";
+                        clicked => { selected-profile = idx; }
+                    }
+                    Button {
+                        text: "Delete";
+                        clicked => { }
+                    }
+                }
+            }
+        }
+
+        SectionHeader {
+            label: "Per-Game Profiles";
+        }
+
+        ToggleRow {
+            label: "Use Per-Game Profile";
+            sub: "Automatically load controller profile for each game";
+            checked: false;
+            toggled => { }
+        }
+
+        HorizontalLayout {
+            spacing: 8px;
+            Button {
+                text: "Save Current As...";
+                clicked => { }
+            }
+            Button {
+                text: "Export All";
+                clicked => { }
+            }
+        }
+    }
+}

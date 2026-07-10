@@ -1,0 +1,3 @@
+?Register@Group@Perf@@QEAAXPEBX_KPEBD@Z
+?RegisterKey@Group@Perf@@QEAAXPEBX_KPEBD1@Z
+?RegisterPC@Group@Perf@@QEAAXPEBX_KI@Z

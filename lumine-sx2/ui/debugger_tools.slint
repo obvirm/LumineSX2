@@ -1,0 +1,1007 @@
+// Debugger Tools — Analysis, Patch Details, Layout Editor, Settings Tabs
+import { VerticalBox, HorizontalBox, ScrollView, LineEdit, ComboBox, Button, CheckBox, Slider, GroupBox, StandardButton, SpinBox } from "std-widgets.slint";
+import { MaterialColors, DetailPage, ToggleRow, SliderRow, ComboRow, TextFieldRow, SectionHeader } from "./common.slint";
+
+// ─── 1. Analysis Options Dialog ───
+export component AnalysisOptionsDialog inherits Rectangle {
+    in-out property <bool> dialog-visible: false;
+    in-out property <int> min-function-size: 16;
+    in-out property <int> function-alignment: 4;
+    in-out property <bool> global-analysis: true;
+    in-out property <int> selected-cpu: 0;
+    in-out property <float> progress-value: 0.0;
+    in-out property <bool> is-analyzing: false;
+    in-out property <string> status-text: "Ready";
+    callback close();
+    callback start-analysis();
+    callback cancel();
+
+    if dialog-visible: Rectangle {
+        background: #00000080;
+
+        Rectangle {
+            width: 440px;
+            height: is-analyzing ? 300px : 400px;
+            background: MaterialColors.surface-container-high;
+            border-radius: 16px;
+            border-width: 1px;
+            border-color: MaterialColors.outline;
+
+            VerticalLayout {
+                padding: 16px;
+                spacing: 12px;
+
+                Text {
+                    text: "Stack Analysis Options";
+                    color: MaterialColors.on-surface;
+                    font-size: 18px;
+                    font-weight: 600;
+                }
+
+                if !is-analyzing: VerticalLayout {
+                    spacing: 12px;
+
+                    SectionHeader { txt: "Function Detection"; }
+
+                    HorizontalLayout {
+                        padding-left: 20px;
+                        padding-right: 20px;
+                        alignment: space-between;
+                        Text {
+                            text: "Minimum Function Size";
+                            color: MaterialColors.on-surface;
+                            font-size: 13px;
+                            vertical-alignment: center;
+                        }
+                        Text {
+                            text: min-function-size + " bytes";
+                            color: MaterialColors.primary;
+                            font-size: 13px;
+                            font-family: "Consolas";
+                            vertical-alignment: center;
+                        }
+                    }
+                    SliderRow {
+                        txt: " ";
+                        value: min-function-size / 128.0;
+                        changed(v) => { min-function-size = Math.round(v * 128); }
+                    }
+
+                    HorizontalLayout {
+                        padding-left: 20px;
+                        padding-right: 20px;
+                        alignment: space-between;
+                        Text {
+                            text: "Function Alignment";
+                            color: MaterialColors.on-surface;
+                            font-size: 13px;
+                            vertical-alignment: center;
+                        }
+                        Text {
+                            text: function-alignment + " bytes";
+                            color: MaterialColors.primary;
+                            font-size: 13px;
+                            font-family: "Consolas";
+                            vertical-alignment: center;
+                        }
+                    }
+                    SliderRow {
+                        txt: " ";
+                        value: function-alignment / 32.0;
+                        changed(v) => { function-alignment = Math.max(1, Math.round(v * 32)); }
+                    }
+
+                    SectionHeader { txt: "Scope"; }
+
+                    HorizontalLayout {
+                        padding-left: 20px;
+                        padding-right: 20px;
+                        spacing: 8px;
+                        for scope[idx] in ["Global", "Per-CPU"]: Rectangle {
+                            height: 36px;
+                            background: (global-analysis && idx == 0) || (!global-analysis && idx == 1) ? MaterialColors.primary : MaterialColors.surface-container;
+                            border-radius: 8px;
+                            Text {
+                                text: scope;
+                                color: (global-analysis && idx == 0) || (!global-analysis && idx == 1) ? MaterialColors.on-primary : MaterialColors.on-surface;
+                                font-size: 13px;
+                                horizontal-alignment: center;
+                                vertical-alignment: center;
+                            }
+                            TouchArea {
+                                clicked => { global-analysis = (idx == 0); }
+                            }
+                        }
+                    }
+
+                    if !global-analysis: VerticalLayout {
+                        SectionHeader { txt: "Target CPU"; }
+                        HorizontalLayout {
+                            padding-left: 20px;
+                            padding-right: 20px;
+                            spacing: 8px;
+                            for cpu[idx] in ["EE", "IOP"]: Rectangle {
+                                height: 36px;
+                                background: selected-cpu == idx ? MaterialColors.primary : MaterialColors.surface-container;
+                                border-radius: 8px;
+                                Text {
+                                    text: cpu;
+                                    color: selected-cpu == idx ? MaterialColors.on-primary : MaterialColors.on-surface;
+                                    font-size: 13px;
+                                    horizontal-alignment: center;
+                                    vertical-alignment: center;
+                                }
+                                TouchArea {
+                                    clicked => { selected-cpu = idx; }
+                                }
+                            }
+                        }
+                    }
+
+                    SectionHeader { txt: "Options"; }
+                    HorizontalLayout {
+                        padding-left: 20px;
+                        padding-right: 20px;
+                        ToggleRow {
+                            txt: "Analyze IRX Imports";
+                            sub: "Generate symbols for IRX module exports";
+                            checked: false;
+                            toggled => { }
+                        }
+                    }
+
+                    HorizontalLayout {
+                        spacing: 8px;
+                        Button {
+                            text: "Start Analysis";
+                            clicked => { start-analysis(); is-analyzing = true; }
+                        }
+                        Button {
+                            text: "Cancel";
+                            clicked => { dialog-visible = false; close(); }
+                        }
+                    }
+                }
+
+                if is-analyzing: VerticalLayout {
+                    spacing: 12px;
+
+                    Text {
+                        text: status-text;
+                        color: MaterialColors.on-surface;
+                        font-size: 14px;
+                    }
+
+                    Rectangle {
+                        height: 8px;
+                        background: MaterialColors.surface-container;
+                        border-radius: 4px;
+                        Rectangle {
+                            width: parent.width * progress-value;
+                            height: 100%;
+                            background: MaterialColors.primary;
+                            border-radius: 4px;
+                        }
+                    }
+
+                    Text {
+                        text: Math.round(progress-value * 100) + "% complete";
+                        color: MaterialColors.on-surface-variant;
+                        font-size: 12px;
+                        horizontal-alignment: center;
+                    }
+
+                    HorizontalLayout {
+                        spacing: 8px;
+                        Button {
+                            text: "Cancel";
+                            clicked => { cancel(); is-analyzing = false; status-text = "Cancelled"; }
+                        }
+                        Button {
+                            text: "Close";
+                            clicked => { dialog-visible = false; close(); }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// ─── 2. Patch Details Widget ───
+export component PatchDetailsWidget inherits DetailPage {
+    title: "Game Patches";
+
+    in-out property <bool> dma-enabled: true;
+    in-out property <bool> ee-enabled: true;
+    in-out property <bool> iop-enabled: true;
+    in-out property <int> selected-category: 0;
+    in-out property <int> selected-patch: -1;
+
+    property <[string]> dma-patches: [
+        "DMA Chain Fix | CRC: 0xABCD1234 | Author: PCSX2 Team",
+        "DMA Stall Fix | CRC: 0xDEADBEEF | Author: Community"
+    ];
+    property <[string]> ee-patches: [
+        "EE Timing Fix | CRC: 0xCAFEBABE | Author: PCSX2 Team",
+        "FPU Mul Fix | CRC: 0xBAADF00D | Author: Community"
+    ];
+    property <[string]> iop-patches: [
+        "IOP Sync Fix | CRC: 0x0D15EA5E | Author: PCSX2 Team",
+        "SPU2 IRQ Fix | CRC: 0x8BADF00D | Author: Community"
+    ];
+
+    VerticalLayout {
+        padding: 16px;
+        spacing: 12px;
+
+        // Category tabs
+        Rectangle {
+            height: 40px;
+            background: MaterialColors.surface-container;
+            border-radius: 10px;
+
+            HorizontalLayout {
+                padding: 4px;
+                spacing: 4px;
+                for cat[idx] in ["DMA Patches", "EE Patches", "IOP Patches"]: Rectangle {
+                    width: 120px;
+                    height: 32px;
+                    background: selected-category == idx ? MaterialColors.primary : Colors.transparent;
+                    border-radius: 8px;
+
+                    Text {
+                        text: cat;
+                        color: selected-category == idx ? MaterialColors.on-primary : MaterialColors.on-surface-variant;
+                        font-size: 12px;
+                        font-weight: 600;
+                        horizontal-alignment: center;
+                        vertical-alignment: center;
+                    }
+
+                    TouchArea {
+                        clicked => { selected-category = idx; }
+                    }
+                }
+            }
+        }
+
+        // DMA Patches
+        if selected-category == 0: VerticalLayout {
+            spacing: 8px;
+
+            HorizontalLayout {
+                spacing: 8px;
+                padding-left: 4px;
+                padding-right: 4px;
+                ToggleRow {
+                    txt: "Enable DMA Patches";
+                    checked: dma-enabled;
+                    toggled(v) => { dma-enabled = v; }
+                }
+                Rectangle { horizontal-stretch: 1; }
+                Button {
+                    text: "Reload";
+                    clicked => { }
+                }
+            }
+
+            if !dma-enabled: Text {
+                text: "DMA patches are disabled";
+                color: MaterialColors.error;
+                font-size: 12px;
+                padding-left: 20px;
+            }
+
+            if dma-enabled: ScrollView {
+                height: 240px;
+                for patch[idx] in dma-patches: Rectangle {
+                    height: 60px;
+                    background: selected-patch == idx ? MaterialColors.primary-container : (idx % 2 == 0 ? MaterialColors.surface-container-low : Colors.transparent);
+
+                    VerticalLayout {
+                        padding: 8px;
+                        spacing: 4px;
+                        Text {
+                            text: patch;
+                            color: selected-patch == idx ? MaterialColors.on-primary-container : MaterialColors.on-surface;
+                            font-size: 12px;
+                            font-family: "Consolas";
+                        }
+                    }
+
+                    TouchArea {
+                        clicked => { selected-patch = idx; }
+                    }
+
+                    Rectangle {
+                        height: 1px;
+                        background: MaterialColors.outline-variant;
+                        y: parent.height - 1px;
+                        x: 16px;
+                        width: parent.width - 32px;
+                        visible: idx < dma-patches.length - 1;
+                    }
+                }
+            }
+        }
+
+        // EE Patches
+        if selected-category == 1: VerticalLayout {
+            spacing: 8px;
+
+            HorizontalLayout {
+                spacing: 8px;
+                padding-left: 4px;
+                padding-right: 4px;
+                ToggleRow {
+                    txt: "Enable EE Patches";
+                    checked: ee-enabled;
+                    toggled(v) => { ee-enabled = v; }
+                }
+                Rectangle { horizontal-stretch: 1; }
+                Button {
+                    text: "Reload";
+                    clicked => { }
+                }
+            }
+
+            if !ee-enabled: Text {
+                text: "EE patches are disabled";
+                color: MaterialColors.error;
+                font-size: 12px;
+                padding-left: 20px;
+            }
+
+            if ee-enabled: ScrollView {
+                height: 240px;
+                for patch[idx] in ee-patches: Rectangle {
+                    height: 60px;
+                    background: selected-patch == idx ? MaterialColors.primary-container : (idx % 2 == 0 ? MaterialColors.surface-container-low : Colors.transparent);
+
+                    VerticalLayout {
+                        padding: 8px;
+                        spacing: 4px;
+                        Text {
+                            text: patch;
+                            color: selected-patch == idx ? MaterialColors.on-primary-container : MaterialColors.on-surface;
+                            font-size: 12px;
+                            font-family: "Consolas";
+                        }
+                    }
+
+                    TouchArea {
+                        clicked => { selected-patch = idx; }
+                    }
+
+                    Rectangle {
+                        height: 1px;
+                        background: MaterialColors.outline-variant;
+                        y: parent.height - 1px;
+                        x: 16px;
+                        width: parent.width - 32px;
+                        visible: idx < ee-patches.length - 1;
+                    }
+                }
+            }
+        }
+
+        // IOP Patches
+        if selected-category == 2: VerticalLayout {
+            spacing: 8px;
+
+            HorizontalLayout {
+                spacing: 8px;
+                padding-left: 4px;
+                padding-right: 4px;
+                ToggleRow {
+                    txt: "Enable IOP Patches";
+                    checked: iop-enabled;
+                    toggled(v) => { iop-enabled = v; }
+                }
+                Rectangle { horizontal-stretch: 1; }
+                Button {
+                    text: "Reload";
+                    clicked => { }
+                }
+            }
+
+            if !iop-enabled: Text {
+                text: "IOP patches are disabled";
+                color: MaterialColors.error;
+                font-size: 12px;
+                padding-left: 20px;
+            }
+
+            if iop-enabled: ScrollView {
+                height: 240px;
+                for patch[idx] in iop-patches: Rectangle {
+                    height: 60px;
+                    background: selected-patch == idx ? MaterialColors.primary-container : (idx % 2 == 0 ? MaterialColors.surface-container-low : Colors.transparent);
+
+                    VerticalLayout {
+                        padding: 8px;
+                        spacing: 4px;
+                        Text {
+                            text: patch;
+                            color: selected-patch == idx ? MaterialColors.on-primary-container : MaterialColors.on-surface;
+                            font-size: 12px;
+                            font-family: "Consolas";
+                        }
+                    }
+
+                    TouchArea {
+                        clicked => { selected-patch = idx; }
+                    }
+
+                    Rectangle {
+                        height: 1px;
+                        background: MaterialColors.outline-variant;
+                        y: parent.height - 1px;
+                        x: 16px;
+                        width: parent.width - 32px;
+                        visible: idx < iop-patches.length - 1;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// ─── 3. Layout Editor Dialog ───
+export component LayoutEditorDialog inherits Rectangle {
+    in-out property <bool> dialog-visible: false;
+    in-out property <string> layout-name: "Default Layout";
+    in-out property <int> selected-view: 0;
+    in-out property <int> placement-index: 0;
+    in-out property <bool> show-disasm: true;
+    in-out property <bool> show-registers: true;
+    in-out property <bool> show-memory: true;
+    in-out property <bool> show-breakpoints: false;
+    in-out property <bool> show-stack: false;
+    in-out property <bool> show-threads: false;
+    in-out property <bool> show-modules: false;
+    in-out property <bool> show-symbols: false;
+    in-out property <bool> show-saved-addresses: false;
+    callback close();
+    callback save();
+    callback rename();
+    callback delete();
+
+    property <[string]> placement-modes: ["Float", "Top", "Bottom", "Left", "Right", "Center"];
+
+    if dialog-visible: Rectangle {
+        background: #00000080;
+
+        Rectangle {
+            width: 460px;
+            height: 480px;
+            background: MaterialColors.surface-container-high;
+            border-radius: 16px;
+            border-width: 1px;
+            border-color: MaterialColors.outline;
+
+            VerticalLayout {
+                padding: 16px;
+                spacing: 12px;
+
+                Text {
+                    text: "Layout Editor";
+                    color: MaterialColors.on-surface;
+                    font-size: 18px;
+                    font-weight: 600;
+                }
+
+                SectionHeader { txt: "Layout Name"; }
+                LineEdit {
+                    text: layout-name;
+                    height: 32px;
+                    font-size: 13px;
+                    edited => { layout-name = self.text; }
+                }
+
+                SectionHeader { txt: "Views"; }
+
+                ScrollView {
+                    height: 160px;
+                    for view[idx] in [
+                        ["Disassembly", show-disasm],
+                        ["Registers", show-registers],
+                        ["Memory", show-memory],
+                        ["Breakpoints", show-breakpoints],
+                        ["Stack", show-stack],
+                        ["Threads", show-threads],
+                        ["Modules", show-modules],
+                        ["Symbols", show-symbols],
+                        ["Saved Addresses", show-saved-addresses]
+                    ]: Rectangle {
+                        height: 32px;
+                        background: idx % 2 == 0 ? MaterialColors.surface-container-low : Colors.transparent;
+
+                        HorizontalLayout {
+                            padding-left: 20px;
+                            padding-right: 20px;
+                            spacing: 12px;
+
+                            Text {
+                                text: idx + 1;
+                                color: MaterialColors.on-surface-variant;
+                                font-size: 12px;
+                                font-family: "Consolas";
+                                width: 24px;
+                                vertical-alignment: center;
+                            }
+                            Text {
+                                text: view[0];
+                                color: MaterialColors.on-surface;
+                                font-size: 13px;
+                                vertical-alignment: center;
+                                horizontal-stretch: 1;
+                            }
+
+                            // Show/hide toggle
+                            Rectangle {
+                                width: 28px;
+                                height: 28px;
+                                y: 2px;
+                                background: (idx == 0 ? show-disasm : (idx == 1 ? show-registers : (idx == 2 ? show-memory : (idx == 3 ? show-breakpoints : (idx == 4 ? show-stack : (idx == 5 ? show-threads : (idx == 6 ? show-modules : (idx == 7 ? show-symbols : show-saved-addresses)))))))) ? MaterialColors.primary-container : MaterialColors.surface-container;
+                                border-radius: 6px;
+                                border-width: 1px;
+                                border-color: (idx == 0 ? show-disasm : (idx == 1 ? show-registers : (idx == 2 ? show-memory : (idx == 3 ? show-breakpoints : (idx == 4 ? show-stack : (idx == 5 ? show-threads : (idx == 6 ? show-modules : (idx == 7 ? show-symbols : show-saved-addresses)))))))) ? MaterialColors.primary : MaterialColors.outline;
+
+                                Text {
+                                    text: (idx == 0 ? show-disasm : (idx == 1 ? show-registers : (idx == 2 ? show-memory : (idx == 3 ? show-breakpoints : (idx == 4 ? show-stack : (idx == 5 ? show-threads : (idx == 6 ? show-modules : (idx == 7 ? show-symbols : show-saved-addresses)))))))) ? "✓" : "✕";
+                                    color: (idx == 0 ? show-disasm : (idx == 1 ? show-registers : (idx == 2 ? show-memory : (idx == 3 ? show-breakpoints : (idx == 4 ? show-stack : (idx == 5 ? show-threads : (idx == 6 ? show-modules : (idx == 7 ? show-symbols : show-saved-addresses)))))))) ? MaterialColors.on-primary-container : MaterialColors.on-surface-variant;
+                                    font-size: 11px;
+                                    horizontal-alignment: center;
+                                    vertical-alignment: center;
+                                }
+
+                                TouchArea {
+                                    clicked => {
+                                        if idx == 0: show-disasm = !show-disasm;
+                                        else if idx == 1: show-registers = !show-registers;
+                                        else if idx == 2: show-memory = !show-memory;
+                                        else if idx == 3: show-breakpoints = !show-breakpoints;
+                                        else if idx == 4: show-stack = !show-stack;
+                                        else if idx == 5: show-threads = !show-threads;
+                                        else if idx == 6: show-modules = !show-modules;
+                                        else if idx == 7: show-symbols = !show-symbols;
+                                        else if idx == 8: show-saved-addresses = !show-saved-addresses;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                SectionHeader { txt: "Placement"; }
+                ComboRow {
+                    txt: "Position";
+                    model: placement-modes;
+                    current-index: placement-index;
+                    selected(idx) => { placement-index = idx; }
+                }
+
+                Rectangle {
+                    height: 1px;
+                    background: MaterialColors.outline-variant;
+                }
+
+                HorizontalLayout {
+                    spacing: 8px;
+                    Button { text: "Save"; clicked => { save(); dialog-visible = false; } }
+                    Button { text: "Rename"; clicked => { rename(); } }
+                    Button { text: "Delete"; clicked => { delete(); dialog-visible = false; } }
+                    Rectangle { horizontal-stretch: 1; }
+                    Button { text: "Cancel"; clicked => { dialog-visible = false; close(); } }
+                }
+            }
+        }
+    }
+}
+
+// ─── 4. Debug Settings Tab ───
+export component DebugSettingsTab inherits DetailPage {
+    title: "Debug Settings";
+
+    // UI tab
+    in-out property <int> refresh-interval: 1000;
+    in-out property <bool> show-on-startup: false;
+    in-out property <bool> save-window-geometry: true;
+    in-out property <bool> show-toolbar-icons: true;
+    in-out property <int> debug-theme-index: 0;
+
+    // Analysis tab
+    in-out property <int> max-functions: 5000;
+    in-out property <int> min-fn-size: 16;
+    in-out property <bool> show-unnamed-functions: true;
+    in-out property <int> auto-analyze-mode: 1;
+
+    // GS tab
+    in-out property <string> hw-dump-path: "dump/gs_hw";
+    in-out property <string> sw-dump-path: "dump/gs_sw";
+    in-out property <bool> dump-gs-draws: false;
+    in-out property <bool> auto-dump: false;
+    in-out property <bool> dump-textures: false;
+    in-out property <bool> dump-save-frame: false;
+    in-out property <bool> dump-save-rt: false;
+    in-out property <bool> dump-save-depth: false;
+    in-out property <bool> dump-save-alpha: false;
+    in-out property <int> dump-frame-start: 0;
+    in-out property <int> dump-frame-count: 1;
+    in-out property <int> dump-draw-start: 0;
+    in-out property <int> dump-draw-count: 100;
+
+    // Logging tab
+    in-out property <bool> logging-enabled: false;
+    in-out property <bool> console-output: true;
+    in-out property <bool> ee-console: false;
+    in-out property <bool> iop-console: false;
+    in-out property <bool> syscall-log: false;
+    in-out property <bool> dma-log: false;
+    in-out property <int> log-level: 0;
+
+    // EE Logging checkboxes (subset)
+    in-out property <bool> ee-cop0: false;
+    in-out property <bool> ee-cop1: false;
+    in-out property <bool> ee-cache: false;
+    in-out property <bool> ee-memory: false;
+    in-out property <bool> ee-dma: false;
+    in-out property <bool> ee-bios: false;
+    in-out property <bool> ee-count: false;
+    in-out property <bool> ee-vif: false;
+    in-out property <bool> ee-gif: false;
+    in-out property <bool> ee-ipu: false;
+
+    // IOP Logging checkboxes (subset)
+    in-out property <bool> iop-cop2: false;
+    in-out property <bool> iop-memcards: false;
+    in-out property <bool> iop-pad: false;
+    in-out property <bool> iop-cdvd: false;
+    in-out property <bool> iop-dma: false;
+
+    in-out property <int> selected-tab: 0;
+
+    property <[string]> tab-labels: ["UI", "Analysis", "GS", "Logging"];
+
+    VerticalLayout {
+        padding: 16px;
+        spacing: 12px;
+
+        // Tab bar
+        Rectangle {
+            height: 40px;
+            background: MaterialColors.surface-container;
+            border-radius: 10px;
+
+            HorizontalLayout {
+                padding: 4px;
+                spacing: 4px;
+                for tab[idx] in tab-labels: Rectangle {
+                    width: 80px;
+                    height: 32px;
+                    background: selected-tab == idx ? MaterialColors.primary : Colors.transparent;
+                    border-radius: 8px;
+
+                    Text {
+                        text: tab;
+                        color: selected-tab == idx ? MaterialColors.on-primary : MaterialColors.on-surface-variant;
+                        font-size: 12px;
+                        font-weight: 600;
+                        horizontal-alignment: center;
+                        vertical-alignment: center;
+                    }
+
+                    TouchArea {
+                        clicked => { selected-tab = idx; }
+                    }
+                }
+            }
+        }
+
+        // === UI TAB ===
+        if selected-tab == 0: VerticalLayout {
+            spacing: 10px;
+
+            SectionHeader { txt: "Debugger Window"; }
+
+            ToggleRow {
+                txt: "Show on Startup";
+                sub: "Open debugger automatically when emulation starts";
+                checked: show-on-startup;
+                toggled(v) => { show-on-startup = v; }
+            }
+            ToggleRow {
+                txt: "Save Window Geometry";
+                sub: "Remember debugger window position and size";
+                checked: save-window-geometry;
+                toggled(v) => { save-window-geometry = v; }
+            }
+
+            SectionHeader { txt: "Refresh"; }
+
+            HorizontalLayout {
+                padding-left: 20px;
+                padding-right: 20px;
+                alignment: space-between;
+                Text {
+                    text: "Refresh Interval";
+                    color: MaterialColors.on-surface;
+                    font-size: 13px;
+                    vertical-alignment: center;
+                }
+                Text {
+                    text: refresh-interval + " ms";
+                    color: MaterialColors.primary;
+                    font-size: 13px;
+                    font-family: "Consolas";
+                    vertical-alignment: center;
+                }
+            }
+            SliderRow {
+                txt: " ";
+                value: (refresh-interval - 10) / 99990.0;
+                changed(v) => { refresh-interval = Math.round(10 + v * 99990); }
+            }
+
+            SectionHeader { txt: "Toolbar"; }
+            ToggleRow {
+                txt: "Show Toolbar Icons";
+                sub: "Display icon labels on debugger toolbar buttons";
+                checked: show-toolbar-icons;
+                toggled(v) => { show-toolbar-icons = v; }
+            }
+
+            SectionHeader { txt: "Appearance"; }
+            ComboRow {
+                txt: "Debug Theme";
+                model: ["System", "Dark", "Light", "High Contrast"];
+                current-index: debug-theme-index;
+                selected(idx) => { debug-theme-index = idx; }
+            }
+        }
+
+        // === ANALYSIS TAB ===
+        if selected-tab == 1: VerticalLayout {
+            spacing: 10px;
+
+            SectionHeader { txt: "Analysis Settings"; }
+
+            Text {
+                text: "These settings control what and when analysis passes should be performed on the binary.";
+                color: MaterialColors.on-surface-variant;
+                font-size: 12px;
+                wrap: word-wrap;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            SectionHeader { txt: "Auto Analysis"; }
+            ComboRow {
+                txt: "Mode";
+                model: ["Always", "If Debugger Is Open", "Never"];
+                current-index: auto-analyze-mode;
+                selected(idx) => { auto-analyze-mode = idx; }
+            }
+
+            SectionHeader { txt: "Function Detection"; }
+
+            HorizontalLayout {
+                padding-left: 20px;
+                padding-right: 20px;
+                alignment: space-between;
+                Text {
+                    text: "Maximum Functions";
+                    color: MaterialColors.on-surface;
+                    font-size: 13px;
+                    vertical-alignment: center;
+                }
+                Text {
+                    text: max-functions;
+                    color: MaterialColors.primary;
+                    font-size: 13px;
+                    font-family: "Consolas";
+                    vertical-alignment: center;
+                }
+            }
+            SliderRow {
+                txt: " ";
+                value: (max-functions - 100) / 49900.0;
+                changed(v) => { max-functions = Math.round(100 + v * 49900); }
+            }
+
+            HorizontalLayout {
+                padding-left: 20px;
+                padding-right: 20px;
+                alignment: space-between;
+                Text {
+                    text: "Minimum Function Size";
+                    color: MaterialColors.on-surface;
+                    font-size: 13px;
+                    vertical-alignment: center;
+                }
+                Text {
+                    text: min-fn-size + " bytes";
+                    color: MaterialColors.primary;
+                    font-size: 13px;
+                    font-family: "Consolas";
+                    vertical-alignment: center;
+                }
+            }
+            SliderRow {
+                txt: " ";
+                value: min-fn-size / 128.0;
+                changed(v) => { min-fn-size = Math.round(v * 128); }
+            }
+
+            SectionHeader { txt: "Symbols"; }
+            ToggleRow {
+                txt: "Show Unnamed Functions";
+                sub: "Display functions without a known name in the symbol tree";
+                checked: show-unnamed-functions;
+                toggled(v) => { show-unnamed-functions = v; }
+            }
+            ToggleRow {
+                txt: "Generate Symbols for IRX Exports";
+                sub: "Create symbols from IRX module export tables";
+                checked: false;
+                toggled => { }
+            }
+        }
+
+        // === GS TAB ===
+        if selected-tab == 2: VerticalLayout {
+            spacing: 10px;
+
+            SectionHeader { txt: "Draw Dumping"; }
+            ToggleRow {
+                txt: "Dump GS Draws";
+                sub: "Capture GS draw calls to file for debugging";
+                checked: dump-gs-draws;
+                toggled(v) => { dump-gs-draws = v; }
+            }
+
+            if dump-gs-draws: VerticalLayout {
+                spacing: 8px;
+
+                SectionHeader { txt: "HW Dump"; }
+                TextFieldRow {
+                    txt: "HW Dump Directory";
+                    value: hw-dump-path;
+                    edited(v) => { hw-dump-path = v; }
+                }
+
+                SectionHeader { txt: "SW Dump"; }
+                TextFieldRow {
+                    txt: "SW Dump Directory";
+                    value: sw-dump-path;
+                    edited(v) => { sw-dump-path = v; }
+                }
+
+                SectionHeader { txt: "Saved Frames"; }
+                HorizontalLayout {
+                    padding-left: 20px;
+                    padding-right: 20px;
+                    alignment: space-between;
+                    Text { text: "Frame Start"; color: MaterialColors.on-surface; font-size: 13px; vertical-alignment: center; }
+                    Text { text: dump-frame-start; color: MaterialColors.primary; font-size: 13px; font-family: "Consolas"; vertical-alignment: center; }
+                }
+                SliderRow {
+                    txt: " ";
+                    value: dump-frame-start / 99999999.0;
+                    changed(v) => { dump-frame-start = Math.round(v * 99999999); }
+                }
+
+                HorizontalLayout {
+                    padding-left: 20px;
+                    padding-right: 20px;
+                    alignment: space-between;
+                    Text { text: "Frame Count"; color: MaterialColors.on-surface; font-size: 13px; vertical-alignment: center; }
+                    Text { text: dump-frame-count; color: MaterialColors.primary; font-size: 13px; font-family: "Consolas"; vertical-alignment: center; }
+                }
+                SliderRow {
+                    txt: " ";
+                    value: (dump-frame-count - 1) / 99999998.0;
+                    changed(v) => { dump-frame-count = Math.max(1, Math.round(1 + v * 99999998)); }
+                }
+
+                SectionHeader { txt: "Draw Range"; }
+                HorizontalLayout {
+                    padding-left: 20px;
+                    padding-right: 20px;
+                    alignment: space-between;
+                    Text { text: "Draw Start"; color: MaterialColors.on-surface; font-size: 13px; vertical-alignment: center; }
+                    Text { text: dump-draw-start; color: MaterialColors.primary; font-size: 13px; font-family: "Consolas"; vertical-alignment: center; }
+                }
+                SliderRow {
+                    txt: " ";
+                    value: dump-draw-start / 99999999.0;
+                    changed(v) => { dump-draw-start = Math.round(v * 99999999); }
+                }
+
+                HorizontalLayout {
+                    padding-left: 20px;
+                    padding-right: 20px;
+                    alignment: space-between;
+                    Text { text: "Draw Count"; color: MaterialColors.on-surface; font-size: 13px; vertical-alignment: center; }
+                    Text { text: dump-draw-count; color: MaterialColors.primary; font-size: 13px; font-family: "Consolas"; vertical-alignment: center; }
+                }
+                SliderRow {
+                    txt: " ";
+                    value: (dump-draw-count - 1) / 99999998.0;
+                    changed(v) => { dump-draw-count = Math.max(1, Math.round(1 + v * 99999998)); }
+                }
+
+                SectionHeader { txt: "Dump Content"; }
+                ToggleRow { txt: "Save Frame Data"; checked: dump-save-frame; toggled(v) => { dump-save-frame = v; } }
+                ToggleRow { txt: "Save Render Target"; checked: dump-save-rt; toggled(v) => { dump-save-rt = v; } }
+                ToggleRow { txt: "Save Depth Buffer"; checked: dump-save-depth; toggled(v) => { dump-save-depth = v; } }
+                ToggleRow { txt: "Save Alpha Channel"; checked: dump-save-alpha; toggled(v) => { dump-save-alpha = v; } }
+                ToggleRow { txt: "Dump Textures"; checked: dump-textures; toggled(v) => { dump-textures = v; } }
+            }
+        }
+
+        // === LOGGING TAB ===
+        if selected-tab == 3: VerticalLayout {
+            spacing: 8px;
+
+            SectionHeader { txt: "Logging"; }
+            ToggleRow {
+                txt: "Enable Logging";
+                sub: "Master switch for all debug logging";
+                checked: logging-enabled;
+                toggled(v) => { logging-enabled = v; }
+            }
+
+            if logging-enabled: VerticalLayout {
+                spacing: 8px;
+
+                SectionHeader { txt: "Output"; }
+                ToggleRow { txt: "Console Output"; sub: "Log to console window"; checked: console-output; toggled(v) => { console-output = v; } }
+                ToggleRow { txt: "EE Console"; sub: "Emotion Engine console output"; checked: ee-console; toggled(v) => { ee-console = v; } }
+                ToggleRow { txt: "IOP Console"; sub: "I/O Processor console output"; checked: iop-console; toggled(v) => { iop-console = v; } }
+
+                SectionHeader { txt: "Log Level"; }
+                ComboRow {
+                    txt: "Verbosity";
+                    model: ["Error", "Warning", "Info", "Debug", "Trace"];
+                    current-index: log-level;
+                    selected(idx) => { log-level = idx; }
+                }
+
+                SectionHeader { txt: "EE Logging"; }
+                ToggleRow { txt: "COP0 (System Control)"; checked: ee-cop0; toggled(v) => { ee-cop0 = v; } }
+                ToggleRow { txt: "COP1 (FPU)"; checked: ee-cop1; toggled(v) => { ee-cop1 = v; } }
+                ToggleRow { txt: "Cache"; checked: ee-cache; toggled(v) => { ee-cache = v; } }
+                ToggleRow { txt: "Memory"; checked: ee-memory; toggled(v) => { ee-memory = v; } }
+                ToggleRow { txt: "DMA Registers"; checked: ee-dma; toggled(v) => { ee-dma = v; } }
+                ToggleRow { txt: "BIOS"; checked: ee-bios; toggled(v) => { ee-bios = v; } }
+                ToggleRow { txt: "Counters"; checked: ee-count; toggled(v) => { ee-count = v; } }
+                ToggleRow { txt: "VIF"; checked: ee-vif; toggled(v) => { ee-vif = v; } }
+                ToggleRow { txt: "GIF"; checked: ee-gif; toggled(v) => { ee-gif = v; } }
+                ToggleRow { txt: "IPU"; checked: ee-ipu; toggled(v) => { ee-ipu = v; } }
+
+                SectionHeader { txt: "IOP Logging"; }
+                ToggleRow { txt: "COP2 (GPU)"; checked: iop-cop2; toggled(v) => { iop-cop2 = v; } }
+                ToggleRow { txt: "Memcards"; checked: iop-memcards; toggled(v) => { iop-memcards = v; } }
+                ToggleRow { txt: "Pad"; checked: iop-pad; toggled(v) => { iop-pad = v; } }
+                ToggleRow { txt: "CDVD"; checked: iop-cdvd; toggled(v) => { iop-cdvd = v; } }
+                ToggleRow { txt: "DMA Control"; checked: iop-dma; toggled(v) => { iop-dma = v; } }
+
+                SectionHeader { txt: "System Logging"; }
+                ToggleRow { txt: "Syscall Log"; checked: syscall-log; toggled(v) => { syscall-log = v; } }
+                ToggleRow { txt: "DMA Log"; checked: dma-log; toggled(v) => { dma-log = v; } }
+            }
+
+            if !logging-enabled: Text {
+                text: "Logging is disabled. Toggle the master switch above to enable.";
+                color: MaterialColors.on-surface-variant;
+                font-size: 12px;
+                padding-left: 20px;
+                padding-right: 20px;
+                wrap: word-wrap;
+            }
+        }
+    }
+}

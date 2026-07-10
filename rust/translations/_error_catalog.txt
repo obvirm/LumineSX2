@@ -1,0 +1,116 @@
+common/Timer.rs:98:1	error: expected identifier, found `<`
+pcsx2/GsDeviceVulkan.rs:2590:11	error: missing `fn` for function definition
+pcsx2/GsFullSweep.rs:3658:39	error: comparison operators cannot be chained
+pcsx2/GsFullSweep.rs:3685:27	error: comparison operators cannot be chained
+pcsx2/GsHwRenderer.rs:319:5	error: struct is not supported in `trait`s or `impl`s
+pcsx2/GsRenderersFull.rs:2266:9	error: enum is not supported in `trait`s or `impl`s
+pcsx2/Spu2.rs:1479:9	error: expected a pattern, found an expression
+pcsx2/Spu2.rs:1486:9	error: expected a pattern, found an expression
+pcsx2/Spu2.rs:1494:9	error: expected a pattern, found an expression
+pcsx2/Spu2.rs:1501:9	error: expected a pattern, found an expression
+pcsx2/Spu2.rs:1514:9	error: expected a pattern, found an expression
+pcsx2/Spu2.rs:1553:9	error: expected a pattern, found an expression
+pcsx2/Spu2MainEtc.rs:1377:10	error: expected a pattern, found an expression
+pcsx2/Spu2MainEtc.rs:1391:10	error: expected a pattern, found an expression
+pcsx2/Spu2MainEtc.rs:1450:10	error: expected a pattern, found an expression
+pcsx2/Spu2MainEtc.rs:1456:10	error: expected a pattern, found an expression
+pcsx2/UsbMainEtc.rs:2265:38	error: expected `mut` or `const` keyword in raw pointer type
+pcsx2/VuMainEtc.rs:2320:1	error: expected identifier, found `<`
+pcsx2/arm64/Arm64Full.rs:77:27	error: expected one of `::`, `;`, or `as`, found `(`
+pcsx2/x86/FinalSweepX86.rs:3496:26	error: expressions must be enclosed in braces to be used as const generic arguments
+pcsx2_gsrunner/GsRunnerMain.rs:395:9	error: associated `static` items are not allowed
+pcsx2_gsrunner/GsRunnerMain.rs:425:9	error: module is not supported in `trait`s or `impl`s
+thirdparty/demangler/Demangler.rs:1546:28	error: character literal may only contain one codepoint
+thirdparty/demangler/Demangler.rs:181:47	error: right curly brace `}` before `else` in a `let...else` statement not allowed
+thirdparty/demangler/Demangler.rs:194:47	error: right curly brace `}` before `else` in a `let...else` statement not allowed
+thirdparty/demangler/Demangler.rs:207:47	error: right curly brace `}` before `else` in a `let...else` statement not allowed
+thirdparty/demangler/Demangler.rs:219:47	error: right curly brace `}` before `else` in a `let...else` statement not allowed
+thirdparty/glad/Glad.rs:6616:81	error: expected type, found keyword `struct`
+thirdparty/glad/Glad.rs:6616:113	error: expected type, found keyword `struct`
+thirdparty/glad/Glad.rs:8823:95	error: expected pattern, found `:`
+thirdparty/glad/Glad.rs:19576:56	error: expected type, found keyword `struct`
+thirdparty/glad/Glad.rs:19576:88	error: expected type, found keyword `struct`
+thirdparty/glad/Glad.rs:34156:70	error: expected pattern, found `:`
+thirdparty/glad/Glad.rs:34158:27	error: expected expression, found `)`
+thirdparty/libchdr/Chd.rs:1507:78	error: `<` is interpreted as a start of generic arguments for `u64`, not a comparison
+thirdparty/libchdr/Chd.rs:1532:78	error: `<` is interpreted as a start of generic arguments for `u64`, not a comparison
+thirdparty/lzma/Lzma.rs:11:1	error: expected item, found `!`
+thirdparty/winwil/WilCore.rs:487:1	error[E0753]: expected outer doc comment
+updater/UpdaterPrecompiled.rs:346:5	error: expected item, found keyword `let`
+common/ZipHelpers.rs:22:1	error[E0463]: can't find crate for `flate2`
+common/ZipHelpers.rs:23:1	error[E0463]: can't find crate for `zip`
+pcsx2/Dev9Main.rs:662:5	error[E0428]: the name `Console` is defined multiple times
+pcsx2/Dev9Main.rs:663:5	error[E0428]: the name `DevCon` is defined multiple times
+pcsx2/FinalCore.rs:2259:5	error[E0428]: the name `get_entry_sammy` is defined multiple times
+pcsx2/FinalCore.rs:2263:5	error[E0428]: the name `get_entry_nihon` is defined multiple times
+pcsx2/FinalCore.rs:2264:5	error[E0428]: the name `get_entry_tomy` is defined multiple times
+pcsx2/FinalCore.rs:2265:5	error[E0428]: the name `get_entry_imadio` is defined multiple times
+pcsx2/GsDeviceOpenGl.rs:549:5	error[E0428]: the name `GL_BACK` is defined multiple times
+pcsx2/GsDeviceOpenGl.rs:550:5	error[E0428]: the name `GL_FRONT` is defined multiple times
+pcsx2/GsDeviceOpenGl.rs:551:5	error[E0428]: the name `GL_FRONT_AND_BACK` is defined multiple times
+pcsx2/GsFullSweep.rs:3911:1	error[E0428]: the name `gscache_get_target_memory_usage` is defined multiple times
+pcsx2/GsFullSweep.rs:3914:1	error[E0428]: the name `gscache_get_source_memory_usage` is defined multiple times
+pcsx2/GsFullSweep.rs:3917:1	error[E0428]: the name `gscache_get_hash_cache_memory_usage` is defined multiple times
+pcsx2/GsFullSweep.rs:3921:1	error[E0428]: the name `gsdevice_get_pool_memory_usage` is defined multiple times
+pcsx2/HwEtcMain.rs:1218:5	error[E0428]: the name `PSXCLK` is defined multiple times
+pcsx2/SifMainEtc.rs:168:1	error[E0428]: the name `DevCon` is defined multiple times
+pcsx2/UsbMainEtc.rs:2447:1	error[E0428]: the name `EYETOY_VENDOR` is defined multiple times
+pcsx2/UsbMainEtc.rs:2448:1	error[E0428]: the name `EYETOY_PRODUCT` is defined multiple times
+pcsx2/arm64/FinalSweepArm64.rs:2161:1	error[E0428]: the name `px_assert_rel` is defined multiple times
+pcsx2_qt/DebuggerFull.rs:574:5	error[E0428]: the name `get_register` is defined multiple times
+thirdparty/include/Xxh.rs:132:1	error[E0428]: the name `XXH3_64bits` is defined multiple times
+thirdparty/include/Xxh.rs:138:1	error[E0428]: the name `XXH3_128bits` is defined multiple times
+thirdparty/include/Xxh.rs:144:1	error[E0428]: the name `XXH128` is defined multiple times
+thirdparty/vulkan/VulkanCore.rs:3044:1	error[E0428]: the name `VkColorComponentFlags` is defined multiple times
+common/HttpxxDownloaders.rs:29:44	error[E0252]: the name `HTTPDownloader` is defined multiple times
+common/Pcsx2Defs.rs:178:1	error[E0255]: the name `assume` is defined multiple times
+common/SmallEtc.rs:972:13	error[E0428]: the name `read_typed_specialized` is defined multiple times
+common/SmallEtc.rs:987:13	error[E0428]: the name `write_typed_specialized` is defined multiple times
+pcsx2/FinalCore.rs:505:23	error: this trait cannot be derived for unions
+pcsx2/FinalCore.rs:516:23	error: this trait cannot be derived for unions
+pcsx2/GsDeviceDx12.rs:1518:23	error: this trait cannot be derived for unions
+pcsx2/GsDeviceDx12.rs:1518:30	error: this trait cannot be derived for unions
+pcsx2/GsHeadless.rs:274:1	error[E0428]: the name `GifReg` is defined multiple times
+pcsx2/GsRenderersFull.rs:630:23	error: this trait cannot be derived for unions
+pcsx2/GsRenderersFull.rs:2391:37	error: couldn't read `pcsx2\gs_mtl_shared_header.rs`: The system cannot find the file specified. (os error 2)
+pcsx2/Ps2HelpersEtc.rs:362:10	error: 14 positional arguments in format string, but there are 13 arguments
+pcsx2_gsrunner/GsRunnerMain.rs:1277:73	error: unknown format trait `f`
+pcsx2_gsrunner/GsRunnerMain.rs:1277:84	error: unknown format trait `f`
+pcsx2_gsrunner/GsRunnerMain.rs:1278:73	error: unknown format trait `f`
+pcsx2_gsrunner/GsRunnerMain.rs:1278:84	error: unknown format trait `f`
+pcsx2_gsrunner/GsRunnerMain.rs:1279:73	error: unknown format trait `f`
+pcsx2_gsrunner/GsRunnerMain.rs:1279:84	error: unknown format trait `f`
+pcsx2_gsrunner/GsRunnerMain.rs:1281:71	error: unknown format trait `f`
+pcsx2_gsrunner/GsRunnerMain.rs:1282:70	error: unknown format trait `f`
+pcsx2_gsrunner/GsRunnerMain.rs:1283:64	error: unknown format trait `f`
+pcsx2_gsrunner/GsRunnerMain.rs:1284:78	error: unknown format trait `f`
+pcsx2_gsrunner/GsRunnerMain.rs:1285:77	error: unknown format trait `f`
+pcsx2_gsrunner/GsRunnerMain.rs:1286:71	error: unknown format trait `f`
+pcsx2_qt/DebuggerFull.rs:486:17	error[E0665]: `#[derive(Default)]` on enum with no `#[default]`
+pcsx2_qt/DebuggerFull.rs:2425:17	error[E0665]: `#[derive(Default)]` on enum with no `#[default]`
+pcsx2_qt/DebuggerFull.rs:2619:17	error[E0665]: `#[derive(Default)]` on enum with no `#[default]`
+pcsx2_qt/DebuggerFull.rs:2707:17	error[E0665]: `#[derive(Default)]` on enum with no `#[default]`
+pcsx2_qt/DebuggerFull.rs:2800:17	error[E0665]: `#[derive(Default)]` on enum with no `#[default]`
+pcsx2_qt/DebuggerFull.rs:2878:17	error[E0665]: `#[derive(Default)]` on enum with no `#[default]`
+pcsx2_qt/DebuggerFull.rs:3034:17	error[E0665]: `#[derive(Default)]` on enum with no `#[default]`
+pcsx2_qt/FinalQtFull.rs:908:14	error[E0665]: `#[derive(Default)]` on enum with no `#[default]`
+pcsx2_qt/QtDebugger.rs:3067:17	error[E0665]: `#[derive(Default)]` on enum with no `#[default]`
+pcsx2_qt/QtDebugger.rs:3140:17	error[E0665]: `#[derive(Default)]` on enum with no `#[default]`
+pcsx2_qt/QtDebugger.rs:3148:17	error[E0665]: `#[derive(Default)]` on enum with no `#[default]`
+pcsx2_qt/QtDebugger.rs:3796:17	error[E0665]: `#[derive(Default)]` on enum with no `#[default]`
+thirdparty/vulkan/VulkanCore.rs:314:5	error[E0428]: the name `VK_STRUCTURE_TYPE_SPARSE_IMAGE_FORMAT_PROPERTIES_2` is defined multiple times
+thirdparty/vulkan/VulkanCore.rs:1456:5	error[E0428]: the name `VK_DYNAMIC_STATE_COLOR_BLEND_ENABLE_EXT` is defined multiple times
+pcsx2/Dev9MainEtc.rs:1388:19	error: expected a pattern, found an expression
+pcsx2/Dev9MainEtc.rs:1389:19	error: expected a pattern, found an expression
+pcsx2/Dev9MainEtc.rs:1389:52	error: expected a pattern, found an expression
+pcsx2/Dev9MainEtc.rs:1390:19	error: expected a pattern, found an expression
+pcsx2/Dev9MainEtc.rs:1390:52	error: expected a pattern, found an expression
+pcsx2/Dev9MainEtc.rs:1391:19	error: expected a pattern, found an expression
+pcsx2/Dev9MainEtc.rs:1391:50	error: expected a pattern, found an expression
+pcsx2/Dev9MainEtc.rs:1392:19	error: expected a pattern, found an expression
+pcsx2/Dev9MainEtc.rs:1392:50	error: expected a pattern, found an expression
+pcsx2/Dev9MainEtc.rs:1393:19	error: expected a pattern, found an expression
+pcsx2/Dev9MainEtc.rs:1393:49	error: expected a pattern, found an expression
+pcsx2/Dev9MainEtc.rs:1396:19	error: expected a pattern, found an expression
+pcsx2/Dev9MainEtc.rs:1396:48	error: expected a pattern, found an expression
+?:?:?	error: could not compile `pcsx2_translations` (lib) due to 115 previous errors

@@ -1,0 +1,103 @@
+// Interface Settings Page
+import { SettingsRow, ToggleRow, SectionHeader, DetailPage, SliderRow, ComboRow, TextFieldRow } from "./common.slint";
+
+export component InterfaceSettingsView inherits DetailPage {
+    title: "Pengaturan Aplikasi";
+    
+    // Display
+    in-out property <int> theme-index: 0;
+    in-out property <int> language-index: 0;
+    in-out property <bool> render-separate: false;
+    in-out property <bool> hide-main-when-running: false;
+    in-out property <bool> disable-window-resize: false;
+    
+    // Behavior
+    in-out property <bool> confirm-exit: true;
+    in-out property <bool> save-on-shutdown: true;
+    in-out property <bool> pause-focus-loss: false;
+    in-out property <bool> pause-on-start: false;
+    in-out property <bool> pause-on-controller-disconnect: false;
+    in-out property <bool> mouse-lock: false;
+    in-out property <bool> inhibit-screensaver: true;
+    
+    // Fullscreen
+    in-out property <bool> start-fullscreen: false;
+    in-out property <bool> double-click-fullscreen: true;
+    in-out property <bool> hide-cursor-fullscreen: false;
+    
+    // Savestate
+    in-out property <bool> prompt-state-failure: true;
+    in-out property <bool> use-savestate-selector: true;
+    
+    // Social
+    in-out property <bool> discord-presence: false;
+    
+    // Game List
+    in-out property <bool> english-titles: false;
+    in-out property <string> bg-image-path: "";
+    in-out property <int> bg-scale-index: 0;
+    in-out property <float> bg-opacity: 1.0;
+    
+    // Big Picture
+    in-out property <bool> start-big-picture: false;
+
+    // Display section
+    SectionHeader { txt: "Tampilan"; }
+    ComboRow { 
+        txt: "Theme"; 
+        model: ["Native", "Classic Windows", "Fusion", "Dark Fusion", "Dark Fusion Blue", "Grey Matter", "Untouched Lagoon", "Baby Pastel", "Pizza Brown", "PCSX2 Blue", "Scarlet Devil", "Violet Angel", "Cobalt Sky", "AMOLED", "Ruby", "Sapphire", "Emerald", "Custom QSS"]; 
+        current-index: theme-index; 
+        selected(idx) => { theme-index = idx; } 
+    }
+    ComboRow { 
+        txt: "Language"; 
+        model: ["English", "Bahasa Indonesia", "日本語", "한국어", "中文 (简体)", "Deutsch", "Français", "Español", "Italiano", "Português", "Русский", "العربية"]; 
+        current-index: language-index; 
+        selected(idx) => { language-index = idx; } 
+    }
+    ToggleRow { txt: "Render to Separate Window"; sub: "Game renders in separate window instead of main window"; checked: render-separate; toggled(v) => { render-separate = v; } }
+    ToggleRow { txt: "Hide Main Window When Running"; sub: "Hide the game list during gameplay (requires separate window)"; checked: hide-main-when-running; toggled(v) => { hide-main-when-running = v; } }
+    ToggleRow { txt: "Disable Window Resizing"; sub: "Prevent main window from being resized"; checked: disable-window-resize; toggled(v) => { disable-window-resize = v; } }
+
+    // Behavior section
+    SectionHeader { txt: "Perilaku"; }
+    ToggleRow { txt: "Confirm on Exit"; sub: "Show confirmation dialog when shutting down via hotkey"; checked: confirm-exit; toggled(v) => { confirm-exit = v; } }
+    ToggleRow { txt: "Pause on Focus Loss"; sub: "Pause emulation when window loses focus"; checked: pause-focus-loss; toggled(v) => { pause-focus-loss = v; } }
+    ToggleRow { txt: "Pause on Controller Disconnection"; sub: "Auto-pause when a bound controller disconnects"; checked: pause-on-controller-disconnect; toggled(v) => { pause-on-controller-disconnect = v; } }
+    ToggleRow { txt: "Pause on Start"; sub: "Pause emulator when game starts"; checked: pause-on-start; toggled(v) => { pause-on-start = v; } }
+    ToggleRow { txt: "Inhibit Screensaver"; sub: "Prevent screen sleep during emulation"; checked: inhibit-screensaver; toggled(v) => { inhibit-screensaver = v; } }
+    ToggleRow { txt: "Mouse Lock"; sub: "Capture mouse cursor during emulation"; checked: mouse-lock; toggled(v) => { mouse-lock = v; } }
+
+    // Fullscreen section
+    SectionHeader { txt: "Fullscreen"; }
+    ToggleRow { txt: "Start Fullscreen"; sub: "Auto-fullscreen on game start"; checked: start-fullscreen; toggled(v) => { start-fullscreen = v; } }
+    ToggleRow { txt: "Double-Click Toggles Fullscreen"; sub: "Double-click game window to toggle fullscreen"; checked: double-click-fullscreen; toggled(v) => { double-click-fullscreen = v; } }
+    ToggleRow { txt: "Hide Cursor in Fullscreen"; sub: "Hide mouse pointer when in fullscreen mode"; checked: hide-cursor-fullscreen; toggled(v) => { hide-cursor-fullscreen = v; } }
+
+    // Savestate section
+    SectionHeader { txt: "Savestate"; }
+    ToggleRow { txt: "Prompt on State Load/Save Failure"; sub: "Show dialog when savestate operation fails"; checked: prompt-state-failure; toggled(v) => { prompt-state-failure = v; } }
+    ToggleRow { txt: "Use Savestate Selector"; sub: "Show slot selector UI instead of notification bubble"; checked: use-savestate-selector; toggled(v) => { use-savestate-selector = v; } }
+
+    // Social section
+    SectionHeader { txt: "Sosial"; }
+    ToggleRow { txt: "Discord Presence"; sub: "Show current game in Discord profile"; checked: discord-presence; toggled(v) => { discord-presence = v; } }
+
+    // Game List section
+    SectionHeader { txt: "Game List Display"; }
+    ToggleRow { txt: "Show English Game Titles"; sub: "Prefer English title for games with multilingual titles"; checked: english-titles; toggled(v) => { english-titles = v; } }
+
+    // Background Image section
+    SectionHeader { txt: "Background Image"; }
+    TextFieldRow { txt: "Image Path"; value: bg-image-path; placeholder: "Optional custom background (bmp/gif/jpg/png/webp)..."; edited(v) => { bg-image-path = v; } }
+    ComboRow { txt: "Scale Mode"; model: ["Fit", "Fill", "Stretch", "Center", "Tile"]; current-index: bg-scale-index; selected(idx) => { bg-scale-index = idx; } }
+    SliderRow { txt: "Background Opacity"; value: bg-opacity; minimum: 0.0; maximum: 1.0; changed(v) => { bg-opacity = v; } }
+
+    // Big Picture section
+    SectionHeader { txt: "Big Picture Mode"; }
+    ToggleRow { txt: "Start in Big Picture Mode"; sub: "Launch into Big Picture Mode instead of standard interface"; checked: start-big-picture; toggled(v) => { start-big-picture = v; } }
+
+    // Miscellaneous
+    SectionHeader { txt: "Lainnya"; }
+    ToggleRow { txt: "Save State on Shutdown"; sub: "Auto-save emulation state when closing"; checked: save-on-shutdown; toggled(v) => { save-on-shutdown = v; } }
+}

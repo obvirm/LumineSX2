@@ -1,0 +1,467 @@
+// Memory Card feature dialogs for LumineSX2 UI
+import { ScrollView, LineEdit, ComboBox, Button, CheckBox, Switch } from "std-widgets.slint";
+import { MaterialColors, SettingsRow, ToggleRow, SectionHeader, ComboRow, TextFieldRow } from "common.slint";
+
+// ─── Memory Card Convert Dialog ───
+export component MemoryCardConvertDialog inherits Rectangle {
+    in property <string> card-name: "";
+    in property <int> current-size-index: 0;
+    in property <bool> is-formatted: true;
+    in property <bool> is-ps1: false;
+    in property <float> progress: 0.0;
+    in property <bool> converting: false;
+    in property <string> status-text: "";
+
+    callback convert(int /* target-size-index */);
+    callback cancel();
+    callback close();
+
+    background: #00000088;
+    visible: false;
+
+    Rectangle {
+        width: 420px; height: 400px;
+        x: (parent.width - self.width) / 2;
+        y: (parent.height - self.height) / 2;
+        background: MaterialColors.surface;
+        border-radius: 28px;
+        border-width: 1px;
+        border-color: MaterialColors.outline;
+        clip: true;
+
+        VerticalLayout {
+            padding: 24px; spacing: 16px;
+            Text { text: "Convert Memory Card"; color: MaterialColors.text-main; font-size: 20px; font-weight: 500; }
+            Text { text: "Converting: " + card-name; color: MaterialColors.text-muted; font-size: 14px; }
+
+            if (!is-formatted) : Rectangle {
+                height: 48px; border-radius: 12px; background: MaterialColors.error.with-alpha(0.12);
+                HorizontalLayout { padding-left: 16px; padding-right: 16px; alignment: center;
+                    Text { text: "⚠ Card is not formatted. Cannot convert."; color: MaterialColors.error; font-size: 13px; }
+                }
+            }
+
+            if (is-ps1) : Rectangle {
+                height: 48px; border-radius: 12px; background: MaterialColors.error.with-alpha(0.12);
+                HorizontalLayout { padding-left: 16px; padding-right: 16px; alignment: center;
+                    Text { text: "⚠ PS1 cards cannot be converted."; color: MaterialColors.error; font-size: 13px; }
+                }
+            }
+
+            if (is-formatted && !is-ps1) : VerticalLayout {
+                spacing: 8px;
+                Text { text: "Target Format"; color: MaterialColors.primary; font-size: 13px; font-weight: 600; }
+                ComboRow {
+                    txt: "Size";
+                    model: ["PS2 8MB", "PS2 16MB", "PS2 32MB", "PS2 64MB", "PS2 Folder"];
+                    current-index: current-size-index;
+                    selected(idx) => { root.current-size-index = idx; }
+                }
+            }
+
+            if (converting) : VerticalLayout {
+                spacing: 8px;
+                Text { text: status-text; color: MaterialColors.text-muted; font-size: 13px; }
+                Rectangle {
+                    height: 8px; border-radius: 4px; background: MaterialColors.outline;
+                    Rectangle {
+                        width: parent.width * progress;
+                        height: parent.height; border-radius: 4px;
+                        background: MaterialColors.primary;
+                    }
+                }
+            }
+
+            // Spacer
+            Rectangle { vertical-stretch: 1; }
+
+            HorizontalLayout {
+                spacing: 12px; alignment: end;
+                if (converting) : Rectangle {
+                    width: 100px; height: 40px; border-radius: 20px;
+                    background: MaterialColors.error.with-alpha(0.12);
+                    Text { text: "Cancel"; color: MaterialColors.error; font-size: 14px; horizontal-alignment: center; vertical-alignment: center; }
+                    TouchArea { clicked => { root.cancel(); } }
+                }
+                if (!converting && is-formatted && !is-ps1) : Rectangle {
+                    width: 100px; height: 40px; border-radius: 20px;
+                    background: MaterialColors.primary;
+                    Text { text: "Convert"; color: MaterialColors.on-primary; font-size: 14px; font-weight: 600; horizontal-alignment: center; vertical-alignment: center; }
+                    TouchArea { clicked => { root.convert(root.current-size-index); } }
+                }
+                Rectangle {
+                    width: 80px; height: 40px; border-radius: 20px;
+                    background: MaterialColors.surface-variant;
+                    Text { text: "Close"; color: MaterialColors.text-main; font-size: 14px; horizontal-alignment: center; vertical-alignment: center; }
+                    TouchArea { clicked => { root.close(); } }
+                }
+            }
+        }
+    }
+}
+
+// ─── Memory Card Rename Dialog ───
+export component MemoryCardRenameDialog inherits Rectangle {
+    in property <string> current-name: "";
+    in property <string> new-name: "";
+    in property <string> error-text: "";
+
+    callback rename(string /* new-name */);
+    callback close();
+
+    background: #00000088;
+    visible: false;
+
+    Rectangle {
+        width: 380px; height: 260px;
+        x: (parent.width - self.width) / 2;
+        y: (parent.height - self.height) / 2;
+        background: MaterialColors.surface;
+        border-radius: 28px;
+        border-width: 1px;
+        border-color: MaterialColors.outline;
+        clip: true;
+
+        VerticalLayout {
+            padding: 24px; spacing: 16px;
+            Text { text: "Rename Memory Card"; color: MaterialColors.text-main; font-size: 20px; font-weight: 500; }
+            Text { text: "Current: " + current-name; color: MaterialColors.text-muted; font-size: 13px; }
+
+            VerticalLayout {
+                spacing: 4px;
+                Text { text: "New Name"; color: MaterialColors.primary; font-size: 13px; font-weight: 600; }
+                LineEdit {
+                    text: new-name;
+                    placeholder-text: "Enter new card name";
+                    edited(text) => { root.new-name = text; }
+                }
+            }
+
+            if (error-text != "") : Text {
+                text: error-text; color: MaterialColors.error; font-size: 12px;
+            }
+
+            Rectangle { vertical-stretch: 1; }
+
+            HorizontalLayout {
+                spacing: 12px; alignment: end;
+                Rectangle {
+                    width: 80px; height: 40px; border-radius: 20px;
+                    background: MaterialColors.primary;
+                    Text { text: "Rename"; color: MaterialColors.on-primary; font-size: 14px; font-weight: 600; horizontal-alignment: center; vertical-alignment: center; }
+                    TouchArea { clicked => { root.rename(root.new-name); } }
+                }
+                Rectangle {
+                    width: 80px; height: 40px; border-radius: 20px;
+                    background: MaterialColors.surface-variant;
+                    Text { text: "Cancel"; color: MaterialColors.text-main; font-size: 14px; horizontal-alignment: center; vertical-alignment: center; }
+                    TouchArea { clicked => { root.close(); } }
+                }
+            }
+        }
+    }
+}
+
+// ─── Memory Card Delete Confirmation Dialog ───
+export component MemoryCardDeleteDialog inherits Rectangle {
+    in property <string> card-name: "";
+
+    callback confirmed-delete();
+    callback close();
+
+    background: #00000088;
+    visible: false;
+
+    Rectangle {
+        width: 360px; height: 220px;
+        x: (parent.width - self.width) / 2;
+        y: (parent.height - self.height) / 2;
+        background: MaterialColors.surface;
+        border-radius: 28px;
+        border-width: 1px;
+        border-color: MaterialColors.outline;
+        clip: true;
+
+        VerticalLayout {
+            padding: 24px; spacing: 16px;
+            Text { text: "Delete Memory Card"; color: MaterialColors.error; font-size: 20px; font-weight: 500; }
+            Text { text: "Are you sure you want to delete \"" + card-name + "\"?"; color: MaterialColors.text-main; font-size: 14px; wrap: word-wrap; }
+            Text { text: "This action cannot be reversed."; color: MaterialColors.text-muted; font-size: 13px; }
+
+            Rectangle { vertical-stretch: 1; }
+
+            HorizontalLayout {
+                spacing: 12px; alignment: end;
+                Rectangle {
+                    width: 100px; height: 40px; border-radius: 20px;
+                    background: MaterialColors.error;
+                    Text { text: "Delete"; color: MaterialColors.on-error; font-size: 14px; font-weight: 600; horizontal-alignment: center; vertical-alignment: center; }
+                    TouchArea { clicked => { root.confirmed-delete(); } }
+                }
+                Rectangle {
+                    width: 80px; height: 40px; border-radius: 20px;
+                    background: MaterialColors.surface-variant;
+                    Text { text: "Cancel"; color: MaterialColors.text-main; font-size: 14px; horizontal-alignment: center; vertical-alignment: center; }
+                    TouchArea { clicked => { root.close(); } }
+                }
+            }
+        }
+    }
+}
+
+// ─── Memory Card Swap Dialog ───
+export component MemoryCardSwapDialog inherits Rectangle {
+    in property <string> slot1-card: "";
+    in property <string> slot2-card: "";
+    in property <bool> slot1-empty: false;
+    in property <bool> slot2-empty: false;
+    in property <string> error-text: "";
+
+    callback swap();
+    callback close();
+
+    background: #00000088;
+    visible: false;
+
+    Rectangle {
+        width: 380px; height: 280px;
+        x: (parent.width - self.width) / 2;
+        y: (parent.height - self.height) / 2;
+        background: MaterialColors.surface;
+        border-radius: 28px;
+        border-width: 1px;
+        border-color: MaterialColors.outline;
+        clip: true;
+
+        VerticalLayout {
+            padding: 24px; spacing: 16px;
+            Text { text: "Swap Memory Card Ports"; color: MaterialColors.text-main; font-size: 20px; font-weight: 500; }
+            Text { text: "Swap Port 1 ↔ Port 2 assignments"; color: MaterialColors.text-muted; font-size: 13px; }
+
+            Rectangle {
+                height: 64px; border-radius: 12px;
+                background: MaterialColors.surface-variant;
+                HorizontalLayout {
+                    padding: 16px; spacing: 12px; alignment: space-between;
+                    VerticalLayout { alignment: center;
+                        Text { text: "Port 1"; color: MaterialColors.primary; font-size: 12px; font-weight: 600; }
+                        Text { text: slot1-empty ? "[Empty]" : slot1-card; color: slot1-empty ? MaterialColors.error : MaterialColors.text-main; font-size: 14px; }
+                    }
+                    Text { text: "⇄"; color: MaterialColors.primary; font-size: 24px; vertical-alignment: center; }
+                    VerticalLayout { alignment: center;
+                        Text { text: "Port 2"; color: MaterialColors.primary; font-size: 12px; font-weight: 600; }
+                        Text { text: slot2-empty ? "[Empty]" : slot2-card; color: slot2-empty ? MaterialColors.error : MaterialColors.text-main; font-size: 14px; }
+                    }
+                }
+            }
+
+            if (slot1-empty || slot2-empty) : Rectangle {
+                height: 40px; border-radius: 12px;
+                background: MaterialColors.error.with-alpha(0.12);
+                HorizontalLayout { padding-left: 16px; padding-right: 16px; alignment: center;
+                    Text { text: "⚠ Both ports must have a card assigned to swap."; color: MaterialColors.error; font-size: 13px; }
+                }
+            }
+
+            if (error-text != "") : Text {
+                text: error-text; color: MaterialColors.error; font-size: 12px;
+            }
+
+            Rectangle { vertical-stretch: 1; }
+
+            HorizontalLayout {
+                spacing: 12px; alignment: end;
+                if (!slot1-empty && !slot2-empty) : Rectangle {
+                    width: 80px; height: 40px; border-radius: 20px;
+                    background: MaterialColors.primary;
+                    Text { text: "Swap"; color: MaterialColors.on-primary; font-size: 14px; font-weight: 600; horizontal-alignment: center; vertical-alignment: center; }
+                    TouchArea { clicked => { root.swap(); } }
+                }
+                Rectangle {
+                    width: 80px; height: 40px; border-radius: 20px;
+                    background: MaterialColors.surface-variant;
+                    Text { text: "Close"; color: MaterialColors.text-main; font-size: 14px; horizontal-alignment: center; vertical-alignment: center; }
+                    TouchArea { clicked => { root.close(); } }
+                }
+            }
+        }
+    }
+}
+
+// ─── Memory Card Per-Game Settings ───
+export component MemoryCardPerGameSettings inherits Rectangle {
+    in property <string> slot1-mode: "auto";
+    in property <string> slot2-mode: "auto";
+    in property <string> slot1-file: "";
+    in property <string> slot2-file: "";
+    in property <bool> slot1-inherited: true;
+    in property <bool> slot2-inherited: true;
+
+    callback slot1-mode-changed(string);
+    callback slot2-mode-changed(string);
+    callback slot1-file-changed(string);
+    callback slot2-file-changed(string);
+    callback slot1-reset();
+    callback slot2-reset();
+
+    VerticalLayout {
+        spacing: 8px;
+
+        SectionHeader { txt: "Memory Card — Per-Game Override"; }
+
+        // Slot 1
+        Rectangle {
+            height: slot1-inherited ? 120px : 140px;
+            border-radius: 16px; background: MaterialColors.surface-variant;
+            clip: true;
+            VerticalLayout {
+                padding: 16px; spacing: 8px;
+                HorizontalLayout {
+                    Text { text: "Port 1"; color: slot1-inherited ? MaterialColors.text-muted : MaterialColors.primary; font-size: 14px; font-weight: 600; font-italic: slot1-inherited; horizontal-stretch: 1; }
+                    if (slot1-inherited) : Rectangle {
+                        width: 70px; height: 28px; border-radius: 14px;
+                        background: MaterialColors.surface;
+                        Text { text: "Reset"; color: MaterialColors.error; font-size: 12px; horizontal-alignment: center; vertical-alignment: center; }
+                        TouchArea { clicked => { root.slot1-reset(); } }
+                    }
+                }
+                if (slot1-inherited) : Text {
+                    text: "Inheriting: " + (slot1-file == "" ? "Default" : slot1-file);
+                    color: MaterialColors.text-muted; font-size: 12px; font-italic: true;
+                }
+                ComboRow {
+                    txt: "Mode";
+                    model: ["Auto (Inherit)", "Eject", "File", "Folder"];
+                    current-index: slot1-mode == "auto" ? 0 : slot1-mode == "eject" ? 1 : slot1-mode == "file" ? 2 : 3;
+                    selected(idx) => { root.slot1-mode-changed(idx == 0 ? "auto" : idx == 1 ? "eject" : idx == 2 ? "file" : "folder"); }
+                }
+                if (slot1-mode == "file" || slot1-mode == "folder") : TextFieldRow {
+                    txt: "Card File";
+                    value: slot1-file;
+                    placeholder: "Select card file...";
+                    edited(text) => { root.slot1-file-changed(text); }
+                }
+            }
+        }
+
+        // Slot 2
+        Rectangle {
+            height: slot2-inherited ? 120px : 140px;
+            border-radius: 16px; background: MaterialColors.surface-variant;
+            clip: true;
+            VerticalLayout {
+                padding: 16px; spacing: 8px;
+                HorizontalLayout {
+                    Text { text: "Port 2"; color: slot2-inherited ? MaterialColors.text-muted : MaterialColors.primary; font-size: 14px; font-weight: 600; font-italic: slot2-inherited; horizontal-stretch: 1; }
+                    if (slot2-inherited) : Rectangle {
+                        width: 70px; height: 28px; border-radius: 14px;
+                        background: MaterialColors.surface;
+                        Text { text: "Reset"; color: MaterialColors.error; font-size: 12px; horizontal-alignment: center; vertical-alignment: center; }
+                        TouchArea { clicked => { root.slot2-reset(); } }
+                    }
+                }
+                if (slot2-inherited) : Text {
+                    text: "Inheriting: " + (slot2-file == "" ? "Default" : slot2-file);
+                    color: MaterialColors.text-muted; font-size: 12px; font-italic: true;
+                }
+                ComboRow {
+                    txt: "Mode";
+                    model: ["Auto (Inherit)", "Eject", "File", "Folder"];
+                    current-index: slot2-mode == "auto" ? 0 : slot2-mode == "eject" ? 1 : slot2-mode == "file" ? 2 : 3;
+                    selected(idx) => { root.slot2-mode-changed(idx == 0 ? "auto" : idx == 1 ? "eject" : idx == 2 ? "file" : "folder"); }
+                }
+                if (slot2-mode == "file" || slot2-mode == "folder") : TextFieldRow {
+                    txt: "Card File";
+                    value: slot2-file;
+                    placeholder: "Select card file...";
+                    edited(text) => { root.slot2-file-changed(text); }
+                }
+            }
+        }
+    }
+}
+
+// ─── Memory Card Create Dialog ───
+export component MemoryCardCreateDialog inherits Rectangle {
+    in property <string> card-name: "";
+    in property <int> size-index: 0;  // 0=8MB,1=16MB,2=32MB,3=64MB,4=128KB PS1,5=Folder
+    in property <bool> use-ntfs-compression: false;
+    in property <string> error-text: "";
+
+    callback create(string /* name */, int /* size-index */, bool /* ntfs-compression */);
+    callback close();
+
+    background: #00000088;
+    visible: false;
+
+    Rectangle {
+        width: 420px; height: 420px;
+        x: (parent.width - self.width) / 2;
+        y: (parent.height - self.height) / 2;
+        background: MaterialColors.surface;
+        border-radius: 28px;
+        border-width: 1px;
+        border-color: MaterialColors.outline;
+        clip: true;
+
+        VerticalLayout {
+            padding: 24px; spacing: 16px;
+            Text { text: "Create New Memory Card"; color: MaterialColors.text-main; font-size: 20px; font-weight: 500; }
+
+            VerticalLayout {
+                spacing: 4px;
+                Text { text: "Card Name"; color: MaterialColors.primary; font-size: 13px; font-weight: 600; }
+                LineEdit {
+                    text: card-name;
+                    placeholder-text: "e.g. Mcd003";
+                    edited(text) => { root.card-name = text; }
+                }
+            }
+
+            VerticalLayout {
+                spacing: 4px;
+                Text { text: "Card Type & Size"; color: MaterialColors.primary; font-size: 13px; font-weight: 600; }
+                ComboRow {
+                    txt: "Format";
+                    model: ["PS2 8MB (.ps2)", "PS2 16MB (.ps2)", "PS2 32MB (.ps2)", "PS2 64MB (.ps2)", "PS1 128KB (.mcr)", "Folder"];
+                    current-index: size-index;
+                    selected(idx) => { root.size-index = idx; }
+                }
+            }
+
+            // NTFS compression (Windows only, file type only)
+            if (size-index < 4) : ToggleRow {
+                txt: "NTFS Compression";
+                sub: "Compress card file on NTFS volumes";
+                checked: use-ntfs-compression;
+                toggled(val) => { root.use-ntfs-compression = val; }
+            }
+
+            if (error-text != "") : Rectangle {
+                height: 40px; border-radius: 12px;
+                background: MaterialColors.error.with-alpha(0.12);
+                HorizontalLayout { padding-left: 16px; padding-right: 16px; alignment: center;
+                    Text { text: "⚠ " + error-text; color: MaterialColors.error; font-size: 13px; }
+                }
+            }
+
+            Rectangle { vertical-stretch: 1; }
+
+            HorizontalLayout {
+                spacing: 12px; alignment: end;
+                Rectangle {
+                    width: 100px; height: 40px; border-radius: 20px;
+                    background: MaterialColors.primary;
+                    Text { text: "Create"; color: MaterialColors.on-primary; font-size: 14px; font-weight: 600; horizontal-alignment: center; vertical-alignment: center; }
+                    TouchArea { clicked => { root.create(root.card-name, root.size-index, root.use-ntfs-compression); } }
+                }
+                Rectangle {
+                    width: 80px; height: 40px; border-radius: 20px;
+                    background: MaterialColors.surface-variant;
+                    Text { text: "Cancel"; color: MaterialColors.text-main; font-size: 14px; horizontal-alignment: center; vertical-alignment: center; }
+                    TouchArea { clicked => { root.close(); } }
+                }
+            }
+        }
+    }
+}

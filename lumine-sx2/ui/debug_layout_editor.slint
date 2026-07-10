@@ -1,0 +1,157 @@
+import { Button, HorizontalBox, VerticalBox, LineEdit, ComboBox } from "std-widgets.slint";
+
+// ─── Layout Editor Dialog ───
+export struct LayoutEditorData {
+    name: string,
+    cpu: string,
+    panels: [LayoutPanel],
+}
+
+export struct LayoutPanel {
+    id: string,
+    title: string,
+    panel-type: int,
+    zone: int,  // 0=top-left, 1=top-right, 2=bottom-left, 3=bottom-right
+    is-visible: bool,
+}
+
+export component LayoutEditorDialog inherits Rectangle {
+    in property <LayoutEditorData> data: {
+        name: "New Layout",
+        cpu: "EE",
+        panels: [],
+    };
+    in property <[string]> available-panels: [
+        "Disassembly", "Registers", "Memory", "Stack",
+        "Threads", "Modules", "Breakpoints", "Symbols",
+        "Memory Search", "Saved Addresses"
+    ];
+
+    callback confirmed(LayoutEditorData /*data*/);
+    callback cancelled();
+    callback panel-toggled(int /*index*/, bool /*visible*/);
+    callback panel-moved(int /*index*/, int /*zone*/);
+
+    background: #11111b;
+
+    Rectangle {
+        width: 500px;
+        height: 400px;
+        x: (parent.width - self.width) / 2;
+        y: (parent.height - self.height) / 2;
+        background: #1e1e2e;
+        border-radius: 8px;
+        border-width: 1px;
+        border-color: #313244;
+
+        VerticalBox {
+            padding: 16px;
+            spacing: 12px;
+
+            Text {
+                text: "Edit Layout";
+                color: #cdd6f4;
+                font-size: 14px;
+                font-weight: 700;
+            }
+
+            // Name
+            HorizontalLayout {
+                spacing: 8px;
+                Text {
+                    text: "Name:";
+                    color: #cdd6f4;
+                    font-size: 11px;
+                    vertical-alignment: center;
+                    width: 60px;
+                }
+                LineEdit {
+                    text: root.data.name;
+                    font-size: 11px;
+                    horizontal-stretch: 1;
+                }
+            }
+
+            // CPU
+            HorizontalLayout {
+                spacing: 8px;
+                Text {
+                    text: "CPU:";
+                    color: #cdd6f4;
+                    font-size: 11px;
+                    vertical-alignment: center;
+                    width: 60px;
+                }
+                ComboBox {
+                    model: ["EE", "IOP"];
+                    current-index: 0;
+                }
+            }
+
+            // Panel list
+            Text {
+                text: "Panels:";
+                color: #cdd6f4;
+                font-size: 11px;
+            }
+
+            Flickable {
+                vertical-stretch: 1;
+                viewport-height: available-panels.length * 24px;
+
+                for panel[idx] in available-panels: Rectangle {
+                    y: idx * 24px;
+                    height: 24px;
+                    background: Math.mod(idx, 2) == 0 ? transparent : #181825;
+
+                    HorizontalLayout {
+                        padding-left: 8px;
+                        padding-right: 8px;
+                        spacing: 8px;
+
+                        Rectangle {
+                            width: 20px;
+                            vertical-alignment: center;
+                            Rectangle {
+                                width: 12px;
+                                height: 12px;
+                                border-radius: 2px;
+                                background: #a6e3a1;
+                            }
+                        }
+
+                        Text {
+                            text: panel;
+                            color: #cdd6f4;
+                            font-size: 11px;
+                            vertical-alignment: center;
+                            horizontal-stretch: 1;
+                        }
+
+                        ComboBox {
+                            model: ["Top-Left", "Top-Right", "Bottom-Left", "Bottom-Right"];
+                            current-index: 0;
+                            width: 100px;
+                        }
+                    }
+                }
+            }
+
+            // Buttons
+            HorizontalLayout {
+                spacing: 8px;
+                Rectangle { horizontal-stretch: 1; }
+                Button {
+                    text: "Cancel";
+                    clicked => { root.cancelled(); }
+                    min-width: 80px;
+                }
+                Button {
+                    text: "Save";
+                    clicked => { root.confirmed(root.data); }
+                    min-width: 80px;
+                }
+            }
+        }
+    }
+}

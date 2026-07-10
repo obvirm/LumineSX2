@@ -1,0 +1,11 @@
+    Checking pcsx2_translations v0.1.0 (E:\project\pcsx2\rust\translations)
+error: this file contains an unclosed delimiter
+    --> pcsx2\GsMainEtc.rs:1471:3
+     |
+ 358 | pub static GSCONFIG: LazyLock<GSOptions> = LazyLock::new(|| GSOptions {
+     |                                                         - unclosed delimiter
+...
+1471 | }
+     |  ^
+
+error: could not compile `pcsx2_translations` (lib) due to 1 previous error

@@ -1,0 +1,154 @@
+import { HorizontalBox, VerticalBox, LineEdit, Button, ComboBox, CheckBox } from "std-widgets.slint";
+
+export struct SearchResult {
+    address: string,
+    value: string,
+    prev-value: string,
+    changed: bool,
+}
+
+export component MemorySearchView inherits Rectangle {
+    in property <[SearchResult]> results: [];
+    in property <int> result-count: 0;
+    in property <string> status: "";
+    in property <[string]> search-types: ["Byte", "Halfword", "Word", "Doubleword", "Float", "Double", "String", "Array"];
+    in property <int> selected-type: 0;
+    in property <[string]> comparisons: ["Equal", "Not Equal", "Greater", "Less", "Greater or Equal", "Less or Equal", "Changed", "Not Changed", "Increased", "Decreased", "Changed by", "Not Changed by", "Unknown", "Between"];
+    in property <int> selected-comparison: 0;
+    in property <string> value-input: "";
+    in property <string> value2-input: "";
+    in property <bool> hex-mode: false;
+    in property <bool> case-sensitive: false;
+    in property <bool> searching: false;
+
+    callback search-type-changed(string);
+    callback comparison-changed(string);
+    callback search-clicked();
+    callback new-search-clicked();
+    callback result-selected(int);
+    callback result-double-clicked(int);
+    callback value-changed(string);
+    callback value2-changed(string);
+    callback hex-toggled();
+    callback case-sensitive-toggled();
+
+    background: #11111b;
+
+    VerticalBox {
+        padding: 0;
+        spacing: 0;
+
+        // Search controls
+        Rectangle {
+            height: 120px;
+            background: #181825;
+            VerticalBox {
+                padding: 8px;
+                spacing: 6px;
+
+                HorizontalLayout {
+                    spacing: 6px;
+                    Text { text: "Type:"; color: #89b4fa; font-size: 11px; vertical-alignment: center; width: 60px; }
+                    ComboBox {
+                        model: root.search-types;
+                        current-index: root.selected-type;
+                        selected(idx) => { root.search-type-changed(idx); }
+                    }
+                    Rectangle { horizontal-stretch: 1; }
+                    CheckBox {
+                        text: "Hex";
+                        checked: root.hex-mode;
+                        toggled => { root.hex-toggled(); }
+                    }
+                    CheckBox {
+                        text: "Case Sensitive";
+                        checked: root.case-sensitive;
+                        toggled => { root.case-sensitive-toggled(); }
+                    }
+                }
+
+                HorizontalLayout {
+                    spacing: 6px;
+                    Text { text: "Compare:"; color: #89b4fa; font-size: 11px; vertical-alignment: center; width: 60px; }
+                    ComboBox {
+                        model: root.comparisons;
+                        current-index: root.selected-comparison;
+                        selected(idx) => { root.comparison-changed(idx); }
+                    }
+                    Text { text: "Value:"; color: #89b4fa; font-size: 11px; vertical-alignment: center; width: 45px; }
+                    LineEdit {
+                        text: root.value-input;
+                        horizontal-stretch: 1;
+                        font-size: 11px;
+                        font-family: "Cascadia Code";
+                        edited(t) => { root.value-changed(t); }
+                    }
+                    LineEdit {
+                        text: root.value2-input;
+                        width: 100px;
+                        font-size: 11px;
+                        font-family: "Cascadia Code";
+                        visible: root.selected-comparison == 13;
+                        edited(t) => { root.value2-changed(t); }
+                    }
+                }
+
+                HorizontalLayout {
+                    spacing: 6px;
+                    Button {
+                        text: root.searching ? "Searching..." : "Search";
+                        enabled: !root.searching;
+                        clicked => { root.search-clicked(); }
+                    }
+                    Button {
+                        text: "New Search";
+                        clicked => { root.new-search-clicked(); }
+                    }
+                    Rectangle { horizontal-stretch: 1; }
+                    Text {
+                        text: root.status;
+                        color: #6c7086;
+                        font-size: 10px;
+                        vertical-alignment: center;
+                    }
+                }
+            }
+        }
+        Rectangle { height: 1px; background: #313244; }
+
+        // Results header
+        Rectangle {
+            height: 24px;
+            background: #181825;
+            HorizontalLayout {
+                padding: 4px;
+                Text { text: "Address"; color: #89b4fa; font-size: 10px; font-weight: 600; width: 100px; }
+                Text { text: "Value"; color: #89b4fa; font-size: 10px; font-weight: 600; horizontal-stretch: 1; }
+                Text { text: "Prev"; color: #89b4fa; font-size: 10px; font-weight: 600; width: 100px; }
+            }
+        }
+        Rectangle { height: 1px; background: #313244; }
+
+        // Results list
+        Flickable {
+            vertical-stretch: 1;
+            viewport-height: results.length * 20px;
+            for result[idx] in results: Rectangle {
+                y: idx * 20px;
+                height: 20px;
+                background: Math.mod(idx, 2) == 0 ? transparent : #181825;
+                TouchArea {
+                    clicked => { root.result-selected(idx); }
+                    double-clicked => { root.result-double-clicked(idx); }
+                }
+                HorizontalLayout {
+                    padding: 2px;
+                    padding-left: 4px;
+                    Text { text: result.address; color: #89b4fa; font-size: 11px; font-family: "Cascadia Code"; width: 100px; }
+                    Text { text: result.value; color: result.changed ? #f38ba8 : #a6e3a1; font-size: 11px; font-family: "Cascadia Code"; horizontal-stretch: 1; }
+                    Text { text: result.prev-value; color: #6c7086; font-size: 11px; font-family: "Cascadia Code"; width: 100px; }
+                }
+            }
+        }
+    }
+}

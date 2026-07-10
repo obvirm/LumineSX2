@@ -1,0 +1,164 @@
+import { Button, HorizontalBox, VerticalBox, LineEdit, ComboBox, CheckBox, SpinBox } from "std-widgets.slint";
+
+// ─── Analysis Options ───
+export struct AnalysisOptions {
+    start-address: string,
+    end-address: string,
+    scan-type: int,  // 0=Full, 1=Smart, 2=Custom
+    analyze-functions: bool,
+    analyze-data: bool,
+    analyze-strings: bool,
+    max-depth: int,
+}
+
+export component AnalysisOptionsDialog inherits Rectangle {
+    in property <AnalysisOptions> options: {
+        start-address: "0x00100000",
+        end-address: "0x02000000",
+        scan-type: 1,
+        analyze-functions: true,
+        analyze-data: true,
+        analyze-strings: true,
+        max-depth: 10,
+    };
+
+    callback confirmed(AnalysisOptions /*options*/);
+    callback cancelled();
+
+    background: #11111b;
+
+    Rectangle {
+        width: 450px;
+        height: 350px;
+        x: (parent.width - self.width) / 2;
+        y: (parent.height - self.height) / 2;
+        background: #1e1e2e;
+        border-radius: 8px;
+        border-width: 1px;
+        border-color: #313244;
+
+        VerticalBox {
+            padding: 16px;
+            spacing: 12px;
+
+            Text {
+                text: "Analysis Options";
+                color: #cdd6f4;
+                font-size: 14px;
+                font-weight: 700;
+            }
+
+            // Scan type
+            HorizontalLayout {
+                spacing: 8px;
+                Text {
+                    text: "Scan Type:";
+                    color: #cdd6f4;
+                    font-size: 11px;
+                    vertical-alignment: center;
+                    width: 80px;
+                }
+                ComboBox {
+                    model: ["Full Scan", "Smart Scan", "Custom Range"];
+                    current-index: root.options.scan-type;
+                }
+            }
+
+            // Address range (custom)
+            if options.scan-type == 2: HorizontalLayout {
+                spacing: 8px;
+                Text {
+                    text: "Start:";
+                    color: #cdd6f4;
+                    font-size: 11px;
+                    vertical-alignment: center;
+                    width: 80px;
+                }
+                LineEdit {
+                    text: root.options.start-address;
+                    font-size: 11px;
+                    horizontal-stretch: 1;
+                }
+            }
+
+            if options.scan-type == 2: HorizontalLayout {
+                spacing: 8px;
+                Text {
+                    text: "End:";
+                    color: #cdd6f4;
+                    font-size: 11px;
+                    vertical-alignment: center;
+                    width: 80px;
+                }
+                LineEdit {
+                    text: root.options.end-address;
+                    font-size: 11px;
+                    horizontal-stretch: 1;
+                }
+            }
+
+            // Options
+            HorizontalLayout {
+                spacing: 8px;
+                Rectangle { width: 80px; }
+                CheckBox {
+                    checked: root.options.analyze-functions;
+                    text: "Analyze Functions";
+                }
+            }
+
+            HorizontalLayout {
+                spacing: 8px;
+                Rectangle { width: 80px; }
+                CheckBox {
+                    checked: root.options.analyze-data;
+                    text: "Analyze Data";
+                }
+            }
+
+            HorizontalLayout {
+                spacing: 8px;
+                Rectangle { width: 80px; }
+                CheckBox {
+                    checked: root.options.analyze-strings;
+                    text: "Analyze Strings";
+                }
+            }
+
+            // Max depth
+            HorizontalLayout {
+                spacing: 8px;
+                Text {
+                    text: "Max Depth:";
+                    color: #cdd6f4;
+                    font-size: 11px;
+                    vertical-alignment: center;
+                    width: 80px;
+                }
+                depth-input := LineEdit {
+                    text: root.options.max-depth;
+                    font-size: 11px;
+                    width: 60px;
+                }
+            }
+
+            Rectangle { vertical-stretch: 1; }
+
+            // Buttons
+            HorizontalLayout {
+                spacing: 8px;
+                Rectangle { horizontal-stretch: 1; }
+                Button {
+                    text: "Cancel";
+                    clicked => { root.cancelled(); }
+                    min-width: 80px;
+                }
+                Button {
+                    text: "Analyze";
+                    clicked => { root.confirmed(root.options); }
+                    min-width: 80px;
+                }
+            }
+        }
+    }
+}

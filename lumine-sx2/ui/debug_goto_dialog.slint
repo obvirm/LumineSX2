@@ -1,0 +1,104 @@
+import { Button, HorizontalBox, VerticalBox, LineEdit } from "std-widgets.slint";
+
+// ─── Go To Address Dialog ───
+export component GoToDialog inherits Rectangle {
+    in property <string> title: "Go To Address";
+    in property <string> current-address: "0x00000000";
+    in property <string> input-value: "";
+    in property <[string]> recent-addresses: [];
+
+    callback confirmed(string /*address*/);
+    callback cancelled();
+
+    background: #11111b;
+
+    Rectangle {
+        width: 350px;
+        height: 200px;
+        x: (parent.width - self.width) / 2;
+        y: (parent.height - self.height) / 2;
+        background: #1e1e2e;
+        border-radius: 8px;
+        border-width: 1px;
+        border-color: #313244;
+
+        VerticalBox {
+            padding: 16px;
+            spacing: 12px;
+
+            Text {
+                text: root.title;
+                color: #cdd6f4;
+                font-size: 14px;
+                font-weight: 700;
+            }
+
+            // Current address
+            Text {
+                text: "Current: " + root.current-address;
+                color: #6c7086;
+                font-size: 11px;
+            }
+
+            // Input
+            HorizontalLayout {
+                spacing: 8px;
+                Text {
+                    text: "Address:";
+                    color: #cdd6f4;
+                    font-size: 11px;
+                    vertical-alignment: center;
+                    width: 60px;
+                }
+                addr-input := LineEdit {
+                    text: root.input-value;
+                    placeholder-text: "0x00000000";
+                    font-size: 11px;
+                    horizontal-stretch: 1;
+                    accepted => { root.confirmed(addr-input.text); }
+                }
+            }
+
+            // Recent addresses
+            if recent-addresses.length > 0: Flickable {
+                height: 60px;
+                viewport-height: recent-addresses.length * 20px;
+
+                for addr[idx] in recent-addresses: Rectangle {
+                    y: idx * 20px;
+                    height: 20px;
+                    background: Math.mod(idx, 2) == 0 ? transparent : #181825;
+
+                    Text {
+                        text: addr;
+                        color: #89b4fa;
+                        font-size: 11px;
+                        font-family: "Cascadia Code", "Consolas", monospace;
+                        vertical-alignment: center;
+                        padding-left: 8px;
+                    }
+
+                    TouchArea {
+                        clicked => { root.confirmed(addr); }
+                    }
+                }
+            }
+
+            // Buttons
+            HorizontalLayout {
+                spacing: 8px;
+                Rectangle { horizontal-stretch: 1; }
+                Button {
+                    text: "Cancel";
+                    clicked => { root.cancelled(); }
+                    min-width: 80px;
+                }
+                Button {
+                    text: "Go";
+                    clicked => { root.confirmed(addr-input.text); }
+                    min-width: 80px;
+                }
+            }
+        }
+    }
+}

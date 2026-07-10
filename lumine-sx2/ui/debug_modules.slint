@@ -1,0 +1,56 @@
+import { HorizontalBox, VerticalBox } from "std-widgets.slint";
+
+export struct ModuleEntry {
+    name: string,
+    entry: string,
+    size: string,
+    path: string,
+}
+
+export component ModuleView inherits Rectangle {
+    in property <[ModuleEntry]> entries: [];
+    callback entry-clicked(int);
+    callback entry-double-clicked(int);
+
+    background: #11111b;
+
+    VerticalBox {
+        padding: 0;
+        spacing: 0;
+
+        Rectangle {
+            height: 24px;
+            background: #181825;
+            HorizontalLayout {
+                padding: 4px;
+                Text { text: "Name"; color: #89b4fa; font-size: 10px; font-weight: 600; horizontal-stretch: 1; }
+                Text { text: "Entry"; color: #89b4fa; font-size: 10px; font-weight: 600; width: 90px; }
+                Text { text: "Size"; color: #89b4fa; font-size: 10px; font-weight: 600; width: 80px; }
+                Text { text: "Path"; color: #89b4fa; font-size: 10px; font-weight: 600; horizontal-stretch: 2; }
+            }
+        }
+        Rectangle { height: 1px; background: #313244; }
+
+        Flickable {
+            vertical-stretch: 1;
+            viewport-height: entries.length * 20px;
+            for entry[idx] in entries: Rectangle {
+                y: idx * 20px;
+                height: 20px;
+                background: Math.mod(idx, 2) == 0 ? transparent : #181825;
+                TouchArea {
+                    clicked => { root.entry-clicked(idx); }
+                    double-clicked => { root.entry-double-clicked(idx); }
+                }
+                HorizontalLayout {
+                    padding: 2px;
+                    padding-left: 4px;
+                    Text { text: entry.name; color: #a6e3a1; font-size: 11px; horizontal-stretch: 1; overflow: elide; }
+                    Text { text: entry.entry; color: #89b4fa; font-size: 11px; font-family: "Cascadia Code"; width: 90px; }
+                    Text { text: entry.size; color: #cdd6f4; font-size: 11px; font-family: "Cascadia Code"; width: 80px; }
+                    Text { text: entry.path; color: #6c7086; font-size: 11px; horizontal-stretch: 2; overflow: elide; }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,178 @@
+// Experimental warning detail view for LumineSX2
+import { ScrollView } from "std-widgets.slint";
+
+export component ExperimentalWarningView inherits Rectangle {
+    callback back-clicked;
+
+    background: #141218;
+    clip: true;
+
+    VerticalLayout {
+        y: 56px;
+        width: parent.width;
+        height: parent.height - 56px;
+        spacing: 0px;
+
+        // Header with back button
+        Rectangle {
+            height: 56px;
+            background: #141218;
+            HorizontalLayout {
+                spacing: 8px;
+                padding-left: 8px;
+                padding-right: 16px;
+                alignment: start;
+                Rectangle {
+                    width: 40px; height: 40px;
+                    border-radius: 20px;
+                    TouchArea {
+                        clicked => { root.back-clicked(); }
+                        Rectangle {
+                            width: 24px; height: 24px;
+                            Image {
+                                source: @image-url("icons/qt/arrow-left-line.svg");
+                                colorize: #CAC4D0;
+                                width: 24px; height: 24px;
+                                x: (parent.width - self.width) / 2;
+                                y: (parent.height - self.height) / 2;
+                            }
+                        }
+                    }
+                }
+                Text {
+                    text: "Peringatan Eksperimental";
+                    color: #E6E0E9;
+                    font-size: 20px;
+                    font-weight: 500;
+                    vertical-alignment: center;
+                }
+            }
+        }
+
+        Rectangle { height: 1px; background: #211F26; }
+
+        ScrollView {
+            viewport-width: parent.width;
+            VerticalLayout {
+                spacing: 16px;
+                padding: 24px;
+
+                Rectangle {
+                    border-radius: 16px;
+                    background: #2a1a1a;
+                    border-width: 1px;
+                    border-color: #553333;
+                    VerticalLayout {
+                        spacing: 12px;
+                        padding: 20px;
+                        Rectangle {
+                            HorizontalLayout {
+                                spacing: 12px;
+                                alignment: center;
+                                Image {
+                                    source: @image-url("icons/qt/error-warning-line.svg");
+                                    colorize: #ffaa66;
+                                    width: 32px; height: 32px;
+                                }
+                                Text {
+                                    text: "LumineSX2 Belum Stabil";
+                                    color: #ffaa66;
+                                    font-size: 18px;
+                                    font-weight: 700;
+                                }
+                            }
+                        }
+                        Text {
+                            text: "Ini adalah build eksperimental. Proyek ini masih dalam tahap awal pengembangan dan penulisan ulang (rewrite) core emulator ke bahasa Rust.";
+                            color: #e0d0d0;
+                            font-size: 14px;
+                            wrap: word-wrap;
+                        }
+                    }
+                }
+
+                Rectangle {
+                    border-radius: 16px;
+                    background: #1D1B20;
+                    border-width: 1px;
+                    border-color: #49454F;
+                    VerticalLayout {
+                        spacing: 10px;
+                        padding: 20px;
+                        Text {
+                            text: "Visi & Misi";
+                            color: #D0BCFF;
+                            font-size: 16px;
+                            font-weight: 600;
+                        }
+                        Text {
+                            text: "LumineSX2 dirancang dengan visi utama membawa emulator PS2 ke platform Android — agar pengguna bisa memainkan game PS2 di perangkat mobile.";
+                            color: #E6E0E9;
+                            font-size: 14px;
+                            wrap: word-wrap;
+                        }
+                        Text {
+                            text: "Fokus pengembangan saat ini adalah mem-port seluruh core (CDVD, GS, SPU2, input, dan emulasi) dari C++ ke Rust secara modular, satu modul pada satu waktu, sambil menjaga emulator tetap bisa berjalan.";
+                            color: #938F99;
+                            font-size: 14px;
+                            wrap: word-wrap;
+                        }
+                    }
+                }
+
+                Rectangle {
+                    border-radius: 16px;
+                    background: #1a1a2a;
+                    border-width: 1px;
+                    border-color: #333366;
+                    VerticalLayout {
+                        spacing: 10px;
+                        padding: 20px;
+                        Text {
+                            text: "Status Platform";
+                            color: #88aaff;
+                            font-size: 16px;
+                            font-weight: 600;
+                        }
+                        Text {
+                            text: "Build ini HANYA bisa berjalan di Windows (x64). Dukungan Android belum tersedia — kode Rust dan Slint sudah disiapkan untuk lintas platform, tetapi rendering Vulkan dan input sentuh untuk Android masih dalam pengerjaan.";
+                            color: #ccccdd;
+                            font-size: 14px;
+                            wrap: word-wrap;
+                        }
+                        Text {
+                            text: "Gunakan build ini hanya untuk pengujian di Windows. Jangan gunakan untuk gameplay harian hingga versi stabil dirilis.";
+                            color: #ff9988;
+                            font-size: 13px;
+                            wrap: word-wrap;
+                        }
+                    }
+                }
+
+                Rectangle {
+                    border-radius: 16px;
+                    background: #211F26;
+                    VerticalLayout {
+                        spacing: 6px;
+                        padding: 16px;
+                        Text {
+                            text: "Versi: v0.1.0-alpha (Rust Rewrite)";
+                            color: #938F99;
+                            font-size: 12px;
+                        }
+                        Text {
+                            text: "Platform: Windows x64";
+                            color: #938F99;
+                            font-size: 12px;
+                        }
+                        Text {
+                            text: "Renderer: Vulkan (diperlukan untuk target Android)";
+                            color: #938F99;
+                            font-size: 12px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

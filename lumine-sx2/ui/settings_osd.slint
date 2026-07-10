@@ -1,0 +1,91 @@
+// OSD Settings Page
+import { ToggleRow, SectionHeader, DetailPage, SliderRow, ComboRow } from "./common.slint";
+
+export component OsdSettingsView inherits DetailPage {
+    title: "On-Screen Display";
+    
+    in-out property <bool> show-perf: true;
+    in-out property <int> perf-pos: 0;
+    in-out property <float> osd-scale: 1.0;
+    in-out property <float> osd-margin-x: 0.0;
+    in-out property <float> osd-margin-y: 0.0;
+    in-out property <bool> osd-bold: false;
+    in-out property <string> osd-font: "Roboto";
+
+    in-out property <bool> show-fps: true;
+    in-out property <bool> show-speed: false;
+    in-out property <bool> show-cpu: false;
+    in-out property <bool> show-gpu: false;
+    in-out property <bool> show-frame-times: false;
+    in-out property <bool> show-hw-info: false;
+    in-out property <bool> show-version: false;
+    in-out property <bool> show-settings-summary: false;
+    in-out property <bool> show-patches-list: false;
+    in-out property <bool> show-inputs: false;
+    in-out property <bool> show-ee-perf: false;
+    in-out property <bool> show-vu-perf: false;
+    in-out property <bool> showGS-stats: false;
+    in-out property <bool> show-VRAM: false;
+    in-out property <bool> show-internal-resolution: false;
+    in-out property <bool> show-game-info: false;
+    in-out property <bool> show-disc-info: false;
+    in-out property <bool> show-savestate-info: false;
+    in-out property <bool> show-audio-info: false;
+    in-out property <bool> show-controller-info: false;
+    in-out property <bool> show-turbo-indicator: false;
+    in-out property <bool> show-recording-indicator: false;
+    in-out property <bool> show-log-screen: false;
+    in-out property <bool> show-gs-window-title: false;
+    in-out property <bool> show-notifications: true;
+    in-out property <float> notif-duration: 0.3;
+    in-out property <bool> warn-unsafe: true;
+
+    SectionHeader { txt: "Performance Overlay"; }
+    ToggleRow { txt: "Show Performance Overlay"; checked: show-perf; toggled(v) => { show-perf = v; } }
+    ComboRow { txt: "Position"; model: ["Top Left", "Top Right", "Bottom Left", "Bottom Right", "Center"]; current-index: perf-pos; selected(idx) => { perf-pos = idx; } }
+
+    SectionHeader { txt: "OSD Appearance"; }
+    SliderRow { txt: "OSD Scale"; value: osd-scale; changed(v) => { osd-scale = v; } }
+    SliderRow { txt: "Margin X"; value: osd-margin-x; changed(v) => { osd-margin-x = v; } }
+    SliderRow { txt: "Margin Y"; value: osd-margin-y; changed(v) => { osd-margin-y = v; } }
+    ToggleRow { txt: "Bold Text"; sub: "Use bold font weight for OSD text"; checked: osd-bold; toggled(v) => { osd-bold = v; } }
+
+    SectionHeader { txt: "Performance Metrics"; }
+    ToggleRow { txt: "Show FPS"; checked: show-fps; toggled(v) => { show-fps = v; } }
+    ToggleRow { txt: "Show Speed %"; checked: show-speed; toggled(v) => { show-speed = v; } }
+    ToggleRow { txt: "Show CPU Usage"; checked: show-cpu; toggled(v) => { show-cpu = v; } }
+    ToggleRow { txt: "Show GPU Usage"; checked: show-gpu; toggled(v) => { show-gpu = v; } }
+    ToggleRow { txt: "Show Frame Times Graph"; checked: show-frame-times; toggled(v) => { show-frame-times = v; } }
+    ToggleRow { txt: "Show EE Performance"; checked: show-ee-perf; toggled(v) => { show-ee-perf = v; } }
+    ToggleRow { txt: "Show VU Performance"; checked: show-vu-perf; toggled(v) => { show-vu-perf = v; } }
+    ToggleRow { txt: "Show GS Statistics"; checked: showGS-stats; toggled(v) => { showGS-stats = v; } }
+    ToggleRow { txt: "Show VRAM Usage"; checked: show-VRAM; toggled(v) => { show-VRAM = v; } }
+    ToggleRow { txt: "Show Internal Resolution"; checked: show-internal-resolution; toggled(v) => { show-internal-resolution = v; } }
+
+    SectionHeader { txt: "Game Info"; }
+    ToggleRow { txt: "Show Hardware Info"; checked: show-hw-info; toggled(v) => { show-hw-info = v; } }
+    ToggleRow { txt: "Show Version"; checked: show-version; toggled(v) => { show-version = v; } }
+    ToggleRow { txt: "Show Settings Summary"; checked: show-settings-summary; toggled(v) => { show-settings-summary = v; } }
+    ToggleRow { txt: "Show Patches List"; checked: show-patches-list; toggled(v) => { show-patches-list = v; } }
+    ToggleRow { txt: "Show Game Info"; checked: show-game-info; toggled(v) => { show-game-info = v; } }
+    ToggleRow { txt: "Show Disc Info"; checked: show-disc-info; toggled(v) => { show-disc-info = v; } }
+    ToggleRow { txt: "Show Savestate Info"; checked: show-savestate-info; toggled(v) => { show-savestate-info = v; } }
+    ToggleRow { txt: "Show Audio Info"; checked: show-audio-info; toggled(v) => { show-audio-info = v; } }
+    ToggleRow { txt: "Show Controller Info"; checked: show-controller-info; toggled(v) => { show-controller-info = v; } }
+
+    SectionHeader { txt: "Indicators"; }
+    ToggleRow { txt: "Show Input Visualization"; checked: show-inputs; toggled(v) => { show-inputs = v; } }
+    ToggleRow { txt: "Show Turbo Indicator"; checked: show-turbo-indicator; toggled(v) => { show-turbo-indicator = v; } }
+    ToggleRow { txt: "Show Recording Indicator"; checked: show-recording-indicator; toggled(v) => { show-recording-indicator = v; } }
+
+    SectionHeader { txt: "Debug Overlay"; }
+    ToggleRow { txt: "Show Log Screen"; sub: "Display log overlay on screen during emulation"; checked: show-log-screen; toggled(v) => { show-log-screen = v; } }
+    ToggleRow { txt: "Show GS Window Title"; sub: "Show renderer info in GS window title bar"; checked: show-gs-window-title; toggled(v) => { show-gs-window-title = v; } }
+
+    SectionHeader { txt: "Notifications"; }
+    ToggleRow { txt: "Show Notifications"; checked: show-notifications; toggled(v) => { show-notifications = v; } }
+    SliderRow { txt: "Duration"; value: notif-duration; changed(v) => { notif-duration = v; } }
+
+    SectionHeader { txt: "Safety"; }
+    ToggleRow { txt: "Warn About Unsafe Settings"; sub: "Show warning when using potentially unstable options"; checked: warn-unsafe; toggled(v) => { warn-unsafe = v; } }
+}

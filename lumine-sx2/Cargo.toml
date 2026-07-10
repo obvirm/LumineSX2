@@ -1,0 +1,22 @@
+[package]
+name = "lumine-sx2"
+version = "0.1.0-alpha"
+edition = "2021"
+license = "MIT"
+description = "LumineSX2 - PS2 emulator UI (Slint + Rust), Android-focused, currently Windows-only experimental build"
+build = "build.rs"
+
+[dependencies]
+slint = { version = "1.16", features = ["std"] }
+rfd = { version = "0.15", optional = true }
+pcsx2_common_rs = { path = "../rust/common" }
+chrono = "0.4"
+
+[features]
+default = ["desktop"]
+desktop = ["rfd"]
+android = []
+pcsx2-core = []
+
+[build-dependencies]
+slint-build = "1.16"

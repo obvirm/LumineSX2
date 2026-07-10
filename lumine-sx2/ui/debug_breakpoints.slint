@@ -1,0 +1,62 @@
+import { HorizontalBox, VerticalBox, Button } from "std-widgets.slint";
+
+export struct BreakpointEntry {
+    id: int,
+    address: string,
+    condition: string,
+    hit-count: string,
+    enabled: bool,
+    is-selected: bool,
+}
+
+export component BreakpointView inherits Rectangle {
+    in property <[BreakpointEntry]> entries: [];
+    callback entry-selected(int);
+    callback entry-double-clicked(int);
+    callback toggle-breakpoint(int);
+    callback add-breakpoint-clicked();
+
+    background: #11111b;
+
+    VerticalBox {
+        padding: 0;
+        spacing: 0;
+
+        Rectangle {
+            height: 24px;
+            background: #181825;
+            HorizontalLayout {
+                padding: 4px;
+                Text { text: "ID"; color: #89b4fa; font-size: 10px; font-weight: 600; width: 30px; }
+                Text { text: "Address"; color: #89b4fa; font-size: 10px; font-weight: 600; width: 100px; }
+                Text { text: "Condition"; color: #89b4fa; font-size: 10px; font-weight: 600; horizontal-stretch: 1; }
+                Text { text: "Hits"; color: #89b4fa; font-size: 10px; font-weight: 600; width: 50px; }
+                Text { text: "Enabled"; color: #89b4fa; font-size: 10px; font-weight: 600; width: 60px; }
+            }
+        }
+        Rectangle { height: 1px; background: #313244; }
+
+        Flickable {
+            vertical-stretch: 1;
+            viewport-height: entries.length * 20px;
+            for entry[idx] in entries: Rectangle {
+                y: idx * 20px;
+                height: 20px;
+                background: entry.is-selected ? #3b3f54 : (Math.mod(idx, 2) == 0 ? transparent : #181825);
+                TouchArea {
+                    clicked => { root.entry-selected(idx); }
+                    double-clicked => { root.entry-double-clicked(idx); }
+                }
+                HorizontalLayout {
+                    padding: 2px;
+                    padding-left: 4px;
+                    Text { text: entry.id; color: #cdd6f4; font-size: 11px; font-family: "Cascadia Code"; width: 30px; }
+                    Text { text: entry.address; color: #f9e2af; font-size: 11px; font-family: "Cascadia Code"; width: 100px; }
+                    Text { text: entry.condition; color: #6c7086; font-size: 11px; horizontal-stretch: 1; overflow: elide; }
+                    Text { text: entry.hit-count; color: #cdd6f4; font-size: 11px; width: 50px; }
+                    Text { text: entry.enabled ? "Yes" : "No"; color: entry.enabled ? #a6e3a1 : #f38ba8; font-size: 11px; width: 60px; }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,600 @@
+import { VerticalBox, HorizontalBox, ScrollView, LineEdit, ComboBox, Button, CheckBox, Slider, GroupBox, StandardButton } from "std-widgets.slint";
+import { MaterialColors, DetailPage, ToggleRow, SliderRow, ComboRow, TextFieldRow, SectionHeader } from "common.slint";
+
+// Auto Updater Dialog
+export component AutoUpdaterDialog inherits Rectangle {
+    in-out property <bool> dialog-visible: false;
+    in-out property <string> current-version: "v2.0.0";
+    in-out property <string> latest-version: "v2.1.0";
+    in-out property <string> changelog: "• Bug fixes and performance improvements\n• New features added\n• Updated translations";
+    in-out property <float> download-progress: 0.0;
+    in-out property <bool> is-downloading: false;
+    in-out property <int> channel: 0; // 0=stable, 1=nightly
+    in-out property <string> status-text: "Update available";
+    callback close();
+    callback download();
+    callback skip();
+    callback remind-later();
+
+    if dialog-visible: Rectangle {
+        background: #00000080;
+
+        Rectangle {
+            width: 480px;
+            height: 400px;
+            background: MaterialColors.surface-container-high;
+            border-radius: 16px;
+            border-width: 1px;
+            border-color: MaterialColors.outline;
+
+            VerticalLayout {
+                padding: 16px;
+                spacing: 12px;
+
+                Text {
+                    text: "Software Update";
+                    color: MaterialColors.on-surface;
+                    font-size: 20px;
+                    font-weight: 700;
+                }
+
+                HorizontalLayout {
+                    spacing: 12px;
+                    Text {
+                        text: "Current: " + current-version;
+                        color: MaterialColors.on-surface-variant;
+                        font-size: 13px;
+                    }
+                    Text {
+                        text: "→";
+                        color: MaterialColors.primary;
+                        font-size: 13px;
+                    }
+                    Text {
+                        text: "Latest: " + latest-version;
+                        color: MaterialColors.primary;
+                        font-size: 13px;
+                        font-weight: 600;
+                    }
+                }
+
+                SectionHeader { txt: "Changelog"; }
+
+                Rectangle {
+                    height: 120px;
+                    background: MaterialColors.surface;
+                    border-radius: 8px;
+                    border-width: 1px;
+                    border-color: MaterialColors.outline-variant;
+
+                    ScrollView {
+                        Text {
+                            text: changelog;
+                            color: MaterialColors.on-surface;
+                            font-size: 12px;
+                            wrap: word-wrap;
+                        }
+                    }
+                }
+
+                SectionHeader { txt: "Channel"; }
+                HorizontalLayout {
+                    spacing: 8px;
+                    for ch[idx] in ["Stable", "Nightly"]: Rectangle {
+                        height: 32px;
+                        background: channel == idx ? MaterialColors.primary : MaterialColors.surface-container;
+                        border-radius: 8px;
+
+                        Text {
+                            text: ch;
+                            color: channel == idx ? MaterialColors.on-primary : MaterialColors.on-surface;
+                            font-size: 12px;
+                            horizontal-alignment: center;
+                            vertical-alignment: center;
+                        }
+
+                        TouchArea {
+                            clicked => { channel = idx; }
+                        }
+                    }
+                }
+
+                if is-downloading: VerticalLayout {
+                    spacing: 4px;
+                    Text {
+                        text: status-text;
+                        color: MaterialColors.on-surface-variant;
+                        font-size: 12px;
+                    }
+                    Rectangle {
+                        height: 8px;
+                        background: MaterialColors.surface-container;
+                        border-radius: 4px;
+
+                        Rectangle {
+                            width: parent.width * download-progress;
+                            height: 100%;
+                            background: MaterialColors.primary;
+                            border-radius: 4px;
+                        }
+                    }
+                }
+
+                if !is-downloading: HorizontalLayout {
+                    spacing: 8px;
+                    Button {
+                        text: "Download && Install";
+                        clicked => { download(); is-downloading = true; }
+                    }
+                    Button {
+                        text: "Skip This Version";
+                        clicked => { skip(); dialog-visible = false; }
+                    }
+                    Button {
+                        text: "Remind Me Later";
+                        clicked => { remind-later(); dialog-visible = false; }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Shortcut Creation Dialog
+export component ShortcutCreationDialog inherits Rectangle {
+    in-out property <bool> dialog-visible: false;
+    in-out property <string> shortcut-name: "My Game";
+    in-out property <int> target: 0; // 0=Desktop, 1=Start Menu, 2=Both
+    in-out property <bool> boot-fullscreen: false;
+    in-out property <bool> boot-fast-forward: false;
+    in-out property <bool> boot-load-state: false;
+    in-out property <string> custom-icon: "";
+    callback close();
+    callback create();
+
+    if dialog-visible: Rectangle {
+        background: #00000080;
+
+        Rectangle {
+            width: 400px;
+            height: 360px;
+            background: MaterialColors.surface-container-high;
+            border-radius: 16px;
+            border-width: 1px;
+            border-color: MaterialColors.outline;
+
+            VerticalLayout {
+                padding: 16px;
+                spacing: 12px;
+
+                Text {
+                    text: "Create Shortcut";
+                    color: MaterialColors.on-surface;
+                    font-size: 18px;
+                    font-weight: 600;
+                }
+
+                SectionHeader { txt: "Name"; }
+                LineEdit {
+                    text: shortcut-name;
+                    height: 32px;
+                }
+
+                SectionHeader { txt: "Target"; }
+                HorizontalLayout {
+                    spacing: 8px;
+                    for t[idx] in ["Desktop", "Start Menu", "Both"]: Rectangle {
+                        height: 32px;
+                        background: target == idx ? MaterialColors.primary : MaterialColors.surface-container;
+                        border-radius: 8px;
+
+                        Text {
+                            text: t;
+                            color: target == idx ? MaterialColors.on-primary : MaterialColors.on-surface;
+                            font-size: 12px;
+                            horizontal-alignment: center;
+                            vertical-alignment: center;
+                        }
+
+                        TouchArea {
+                            clicked => { target = idx; }
+                        }
+                    }
+                }
+
+                SectionHeader { txt: "Boot Options"; }
+                ToggleRow {
+                    label: "Launch Fullscreen";
+                    checked: boot-fullscreen;
+                    toggled => { boot-fullscreen = !boot-fullscreen; }
+                }
+                ToggleRow {
+                    label: "Start Fast-Forward";
+                    checked: boot-fast-forward;
+                    toggled => { boot-fast-forward = !boot-fast-forward; }
+                }
+                ToggleRow {
+                    label: "Auto-Load Last State";
+                    checked: boot-load-state;
+                    toggled => { boot-load-state = !boot-load-state; }
+                }
+
+                HorizontalLayout {
+                    spacing: 8px;
+                    Button {
+                        text: "Create";
+                        clicked => { create(); dialog-visible = false; }
+                    }
+                    Button {
+                        text: "Cancel";
+                        clicked => { dialog-visible = false; close(); }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Cover Download Dialog
+export component CoverDownloadDialog inherits Rectangle {
+    in-out property <bool> dialog-visible: false;
+    in-out property <string> game-title: "";
+    in-out property <string> game-serial: "";
+    in-out property <float> download-progress: 0.0;
+    in-out property <bool> is-downloading: false;
+    in-out property <string> status-text: "Ready to download cover art";
+    in-out property <string> cover-url: "";
+    callback close();
+    callback download();
+
+    if dialog-visible: Rectangle {
+        background: #00000080;
+
+        Rectangle {
+            width: 400px;
+            height: 320px;
+            background: MaterialColors.surface-container-high;
+            border-radius: 16px;
+            border-width: 1px;
+            border-color: MaterialColors.outline;
+
+            VerticalLayout {
+                padding: 16px;
+                spacing: 12px;
+
+                Text {
+                    text: "Download Cover Art";
+                    color: MaterialColors.on-surface;
+                    font-size: 18px;
+                    font-weight: 600;
+                }
+
+                Text {
+                    text: game-title;
+                    color: MaterialColors.on-surface;
+                    font-size: 14px;
+                }
+
+                Text {
+                    text: "Serial: " + game-serial;
+                    color: MaterialColors.on-surface-variant;
+                    font-size: 12px;
+                    font-family: "Consolas";
+                }
+
+                SectionHeader { txt: "Cover URL"; }
+                LineEdit {
+                    text: cover-url;
+                    placeholder-text: "https://example.com/cover.jpg";
+                    font-size: 12px;
+                    height: 32px;
+                }
+
+                if is-downloading: VerticalLayout {
+                    spacing: 4px;
+                    Text {
+                        text: status-text;
+                        color: MaterialColors.on-surface-variant;
+                        font-size: 12px;
+                    }
+                    Rectangle {
+                        height: 8px;
+                        background: MaterialColors.surface-container;
+                        border-radius: 4px;
+
+                        Rectangle {
+                            width: parent.width * download-progress;
+                            height: 100%;
+                            background: MaterialColors.primary;
+                            border-radius: 4px;
+                        }
+                    }
+                }
+
+                if !is-downloading: Text {
+                    text: status-text;
+                    color: MaterialColors.on-surface-variant;
+                    font-size: 12px;
+                }
+
+                HorizontalLayout {
+                    spacing: 8px;
+                    Button {
+                        text: "Download";
+                        clicked => { download(); is-downloading = true; }
+                    }
+                    Button {
+                        text: "Cancel";
+                        clicked => { dialog-visible = false; close(); }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Input Recording Dialog
+export component InputRecordingDialog inherits Rectangle {
+    in-out property <bool> dialog-visible: false;
+    in-out property <string> author: "";
+    in-out property <string> description: "";
+    in-out property <int> recording-type: 0; // 0=Power On, 1=Savestate
+    in-out property <string> file-path: "";
+    in-out property <bool> is-recording: false;
+    in-out property <bool> is-playing: false;
+    in-out property <int> current-frame: 0;
+    in-out property <int> total-frames: 0;
+    callback close();
+    callback start-recording();
+    callback stop-recording();
+    callback play();
+    callback stop-playback();
+
+    if dialog-visible: Rectangle {
+        background: #00000080;
+
+        Rectangle {
+            width: 420px;
+            height: 380px;
+            background: MaterialColors.surface-container-high;
+            border-radius: 16px;
+            border-width: 1px;
+            border-color: MaterialColors.outline;
+
+            VerticalLayout {
+                padding: 16px;
+                spacing: 12px;
+
+                Text {
+                    text: "Input Recording";
+                    color: MaterialColors.on-surface;
+                    font-size: 18px;
+                    font-weight: 600;
+                }
+
+                if !is-recording && !is-playing: VerticalLayout {
+                    spacing: 8px;
+
+                    SectionHeader { txt: "Author"; }
+                    LineEdit {
+                        text: author;
+                        placeholder-text: "Your name";
+                        height: 32px;
+                    }
+
+                    SectionHeader { txt: "Description"; }
+                    LineEdit {
+                        text: description;
+                        placeholder-text: "Optional description";
+                        height: 32px;
+                    }
+
+                    SectionHeader { txt: "Start From"; }
+                    HorizontalLayout {
+                        spacing: 8px;
+                        for t[idx] in ["Power On", "Savestate"]: Rectangle {
+                            height: 32px;
+                            background: recording-type == idx ? MaterialColors.primary : MaterialColors.surface-container;
+                            border-radius: 8px;
+
+                            Text {
+                                text: t;
+                                color: recording-type == idx ? MaterialColors.on-primary : MaterialColors.on-surface;
+                                font-size: 12px;
+                                horizontal-alignment: center;
+                                vertical-alignment: center;
+                            }
+
+                            TouchArea {
+                                clicked => { recording-type = idx; }
+                            }
+                        }
+                    }
+
+                    HorizontalLayout {
+                        spacing: 8px;
+                        Button {
+                            text: "Start Recording";
+                            clicked => { start-recording(); is-recording = true; }
+                        }
+                        Button {
+                            text: "Play File...";
+                            clicked => { play(); is-playing = true; }
+                        }
+                        Button {
+                            text: "Cancel";
+                            clicked => { dialog-visible = false; close(); }
+                        }
+                    }
+                }
+
+                if is-recording: VerticalLayout {
+                    spacing: 8px;
+
+                    Text {
+                        text: "🔴 Recording...";
+                        color: MaterialColors.error;
+                        font-size: 16px;
+                        font-weight: 600;
+                    }
+
+                    Text {
+                        text: "Frame: " + current-frame;
+                        color: MaterialColors.on-surface;
+                        font-size: 14px;
+                    }
+
+                    Button {
+                        text: "Stop Recording";
+                        clicked => { stop-recording(); is-recording = false; }
+                    }
+                }
+
+                if is-playing: VerticalLayout {
+                    spacing: 8px;
+
+                    Text {
+                        text: "▶ Playing...";
+                        color: MaterialColors.primary;
+                        font-size: 16px;
+                        font-weight: 600;
+                    }
+
+                    Text {
+                        text: "Frame: " + current-frame + " / " + total-frames;
+                        color: MaterialColors.on-surface;
+                        font-size: 14px;
+                    }
+
+                    Rectangle {
+                        height: 8px;
+                        background: MaterialColors.surface-container;
+                        border-radius: 4px;
+
+                        Rectangle {
+                            width: total-frames > 0 ? parent.width * (current-frame / total-frames) : 0px;
+                            height: 100%;
+                            background: MaterialColors.primary;
+                            border-radius: 4px;
+                        }
+                    }
+
+                    Button {
+                        text: "Stop Playback";
+                        clicked => { stop-playback(); is-playing = false; }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Log Window
+export component LogWindow inherits Rectangle {
+    in-out property <int> log-level: 3; // 0=Error, 1=Warning, 2=Info, 3=Debug, 4=Trace
+    in-out property <string> filter-text: "";
+    in-out property <bool> auto-scroll: true;
+    in-out property <[string]> log-lines: ["[INFO] PCSX2 v2.0.0 initialized", "[INFO] Loading BIOS...", "[INFO] Game loaded successfully"];
+    callback save-log();
+    callback clear-log();
+
+    background: MaterialColors.surface;
+
+    VerticalLayout {
+        // Toolbar
+        Rectangle {
+            height: 36px;
+            background: MaterialColors.surface-container;
+
+            HorizontalLayout {
+                padding-left: 8px;
+                padding-right: 8px;
+                spacing: 8px;
+
+                Text {
+                    text: "Log Level:";
+                    color: MaterialColors.on-surface-variant;
+                    font-size: 11px;
+                    vertical-alignment: center;
+                }
+
+                for lvl[idx] in ["Error", "Warning", "Info", "Debug", "Trace"]: Rectangle {
+                    width: 48px;
+                    height: 24px;
+                    background: log-level == idx ? MaterialColors.primary-container : Colors.transparent;
+                    border-radius: 4px;
+
+                    Text {
+                        text: lvl;
+                        color: log-level == idx ? MaterialColors.on-primary-container : MaterialColors.on-surface-variant;
+                        font-size: 10px;
+                        horizontal-alignment: center;
+                        vertical-alignment: center;
+                    }
+
+                    TouchArea {
+                        clicked => { log-level = idx; }
+                    }
+                }
+
+                Rectangle { horizontal-stretch: 1; }
+
+                LineEdit {
+                    text: filter-text;
+                    placeholder-text: "Filter...";
+                    font-size: 11px;
+                    height: 24px;
+                    width: 120px;
+                }
+
+                Button {
+                    text: "Save";
+                    clicked => { save-log(); }
+                }
+                Button {
+                    text: "Clear";
+                    clicked => { clear-log(); }
+                }
+
+                Rectangle {
+                    width: 64px;
+                    height: 24px;
+                    background: auto-scroll ? MaterialColors.primary-container : MaterialColors.surface-container-high;
+                    border-radius: 4px;
+
+                    Text {
+                        text: "Auto";
+                        color: auto-scroll ? MaterialColors.on-primary-container : MaterialColors.on-surface-variant;
+                        font-size: 10px;
+                        horizontal-alignment: center;
+                        vertical-alignment: center;
+                    }
+
+                    TouchArea {
+                        clicked => { auto-scroll = !auto-scroll; }
+                    }
+                }
+            }
+        }
+
+        // Log content
+        Rectangle {
+            background: #1a1a1a;
+
+            ScrollView {
+                for line[idx] in log-lines: Rectangle {
+                    height: 18px;
+
+                    Text {
+                        text: line;
+                        color: line.contains("[ERROR]") ? #ff6b6b : (line.contains("[WARN]") ? #ffd93d : (line.contains("[DEBUG]") ? #6bcb77 : #e0e0e0));
+                        font-size: 11px;
+                        font-family: "Consolas";
+                        vertical-alignment: center;
+                        padding-left: 8px;
+                    }
+                }
+            }
+        }
+    }
+}

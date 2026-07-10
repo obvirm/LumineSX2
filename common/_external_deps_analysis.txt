@@ -1,0 +1,124 @@
+# External C/C++ library dependencies of common/ files (excluding emitter/)
+# Generated 2026-06-21
+#
+# Format: <file>.cpp -> <header> = <library/source>
+#
+# This excludes:
+#   - C++ STL (algorithm, vector, mutex, atomic, etc.) — replaced by Rust std
+#   - PCSX2's own headers (common/...) — already have Rust counterparts
+#   - OS-specific headers that the Rust layer already re-implements
+#     (pthread, mach, sys/mman, etc.) — Rust std::thread/process handles these
+
+# ============================================================================
+# 3RD-PARTY C/C++ LIBRARIES (vcpkg / external)
+# ============================================================================
+Image.cpp                          png.h            = libpng (vcpkg)
+Image.cpp                          jpeglib.h        = libjpeg-turbo (vcpkg)
+Image.cpp                          webp/decode.h    = libwebp (vcpkg)
+Image.cpp                          webp/encode.h    = libwebp (vcpkg)
+YAML.cpp                           c4/yml/error.def.hpp = ryml/rapidyaml (vcpkg)
+YAML.cpp                           csetjmp          = ryml jump recovery (setjmp/longjmp)
+HTTPDownloaderCurl.cpp             <curl headers>   = libcurl (vcpkg)  [via target_link_libraries]
+HTTPDownloaderWinHTTP.cpp          winhttp.h        = Windows WinHTTP (system)
+HostSys.cpp / LnxHostSys.cpp       cpuinfo.h        = cpuinfo (PCSX2 3rdparty)
+Perf.cpp                           jitprofiling.h   = Intel JIT Profiling API (system/optional)
+Perf.cpp                           elf.h            = libelf (system, for symbol resolution)
+CrashHandler.cpp                   backtrace.h      = libbacktrace (PCSX2 3rdparty)
+Perf.cpp / CrashHandler.cpp        DbgHelp.h        = Windows DbgHelp (system)
+
+# ============================================================================
+# OS / PLATFORM APIs (not 3rd party, but C-ABI)
+# ============================================================================
+# Windows (system)
+CrashHandler.cpp                   DbgHelp.h        = Windows DbgHelp
+StackWalker.cpp                    dbghelp.h        = Windows DbgHelp
+StackWalker.cpp                    windows.h        = Windows SDK
+StackWalker.cpp                    tchar.h          = Windows TCHAR
+Assertions.cpp                     tlhelp32.h       = Windows ToolHelp
+WindowInfo.cpp                     dwmapi.h         = Windows DWM
+WinMisc.cpp / WinThreads.cpp       mmsystem.h       = Windows Multimedia
+WinMisc.cpp / WinThreads.cpp       timeapi.h        = Windows Time API
+WinMisc.cpp / WinThreads.cpp       VersionHelpers.h = Windows version helpers
+
+# Linux (system)
+LnxHostSys.cpp                     sys/mman.h       = POSIX mmap
+LnxHostSys.cpp / Perf.cpp          sys/syscall.h    = POSIX syscall
+LnxMisc.cpp                        dbus/dbus.h      = libdbus (vcpkg)  [via target_link_libraries]
+LnxMisc.cpp                        X11/Xlib.h       = libX11 (vcpkg)
+LnxMisc.cpp                        X11/extensions/XInput2.h = libXi (vcpkg)
+WindowInfo.cpp                     X11/extensions/Xrandr.h  = libXrandr (vcpkg)
+FileSystem.cpp                     dirent.h         = POSIX directory
+FileSystem.cpp                     sys/stat.h       = POSIX stat
+FileSystem.cpp                     sys/types.h      = POSIX types
+FileSystem.cpp                     fcntl.h          = POSIX file control
+FileSystem.cpp                     unistd.h         = POSIX
+LnxThreads.cpp                     pthread.h        = POSIX threads
+LnxThreads.cpp                     pthread_np.h     = FreeBSD/Linux pthread extensions
+LnxThreads.cpp                     sys/prctl.h      = POSIX process
+DynamicLibrary.cpp                 dlfcn.h          = POSIX dlopen
+
+# macOS (system)
+DarwinMisc.cpp                     ApplicationServices/ApplicationServices.h = macOS Carbon
+DarwinMisc.cpp                     IOKit/pwr_mgt/IOPMLib.h  = macOS power management
+DarwinMisc.cpp                     mach/mach_time.h         = macOS Mach
+DarwinMisc.cpp                     mach/message.h
+DarwinMisc.cpp                     mach/task.h
+DarwinMisc.cpp                     mach/thread_state.h
+DarwinMisc.cpp                     sys/sysctl.h    = BSD sysctl
+DarwinThreads.cpp                  mach/mach*.h    = macOS Mach
+DarwinThreads.cpp                  mach/semaphore.h
+DarwinThreads.cpp                  mach/thread_act.h
+FileSystem.cpp                     mach-o/dyld.h   = macOS dyld
+
+# Cross-platform POSIX
+FileSystem.cpp                     io.h            = Windows I/O (MSVC)
+FileSystem.cpp                     share.h         = Windows share modes
+FileSystem.cpp                     shlobj.h        = Windows shell
+FileSystem.cpp                     sys/mman.h      = POSIX mmap
+FileSystem.cpp                     sys/param.h     = BSD
+FileSystem.cpp                     winioctl.h      = Windows I/O control
+Console.cpp                        unistd.h        = POSIX
+
+# SIMD / intrinsics (CPU features, not external libs)
+TextureDecompress.cpp              emmintrin.h     = SSE2 intrinsics (compiler builtin)
+TextureDecompress.cpp              immintrin.h     = AVX/SSE/AVX2/AVX-512 (compiler builtin)
+Assertions.cpp                     intrin.h        = MSVC intrinsics
+
+# ============================================================================
+# Per-file external dep count
+# ============================================================================
+#
+# Image.cpp               = 4 deps (png, jpeg, webp x2)
+# FileSystem.cpp          = 11 OS headers
+# LnxMisc.cpp             = 2 deps (X11, dbus)
+# WindowInfo.cpp          = 2 deps (Xrandr, dwmapi)
+# StackWalker.cpp         = 1 dep (dbghelp)
+# CrashHandler.cpp        = 3 deps (backtrace, DbgHelp, sys/mman)
+# LnxHostSys.cpp          = 1 dep (cpuinfo)
+# HTTPDownloaderCurl.cpp  = 1 dep (libcurl)
+# HTTPDownloaderWinHTTP   = 1 dep (winhttp)
+# DarwinMisc.cpp          = 5 macOS frameworks
+# DarwinThreads.cpp       = 6 mach headers
+# YAML.cpp                = 1 dep (ryml) + setjmp
+# Perf.cpp                = 2 deps (jitprofiling, libelf)
+#
+# Self-contained (no external C/C++ libs at all):
+#   AlignedMalloc.cpp
+#   MD5Digest.cpp
+#   Console.cpp
+#   DynamicLibrary.cpp     (only dlfcn.h, an OS API)
+#   Error.cpp
+#   FastJmp.cpp
+#   HTTPDownloader.cpp     (just interface, impls in WinHTTP/Curl)
+#   MemoryInterface.cpp    (just <bit> from STL)
+#   MemorySettingsInterface.cpp
+#   ProgressCallback.cpp
+#   ReadbackSpinManager.cpp
+#   Semaphore.cpp
+#   SettingsWrapper.cpp
+#   SmallString.cpp
+#   StringUtil.cpp
+#   TextureDecompress.cpp  (just SIMD intrinsics from compiler)
+#   Timer.cpp
+#   WindowInfo.cpp
+#   Assertions.cpp         (intrinsics + tlhelp32)

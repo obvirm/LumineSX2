@@ -1,0 +1,3237 @@
+    Blocking waiting for file lock on build directory
+    Checking pcsx2_translations v0.1.0 (E:\project\pcsx2\rust\translations)
+error[E0252]: the name `OnceLock` is defined multiple times
+   --> pcsx2\SioSmall.rs:346:24
+    |
+ 22 | use std::sync::OnceLock;
+    |     ------------------- previous import of the type `OnceLock` here
+...
+346 | use std::sync::{Mutex, OnceLock};
+    |                        ^^^^^^^^ `OnceLock` reimported here
+    |
+    = note: `OnceLock` must be defined only once in the type namespace of this module
+
+error[E0428]: the name `Null` is defined multiple times
+   --> thirdparty\rapidjson\RapidJson.rs:276:5
+    |
+274 |     Null,
+    |     ---- previous definition of the type `Null` here
+275 |     /// `kNullType` -- JSON `null`.
+276 |     Null,
+    |     ^^^^ `Null` redefined here
+    |
+    = note: `Null` must be defined only once in the type namespace of this enum
+
+warning: private item shadows public glob re-export
+   --> common\Console.rs:18:5
+    |
+ 18 | use std::default::Default;
+    |     ^^^^^^^^^^^^^^^^^^^^^
+    |
+note: the name `Default` in the type namespace is supposed to be publicly re-exported here
+   --> common\Console.rs:124:9
+    |
+124 | pub use self::ConsoleColors::*;
+    |         ^^^^^^^^^^^^^^^^^^^^^^
+note: but the private item here shadows it
+   --> common\Console.rs:18:5
+    |
+ 18 | use std::default::Default;
+    |     ^^^^^^^^^^^^^^^^^^^^^
+    = note: `#[warn(hidden_glob_reexports)]` on by default
+
+warning: unused doc comment
+   --> common\CrashHandler.rs:208:5
+    |
+208 | /     /// Real Windows binding. We declare it locally because we only have a
+209 | |     /// `libc` shim and the Windows surface lives in system DLLs.
+    | |_________________________________________________________________^
+210 |       #[link(name = "kernel32")]
+211 | /     extern "system" {
+212 | |         fn SetUnhandledExceptionFilter(
+213 | |             filter: Option<ExceptionCallback>,
+214 | |         ) -> Option<ExceptionCallback>;
+215 | |     }
+    | |_____- rustdoc does not generate documentation for extern blocks
+    |
+    = help: use `//` for a plain comment
+    = note: `#[warn(unused_doc_comments)]` (part of `#[warn(unused)]`) on by default
+
+warning: unexpected `cfg` condition name: `PCSX2_DEVBUILD`
+   --> common\Pcsx2Defs.rs:253:11
+    |
+253 | #[cfg(not(PCSX2_DEVBUILD))]
+    |           ^^^^^^^^^^^^^^
+    |
+    = help: expected names are: `docsrs`, `feature`, and `test` and 31 more
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_DEVBUILD)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_DEVBUILD)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: `#[warn(unexpected_cfgs)]` on by default
+
+warning: unexpected `cfg` condition name: `PCSX2_DEVBUILD`
+   --> common\Pcsx2Defs.rs:261:7
+    |
+261 | #[cfg(PCSX2_DEVBUILD)]
+    |       ^^^^^^^^^^^^^^
+    |
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_DEVBUILD)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_DEVBUILD)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `PCSX2_DEVBUILD`
+  --> common\Pcsx2Defs.rs:24:35
+   |
+24 | pub const IsDevBuild: bool = cfg!(PCSX2_DEVBUILD);
+   |                                   ^^^^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_DEVBUILD)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_DEVBUILD)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `PCSX2_DEBUG`
+  --> common\Pcsx2Defs.rs:25:37
+   |
+25 | pub const IsDebugBuild: bool = cfg!(PCSX2_DEBUG);
+   |                                     ^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_DEBUG)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_DEBUG)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `PCSX2_OVERRIDE_HOST_PAGE_SIZE`
+  --> common\Pcsx2Defs.rs:62:11
+   |
+62 |     #[cfg(PCSX2_OVERRIDE_HOST_PAGE_SIZE)]
+   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_OVERRIDE_HOST_PAGE_SIZE)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_OVERRIDE_HOST_PAGE_SIZE)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `PCSX2_OVERRIDE_HOST_PAGE_SIZE`
+  --> common\Pcsx2Defs.rs:66:19
+   |
+66 |     #[cfg(all(not(PCSX2_OVERRIDE_HOST_PAGE_SIZE), target_arch = "aarch64"))]
+   |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_OVERRIDE_HOST_PAGE_SIZE)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_OVERRIDE_HOST_PAGE_SIZE)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `PCSX2_OVERRIDE_HOST_PAGE_SIZE`
+  --> common\Pcsx2Defs.rs:71:13
+   |
+71 |         not(PCSX2_OVERRIDE_HOST_PAGE_SIZE),
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_OVERRIDE_HOST_PAGE_SIZE)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_OVERRIDE_HOST_PAGE_SIZE)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE`
+  --> common\Pcsx2Defs.rs:89:11
+   |
+89 |     #[cfg(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE)]
+   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE`
+  --> common\Pcsx2Defs.rs:94:13
+   |
+94 |         not(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE),
+   |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: consider using a Cargo feature instead
+   = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+            [lints.rust]
+            unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE)'] }
+   = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE)");` to the top of the `build.rs`
+   = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unexpected `cfg` condition name: `PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE`
+   --> common\Pcsx2Defs.rs:101:13
+    |
+101 |         not(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE),
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(PCSX2_OVERRIDE_HOST_CACHE_LINE_SIZE)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+warning: unused macro definition: `impl_typed_access`
+   --> common\SmallEtc.rs:847:14
+    |
+847 | macro_rules! impl_typed_access {
+    |              ^^^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(unused_macros)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused doc comment
+    --> pcsx2\x86\FinalSweepX86.rs:1276:1
+     |
+1276 | / /// Per-thread X86 and XMM allocation tables. The original C++ is
+1277 | | /// global, but the dynarec is re-entrant; using a thread-local keeps
+1278 | | /// the port simple without losing semantics.
+     | |_--------------------------------------------^
+     |   |
+     |   rustdoc does not generate documentation for macro invocations
+     |
+     = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+
+warning: unused doc comment
+    --> pcsx2\x86\FinalSweepX86.rs:1290:1
+     |
+1290 | /// Per-thread allocation-counter (16-bit wrap).
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ rustdoc does not generate documentation for macro invocations
+     |
+     = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+
+warning: unused doc comment
+    --> pcsx2\x86\FinalSweepX86.rs:1296:1
+     |
+1296 | / /// `g_pCurInstInfo`: pointer to the current instruction's liveness
+1297 | | /// info. The original is a raw pointer; here we use a `RefCell`
+1298 | | /// pointer for safety.
+     | |_----------------------^
+     |   |
+     |   rustdoc does not generate documentation for macro invocations
+     |
+     = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+
+warning: unused doc comment
+    --> pcsx2_qt\DebuggerFull.rs:1254:1
+     |
+1254 | / /// Global registry of live debugger views, used by the static
+1255 | | /// `sendEvent` / `broadcastEvent` helpers. Mirrors the
+1256 | | /// `g_debugger_window->dockManager().debuggerViews()` lookup.
+1257 | | ///
+1258 | | /// `Rc<RefCell<DebuggerView>>` is `!Send`, so this storage must be
+1259 | | /// thread-local rather than a global `Mutex`-backed `OnceLock`.
+     | |_---------------------------------------------------------------^
+     |   |
+     |   rustdoc does not generate documentation for macro invocations
+     |
+     = help: to document an item produced by a macro, the macro must produce the documentation as part of its expansion
+
+warning: unnecessary parentheses around assigned value
+   --> thirdparty\libzip\Libzip.rs:745:47
+    |
+745 | pub const ZIP_SOURCE_SUPPORTS_READABLE: i64 = (zip_source_make_command_bitmask(ZipSourceCmd::Open)
+    |                                               ^
+...
+750 |     | zip_source_make_command_bitmask(ZipSourceCmd::Free));
+    |                                                          ^
+    |
+    = note: `#[warn(unused_parens)]` (part of `#[warn(unused)]`) on by default
+help: remove these parentheses
+    |
+745 ~ pub const ZIP_SOURCE_SUPPORTS_READABLE: i64 = zip_source_make_command_bitmask(ZipSourceCmd::Open)
+746 |     | zip_source_make_command_bitmask(ZipSourceCmd::Read)
+...
+749 |     | zip_source_make_command_bitmask(ZipSourceCmd::Error)
+750 ~     | zip_source_make_command_bitmask(ZipSourceCmd::Free);
+    |
+
+warning: unnecessary parentheses around assigned value
+   --> thirdparty\libzip\Libzip.rs:753:47
+    |
+753 | pub const ZIP_SOURCE_SUPPORTS_SEEKABLE: i64 = (ZIP_SOURCE_SUPPORTS_READABLE
+    |                                               ^
+...
+756 |     | zip_source_make_command_bitmask(ZipSourceCmd::Supports));
+    |                                                              ^
+    |
+help: remove these parentheses
+    |
+753 ~ pub const ZIP_SOURCE_SUPPORTS_SEEKABLE: i64 = ZIP_SOURCE_SUPPORTS_READABLE
+754 |     | zip_source_make_command_bitmask(ZipSourceCmd::Seek)
+755 |     | zip_source_make_command_bitmask(ZipSourceCmd::Tell)
+756 ~     | zip_source_make_command_bitmask(ZipSourceCmd::Supports);
+    |
+
+warning: unnecessary parentheses around assigned value
+   --> thirdparty\libzip\Libzip.rs:759:47
+    |
+759 | pub const ZIP_SOURCE_SUPPORTS_WRITABLE: i64 = (ZIP_SOURCE_SUPPORTS_SEEKABLE
+    |                                               ^
+...
+766 |     | zip_source_make_command_bitmask(ZipSourceCmd::Remove));
+    |                                                            ^
+    |
+help: remove these parentheses
+    |
+759 ~ pub const ZIP_SOURCE_SUPPORTS_WRITABLE: i64 = ZIP_SOURCE_SUPPORTS_SEEKABLE
+760 |     | zip_source_make_command_bitmask(ZipSourceCmd::BeginWrite)
+...
+765 |     | zip_source_make_command_bitmask(ZipSourceCmd::TellWrite)
+766 ~     | zip_source_make_command_bitmask(ZipSourceCmd::Remove);
+    |
+
+warning: unexpected `cfg` condition value: `wilcom_tests`
+   --> thirdparty\winwil\WilCom.rs:434:17
+    |
+434 | #[cfg(all(test, feature = "wilcom_tests"))]
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: expected values for `feature` are: `default`, `first_party`, `gs`, `spu2`, `thirdparty`, and `usb`
+    = help: consider adding `wilcom_tests` as a feature in `Cargo.toml`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+
+error[E0658]: use of unstable library feature `allocator_api`
+  --> common\AlignedMalloc.rs:21:24
+   |
+21 | use std::alloc::{self, Allocator, Layout};
+   |                        ^^^^^^^^^
+   |
+   = note: see issue #32838 <https://github.com/rust-lang/rust/issues/32838> for more information
+
+warning: use of deprecated function `std::arch::x86_64::_mm_getcsr`: see `_mm_getcsr` documentation - use inline assembly instead
+  --> common\FPControl.rs:14:26
+   |
+14 | use core::arch::x86_64::{_mm_getcsr, _mm_setcsr};
+   |                          ^^^^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated function `std::arch::x86_64::_mm_setcsr`: see `_mm_setcsr` documentation - use inline assembly instead
+  --> common\FPControl.rs:14:38
+   |
+14 | use core::arch::x86_64::{_mm_getcsr, _mm_setcsr};
+   |                                      ^^^^^^^^^^
+
+warning: use of deprecated function `std::arch::x86_64::_mm_getcsr`: see `_mm_getcsr` documentation - use inline assembly instead
+  --> common\FPControl.rs:71:33
+   |
+71 |             let bits = unsafe { _mm_getcsr() };
+   |                                 ^^^^^^^^^^
+
+warning: use of deprecated function `std::arch::x86_64::_mm_setcsr`: see `_mm_setcsr` documentation - use inline assembly instead
+  --> common\FPControl.rs:88:22
+   |
+88 |             unsafe { _mm_setcsr(self.bitmask) };
+   |                      ^^^^^^^^^^
+
+error[E0081]: discriminant value `0` assigned more than once
+  --> pcsx2\Dmac.rs:41:1
+   |
+41 | pub enum TagId {
+   | ^^^^^^^^^^^^^^
+...
+44 |     Cnts = 0,
+   |            - `0` assigned here
+45 |     Refe = 0,
+   |            - `0` assigned here
+
+error[E0081]: discriminant value `528486580` assigned more than once
+   --> pcsx2\IopHw.rs:112:1
+    |
+112 | pub enum DmaBcrAddresses {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^
+...
+116 |     HwxDma3Bcr = 0x1F8010B4,
+    |                  ---------- `528486580` assigned here
+117 |     HwxDma3BcrL16 = 0x1F8010B4,
+    |                     ---------- `528486580` assigned here
+
+error[E0277]: `(dyn FileBackend + 'static)` cannot be shared between threads safely
+    --> pcsx2\SioPad.rs:2083:30
+     |
+2083 | static MEMCARD_FILE_BACKEND: LazyLock<SyncCell<MemoryCardFile>> =
+     |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `(dyn FileBackend + 'static)` cannot be shared between threads safely
+     |
+     = help: the trait `Sync` is not implemented for `(dyn FileBackend + 'static)`
+     = note: required for `std::ptr::Unique<(dyn FileBackend + 'static)>` to implement `Sync`
+note: required because it appears within the type `Box<(dyn FileBackend + 'static)>`
+    --> C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\boxed.rs:234:12
+     |
+ 234 | pub struct Box<
+     |            ^^^
+     = note: required because it appears within the type `[Box<(dyn FileBackend + 'static)>; 8]`
+note: required because it appears within the type `MemoryCardFile`
+    --> pcsx2\SioPad.rs:841:12
+     |
+ 841 | pub struct MemoryCardFile {
+     |            ^^^^^^^^^^^^^^
+note: required for `SyncCell<MemoryCardFile>` to implement `Sync`
+    --> pcsx2\SioPad.rs:2081:29
+     |
+2081 | unsafe impl<T: Send + Sync> Sync for SyncCell<T> {}
+     |                       ----  ^^^^     ^^^^^^^^^^^
+     |                       |
+     |                       unsatisfied trait bound introduced here
+     = note: 1 redundant requirement hidden
+     = note: required for `LazyLock<SyncCell<MemoryCardFile>>` to implement `Sync`
+     = note: shared static variables must have a type that implements `Sync`
+
+error[E0081]: discriminant value `-1` assigned more than once
+   --> thirdparty\include\AnyRs.rs:150:5
+    |
+150 |     pub enum PcapError {
+    |     ^^^^^^^^^^^^^^^^^^
+151 |         Ok = 0,
+152 |         Generic = -1,
+    |                   -- `-1` assigned here
+...
+156 |         Error = -1,
+    |                 -- `-1` assigned here
+
+error[E0658]: use of unstable library feature `allocator_api`
+   --> common\AlignedMalloc.rs:172:33
+    |
+172 |         let raw = alloc::System.allocate(layout) as *mut u8;
+    |                                 ^^^^^^^^
+    |
+    = note: see issue #32838 <https://github.com/rust-lang/rust/issues/32838> for more information
+
+error[E0605]: non-primitive cast: `std::result::Result<NonNull<[u8]>, std::alloc::AllocError>` as `*mut u8`
+   --> common\AlignedMalloc.rs:172:19
+    |
+172 |         let raw = alloc::System.allocate(layout) as *mut u8;
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ an `as` expression can only be used to convert between primitive types or to coerce to a specific trait object
+
+error[E0658]: use of unstable library feature `allocator_api`
+   --> common\AlignedMalloc.rs:191:19
+    |
+191 |     alloc::System.deallocate(user_ptr.sub(PREFIX), layout);
+    |                   ^^^^^^^^^^
+    |
+    = note: see issue #32838 <https://github.com/rust-lang/rust/issues/32838> for more information
+
+error[E0308]: mismatched types
+   --> common\AlignedMalloc.rs:191:30
+    |
+191 |     alloc::System.deallocate(user_ptr.sub(PREFIX), layout);
+    |                   ---------- ^^^^^^^^^^^^^^^^^^^^ expected `NonNull<u8>`, found `*mut u8`
+    |                   |
+    |                   arguments to this method are incorrect
+    |
+    = note:   expected struct `NonNull<u8>`
+            found raw pointer `*mut u8`
+note: method defined here
+   --> C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\alloc\mod.rs:173:15
+    |
+173 |     unsafe fn deallocate(&self, ptr: NonNull<u8>, layout: Layout);
+    |               ^^^^^^^^^^
+
+error[E0369]: no implementation for `&mut u64 << {integer}`
+  --> common\HashCombine.rs:24:60
+   |
+24 |     *seed ^= v.wrapping_add(0x9e37_79b9).wrapping_add(seed << 6).wrapping_add(*seed >> 2);
+   |                                                       ---- ^^ - {integer}
+   |                                                       |
+   |                                                       &mut u64
+   |
+help: `<<` can be used on `u64` if you dereference the left-hand side
+   |
+24 |     *seed ^= v.wrapping_add(0x9e37_79b9).wrapping_add(*seed << 6).wrapping_add(*seed >> 2);
+   |                                                       +
+
+error[E0277]: can't compare `Q1` with `Q2`
+  --> common\HeterogeneousContainers.rs:70:13
+   |
+70 |         lhs == rhs
+   |             ^^ no implementation for `Q1 == Q2`
+   |
+   = note: required for `&Q1` to implement `PartialEq<&Q2>`
+
+error[E0308]: mismatched types
+   --> common\HeterogeneousContainers.rs:129:15
+    |
+123 |     pub fn cmp_str<Q1, Q2>(&self, lhs: &Q1, rhs: &Q2) -> bool
+    |                    --  -- found type parameter
+    |                    |
+    |                    expected type parameter
+...
+129 |         lhs < rhs
+    |               ^^^ expected `&Q1`, found `&Q2`
+    |
+    = note: expected reference `&Q1`
+               found reference `&Q2`
+    = note: a type parameter was expected, but a different one was found; you might be missing a type parameter or trait bound
+    = note: for more information, visit https://doc.rust-lang.org/book/ch10-02-traits.html#traits-as-parameters
+
+error[E0277]: the trait bound `Value: sealed_dispatch::Read<Value>` is not satisfied
+   --> common\MemoryInterface.rs:437:10
+    |
+437 |         <Value as sealed_dispatch::Read<Value>>::read(self, address)
+    |          ^^^^^ the trait `sealed_dispatch::Read<Value>` is not implemented for `Value`
+    |
+help: consider further restricting type parameter `Value` with trait `Read`
+    |
+436 |     fn read<Value: MemoryAccessType + common::MemoryInterface::sealed_dispatch::Read<Value>>(&mut self, address: MemoryAddress) -> Value {
+    |                                     +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+error[E0277]: the trait bound `Value: sealed_dispatch::Write<Value>` is not satisfied
+   --> common\MemoryInterface.rs:444:10
+    |
+444 |         <Value as sealed_dispatch::Write<Value>>::write(self, address, value)
+    |          ^^^^^ the trait `sealed_dispatch::Write<Value>` is not implemented for `Value`
+    |
+help: consider further restricting type parameter `Value` with trait `Write`
+    |
+443 |     fn write<Value: MemoryAccessType + common::MemoryInterface::sealed_dispatch::Write<Value>>(&mut self, address: MemoryAddress, value: Value) -> bool {
+    |                                      ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+error[E0308]: mismatched types
+   --> common\StackWalkerEtc.rs:297:13
+    |
+296 |         static NV_OPTIMUS_ENABLEMENT_DIRECTIVE: [u8; 28] =
+    |                                                 -------- expected because of the type of the static
+297 |             *b" /EXPORT:NvOptimusEnablement\0";
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected an array with a size of 28, found one with a size of 29
+
+error[E0599]: no associated function or constant named `from_str_radix` found for type parameter `T` in the current scope
+   --> common\StringUtil.rs:328:8
+    |
+323 | pub fn from_chars<T>(s: &str, base: u32) -> Option<T>
+    |                   - associated function or constant `from_str_radix` not found for this type parameter
+...
+328 |     T::from_str_radix(s, base).ok()
+    |        ^^^^^^^^^^^^^^ associated function or constant not found in `T`
+    |
+help: there is an associated function `from_str` with a similar name
+   --> C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\str\traits.rs:908:5
+    |
+908 |     fn from_str(s: &str) -> Result<Self, Self::Err>;
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0308]: mismatched types
+  --> common\TextureDecompress.rs:68:24
+   |
+61 | fn decompress_bc1_into(src: &[u8], width: u32, height: u32, out: &mut [u8]) {
+   |                                                                            - help: a return type might be missing here: `-> _`
+...
+68 |                 return vec![];
+   |                        ^^^^^^ expected `()`, found `Vec<_>`
+   |
+   = note: expected unit type `()`
+                 found struct `Vec<_>`
+
+error[E0600]: cannot apply unary operator `-` to type `u32`
+    --> pcsx2\DebugToolsFull.rs:2108:30
+     |
+2108 | ...                   (-(a[0] as f32).to_bits() as i32 as f32).to_bits() as u64
+     |                        ^^^^^^^^^^^^^^^^^^^^^^^^ cannot apply unary operator `-`
+     |
+     = note: unsigned values cannot be negated
+
+error[E0308]: mismatched types
+    --> pcsx2\DebugToolsFull.rs:2418:40
+     |
+2418 |     let offset = ((target.wrapping_sub(address).wrapping_add(4) / 4) & 0xFFFF) as u32;
+     |                           ------------ ^^^^^^^ expected `u64`, found `u32`
+     |                           |
+     |                           arguments to this method are incorrect
+     |
+note: method defined here
+    --> C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\num\uint_macros.rs:2547:22
+     |
+2547 |           pub const fn wrapping_sub(self, rhs: Self) -> Self {
+     |                        ^^^^^^^^^^^^
+     |
+    ::: C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\num\mod.rs:1270:5
+     |
+1270 | /     uint_impl! {
+1271 | |         Self = u64,
+1272 | |         ActualT = u64,
+1273 | |         SignedT = i64,
+...    |
+1293 | |         bound_condition = "",
+1294 | |     }
+     | |_____- in this macro invocation
+     = note: this error originates in the macro `uint_impl` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: you can convert a `u32` to a `u64`
+     |
+2418 |     let offset = ((target.wrapping_sub(address.into()).wrapping_add(4) / 4) & 0xFFFF) as u32;
+     |                                               +++++++
+
+error[E0308]: mismatched types
+    --> pcsx2\DebugToolsFull.rs:2428:40
+     |
+2428 |     let offset = ((target.wrapping_sub(address).wrapping_add(4) / 4) & 0xFFFF) as u32;
+     |                           ------------ ^^^^^^^ expected `u64`, found `u32`
+     |                           |
+     |                           arguments to this method are incorrect
+     |
+note: method defined here
+    --> C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\num\uint_macros.rs:2547:22
+     |
+2547 |           pub const fn wrapping_sub(self, rhs: Self) -> Self {
+     |                        ^^^^^^^^^^^^
+     |
+    ::: C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\num\mod.rs:1270:5
+     |
+1270 | /     uint_impl! {
+1271 | |         Self = u64,
+1272 | |         ActualT = u64,
+1273 | |         SignedT = i64,
+...    |
+1293 | |         bound_condition = "",
+1294 | |     }
+     | |_____- in this macro invocation
+     = note: this error originates in the macro `uint_impl` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: you can convert a `u32` to a `u64`
+     |
+2428 |     let offset = ((target.wrapping_sub(address.into()).wrapping_add(4) / 4) & 0xFFFF) as u32;
+     |                                               +++++++
+
+error[E0308]: `match` arms have incompatible types
+   --> pcsx2\Dev9AtaCmds.rs:739:14
+    |
+731 | /     match drive.reg_feature() {
+732 | |         0xD8 => smart_enable_ops(drive, true),
+733 | |         0xD9 => smart_enable_ops(drive, false),
+734 | |         0xD2 => smart_set_autosave_attribute(drive),
+...   |
+738 | |         0xD4 => smart_execute_offline_immediate(drive),
+    | |                 -------------------------------------- this and all prior arms are found to be of type `()`
+739 | |         _ => cmd_no_data_abort(drive),
+    | |              ^^^^^^^^^^^^^^^^^^^^^^^^ expected `()`, found `Result<(), String>`
+740 | |     }
+    | |_____- `match` arms have incompatible types
+    |
+    = note: expected unit type `()`
+                    found enum `std::result::Result<(), String>`
+help: use the `?` operator to extract the `std::result::Result<(), String>` value, propagating a `Result::Err` value to the caller
+    |
+739 |         _ => cmd_no_data_abort(drive)?,
+    |                                      +
+
+error[E0308]: mismatched types
+   --> pcsx2\Dev9AtaCmds.rs:870:5
+    |
+870 | /     match drive.reg_feature() {
+871 | |         0xF1 | 0xF2 | 0xF3 | 0xF4 | 0xF5 | 0x20 | 0x30 => cmd_no_data_abort(drive),
+872 | |         0xEC => Ok(sce_identify_drive(drive)),
+873 | |         _ => cmd_no_data_abort(drive),
+874 | |     }
+    | |_____^ expected `()`, found `Result<(), String>`
+    |
+    = note: expected unit type `()`
+                    found enum `std::result::Result<(), String>`
+help: use the `?` operator to extract the `std::result::Result<(), String>` value, propagating a `Result::Err` value to the caller
+    |
+874 |     }?
+    |      +
+help: consider using a semicolon here
+    |
+874 |     };
+    |      +
+
+error[E0599]: the method `clone` exists for struct `std::sync::MutexGuard<'_, Vec<Box<(dyn UdpBaseSession + 'static)>>>`, but its trait bounds were not satisfied
+    --> pcsx2\Dev9Sessions.rs:1061:83
+     |
+1061 |               let conns = { self.connections.lock().expect("UdpFixedPort poisoned").clone() };
+     |                                                                                     ^^^^^ method cannot be called due to unsatisfied trait bounds
+     |
+    ::: C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\boxed.rs:234:1
+     |
+ 234 | / pub struct Box<
+ 235 | |     T: ?Sized,
+ 236 | |     #[unstable(feature = "allocator_api", issue = "32838")] A: Allocator = Global,
+ 237 | | >(Unique<T>, A);
+     | |_- doesn't satisfy `Box<dyn UdpBaseSession>: Clone`
+     |
+    ::: C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\vec\mod.rs:438:1
+     |
+ 438 |   pub struct Vec<T, #[unstable(feature = "allocator_api", issue = "32838")] A: Allocator = Global> {
+     |   ------------------------------------------------------------------------------------------------ doesn't satisfy `Vec<Box<dyn UdpBaseSession>>: Clone`
+     |
+     = note: the following trait bounds were not satisfied:
+             `Box<dyn UdpBaseSession>: Clone`
+             which is required by `Vec<Box<dyn UdpBaseSession>>: Clone`
+
+error[E0599]: the method `clone` exists for struct `std::sync::MutexGuard<'_, Vec<Box<(dyn UdpBaseSession + 'static)>>>`, but its trait bounds were not satisfied
+    --> pcsx2\Dev9Sessions.rs:1085:79
+     |
+1085 |           let conns = { self.connections.lock().expect("UdpFixedPort poisoned").clone() };
+     |                                                                                 ^^^^^ method cannot be called due to unsatisfied trait bounds
+     |
+    ::: C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\boxed.rs:234:1
+     |
+ 234 | / pub struct Box<
+ 235 | |     T: ?Sized,
+ 236 | |     #[unstable(feature = "allocator_api", issue = "32838")] A: Allocator = Global,
+ 237 | | >(Unique<T>, A);
+     | |_- doesn't satisfy `Box<dyn UdpBaseSession>: Clone`
+     |
+    ::: C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\alloc\src\vec\mod.rs:438:1
+     |
+ 438 |   pub struct Vec<T, #[unstable(feature = "allocator_api", issue = "32838")] A: Allocator = Global> {
+     |   ------------------------------------------------------------------------------------------------ doesn't satisfy `Vec<Box<dyn UdpBaseSession>>: Clone`
+     |
+     = note: the following trait bounds were not satisfied:
+             `Box<dyn UdpBaseSession>: Clone`
+             which is required by `Vec<Box<dyn UdpBaseSession>>: Clone`
+
+error[E0015]: cannot call non-const associated function `<FinalCore::PerformanceMetrics as Default>::default` in statics
+    --> pcsx2\FinalCore.rs:1538:49
+     |
+1538 | pub static mut g_perf_mon: PerformanceMetrics = PerformanceMetrics::default();
+     |                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<FinalCore::EmuFolders as Default>::default` in statics
+    --> pcsx2\FinalCore.rs:2007:48
+     |
+2007 | pub static mut EmuFolders_Global: EmuFolders = EmuFolders::default();
+     |                                                ^^^^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<FinalCore::Pcsx2Config as Default>::default` in statics
+    --> pcsx2\FinalCore.rs:2047:41
+     |
+2047 | pub static mut EmuConfig: Pcsx2Config = Pcsx2Config::default();
+     |                                         ^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<FinalCore::Pcsx2Config as Default>::default` in statics
+    --> pcsx2\FinalCore.rs:2048:38
+     |
+2048 | pub static mut g_Conf: Pcsx2Config = Pcsx2Config::default();
+     |                                      ^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<FinalPeripherals::Spu2Core as Default>::default` in statics
+    --> pcsx2\FinalPeripherals.rs:2491:57
+     |
+2491 |     pub static mut CORES: [Spu2Core; 2] = [Spu2Core { ..Default::default() }, Spu2Core { ..Default::default() }];
+     |                                                         ^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<FinalPeripherals::Spu2Core as Default>::default` in statics
+    --> pcsx2\FinalPeripherals.rs:2491:92
+     |
+2491 |     pub static mut CORES: [Spu2Core; 2] = [Spu2Core { ..Default::default() }, Spu2Core { ..Default::default() }];
+     |                                                                                            ^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<FinalPeripherals::Spu2Mixer as Default>::default` in statics
+    --> pcsx2\FinalPeripherals.rs:2492:53
+     |
+2492 |     pub static mut MIXER: Spu2Mixer = Spu2Mixer { ..Default::default() };
+     |                                                     ^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<FinalPeripherals::Spu2Reverb as Default>::default` in statics
+    --> pcsx2\FinalPeripherals.rs:2493:56
+     |
+2493 |     pub static mut REVERB: Spu2Reverb = Spu2Reverb { ..Default::default() };
+     |                                                        ^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<FinalPeripherals::Spu2Spdif as Default>::default` in statics
+    --> pcsx2\FinalPeripherals.rs:2494:53
+     |
+2494 |     pub static mut SPDIF: Spu2Spdif = Spu2Spdif { ..Default::default() };
+     |                                                     ^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<FinalPeripherals::Spu2Dma as Default>::default` in statics
+    --> pcsx2\FinalPeripherals.rs:2495:41
+     |
+2495 |     pub static mut DMA: [Spu2Dma; 2] = [Spu2Dma::default(), Spu2Dma::default()];
+     |                                         ^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<FinalPeripherals::Spu2Dma as Default>::default` in statics
+    --> pcsx2\FinalPeripherals.rs:2495:61
+     |
+2495 |     pub static mut DMA: [Spu2Dma; 2] = [Spu2Dma::default(), Spu2Dma::default()];
+     |                                                             ^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<FinalPeripherals::OhciState as Default>::default` in statics
+    --> pcsx2\FinalPeripherals.rs:2835:52
+     |
+2835 |     pub static mut OHCI: OhciState = OhciState { ..Default::default() };
+     |                                                    ^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0493]: destructor of `FinalPeripherals::OhciState` cannot be evaluated at compile-time
+    --> pcsx2\FinalPeripherals.rs:2835:52
+     |
+2835 |     pub static mut OHCI: OhciState = OhciState { ..Default::default() };
+     |                                                    ^^^^^^^^^^^^^^^^^^ - value is dropped here
+     |                                                    |
+     |                                                    the destructor for this type cannot be evaluated in statics
+
+error[E0277]: the trait bound `FullscreenUiContext: Clone` is not satisfied
+    --> pcsx2\FinalPeripherals.rs:3017:5
+     |
+3015 | #[derive(Debug, Clone)]
+     |                 ----- in this derive macro expansion
+3016 | pub struct ImGuiManagerState {
+3017 |     pub context: FullscreenUiContext,
+     |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ unsatisfied trait bound
+     |
+help: the trait `Clone` is not implemented for `FullscreenUiContext`
+    --> pcsx2\FinalPeripherals.rs:2990:1
+     |
+2990 | pub struct FullscreenUiContext {
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0015]: cannot call non-const associated function `<FinalPeripherals::ImGuiManagerState as Default>::default` in statics
+    --> pcsx2\FinalPeripherals.rs:3106:71
+     |
+3106 |     pub static mut MANAGER: ImGuiManagerState = ImGuiManagerState { ..Default::default() };
+     |                                                                       ^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0493]: destructor of `FinalPeripherals::ImGuiManagerState` cannot be evaluated at compile-time
+    --> pcsx2\FinalPeripherals.rs:3106:71
+     |
+3106 |     pub static mut MANAGER: ImGuiManagerState = ImGuiManagerState { ..Default::default() };
+     |                                                                       ^^^^^^^^^^^^^^^^^^ - value is dropped here
+     |                                                                       |
+     |                                                                       the destructor for this type cannot be evaluated in statics
+
+error[E0015]: cannot call non-const associated function `<FinalPeripherals::ImGuiOverlayState as Default>::default` in statics
+    --> pcsx2\FinalPeripherals.rs:3107:72
+     |
+3107 |     pub static mut OVERLAYS: ImGuiOverlayState = ImGuiOverlayState { ..Default::default() };
+     |                                                                        ^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0493]: destructor of `FinalPeripherals::ImGuiOverlayState` cannot be evaluated at compile-time
+    --> pcsx2\FinalPeripherals.rs:3107:72
+     |
+3107 |     pub static mut OVERLAYS: ImGuiOverlayState = ImGuiOverlayState { ..Default::default() };
+     |                                                                        ^^^^^^^^^^^^^^^^^^ - value is dropped here
+     |                                                                        |
+     |                                                                        the destructor for this type cannot be evaluated in statics
+
+error[E0015]: cannot call non-const associated function `<FinalPeripherals::FullscreenUiSettings as Default>::default` in statics
+    --> pcsx2\FinalPeripherals.rs:3108:78
+     |
+3108 |     pub static mut SETTINGS: FullscreenUiSettings = FullscreenUiSettings { ..Default::default() };
+     |                                                                              ^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0277]: `dyn for<'a> Fn(&'a mut T)` cannot be shared between threads safely
+    --> pcsx2\GsFullSweep.rs:2636:65
+     |
+2636 |               let func_clone: Box<dyn Fn(&mut T) + Send + Sync> = Box::new({
+     |  _________________________________________________________________^
+2637 | |                 let f: &dyn Fn(&mut T) = &*func;
+2638 | |                 move |t: &mut T| f(t)
+2639 | |             });
+     | |______________^ `dyn for<'a> Fn(&'a mut T)` cannot be shared between threads safely
+     |
+     = help: the trait `Sync` is not implemented for `dyn for<'a> Fn(&'a mut T)`
+     = note: required for `&dyn for<'a> Fn(&'a mut T)` to implement `Send`
+note: required because it's used within this closure
+    --> pcsx2\GsFullSweep.rs:2638:17
+     |
+2638 |                 move |t: &mut T| f(t)
+     |                 ^^^^^^^^^^^^^^^^
+     = note: required for the cast from `Box<{closure@pcsx2\GsFullSweep.rs:2638:17: 2638:33}>` to `Box<dyn for<'a> Fn(&'a mut T) + Send + Sync>`
+
+error[E0015]: cannot call non-const associated function `<GsHeadless::GifPath as Default>::default` in constant functions
+   --> pcsx2\GsHeadless.rs:895:32
+    |
+895 |             path:             [GifPath::default(); 4],
+    |                                ^^^^^^^^^^^^^^^^^^
+    |
+    = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+
+error[E0015]: cannot call non-const associated function `<GsHeadless::GsPrivRegSet as Default>::default` in constant functions
+   --> pcsx2\GsHeadless.rs:897:31
+    |
+897 |             regs:             GsPrivRegSet::default(),
+    |                               ^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+
+error[E0015]: cannot call non-const associated function `<GsHeadless::GSDrawingContext as Default>::default` in constant functions
+   --> pcsx2\GsHeadless.rs:898:32
+    |
+898 |             context:          [GSDrawingContext::default(); 2],
+    |                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+
+error[E0015]: cannot call non-const associated function `<GsHeadless::GSDrawingEnvironment as Default>::default` in constant functions
+   --> pcsx2\GsHeadless.rs:899:31
+    |
+899 |             env:              GSDrawingEnvironment::default(),
+    |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+
+error[E0015]: cannot call non-const associated function `<GsHeadless::GSDrawingEnvironment as Default>::default` in constant functions
+   --> pcsx2\GsHeadless.rs:900:31
+    |
+900 |             prev_env:         GSDrawingEnvironment::default(),
+    |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+
+error[E0015]: cannot call non-const associated function `<GsHeadless::GSDrawingEnvironment as Default>::default` in constant functions
+   --> pcsx2\GsHeadless.rs:901:31
+    |
+901 |             temp_env:         GSDrawingEnvironment::default(),
+    |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+
+error[E0015]: cannot call non-const associated function `<GsHeadless::GSDrawingEnvironment as Default>::default` in constant functions
+   --> pcsx2\GsHeadless.rs:902:31
+    |
+902 |             draw_env:         GSDrawingEnvironment::default(),
+    |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+
+error[E0271]: type mismatch resolving `<dyn HostInterface as Pointee>::Metadata == ()`
+   --> pcsx2\GsHostVarious.rs:622:61
+    |
+622 | pub static mut G_HOST: *mut (dyn HostInterface + 'static) = std::ptr::null_mut();
+    |                                                             ^^^^^^^^^^^^^^^^^^^^ expected `()`, found `DynMetadata<dyn HostInterface>`
+    |
+    = note: expected unit type `()`
+                  found struct `DynMetadata<(dyn HostInterface + 'static)>`
+    = note: required for `(dyn HostInterface + 'static)` to implement `Thin`
+note: required by a bound in `null_mut`
+   --> C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\ptr\mod.rs:867:41
+    |
+867 | pub const fn null_mut<T: PointeeSized + Thin>() -> *mut T {
+    |                                         ^^^^ required by this bound in `null_mut`
+
+error[E0015]: cannot call non-const associated function `<String as From<&str>>::from` in statics
+   --> pcsx2\GsMainEtc.rs:408:24
+    |
+408 |     capture_container: String::from("mp4"),
+    |                        ^^^^^^^^^^^^^^^^^^^
+    |
+    = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+    = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0277]: the trait bound `u16: From<usize>` is not satisfied
+   --> pcsx2\GsMainEtc.rs:801:16
+    |
+801 |             if u16::from(len) != !nlen {
+    |                ^^^ the trait `From<usize>` is not implemented for `u16`
+    |
+    = help: `u16` implements trait `From<T>`:
+              From<Pcsx2Types::s128>
+              From<Pcsx2Types::u128>
+              From<bool>
+              From<std::ascii::Char>
+              From<u8>
+
+error[E0015]: cannot call non-const associated function `<sifFifo as Default>::default` in statics
+    --> pcsx2\HwEtcMain.rs:1317:46
+     |
+1317 |     pub static mut sif0: _sif = _sif { fifo: sifFifo::default(), ee: sif_ee::default(), iop: sif_iop::default() };
+     |                                              ^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<sif_ee as Default>::default` in statics
+    --> pcsx2\HwEtcMain.rs:1317:70
+     |
+1317 |     pub static mut sif0: _sif = _sif { fifo: sifFifo::default(), ee: sif_ee::default(), iop: sif_iop::default() };
+     |                                                                      ^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<sif_iop as Default>::default` in statics
+    --> pcsx2\HwEtcMain.rs:1317:94
+     |
+1317 |     pub static mut sif0: _sif = _sif { fifo: sifFifo::default(), ee: sif_ee::default(), iop: sif_iop::default() };
+     |                                                                                              ^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<sifFifo as Default>::default` in statics
+    --> pcsx2\HwEtcMain.rs:1318:46
+     |
+1318 |     pub static mut sif1: _sif = _sif { fifo: sifFifo::default(), ee: sif_ee::default(), iop: sif_iop::default() };
+     |                                              ^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<sif_ee as Default>::default` in statics
+    --> pcsx2\HwEtcMain.rs:1318:70
+     |
+1318 |     pub static mut sif1: _sif = _sif { fifo: sifFifo::default(), ee: sif_ee::default(), iop: sif_iop::default() };
+     |                                                                      ^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<sif_iop as Default>::default` in statics
+    --> pcsx2\HwEtcMain.rs:1318:94
+     |
+1318 |     pub static mut sif1: _sif = _sif { fifo: sifFifo::default(), ee: sif_ee::default(), iop: sif_iop::default() };
+     |                                                                                              ^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<sifFifo as Default>::default` in statics
+    --> pcsx2\HwEtcMain.rs:1319:46
+     |
+1319 |     pub static mut sif2: _sif = _sif { fifo: sifFifo::default(), ee: sif_ee::default(), iop: sif_iop::default() };
+     |                                              ^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<sif_ee as Default>::default` in statics
+    --> pcsx2\HwEtcMain.rs:1319:70
+     |
+1319 |     pub static mut sif2: _sif = _sif { fifo: sifFifo::default(), ee: sif_ee::default(), iop: sif_iop::default() };
+     |                                                                      ^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<sif_iop as Default>::default` in statics
+    --> pcsx2\HwEtcMain.rs:1319:94
+     |
+1319 |     pub static mut sif2: _sif = _sif { fifo: sifFifo::default(), ee: sif_ee::default(), iop: sif_iop::default() };
+     |                                                                                              ^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<HwEtcMain::DMACh as Default>::default` in statics
+    --> pcsx2\HwEtcMain.rs:1349:36
+     |
+1349 |     pub static mut spr0ch: DMACh = DMACh::default();
+     |                                    ^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<HwEtcMain::DMACh as Default>::default` in statics
+    --> pcsx2\HwEtcMain.rs:1350:36
+     |
+1350 |     pub static mut spr1ch: DMACh = DMACh::default();
+     |                                    ^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `TcpListener::bind::<(&str, u16)>` in statics
+   --> pcsx2\RDebugFull.rs:610:26
+    |
+610 |     let listener = match TcpListener::bind(("0.0.0.0", 0)) {
+    |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+    = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0493]: destructor of `std::result::Result<TcpListener, std::io::Error>` cannot be evaluated at compile-time
+   --> pcsx2\RDebugFull.rs:610:26
+    |
+610 |     let listener = match TcpListener::bind(("0.0.0.0", 0)) {
+    |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the destructor for this type cannot be evaluated in statics
+...
+615 |     };
+    |      - value is dropped here
+
+error[E0308]: mismatched types
+    --> pcsx2\SifVifSmall.rs:1017:32
+     |
+1017 |         sif.sif2.iop.counter = sif.hw_dma2_bcr;
+     |         --------------------   ^^^^^^^^^^^^^^^ expected `i32`, found `u32`
+     |         |
+     |         expected due to the type of this binding
+
+error[E0277]: the trait bound `[u32; 256]: Default` is not satisfied
+    --> pcsx2\SifVifSmall.rs:1223:5
+     |
+1173 | #[derive(Clone, Default)]
+     |                 ------- in this derive macro expansion
+...
+1223 |     pub regs: [u32; 0x100],
+     |     ^^^^^^^^^^^^^^^^^^^^^^ the trait `Default` is not implemented for `[u32; 256]`
+     |
+     = help: the following other types implement trait `Default`:
+               &[T]
+               &mut [T]
+               [T; 0]
+               [T; 1]
+               [T; 2]
+               [T; 3]
+               [T; 4]
+               [T; 5]
+             and 27 others
+
+error[E0015]: cannot call non-const associated function `<Spu2::SPU2Core as Default>::default` in statics
+    --> pcsx2\Spu2.rs:1191:28
+     |
+1191 |     SPU2Core { index: 0, ..SPU2Core::default() },
+     |                            ^^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<Spu2::SPU2Core as Default>::default` in statics
+    --> pcsx2\Spu2.rs:1192:28
+     |
+1192 |     SPU2Core { index: 1, ..SPU2Core::default() },
+     |                            ^^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0493]: destructor of `Spu2::SPU2Core` cannot be evaluated at compile-time
+    --> pcsx2\Spu2.rs:1192:28
+     |
+1192 |     SPU2Core { index: 1, ..SPU2Core::default() },
+     |                            ^^^^^^^^^^^^^^^^^^^ the destructor for this type cannot be evaluated in statics
+1193 | ];
+     | - value is dropped here
+
+error[E0493]: destructor of `Spu2::SPU2Core` cannot be evaluated at compile-time
+    --> pcsx2\Spu2.rs:1191:28
+     |
+1191 |     SPU2Core { index: 0, ..SPU2Core::default() },
+     |                            ^^^^^^^^^^^^^^^^^^^ the destructor for this type cannot be evaluated in statics
+1192 |     SPU2Core { index: 1, ..SPU2Core::default() },
+1193 | ];
+     | - value is dropped here
+
+error[E0015]: cannot call non-const associated function `<Spu2::PcmCacheEntry as Default>::default` in statics
+    --> pcsx2\Spu2.rs:1199:63
+     |
+1199 | pub static mut PCM_CACHE: [PcmCacheEntry; PCM_BLOCK_COUNT] = [PcmCacheEntry::default(); PCM_BLOCK_COUNT];
+     |                                                               ^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<V_CoreDebug as Default>::default` in statics
+    --> pcsx2\Spu2.rs:1202:49
+     |
+1202 | pub static mut DEBUG_CORES: [V_CoreDebug; 2] = [V_CoreDebug::default(), V_CoreDebug::default()];
+     |                                                 ^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<V_CoreDebug as Default>::default` in statics
+    --> pcsx2\Spu2.rs:1202:73
+     |
+1202 | pub static mut DEBUG_CORES: [V_CoreDebug; 2] = [V_CoreDebug::default(), V_CoreDebug::default()];
+     |                                                                         ^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+     = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<Spu2MainEtc::SPU2Core as Default>::default` in statics
+   --> pcsx2\Spu2MainEtc.rs:827:11
+    |
+827 |         ..SPU2Core::default()
+    |           ^^^^^^^^^^^^^^^^^^^
+    |
+    = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+    = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<Spu2MainEtc::SPU2Core as Default>::default` in statics
+   --> pcsx2\Spu2MainEtc.rs:831:11
+    |
+831 |         ..SPU2Core::default()
+    |           ^^^^^^^^^^^^^^^^^^^
+    |
+    = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+    = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0493]: destructor of `Spu2MainEtc::SPU2Core` cannot be evaluated at compile-time
+   --> pcsx2\Spu2MainEtc.rs:831:11
+    |
+831 |         ..SPU2Core::default()
+    |           ^^^^^^^^^^^^^^^^^^^ the destructor for this type cannot be evaluated in statics
+832 |     },
+833 | ];
+    | - value is dropped here
+
+error[E0493]: destructor of `Spu2MainEtc::SPU2Core` cannot be evaluated at compile-time
+   --> pcsx2\Spu2MainEtc.rs:827:11
+    |
+827 |         ..SPU2Core::default()
+    |           ^^^^^^^^^^^^^^^^^^^ the destructor for this type cannot be evaluated in statics
+...
+833 | ];
+    | - value is dropped here
+
+error[E0015]: cannot call non-const associated function `<MicroTempRegInfo as Default>::default` in constant functions
+    --> pcsx2\x86\FinalSweepX86.rs:3399:24
+     |
+3399 |             regs_temp: MicroTempRegInfo::default(),
+     |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+
+error[E0015]: cannot call non-const associated function `<MicroConstInfo as Default>::default` in constant functions
+    --> pcsx2\x86\FinalSweepX86.rs:3401:25
+     |
+3401 |             const_reg: [MicroConstInfo::default(); 16],
+     |                         ^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+
+error[E0271]: type mismatch resolving `<dyn DebugInterface as Pointee>::Metadata == ()`
+    --> pcsx2_qt\DebuggerFull.rs:1081:18
+     |
+1081 |             cpu: std::ptr::null() as *const dyn DebugInterface,
+     |                  ^^^^^^^^^^^^^^^^ expected `()`, found `DynMetadata<dyn DebugInterface>`
+     |
+     = note: expected unit type `()`
+                   found struct `DynMetadata<dyn DebuggerFull::DebugInterface>`
+     = note: required for `dyn DebuggerFull::DebugInterface` to implement `Thin`
+note: required by a bound in `null`
+    --> C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\ptr\mod.rs:842:37
+     |
+ 842 | pub const fn null<T: PointeeSized + Thin>() -> *const T {
+     |                                     ^^^^ required by this bound in `null`
+
+error[E0271]: type mismatch resolving `<dyn DebugInterface as Pointee>::Metadata == ()`
+    --> pcsx2_qt\DebuggerFull.rs:1090:20
+     |
+1090 |             m_cpu: std::ptr::null() as *const dyn DebugInterface,
+     |                    ^^^^^^^^^^^^^^^^ expected `()`, found `DynMetadata<dyn DebugInterface>`
+     |
+     = note: expected unit type `()`
+                   found struct `DynMetadata<dyn DebuggerFull::DebugInterface>`
+     = note: required for `dyn DebuggerFull::DebugInterface` to implement `Thin`
+note: required by a bound in `null`
+    --> C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\ptr\mod.rs:842:37
+     |
+ 842 | pub const fn null<T: PointeeSized + Thin>() -> *const T {
+     |                                     ^^^^ required by this bound in `null`
+
+error[E0599]: `SymbolTreeLocationKind` is not an iterator
+   --> pcsx2_qt\FinalQtFull.rs:881:139
+    |
+865 | ...tialEq, Eq)] pub enum SymbolTreeLocationKind { Register, Memory, None }
+    |                 ------------------------------- method `cmp` not found for this enum because it doesn't satisfy `SymbolTreeLocationKind: Iterator`
+...
+881 | ...{ fn cmp(&self, other: &Self) -> Ordering { self.address.cmp(&other.address).then_with(|| match self.kind.cmp(&other.kind) { Ord...
+    |                                                                                                              ^^^ `SymbolTreeLocationKind` is not an iterator
+    |
+    = note: the following trait bounds were not satisfied:
+            `SymbolTreeLocationKind: Iterator`
+            which is required by `&mut SymbolTreeLocationKind: Iterator`
+note: the trait `Iterator` must be implemented
+   --> C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\iter\traits\iterator.rs:42:1
+    |
+ 42 | pub const trait Iterator {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^
+    = help: items from traits can only be used if the trait is implemented and in scope
+    = note: the following traits define an item `cmp`, perhaps you need to implement one of them:
+            candidate #1: `Iterator`
+            candidate #2: `Ord`
+
+error[E0308]: mismatched types
+    --> pcsx2_qt\GameListFull.rs:1050:53
+     |
+1050 |         let capacity = (num_columns * num_rows).max(MIN_COVER_CACHE_SIZE);
+     |                                                 --- ^^^^^^^^^^^^^^^^^^^^ expected `i32`, found `usize`
+     |                                                 |
+     |                                                 arguments to this method are incorrect
+     |
+help: the return type of this call is `usize` due to the type of the argument passed
+    --> pcsx2_qt\GameListFull.rs:1050:24
+     |
+1050 |         let capacity = (num_columns * num_rows).max(MIN_COVER_CACHE_SIZE);
+     |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^--------------------^
+     |                                                     |
+     |                                                     this argument influences the return type of `max`
+note: method defined here
+    --> C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\cmp.rs:1033:8
+     |
+1033 |     fn max(self, other: Self) -> Self
+     |        ^^^
+help: you can convert a `usize` to an `i32` and panic if the converted value doesn't fit
+     |
+1050 |         let capacity = (num_columns * num_rows).max(MIN_COVER_CACHE_SIZE.try_into().unwrap());
+     |                                                                         ++++++++++++++++++++
+
+error[E0308]: mismatched types
+    --> pcsx2_qt\GameListFull.rs:1054:31
+     |
+1054 |             .set_max_capacity(capacity);
+     |              ---------------- ^^^^^^^^ expected `usize`, found `i32`
+     |              |
+     |              arguments to this method are incorrect
+     |
+note: method defined here
+    --> pcsx2_qt\GameListFull.rs:404:12
+     |
+ 404 |     pub fn set_max_capacity(&mut self, capacity: usize) {
+     |            ^^^^^^^^^^^^^^^^            ---------------
+help: you can convert an `i32` to a `usize` and panic if the converted value doesn't fit
+     |
+1054 |             .set_max_capacity(capacity.try_into().unwrap());
+     |                                       ++++++++++++++++++++
+
+error[E0277]: the trait bound `QtMain::Theme: Default` is not satisfied
+   --> pcsx2_qt\QtMain.rs:589:5
+    |
+587 | #[derive(Debug, Default)]
+    |                 ------- in this derive macro expansion
+588 | pub struct Themes {
+589 |     current: Mutex<Theme>,
+    |     ^^^^^^^^^^^^^^^^^^^^^ the trait `Default` is not implemented for `QtMain::Theme`
+    |
+help: the trait `Default` is implemented for `std::sync::Mutex<T>`
+   --> C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\std\src\sync\poison\mutex.rs:691:1
+    |
+691 | impl<T: Default> Default for Mutex<T> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: required for `std::sync::Mutex<QtMain::Theme>` to implement `Default`
+help: consider annotating `QtMain::Theme` with `#[derive(Default)]`
+    |
+492 + #[derive(Default)]
+493 | pub enum Theme {
+    |
+
+error[E0308]: mismatched types
+   --> thirdparty\cpuinfo\Cpuinfo.rs:320:30
+    |
+320 |                 result = Err(());
+    |                          --- ^^ expected `CpuInfoError`, found `()`
+    |                          |
+    |                          arguments to this enum variant are incorrect
+    |
+help: the type constructed contains `()` due to the type of the argument passed
+   --> thirdparty\cpuinfo\Cpuinfo.rs:320:26
+    |
+320 |                 result = Err(());
+    |                          ^^^^--^
+    |                              |
+    |                              this argument influences the type of `Err`
+note: tuple variant defined here
+   --> C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\core\src\result.rs:566:5
+    |
+566 |     Err(#[stable(feature = "rust1", since = "1.0.0")] E),
+    |     ^^^
+
+error[E0308]: mismatched types
+   --> thirdparty\cpuinfo\Cpuinfo.rs:324:21
+    |
+324 |     result.map_err(|()| CpuInfoError::DetectionFailed)
+    |                     ^^
+    |                     |
+    |                     expected `CpuInfoError`, found `()`
+    |                     expected due to this
+
+error[E0277]: `(dyn Fn() + 'static)` doesn't implement `Debug`
+   --> thirdparty\googletest\Gtest.rs:227:5
+    |
+215 | #[derive(Debug, Clone)]
+    |          ----- in this derive macro expansion
+...
+227 |     body: Option<Rc<dyn Fn() -> ()>>,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Debug` is not implemented for `(dyn Fn() + 'static)`
+
+error[E0560]: struct `ImGuiStyle` has no field named `colors`
+   --> thirdparty\imgui\Imgui.rs:507:13
+    |
+507 |             colors,
+    |             ^^^^^^ unknown field
+    |
+help: a field with a similar name exists (notice the capitalization)
+    |
+507 -             colors,
+507 +             Colors,
+    |
+
+error[E0308]: mismatched types
+   --> thirdparty\imgui\Imgui.rs:731:13
+    |
+731 |       Colors: [
+    |  _____________^
+732 | |         ImVec4 { x: 1.0, y: 1.0, z: 1.0, w: 1.0 },
+733 | |         ImVec4 { x: 0.5, y: 0.5, z: 0.5, w: 1.0 },
+734 | |         ImVec4 { x: 0.06, y: 0.06, z: 0.06, w: 0.94 },
+...   |
+785 | |         ImVec4 { x: 0.10, y: 0.10, z: 0.10, w: 0.35 },
+786 | |     ],
+    | |_____^ expected an array with a size of 53, found one with a size of 54
+    |
+    = note: expected array `[Imgui::ImVec4; 53]`
+               found array `[Imgui::ImVec4; 54]`
+
+error[E0308]: mismatched types
+   --> thirdparty\include\Xxh.rs:139:14
+    |
+138 | pub fn XXH3_128bits(input: &[u8], seed: u64) -> u128 {
+    |                                                 ---- expected `u128` because of return type
+139 |     unsafe { XXH3_128bits_withSeed(input.as_ptr(), input.len(), seed) }
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `u128`, found `u64`
+    |
+help: you can convert a `u64` to a `u128`
+    |
+139 |     unsafe { XXH3_128bits_withSeed(input.as_ptr(), input.len(), seed).into() }
+    |                                                                      +++++++
+
+error[E0308]: mismatched types
+   --> thirdparty\libchdr\DrFlac.rs:370:30
+    |
+370 |       const TABLE: [u8; 256] = [
+    |  __________________---------___^
+    | |                  |
+    | |                  expected because of the type of the constant
+371 | |         0x00, 0x07, 0x0e, 0x09, 0x1c, 0x1b, 0x12, 0x15, 0x38, 0x3f, 0x36, 0x31, 0x24, 0x23,
+372 | |         0x2a, 0x2d, 0x70, 0x77, 0x7e, 0x79, 0x6c, 0x6b, 0x62, 0x65, 0x48, 0x4f, 0x46, 0x41,
+373 | |         0x54, 0x53, 0x5a, 0x5d, 0xe0, 0xe7, 0xee, 0xe9, 0xfc, 0xfb, 0xf2, 0xf5, 0xd8, 0xdf,
+...   |
+391 | |         0xcc, 0xcb, 0xc2, 0xc5, 0xd0, 0xd7, 0xde, 0xd9,
+392 | |     ];
+    | |_____^ expected an array with a size of 256, found one with a size of 288
+    |
+help: consider specifying the actual array length
+    |
+370 -     const TABLE: [u8; 256] = [
+370 +     const TABLE: [u8; 288] = [
+    |
+
+error[E0599]: `*const std::ffi::c_void` is not an iterator
+    --> thirdparty\more\WinPixEventRuntime.rs:69:39
+     |
+  69 |             set_target_window: set_fn.map(|p| std::mem::transmute::<*const (), _>(p)),
+     |                                       ^^^ `*const std::ffi::c_void` is not an iterator
+     |
+     = note: the following trait bounds were not satisfied:
+             `*const std::ffi::c_void: Iterator`
+             which is required by `&mut *const std::ffi::c_void: Iterator`
+     = help: items from traits can only be used if the trait is implemented and in scope
+note: `GsDeviceOpenGl::GSTexture` defines an item `map`, perhaps you need to implement it
+    --> pcsx2\GsDeviceOpenGl.rs:1442:1
+     |
+1442 | pub trait GSTexture {
+     | ^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: `*const std::ffi::c_void` is not an iterator
+    --> thirdparty\more\WinPixEventRuntime.rs:70:36
+     |
+  70 |             notify_wake: notify_fn.map(|p| std::mem::transmute::<*const (), _>(p)),
+     |                                    ^^^ `*const std::ffi::c_void` is not an iterator
+     |
+     = note: the following trait bounds were not satisfied:
+             `*const std::ffi::c_void: Iterator`
+             which is required by `&mut *const std::ffi::c_void: Iterator`
+     = help: items from traits can only be used if the trait is implemented and in scope
+note: `GsDeviceOpenGl::GSTexture` defines an item `map`, perhaps you need to implement it
+    --> pcsx2\GsDeviceOpenGl.rs:1442:1
+     |
+1442 | pub trait GSTexture {
+     | ^^^^^^^^^^^^^^^^^^^
+
+error[E0277]: the trait bound `RcHashFileReader: Default` is not satisfied
+   --> thirdparty\rcheevos\Rcheevos.rs:540:5
+    |
+536 | #[derive(Debug, Clone, Copy, Default)]
+    |                              ------- in this derive macro expansion
+...
+540 |     pub filereader: RcHashFileReader,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Default` is not implemented for `RcHashFileReader`
+    |
+help: consider annotating `RcHashFileReader` with `#[derive(Default)]`
+    |
+515 + #[derive(Default)]
+516 | pub struct RcHashFileReader {
+    |
+
+error[E0308]: mismatched types
+    --> thirdparty\rcheevos\Rcheevos.rs:1086:44
+     |
+1086 |     rc_hash_initialize_iterator(&mut iter, path, ptr::null(), 0);
+     |     ---------------------------            ^^^^ expected `*const i8`, found `&str`
+     |     |
+     |     arguments to this function are incorrect
+     |
+     = note: expected raw pointer `*const i8`
+                  found reference `&str`
+note: function defined here
+    --> thirdparty\rcheevos\Rcheevos.rs:1159:8
+     |
+1159 | pub fn rc_hash_initialize_iterator(
+     |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1160 |     iterator: &mut RcHashIterator,
+1161 |     path: *const c_char,
+     |     -------------------
+
+error[E0015]: cannot call non-const associated function `<vif_dynarec::NVifStruct as Default>::default` in statics
+   --> updater\UpdaterPrecompiled.rs:333:45
+    |
+333 |     pub static mut NVIF: [NVifStruct; 2] = [NVifStruct::default(), NVifStruct::default()];
+    |                                             ^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+    = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const associated function `<vif_dynarec::NVifStruct as Default>::default` in statics
+   --> updater\UpdaterPrecompiled.rs:333:68
+    |
+333 |     pub static mut NVIF: [NVifStruct; 2] = [NVifStruct::default(), NVifStruct::default()];
+    |                                                                    ^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: calls in statics are limited to constant functions, tuple structs and tuple variants
+    = note: consider wrapping this expression in `std::sync::LazyLock::new(|| ...)`
+
+error[E0015]: cannot call non-const method `<T as ByteSwapable>::byte_swap` in constant functions
+  --> common\ByteSwap.rs:38:11
+   |
+38 |     value.byte_swap()
+   |           ^^^^^^^^^^^
+   |
+note: method `byte_swap` is not const because trait `ByteSwapable` is not const
+  --> common\ByteSwap.rs:42:1
+   |
+42 | pub trait ByteSwapable: Copy {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ this trait is not const
+43 |     /// Perform the byte swap.
+44 |     fn byte_swap(self) -> Self;
+   |     --------------------------- this method is not const
+   = help: const traits are not yet supported on stable Rust
+   = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+
+error[E0382]: borrow of moved value: `file`
+   --> common\Console.rs:342:21
+    |
+325 |     let Some(mut file) = state.file_handle.take() else {
+    |              -------- move occurs because `file` has type `std::fs::File`, which does not implement the `Copy` trait
+...
+328 |     state.file_handle = Some(file);
+    |                              ---- value moved here
+...
+342 |             let _ = file.write_all(stamp.as_bytes());
+    |                     ^^^^ value borrowed here after move
+
+error[E0382]: borrow of moved value: `state`
+   --> common\Console.rs:496:27
+    |
+465 |     let mut state = LOG_STATE.lock().unwrap();
+    |         --------- move occurs because `state` has type `std::sync::MutexGuard<'_, common::Console::LogState>`, which does not implement the `Copy` trait
+...
+481 |                         drop(state);
+    |                              ----- value moved here
+...
+496 |     state.file_level = if state.file_handle.is_some() {
+    |                           ^^^^^ value borrowed here after move
+    |
+    = note: borrow occurs due to deref coercion to `common::Console::LogState`
+note: deref defined here
+   --> C:\Users\X\.rustup\toolchains\stable-x86_64-pc-windows-msvc\lib/rustlib/src/rust\library\std\src\sync\poison\mutex.rs:726:5
+    |
+726 |     type Target = T;
+    |     ^^^^^^^^^^^
+
+error[E0015]: cannot call non-const method `<E as common::EnumOps::EnumOps>::to_repr` in constant functions
+  --> common\EnumOps.rs:96:7
+   |
+96 |     e.to_repr()
+   |       ^^^^^^^^^
+   |
+note: method `to_repr` is not const because trait `EnumOps` is not const
+  --> common\EnumOps.rs:19:1
+   |
+19 | pub trait EnumOps: Copy + Eq + Sized {
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ this trait is not const
+...
+32 |     fn to_repr(self) -> Self::Repr;
+   |     ------------------------------- this method is not const
+   = help: const traits are not yet supported on stable Rust
+   = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+
+warning: unnecessary `unsafe` block
+   --> common\Pcsx2Defs.rs:191:5
+    |
+191 |     unsafe {
+    |     ^^^^^^ unnecessary `unsafe` block
+    |
+    = note: `#[warn(unused_unsafe)]` (part of `#[warn(unused)]`) on by default
+
+warning: unnecessary `unsafe` block
+   --> common\Pcsx2Defs.rs:315:5
+    |
+315 |     unsafe {
+    |     ^^^^^^ unnecessary `unsafe` block
+
+error[E0133]: use of mutable static is unsafe and requires unsafe function or block
+    --> pcsx2\Cdvd.rs:1464:21
+     |
+1464 |     let src = match CURRENT_SOURCE.as_ref() {
+     |                     ^^^^^^^^^^^^^^ use of mutable static
+     |
+     = note: mutable statics can be mutated by multiple threads: aliasing violations or data races will cause undefined behavior
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\CdvdDiscThread.rs:1548:5
+     |
+1548 |     unsafe {
+     |     ^^^^^^ unnecessary `unsafe` block
+
+error[E0596]: cannot borrow immutable static item `CDVD` as mutable
+    --> pcsx2\CdvdDiscThread.rs:1549:9
+     |
+ 877 | pub static CDVD: LazyLock<CDVDState> = LazyLock::new(|| CDVDState::new());
+     | ------------------------------------ this `static` cannot be borrowed as mutable
+...
+1549 |         CDVD.reset();
+     |         ^^^^ cannot borrow as mutable
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\CdvdDiscThread.rs:1562:5
+     |
+1562 |     unsafe {
+     |     ^^^^^^ unnecessary `unsafe` block
+
+error[E0596]: cannot borrow immutable static item `CDVD` as mutable
+    --> pcsx2\CdvdDiscThread.rs:1563:9
+     |
+ 877 | pub static CDVD: LazyLock<CDVDState> = LazyLock::new(|| CDVDState::new());
+     | ------------------------------------ this `static` cannot be borrowed as mutable
+...
+1563 |         CDVD.disc_type = detect_disk_type() as u8;
+     |         ^^^^ cannot borrow as mutable
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\CdvdDiscThread.rs:1681:5
+     |
+1681 |     unsafe { CDVD.s_cmd_param_buff }
+     |     ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\CdvdDiscThread.rs:1718:5
+     |
+1718 |     unsafe {
+     |     ^^^^^^ unnecessary `unsafe` block
+
+error[E0502]: cannot borrow `*self` as mutable because it is also borrowed as immutable
+   --> pcsx2\CdvdFormatReaders.rs:277:12
+    |
+275 |         let _g = self.mtx.lock().unwrap();
+    |                  -------- immutable borrow occurs here
+276 |
+277 |         if self.try_cached_read(dst, offset, total) {
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ mutable borrow occurs here
+...
+297 |     }
+    |     - immutable borrow might be used here, when `_g` is dropped and runs the `Drop` code for type `std::sync::MutexGuard`
+
+warning: unreachable pattern
+    --> pcsx2\CdvdIsos.rs:1499:13
+     |
+1498 |             IsoFileFormat::Cso | IsoFileFormat::Zso => Box::new(CsoReader::new()),
+     |             --------------------------------------- matches all the relevant values
+1499 |             IsoFileFormat::Zso => Box::new(GzippedReader::new()),
+     |             ^^^^^^^^^^^^^^^^^^ no value can reach this
+     |
+     = note: `#[warn(unreachable_patterns)]` (part of `#[warn(unused)]`) on by default
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\CdvdMainEtc.rs:1171:5
+     |
+1171 |     unsafe { do_cdvd_detect_disk_type() }
+     |     ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\CdvdMainEtc.rs:1200:5
+     |
+1200 |     unsafe {
+     |     ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\CdvdMainEtc.rs:1523:9
+     |
+1523 |         unsafe { do_cdvd_read_sector(buf, lsn, CDVD_MODE_2048) == 0 }
+     |         ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\CdvdMainEtc.rs:1844:17
+     |
+1844 |                 unsafe {
+     |                 ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\CdvdMainEtc.rs:3770:19
+     |
+3739 |     unsafe {
+     |     ------ because it's nested under this `unsafe` block
+...
+3770 |         let src = unsafe { std::slice::from_raw_parts(pbuffer as *const u8, psize) };
+     |                   ^^^^^^ unnecessary `unsafe` block
+
+error[E0133]: use of mutable static is unsafe and requires unsafe function or block
+    --> pcsx2\CdvdMainEtc.rs:3935:8
+     |
+3935 |     if cur_disk_type == CDVD_TYPE_NODISC as i32 {
+     |        ^^^^^^^^^^^^^ use of mutable static
+     |
+     = note: mutable statics can be mutated by multiple threads: aliasing violations or data races will cause undefined behavior
+
+error[E0133]: use of mutable static is unsafe and requires unsafe function or block
+    --> pcsx2\CdvdMainEtc.rs:3938:8
+     |
+3938 |     if cur_disk_type == CDVD_TYPE_DETCTDVDS as i32
+     |        ^^^^^^^^^^^^^ use of mutable static
+     |
+     = note: mutable statics can be mutated by multiple threads: aliasing violations or data races will cause undefined behavior
+
+error[E0133]: use of mutable static is unsafe and requires unsafe function or block
+    --> pcsx2\CdvdMainEtc.rs:3939:12
+     |
+3939 |         || cur_disk_type == CDVD_TYPE_DETCTDVDD as i32
+     |            ^^^^^^^^^^^^^ use of mutable static
+     |
+     = note: mutable statics can be mutated by multiple threads: aliasing violations or data races will cause undefined behavior
+
+error[E0133]: use of mutable static is unsafe and requires unsafe function or block
+    --> pcsx2\CdvdMainEtc.rs:3967:8
+     |
+3967 |     if cur_disk_type == CDVD_TYPE_DETCTCD as i32 {
+     |        ^^^^^^^^^^^^^ use of mutable static
+     |
+     = note: mutable statics can be mutated by multiple threads: aliasing violations or data races will cause undefined behavior
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:595:16
+    |
+595 |     let rate = unsafe { EECounts[index].rate };
+    |                ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:600:21
+    |
+600 |         let start = unsafe { EECounts[index].start_cycle };
+    |                     ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:605:21
+    |
+605 |         let count = unsafe { EECounts[index].count };
+    |                     ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:612:17
+    |
+612 |         let _ = unsafe { EECounts[index].start_cycle };
+    |                 ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:619:17
+    |
+619 |     let count = unsafe { EECounts[index].count };
+    |                 ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:645:21
+    |
+645 |             let _ = unsafe { EECounts[index].interrupt };
+    |                     ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:650:5
+    |
+650 |     unsafe {
+    |     ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:665:27
+    |
+665 |     let (count, target) = unsafe { (EECounts[index].count, EECounts[index].target) };
+    |                           ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:685:21
+    |
+685 |             let _ = unsafe { EECounts[index].interrupt };
+    |                     ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:787:9
+    |
+787 |         unsafe { EECounts[index].count },
+    |         ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:788:9
+    |
+788 |         unsafe { EECounts[index].target }
+    |         ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\Counters.rs:812:17
+    |
+812 |     let count = unsafe { EECounts[index].count };
+    |                 ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\Dev9MainEtc.rs:1406:13
+     |
+1406 |             unsafe {
+     |             ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\Dev9MainEtc.rs:1430:14
+     |
+1430 |         _ => unsafe { dev9W32(addr, value); },
+     |              ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\Dev9MainEtc.rs:1437:17
+     |
+1437 |     let value = unsafe { wswap(dev9R32(addr)) };
+     |                 ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\Dev9MainEtc.rs:1442:13
+     |
+1442 |             unsafe { dev9W16(SMAP_R_EMAC3_STA_CTRL_H, dev9R16(SMAP_R_EMAC3_STA_CTRL_H) | (SMAP_E3_PHY_OP_COMP as u16)); }
+     |             ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\Dev9MainEtc.rs:1483:5
+     |
+1483 |     unsafe { dev9W32(addr, wswap(v)); }
+     |     ^^^^^^ unnecessary `unsafe` block
+
+error[E0502]: cannot borrow `*self` as immutable because it is also borrowed as mutable
+   --> pcsx2\Dev9PacketReader.rs:802:26
+    |
+801 |     pub fn payload_mut(&mut self) -> &mut [u8] {
+    |                        - let's call the lifetime of this reference `'1`
+802 |         &mut self.buffer[self.header_length()..]
+    |         -----------------^^^^-------------------
+    |         |    |           |
+    |         |    |           immutable borrow occurs here
+    |         |    mutable borrow occurs here
+    |         returning this value requires that `*self.buffer` is borrowed for `'1`
+
+error[E0502]: cannot borrow `*self` as immutable because it is also borrowed as mutable
+    --> pcsx2\Dev9PacketReader.rs:1371:26
+     |
+1370 |     pub fn payload_mut(&mut self) -> &mut [u8] {
+     |                        - let's call the lifetime of this reference `'1`
+1371 |         &mut self.buffer[self.header_length()..]
+     |         -----------------^^^^-------------------
+     |         |    |           |
+     |         |    |           immutable borrow occurs here
+     |         |    mutable borrow occurs here
+     |         returning this value requires that `*self.buffer` is borrowed for `'1`
+
+warning: unreachable pattern
+    --> pcsx2\Dev9PacketsDeep.rs:2080:13
+     |
+2078 | /             Self::Subnet { .. } | Self::Bcip { .. } | Self::ReqIp { .. } | Self::ServIp { .. }
+2079 | |             | Self::IpLt { .. } | Self::Msg { .. } | Self::T1 { .. } | Self::T2 { .. } => 4,
+     | |______________________________________________________________________________________- matches all the relevant values
+2080 |               Self::Msg { .. } => 1,
+     |               ^^^^^^^^^^^^^^^^ no value can reach this
+
+warning: unreachable pattern
+   --> pcsx2\GsDeviceDx11Mtl.rs:218:33
+    |
+218 |             ShaderModel::SM51 | _ => match type_index {
+    |                                 ^ no value can reach this
+    |
+note: multiple earlier patterns match some of the same values
+   --> pcsx2\GsDeviceDx11Mtl.rs:218:33
+    |
+203 |             ShaderModel::SM40 => match type_index {
+    |             ----------------- matches some of the same values
+...
+208 |             ShaderModel::SM41 => match type_index {
+    |             ----------------- matches some of the same values
+...
+213 |             ShaderModel::SM50 => match type_index {
+    |             ----------------- matches some of the same values
+...
+218 |             ShaderModel::SM51 | _ => match type_index {
+    |             -----------------   ^ collectively making this unreachable
+    |             |
+    |             matches some of the same values
+
+warning: unreachable pattern
+   --> pcsx2\GsRenderersFull.rs:696:13
+    |
+696 |             _ => "Unknown",
+    |             ^ no value can reach this
+    |
+note: multiple earlier patterns match some of the same values
+   --> pcsx2\GsRenderersFull.rs:696:13
+    |
+681 |             GSTextureFormat::Invalid => "Invalid",
+    |             ------------------------ matches some of the same values
+682 |             GSTextureFormat::Color => "Color",
+    |             ---------------------- matches some of the same values
+683 |             GSTextureFormat::ColorHQ => "ColorHQ",
+    |             ------------------------ matches some of the same values
+684 |             GSTextureFormat::ColorHDR => "ColorHDR",
+    |             ------------------------- matches some of the same values
+...
+696 |             _ => "Unknown",
+    |             ^ ...and 11 other patterns collectively make this unreachable
+
+error[E0015]: cannot call non-const associated function `<GsSwHeaders::GsVector8 as Default>::default` in constant functions
+   --> pcsx2\GsSwHeaders.rs:785:19
+    |
+785 |             tc:   GsVector8::default(),
+    |                   ^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: calls in constant functions are limited to constant functions, tuple structs and tuple variants
+
+error[E0507]: cannot move out of `*ds_ptr` which is behind a raw pointer
+    --> pcsx2\GsSwHeaders.rs:1330:29
+     |
+1330 |         Self { ds: unsafe { *ds_ptr }, r }
+     |                             ^^^^^^^ move occurs because `*ds_ptr` has type `GsDrawScanline`, which does not implement the `Copy` trait
+     |
+note: if `GsDrawScanline` implemented `Clone`, you could clone the value
+    --> pcsx2\GsSwHeaders.rs:1072:1
+     |
+1072 | pub struct GsDrawScanline {
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^ consider implementing `Clone` for this type
+...
+1330 |         Self { ds: unsafe { *ds_ptr }, r }
+     |                             ------- you could clone this value
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\HwEtcMain.rs:523:5
+    |
+523 |     unsafe { *psHu32(addr) }
+    |     ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\HwEtcMain.rs:540:5
+    |
+540 |     unsafe { *psHu32(addr) = value; }
+    |     ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\HwEtcMain.rs:561:28
+    |
+561 | pub fn hwIntcIrq(n: i32) { unsafe { *psHu32(EERegisterAddresses::INTC_STAT) |= 1u32 << n; } }
+    |                            ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\HwEtcMain.rs:562:28
+    |
+562 | pub fn hwDmacIrq(n: i32) { unsafe { *psHu32(EERegisterAddresses::DMAC_STAT) |= 1u32 << n; } }
+    |                            ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\HwEtcMain.rs:791:9
+    |
+791 |         unsafe {
+    |         ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\HwEtcMain.rs:812:9
+    |
+812 |         unsafe {
+    |         ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\HwEtcMain.rs:1076:41
+     |
+1076 |     pub fn psxDma4Interrupt()  -> i32 { unsafe { *psxHu32(0x10C8) &= !0x0100_0000; } psxDmaInterrupt(4);  iopIntcIrq(9); 1 }
+     |                                         ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\HwEtcMain.rs:1077:41
+     |
+1077 |     pub fn psxDma7Interrupt()  -> i32 { unsafe { *psxHu32(0x1508) &= !0x0100_0000; } psxDmaInterrupt2(0); 1 }
+     |                                         ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\HwEtcMain.rs:1078:41
+     |
+1078 |     pub fn psxDMA8Interrupt()         { unsafe { if (*psxHu32(0x1518) & 0x0100_0000) != 0 { *psxHu32(0x1518) &= !0x0100_0000; psxD...
+     |                                         ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\HwEtcMain.rs:1079:41
+     |
+1079 |     pub fn psxDMA11Interrupt()        { unsafe { if (*psxHu32(0x1548) & 0x0100_0000) != 0 { *psxHu32(0x1548) &= !0x0100_0000; psxD...
+     |                                         ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\HwEtcMain.rs:1080:41
+     |
+1080 |     pub fn psxDMA12Interrupt()        { unsafe { if (*psxHu32(0x1558) & 0x0100_0000) != 0 { *psxHu32(0x1558) &= !0x0100_0000; psxD...
+     |                                         ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\HwEtcMain.rs:1399:14
+     |
+1399 |         _ => unsafe { *psxHu32(addr) },
+     |              ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\HwEtcMain.rs:1402:9
+     |
+1402 |         unsafe {
+     |         ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\InterpRs.rs:755:5
+    |
+755 |     unsafe {
+    |     ^^^^^^ unnecessary `unsafe` block
+
+error[E0515]: cannot return value referencing local variable `state`
+   --> pcsx2\IopModulesSaveState.rs:944:9
+    |
+943 |         let wrapper = state.wrap();
+    |                       ----- `state` is borrowed here
+944 |         Ok((state, wrapper))
+    |         ^^^^^^^^^^^^^^^^^^^^ returns a value referencing data owned by the current function
+
+error[E0505]: cannot move out of `state` because it is borrowed
+   --> pcsx2\IopModulesSaveState.rs:944:13
+    |
+932 |     pub fn from_reader<'b>(mut r: impl Read + 'b, version: u32) -> io::Result<(SaveState, StateWrapper<'b>)> {
+    |                        -- lifetime `'b` defined here
+...
+935 |         let mut state = SaveState {
+    |             --------- binding `state` declared here
+...
+943 |         let wrapper = state.wrap();
+    |                       ----- borrow of `state` occurs here
+944 |         Ok((state, wrapper))
+    |         ----^^^^^-----------
+    |         |   |
+    |         |   move out of `state` occurs here
+    |         returning this value requires that `state` is borrowed for `'b`
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\Ipu.rs:864:5
+    |
+864 |     unsafe { ipuReset() };
+    |     ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\MemoryMmiMtgs.rs:123:5
+    |
+123 |     unsafe {
+    |     ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\MemoryMmiMtgs.rs:594:5
+    |
+594 |     unsafe {
+    |     ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\MemoryMmiMtgs.rs:664:5
+    |
+664 |     unsafe {
+    |     ^^^^^^ unnecessary `unsafe` block
+
+error[E0509]: cannot move out of type `MiscSmall::PineServer`, which implements the `Drop` trait
+   --> pcsx2\MiscSmall.rs:604:9
+    |
+604 |         Self { slot, ..Self::default() }
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         |
+    |         cannot move out of here
+    |         move occurs because value has type `std::sync::Mutex<Option<PathBuf>>`, which does not implement the `Copy` trait
+
+error[E0509]: cannot move out of type `MiscSmall::PineServer`, which implements the `Drop` trait
+   --> pcsx2\MiscSmall.rs:604:9
+    |
+604 |         Self { slot, ..Self::default() }
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         |
+    |         cannot move out of here
+    |         move occurs because value has type `std::sync::Arc<Atomic<bool>>`, which does not implement the `Copy` trait
+
+error[E0509]: cannot move out of type `MiscSmall::PineServer`, which implements the `Drop` trait
+   --> pcsx2\MiscSmall.rs:604:9
+    |
+604 |         Self { slot, ..Self::default() }
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         |
+    |         cannot move out of here
+    |         move occurs because value has type `std::sync::Mutex<Option<std::thread::JoinHandle<()>>>`, which does not implement the `Copy` trait
+
+error[E0509]: cannot move out of type `MiscSmall::PineServer`, which implements the `Drop` trait
+   --> pcsx2\MiscSmall.rs:604:9
+    |
+604 |         Self { slot, ..Self::default() }
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         |
+    |         cannot move out of here
+    |         move occurs because value has type `std::sync::Mutex<Vec<u8>>`, which does not implement the `Copy` trait
+
+error[E0509]: cannot move out of type `MiscSmall::PineServer`, which implements the `Drop` trait
+   --> pcsx2\MiscSmall.rs:604:9
+    |
+604 |         Self { slot, ..Self::default() }
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         |
+    |         cannot move out of here
+    |         move occurs because value has type `Atomic<u64>`, which does not implement the `Copy` trait
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\RDebugFull.rs:606:37
+    |
+606 | pub static mut DECI2: Deci2Server = unsafe {
+    |                                     ^^^^^^ unnecessary `unsafe` block
+
+error[E0793]: reference to field of packed struct is unaligned
+   --> pcsx2\RDebugRec.rs:889:64
+    |
+889 |         in_hdr.h.source as char, in_hdr.h.destination as char, in_hdr.h.length, line
+    |                                                                ^^^^^^^^^^^^^^^
+    |
+    = note: this struct is 1-byte aligned, but the type of this field may require higher alignment
+    = note: creating a misaligned reference is undefined behavior (even if that reference is never dereferenced)
+    = help: copy the field contents to a local variable, or replace the reference with a raw pointer and use `read_unaligned`/`write_unaligned` (loads and stores via `*p` must be properly aligned even when using raw pointers)
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\RDebugRec.rs:815:34
+    |
+810 |             unsafe {
+    |             ------ because it's nested under this `unsafe` block
+...
+815 |                 let conn_bytes = unsafe {
+    |                                  ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\SifMainEtc.rs:1554:28
+     |
+1554 |             0x0100_0201 => unsafe {
+     |                            ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\SifMainEtc.rs:1558:28
+     |
+1558 |             0x0100_0200 => unsafe {
+     |                            ^^^^^^ unnecessary `unsafe` block
+
+error[E0004]: non-exhaustive patterns: `128_u8..=u8::MAX` not covered
+    --> pcsx2\SifVifSmall.rs:1336:11
+     |
+1336 |     match cmd & 0x7F {
+     |           ^^^^^^^^^^ pattern `128_u8..=u8::MAX` not covered
+     |
+     = note: the matched value is of type `u8`
+help: ensure that all possible cases are being handled by adding a match arm with a wildcard pattern or an explicit pattern as shown
+     |
+1373 ~         0x7C..=0x7F => vifCode_Unpack,
+1374 ~         128_u8..=u8::MAX => todo!(),
+     |
+
+warning: unnecessary `unsafe` block
+    --> pcsx2\SioPad.rs:1908:5
+     |
+1908 |     unsafe {
+     |     ^^^^^^ unnecessary `unsafe` block
+
+error[E0716]: temporary value dropped while borrowed
+   --> pcsx2\SioSmall.rs:397:17
+    |
+397 |     let mut b = bus().lock().unwrap().borrow_mut();
+    |                 ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+    |                 |
+    |                 creates a temporary value which is freed while still in use
+...
+403 | }
+    | - borrow might be used here, when `b` is dropped and runs the destructor for type `RefMut<'_, BusShared>`
+    |
+help: consider using a `let` binding to create a longer lived value
+    |
+397 ~     let binding = bus().lock().unwrap();
+398 ~     let mut b = binding.borrow_mut();
+    |
+
+error[E0716]: temporary value dropped while borrowed
+   --> pcsx2\SioSmall.rs:407:17
+    |
+407 |     let mut b = bus().lock().unwrap().borrow_mut();
+    |                 ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+    |                 |
+    |                 creates a temporary value which is freed while still in use
+...
+417 | }
+    | - borrow might be used here, when `b` is dropped and runs the destructor for type `RefMut<'_, BusShared>`
+    |
+help: consider using a `let` binding to create a longer lived value
+    |
+407 ~     let binding = bus().lock().unwrap();
+408 ~     let mut b = binding.borrow_mut();
+    |
+
+error[E0716]: temporary value dropped while borrowed
+   --> pcsx2\SioSmall.rs:477:21
+    |
+477 |         let mut b = bus().lock().unwrap().borrow_mut();
+    |                     ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+    |                     |
+    |                     creates a temporary value which is freed while still in use
+...
+487 |         b.mcd_index = (0, 0);
+    |         - borrow later used here
+    |
+help: consider using a `let` binding to create a longer lived value
+    |
+477 ~         let binding = bus().lock().unwrap();
+478 ~         let mut b = binding.borrow_mut();
+    |
+
+error[E0716]: temporary value dropped while borrowed
+   --> pcsx2\SioSmall.rs:607:29
+    |
+607 |                     let b = bus().lock().unwrap().borrow();
+    |                             ^^^^^^^^^^^^^^^^^^^^^         - temporary value is freed at the end of this statement
+    |                             |
+    |                             creates a temporary value which is freed while still in use
+...
+610 |                         b.mcd().is_present(),
+    |                         - borrow later used here
+    |
+    = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+   --> pcsx2\SioSmall.rs:625:37
+    |
+625 |                         let mut b = bus().lock().unwrap().borrow_mut();
+    |                                     ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+    |                                     |
+    |                                     creates a temporary value which is freed while still in use
+626 |                         b.memory_card.ps1_dispatch(self.sio_command, cmd)
+    |                         - borrow later used here
+    |
+    = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+   --> pcsx2\SioSmall.rs:705:25
+    |
+705 |             let mut b = bus().lock().unwrap().borrow_mut();
+    |                         ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+    |                         |
+    |                         creates a temporary value which is freed while still in use
+706 |             b.memory_card.ps1_dispatch(self.sio_command, value)
+    |             - borrow later used here
+    |
+    = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+   --> pcsx2\SioSmall.rs:819:25
+    |
+819 |             let mut b = bus().lock().unwrap().borrow_mut();
+    |                         ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+    |                         |
+    |                         creates a temporary value which is freed while still in use
+820 |             b.fifo_out.clear();
+    |             - borrow later used here
+    |
+    = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+   --> pcsx2\SioSmall.rs:850:21
+    |
+850 |         let mut b = bus().lock().unwrap().borrow_mut();
+    |                     ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+    |                     |
+    |                     creates a temporary value which is freed while still in use
+851 |         b.fifo_in.clear();
+    |         - borrow later used here
+    |
+help: consider using a `let` binding to create a longer lived value
+    |
+850 ~         let binding = bus().lock().unwrap();
+851 ~         let mut b = binding.borrow_mut();
+    |
+
+error[E0716]: temporary value dropped while borrowed
+   --> pcsx2\SioSmall.rs:893:25
+    |
+893 |             let mut b = bus().lock().unwrap().borrow_mut();
+    |                         ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+    |                         |
+    |                         creates a temporary value which is freed while still in use
+894 |             let pad_slot = b.multitap[port].get_pad_slot();
+    |                            - borrow later used here
+    |
+    = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+   --> pcsx2\SioSmall.rs:907:21
+    |
+907 |         let mut b = bus().lock().unwrap().borrow_mut();
+    |                     ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+    |                     |
+    |                     creates a temporary value which is freed while still in use
+908 |         // Stub: pad->GetType() == NotConnected || pad->ejectTicks
+909 |         if b.pad_eject_ticks[port] != 0 {
+    |            - borrow later used here
+    |
+help: consider using a `let` binding to create a longer lived value
+    |
+907 ~         let binding = bus().lock().unwrap();
+908 ~         let mut b = binding.borrow_mut();
+    |
+
+error[E0716]: temporary value dropped while borrowed
+   --> pcsx2\SioSmall.rs:959:21
+    |
+959 |         let mut b = bus().lock().unwrap().borrow_mut();
+    |                     ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+    |                     |
+    |                     creates a temporary value which is freed while still in use
+960 |         b.fifo_in.pop_front();
+    |         - borrow later used here
+    |
+help: consider using a `let` binding to create a longer lived value
+    |
+959 ~         let binding = bus().lock().unwrap();
+960 ~         let mut b = binding.borrow_mut();
+    |
+
+error[E0716]: temporary value dropped while borrowed
+   --> pcsx2\SioSmall.rs:974:25
+    |
+974 |             let mut b = bus().lock().unwrap().borrow_mut();
+    |                         ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+    |                         |
+    |                         creates a temporary value which is freed while still in use
+975 |             b.mcd_index = (port as u8, memcard_slot);
+    |             - borrow later used here
+    |
+    = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+   --> pcsx2\SioSmall.rs:978:21
+    |
+978 |             let b = bus().lock().unwrap().borrow();
+    |                     ^^^^^^^^^^^^^^^^^^^^^         - temporary value is freed at the end of this statement
+    |                     |
+    |                     creates a temporary value which is freed while still in use
+979 |             (b.mcd().is_present(), b.mcd().auto_eject_ticks)
+    |              - borrow later used here
+    |
+    = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+   --> pcsx2\SioSmall.rs:984:25
+    |
+984 |             let mut b = bus().lock().unwrap().borrow_mut();
+    |                         ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+    |                         |
+    |                         creates a temporary value which is freed while still in use
+985 |             b.fifo_out.push_back(0xff);
+    |             - borrow later used here
+    |
+    = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:999:25
+     |
+ 999 |             let mut b = bus().lock().unwrap().borrow_mut();
+     |                         ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                         |
+     |                         creates a temporary value which is freed while still in use
+1000 |             match b.fifo_in.pop_front() {
+     |                   - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1006:25
+     |
+1006 |             let mut b = bus().lock().unwrap().borrow_mut();
+     |                         ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                         |
+     |                         creates a temporary value which is freed while still in use
+1007 |             let response_byte = if mcd_present { 0x00 } else { 0xff };
+1008 |             b.fifo_out.push_back(response_byte);
+     |             - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1080:25
+     |
+1080 |             let mut b = bus().lock().unwrap().borrow_mut();
+     |                         ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                         |
+     |                         creates a temporary value which is freed while still in use
+1081 |             b.fifo_in.push_back(data);
+     |             - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1092:29
+     |
+1092 |                 let mut b = bus().lock().unwrap().borrow_mut();
+     |                             ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                             |
+     |                             creates a temporary value which is freed while still in use
+1093 |                 match b.fifo_in.pop_front() {
+     |                       - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1116:25
+     |
+1116 |                 let b = bus().lock().unwrap().borrow();
+     |                         ^^^^^^^^^^^^^^^^^^^^^         - temporary value is freed at the end of this statement
+     |                         |
+     |                         creates a temporary value which is freed while still in use
+1117 |                 (b.fifo_out.len(), self.dma_block_size)
+     |                  - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1123:33
+     |
+1123 |                     let mut b = bus().lock().unwrap().borrow_mut();
+     |                                 ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                                 |
+     |                                 creates a temporary value which is freed while still in use
+1124 |                     for _ in 0..pad {
+1125 |                         b.fifo_out.push_back(0x00);
+     |                         - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1145:17
+     |
+1145 |     let mut b = bus().lock().unwrap().borrow_mut();
+     |                 ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                 |
+     |                 creates a temporary value which is freed while still in use
+1146 |     b.memory_card.reset_ps1_state();
+     |     - borrow later used here
+     |
+help: consider using a `let` binding to create a longer lived value
+     |
+1145 ~     let binding = bus().lock().unwrap();
+1146 ~     let mut b = binding.borrow_mut();
+     |
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1202:21
+     |
+1202 |             let b = bus().lock().unwrap().borrow();
+     |                     ^^^^^^^^^^^^^^^^^^^^^         - temporary value is freed at the end of this statement
+     |                     |
+     |                     creates a temporary value which is freed while still in use
+1203 |             match b.fifo_in.front() {
+     |                   - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1234:21
+     |
+1234 |         let mut b = bus().lock().unwrap().borrow_mut();
+     |                     ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                     |
+     |                     creates a temporary value which is freed while still in use
+1235 |         if enabled {
+1236 |             b.fifo_out.push_back(0xff);
+     |             - borrow later used here
+     |
+help: consider using a `let` binding to create a longer lived value
+     |
+1234 ~         let binding = bus().lock().unwrap();
+1235 ~         let mut b = binding.borrow_mut();
+     |
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1253:25
+     |
+1253 |             let mut b = bus().lock().unwrap().borrow_mut();
+     |                         ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                         |
+     |                         creates a temporary value which is freed while still in use
+1254 |             for _ in 0..7 {
+1255 |                 b.fifo_out.push_back(0xff);
+     |                 - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1261:25
+     |
+1261 |             let mut b = bus().lock().unwrap().borrow_mut();
+     |                         ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                         |
+     |                         creates a temporary value which is freed while still in use
+1262 |             match b.fifo_in.pop_front() {
+     |                   - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1275:21
+     |
+1275 |         let mut b = bus().lock().unwrap().borrow_mut();
+     |                     ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                     |
+     |                     creates a temporary value which is freed while still in use
+1276 |         b.fifo_out.push_back(0xff);
+     |         - borrow later used here
+     |
+help: consider using a `let` binding to create a longer lived value
+     |
+1275 ~         let binding = bus().lock().unwrap();
+1276 ~         let mut b = binding.borrow_mut();
+     |
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1339:21
+     |
+1339 |             let b = bus().lock().unwrap().borrow();
+     |                     ^^^^^^^^^^^^^^^^^^^^^         - temporary value is freed at the end of this statement
+     |                     |
+     |                     creates a temporary value which is freed while still in use
+1340 |             (b.mcd().is_psx(), b.sio2_command_length)
+     |              - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1343:25
+     |
+1343 |             let mut b = bus().lock().unwrap().borrow_mut();
+     |                         ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                         |
+     |                         creates a temporary value which is freed while still in use
+1344 |             while b.fifo_out.len() < cmd_len {
+     |                   - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1358:21
+     |
+1358 |         let mut b = bus().lock().unwrap().borrow_mut();
+     |                     ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                     |
+     |                     creates a temporary value which is freed while still in use
+1359 |         while b.fifo_out.len() < length.saturating_sub(2) {
+     |               - borrow later used here
+     |
+help: consider using a `let` binding to create a longer lived value
+     |
+1358 ~         let binding = bus().lock().unwrap();
+1359 ~         let mut b = binding.borrow_mut();
+     |
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1371:21
+     |
+1371 |         let mut b = bus().lock().unwrap().borrow_mut();
+     |                     ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                     |
+     |                     creates a temporary value which is freed while still in use
+1372 |         let mcd = b.mcd_mut();
+     |                   - borrow later used here
+     |
+help: consider using a `let` binding to create a longer lived value
+     |
+1371 ~         let binding = bus().lock().unwrap();
+1372 ~         let mut b = binding.borrow_mut();
+     |
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1384:21
+     |
+1384 |             let b = bus().lock().unwrap().borrow();
+     |                     ^^^^^^^^^^^^^^^^^^^^^         - temporary value is freed at the end of this statement
+     |                     |
+     |                     creates a temporary value which is freed while still in use
+1385 |             (b.mcd().is_present(), b.mcd().term)
+     |              - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1387:21
+     |
+1387 |         let mut b = bus().lock().unwrap().borrow_mut();
+     |                     ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                     |
+     |                     creates a temporary value which is freed while still in use
+...
+1393 |             while b.fifo_out.len() < 4 - 2 {
+     |                   - borrow later used here
+     |
+help: consider using a `let` binding to create a longer lived value
+     |
+1387 ~         let binding = bus().lock().unwrap();
+1388 ~         let mut b = binding.borrow_mut();
+     |
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1407:21
+     |
+1407 |         let mut b = bus().lock().unwrap().borrow_mut();
+     |                     ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                     |
+     |                     creates a temporary value which is freed while still in use
+1408 |         while b.fifo_out.len() < length - 2 {
+     |               - borrow later used here
+     |
+help: consider using a `let` binding to create a longer lived value
+     |
+1407 ~         let binding = bus().lock().unwrap();
+1408 ~         let mut b = binding.borrow_mut();
+     |
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1420:25
+     |
+1420 |             let mut b = bus().lock().unwrap().borrow_mut();
+     |                         ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                         |
+     |                         creates a temporary value which is freed while still in use
+1421 |             let lsb = b.fifo_in.pop_front().unwrap_or(0);
+     |                       - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1436:25
+     |
+1436 |             let mut b = bus().lock().unwrap().borrow_mut();
+     |                         ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                         |
+     |                         creates a temporary value which is freed while still in use
+1437 |             let mcd = b.mcd_mut();
+     |                       - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1451:21
+     |
+1451 |             let b = bus().lock().unwrap().borrow();
+     |                     ^^^^^^^^^^^^^^^^^^^^^         - temporary value is freed at the end of this statement
+     |                     |
+     |                     creates a temporary value which is freed while still in use
+1452 |             (b.mcd().get_size_info(), b.mcd().term)
+     |              - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1454:21
+     |
+1454 |         let mut b = bus().lock().unwrap().borrow_mut();
+     |                     ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                     |
+     |                     creates a temporary value which is freed while still in use
+1455 |         b.fifo_out.push_back(0x2b);
+     |         - borrow later used here
+     |
+help: consider using a `let` binding to create a longer lived value
+     |
+1454 ~         let binding = bus().lock().unwrap();
+1455 ~         let mut b = binding.borrow_mut();
+     |
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1475:25
+     |
+1475 |             let mut b = bus().lock().unwrap().borrow_mut();
+     |                         ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                         |
+     |                         creates a temporary value which is freed while still in use
+1476 |             let new_term = b.fifo_in.pop_front().unwrap_or(terminator::READY as u8);
+     |                            - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1480:21
+     |
+1480 |         let mut b = bus().lock().unwrap().borrow_mut();
+     |                     ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                     |
+     |                     creates a temporary value which is freed while still in use
+1481 |         b.fifo_out.push_back(0x00);
+     |         - borrow later used here
+     |
+help: consider using a `let` binding to create a longer lived value
+     |
+1480 ~         let binding = bus().lock().unwrap();
+1481 ~         let mut b = binding.borrow_mut();
+     |
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1491:21
+     |
+1491 |         let mut b = bus().lock().unwrap().borrow_mut();
+     |                     ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                     |
+     |                     creates a temporary value which is freed while still in use
+1492 |         b.fifo_out.push_back(0x2b);
+     |         - borrow later used here
+     |
+help: consider using a `let` binding to create a longer lived value
+     |
+1491 ~         let binding = bus().lock().unwrap();
+1492 ~         let mut b = binding.borrow_mut();
+     |
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1505:25
+     |
+1505 |             let mut b = bus().lock().unwrap().borrow_mut();
+     |                         ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                         |
+     |                         creates a temporary value which is freed while still in use
+1506 |             b.fifo_out.push_back(0x00);
+     |             - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1532:25
+     |
+1532 |             let mut b = bus().lock().unwrap().borrow_mut();
+     |                         ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                         |
+     |                         creates a temporary value which is freed while still in use
+1533 |             read_length = b.fifo_in.pop_front().unwrap_or(0);
+     |                           - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1539:25
+     |
+1539 |             let mut b = bus().lock().unwrap().borrow_mut();
+     |                         ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                         |
+     |                         creates a temporary value which is freed while still in use
+1540 |             b.mcd_mut().read(&mut buf);
+     |             - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1544:25
+     |
+1544 |             let mut b = bus().lock().unwrap().borrow_mut();
+     |                         ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                         |
+     |                         creates a temporary value which is freed while still in use
+...
+1547 |                 b.fifo_out.push_back(b_byte);
+     |                 - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1599:33
+     |
+1599 |                     let mut b = bus().lock().unwrap().borrow_mut();
+     |                                 ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                                 |
+     |                                 creates a temporary value which is freed while still in use
+1600 |                     b.mcd_mut().read(&mut self.ps1_state.buf);
+     |                     - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1652:29
+     |
+1652 |                     let b = bus().lock().unwrap().borrow();
+     |                             ^^^^^^^^^^^^^^^^^^^^^         - temporary value is freed at the end of this statement
+     |                             |
+     |                             creates a temporary value which is freed while still in use
+1653 |                     (
+1654 |                         b.mcd().good_sector,
+     |                         - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1666:37
+     |
+1666 |                         let mut b = bus().lock().unwrap().borrow_mut();
+     |                                     ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                                     |
+     |                                     creates a temporary value which is freed while still in use
+1667 |                         b.mcd_mut().write(&self.ps1_state.buf);
+     |                         - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1717:25
+     |
+1717 |             let mut b = bus().lock().unwrap().borrow_mut();
+     |                         ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                         |
+     |                         creates a temporary value which is freed while still in use
+1718 |             b.mcd_mut().erase_block();
+     |             - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1736:25
+     |
+1736 |             let mut b = bus().lock().unwrap().borrow_mut();
+     |                         ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                         |
+     |                         creates a temporary value which is freed while still in use
+1737 |             b.fifo_in.pop_front().unwrap_or(0)
+     |             - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1743:29
+     |
+1743 |                 let mut b = bus().lock().unwrap().borrow_mut();
+     |                             ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                             |
+     |                             creates a temporary value which is freed while still in use
+1744 |                 b.fifo_out.push_back(0x00);
+     |                 - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1773:25
+     |
+1773 |             let mut b = bus().lock().unwrap().borrow_mut();
+     |                         ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                         |
+     |                         creates a temporary value which is freed while still in use
+1774 |             for _ in 0..4 {
+1775 |                 b.fifo_out.push_back(0xff);
+     |                 - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1779:29
+     |
+1779 |                 let mut b = bus().lock().unwrap().borrow_mut();
+     |                             ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                             |
+     |                             creates a temporary value which is freed while still in use
+1780 |                 b.mcd_mut().term = terminator::READY as u8;
+     |                 - borrow later used here
+     |
+     = note: consider using a `let` binding to create a longer lived value
+
+error[E0716]: temporary value dropped while borrowed
+    --> pcsx2\SioSmall.rs:1800:17
+     |
+1800 |     let mut b = bus().lock().unwrap().borrow_mut();
+     |                 ^^^^^^^^^^^^^^^^^^^^^             - temporary value is freed at the end of this statement
+     |                 |
+     |                 creates a temporary value which is freed while still in use
+1801 |     b.last_frame_mcd_busy = b.last_frame_mcd_busy.wrapping_add(1);
+     |                             - borrow later used here
+     |
+help: consider using a `let` binding to create a longer lived value
+     |
+1800 ~     let binding = bus().lock().unwrap();
+1801 ~     let mut b = binding.borrow_mut();
+     |
+
+error[E0509]: cannot move out of type `Various::INISettingsInterface`, which implements the `Drop` trait
+    --> pcsx2\Various.rs:1166:21
+     |
+1166 |           let mut s = Self {
+     |  _____________________^
+1167 | |             filename: path.to_string_lossy().into_owned(),
+1168 | |             ..Self::default()
+1169 | |         };
+     | |         ^
+     | |         |
+     | |_________cannot move out of here
+     |           move occurs because value has type `Vec<IniSection>`, which does not implement the `Copy` trait
+
+warning: unnecessary `unsafe` block
+   --> pcsx2\VifMainEtc.rs:249:5
+    |
+249 |     unsafe {
+    |     ^^^^^^ unnecessary `unsafe` block
+
+warning: unreachable pattern
+    --> pcsx2\x86\Ix86MainEtc.rs:1720:22
+     |
+1699 |         0o15 => {
+     |         ---- matches all the relevant values
+...
+1720 |         4 | 5 | 12 | 13 | 14 => 0,
+     |                      ^^ no value can reach this
+
+warning: irrefutable `if let` pattern
+    --> pcsx2_qt\DebuggerFull.rs:2127:20
+     |
+2127 |                 if let Ok(t) = num_traits_from_int::<MemoryViewType>(i) {
+     |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = note: this pattern will always match, so the `if let` is useless
+     = help: consider replacing the `if let` with a `let`
+     = note: `#[warn(irrefutable_let_patterns)]` on by default
+
+error[E0512]: cannot transmute between types of different sizes, or dependently-sized types
+   --> pcsx2_qt\FinalQtFull.rs:180:49
+    |
+180 | ...   0x01000030..=0x01000047 => unsafe { std::mem::transmute(((i as u32 - 0x01000030u32) as u8 + QtKey::Key_F1 as u8) as i32) },
+    |                                           ^^^^^^^^^^^^^^^^^^^
+    |
+    = note: source type: `i32` (32 bits)
+    = note: target type: `QtKey` (8 bits)
+
+error[E0502]: cannot borrow `self.map` as immutable because it is also borrowed as mutable
+   --> pcsx2_qt\GameListFull.rs:386:12
+    |
+381 |     pub fn insert(&mut self, key: K, value: V) -> &mut V {
+    |                   - let's call the lifetime of this reference `'1`
+382 |         if let Some(v) = self.map.get_mut(&key) {
+    |                          -------- mutable borrow occurs here
+383 |             *v = value;
+384 |             return v;
+    |                    - returning this value requires that `self.map` is borrowed for `'1`
+385 |         }
+386 |         if self.map.len() >= self.capacity {
+    |            ^^^^^^^^ immutable borrow occurs here
+
+error[E0499]: cannot borrow `self.map` as mutable more than once at a time
+   --> pcsx2_qt\GameListFull.rs:388:17
+    |
+381 |     pub fn insert(&mut self, key: K, value: V) -> &mut V {
+    |                   - let's call the lifetime of this reference `'1`
+382 |         if let Some(v) = self.map.get_mut(&key) {
+    |                          -------- first mutable borrow occurs here
+383 |             *v = value;
+384 |             return v;
+    |                    - returning this value requires that `self.map` is borrowed for `'1`
+...
+388 |                 self.map.remove(&oldest);
+    |                 ^^^^^^^^ second mutable borrow occurs here
+
+error[E0499]: cannot borrow `self.map` as mutable more than once at a time
+   --> pcsx2_qt\GameListFull.rs:391:9
+    |
+381 |     pub fn insert(&mut self, key: K, value: V) -> &mut V {
+    |                   - let's call the lifetime of this reference `'1`
+382 |         if let Some(v) = self.map.get_mut(&key) {
+    |                          -------- first mutable borrow occurs here
+383 |             *v = value;
+384 |             return v;
+    |                    - returning this value requires that `self.map` is borrowed for `'1`
+...
+391 |         self.map.insert(key.clone(), value);
+    |         ^^^^^^^^ second mutable borrow occurs here
+
+error[E0499]: cannot borrow `self.map` as mutable more than once at a time
+   --> pcsx2_qt\GameListFull.rs:393:9
+    |
+381 |     pub fn insert(&mut self, key: K, value: V) -> &mut V {
+    |                   - let's call the lifetime of this reference `'1`
+382 |         if let Some(v) = self.map.get_mut(&key) {
+    |                          -------- first mutable borrow occurs here
+383 |             *v = value;
+384 |             return v;
+    |                    - returning this value requires that `self.map` is borrowed for `'1`
+...
+393 |         self.map.get_mut(&key).expect("just inserted")
+    |         ^^^^^^^^ second mutable borrow occurs here
+
+error[E0382]: borrow of moved value: `key`
+   --> pcsx2_qt\GameListFull.rs:393:26
+    |
+381 |     pub fn insert(&mut self, key: K, value: V) -> &mut V {
+    |                              --- move occurs because `key` has type `K`, which does not implement the `Copy` trait
+...
+392 |         self.order.push_back(key);
+    |                              --- value moved here
+393 |         self.map.get_mut(&key).expect("just inserted")
+    |                          ^^^^ value borrowed here after move
+    |
+help: consider cloning the value if the performance cost is acceptable
+    |
+392 |         self.order.push_back(key.clone());
+    |                                 ++++++++
+
+warning: unnecessary `unsafe` block
+   --> thirdparty\cpuinfo\Cpuinfo.rs:499:5
+    |
+499 |     unsafe {
+    |     ^^^^^^ unnecessary `unsafe` block
+
+warning: unnecessary `unsafe` block
+   --> thirdparty\cpuinfo\Cpuinfo.rs:510:5
+    |
+510 |     unsafe {
+    |     ^^^^^^ unnecessary `unsafe` block
+
+warning: unreachable pattern
+   --> thirdparty\cubeb\Cubeb.rs:641:9
+    |
+637 | /         CubebSampleFormat::S16LE
+638 | |         | CubebSampleFormat::S16BE
+639 | |         | CubebSampleFormat::F32LE
+640 | |         | CubebSampleFormat::F32BE => None,
+    | |__________________________________- matches all the relevant values
+641 |           _ => Some(CUBEB_ERROR_INVALID_FORMAT as i32),
+    |           ^ no value can reach this
+
+error[E0382]: use of moved value: `message`
+   --> thirdparty\googletest\Gtest.rs:526:21
+    |
+514 |     message: String,
+    |     ------- move occurs because `message` has type `String`, which does not implement the `Copy` trait
+...
+518 |     for suite in unit.test_suites.values() {
+    |     -------------------------------------- inside of this loop
+519 |         for test in suite.tests() {
+    |         ------------------------- inside of this loop
+...
+526 |                     message,
+    |                     ^^^^^^^ value moved here, in previous iteration of loop
+    |
+note: verify that your loop breaking logic is correct
+   --> thirdparty\googletest\Gtest.rs:520:34
+    |
+518 |     for suite in unit.test_suites.values() {
+    |     --------------------------------------
+519 |         for test in suite.tests() {
+    |         -------------------------
+520 |             if file.is_empty() { continue; }
+    |                                  ^^^^^^^^ this `continue` advances the loop at line 519
+help: consider cloning the value if the performance cost is acceptable
+    |
+526 |                     message: message.clone(),
+    |                            +++++++++++++++++
+
+error[E0133]: call to unsafe function is unsafe and requires unsafe function or block
+    --> thirdparty\libchdr\Chd.rs:1595:20
+     |
+1595 |                 if (init)(ptr::null_mut(), chd.header.hunkbytes) != ChdError::None {
+     |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+     |
+     = note: consult the function's documentation for information on how to avoid undefined behavior
+
+error[E0133]: call to unsafe function is unsafe and requires unsafe function or block
+    --> thirdparty\libchdr\Chd.rs:1661:24
+     |
+1661 |                   return decomp(
+     |  ________________________^
+1662 | |                     ptr::null_mut(),
+1663 | |                     comp_data.as_ptr(),
+1664 | |                     blocklen,
+1665 | |                     dest.as_mut_ptr(),
+1666 | |                     chd.header.hunkbytes,
+1667 | |                 );
+     | |_________________^ call to unsafe function
+     |
+     = note: consult the function's documentation for information on how to avoid undefined behavior
+
+error[E0503]: cannot use `chd.codecintf[_]` because it was mutably borrowed
+    --> thirdparty\libchdr\Chd.rs:1590:29
+     |
+1586 |                 let comp = match hunk_read_compressed(chd, entry.offset, entry.length as usize) {
+     |                                                       --- `*chd` is borrowed here
+...
+1590 |                 let codec = chd.codecintf[0].expect("codec interface must be set");
+     |                             ^^^^^^^^^^^^^^^^ use of borrowed `*chd`
+...
+1598 |                 let _ = comp;
+     |                         ---- borrow later used here
+
+error[E0503]: cannot use `chd.header.hunkbytes` because it was mutably borrowed
+    --> thirdparty\libchdr\Chd.rs:1595:44
+     |
+1586 |                 let comp = match hunk_read_compressed(chd, entry.offset, entry.length as usize) {
+     |                                                       --- `*chd` is borrowed here
+...
+1595 |                 if (init)(ptr::null_mut(), chd.header.hunkbytes) != ChdError::None {
+     |                                            ^^^^^^^^^^^^^^^^^^^^ use of borrowed `*chd`
+...
+1598 |                 let _ = comp;
+     |                         ---- borrow later used here
+
+error[E0502]: cannot borrow `self.inbuf` as immutable because it is also borrowed as mutable
+   --> thirdparty\more\FreeSurround.rs:138:34
+    |
+138 |         self.inbuf.copy_within(..self.inbuf.len() - copy_len, copy_len);
+    |         ---------- -----------   ^^^^^^^^^^ immutable borrow occurs here
+    |         |          |
+    |         |          mutable borrow later used by call
+    |         mutable borrow occurs here
+
+error[E0502]: cannot borrow `self.inbuf` as immutable because it is also borrowed as mutable
+   --> thirdparty\more\FreeSurround.rs:139:20
+    |
+139 |         self.inbuf[self.inbuf.len() - copy_len..]
+    |         -----------^^^^^^^^^^--------------------
+    |         |         ||
+    |         |         |immutable borrow occurs here
+    |         |         mutable borrow later used here
+    |         mutable borrow occurs here
+    |
+help: try adding a local storing this...
+   --> thirdparty\more\FreeSurround.rs:139:20
+    |
+139 |         self.inbuf[self.inbuf.len() - copy_len..]
+    |                    ^^^^^^^^^^^^^^^^
+help: ...and then using that local here
+   --> thirdparty\more\FreeSurround.rs:139:19
+    |
+139 |         self.inbuf[self.inbuf.len() - copy_len..]
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0004]: non-exhaustive patterns: `&RapidJson::Value::Null` not covered
+   --> thirdparty\rapidjson\RapidJson.rs:270:10
+    |
+270 | #[derive(Clone, Debug, Default, PartialEq)]
+    |          ^^^^^ pattern `&RapidJson::Value::Null` not covered
+    |
+note: `RapidJson::Value` defined here
+   --> thirdparty\rapidjson\RapidJson.rs:271:10
+    |
+271 | pub enum Value {
+    |          ^^^^^
+...
+274 |     Null,
+    |     ---- not covered
+    = note: the matched value is of type `&RapidJson::Value`
+
+error[E0004]: non-exhaustive patterns: `&RapidJson::Value::Null` not covered
+   --> thirdparty\rapidjson\RapidJson.rs:270:17
+    |
+270 | #[derive(Clone, Debug, Default, PartialEq)]
+    |                 ^^^^^ pattern `&RapidJson::Value::Null` not covered
+    |
+note: `RapidJson::Value` defined here
+   --> thirdparty\rapidjson\RapidJson.rs:271:10
+    |
+271 | pub enum Value {
+    |          ^^^^^
+...
+274 |     Null,
+    |     ---- not covered
+    = note: the matched value is of type `&RapidJson::Value`
+
+error[E0004]: non-exhaustive patterns: `&RapidJson::Value::Null` not covered
+   --> thirdparty\rapidjson\RapidJson.rs:413:15
+    |
+413 |         match self {
+    |               ^^^^ pattern `&RapidJson::Value::Null` not covered
+    |
+note: `RapidJson::Value` defined here
+   --> thirdparty\rapidjson\RapidJson.rs:271:10
+    |
+271 | pub enum Value {
+    |          ^^^^^
+...
+274 |     Null,
+    |     ---- not covered
+    = note: the matched value is of type `&RapidJson::Value`
+help: ensure that all possible cases are being handled by adding a match arm with a wildcard pattern or an explicit pattern as shown
+    |
+437 ~             },
+438 +             &RapidJson::Value::Null => todo!()
+    |
+
+error[E0004]: non-exhaustive patterns: `&RapidJson::Value::Null` not covered
+    --> thirdparty\rapidjson\RapidJson.rs:1171:15
+     |
+1171 |         match v {
+     |               ^ pattern `&RapidJson::Value::Null` not covered
+     |
+note: `RapidJson::Value` defined here
+    --> thirdparty\rapidjson\RapidJson.rs:271:10
+     |
+ 271 | pub enum Value {
+     |          ^^^^^
+...
+ 274 |     Null,
+     |     ---- not covered
+     = note: the matched value is of type `&RapidJson::Value`
+help: ensure that all possible cases are being handled by adding a match arm with a wildcard pattern or an explicit pattern as shown
+     |
+1190 ~             },
+1191 +             &RapidJson::Value::Null => todo!()
+     |
+
+Some errors have detailed explanations: E0004, E0015, E0081, E0133, E0252, E0271, E0277, E0308, E0369...
+For more information about an error, try `rustc --explain E0004`.
+warning: `pcsx2_translations` (lib) generated 86 warnings
+error: could not compile `pcsx2_translations` (lib) due to 199 previous errors; 86 warnings emitted

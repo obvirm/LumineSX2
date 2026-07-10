@@ -1,0 +1,21 @@
+// Patches Settings Page
+import { SettingsRow, ToggleRow, SectionHeader, DetailPage } from "./common.slint";
+
+export component PatchesSettingsView inherits DetailPage {
+    title: "Patches";
+    
+    in-out property <bool> widescreen: false;
+    in-out property <bool> no-interlace: false;
+    in-out property <bool> no-mpeg: false;
+    in-out property <bool> texture-dump: false;
+
+    SettingsRow { txt: "Reload Patches"; }
+    SettingsRow { txt: "Enable All"; }
+    SettingsRow { txt: "Disable All"; }
+
+    SectionHeader { txt: "Available Patches"; }
+    ToggleRow { txt: "Widescreen Patches (16:9)"; sub: "Force widescreen aspect ratio"; checked: widescreen; toggled(v) => { widescreen = v; } }
+    ToggleRow { txt: "No-Interlace Patches"; sub: "Remove interlacing artifacts"; checked: no-interlace; toggled(v) => { no-interlace = v; } }
+    ToggleRow { txt: "No-MPEG Skip"; sub: "Skip MPEG cutscenes"; checked: no-mpeg; toggled(v) => { no-mpeg = v; } }
+    ToggleRow { txt: "Texture Dump"; sub: "Dump textures for replacement"; checked: texture-dump; toggled(v) => { texture-dump = v; } }
+}

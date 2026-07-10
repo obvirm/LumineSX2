@@ -1,0 +1,22 @@
+[package]
+name = "pcsx2_cdvd"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["staticlib", "cdylib"]
+
+[dependencies]
+# CHD format support
+chd = "0.2"
+
+# Compression
+flate2 = "1.0"
+lzma-rs = "0.3"
+
+# ISO9660 filesystem
+# cdfs = "0.1"  # or custom implementation
+
+# Utilities
+thiserror = "1.0"
+log = "0.4"

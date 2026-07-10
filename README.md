@@ -7,6 +7,10 @@
 [![Language](https://img.shields.io/badge/language-Rust%20+%20C++-blue?style=flat-square)]()
 [![Status](https://img.shields.io/badge/status-EXPERIMENTAL%20-red?style=flat-square)]()
 
+
+https://github.com/user-attachments/assets/aee8e5b8-e06a-4c46-a358-efdfcfdcffe0
+
+
 ---
 
 ## ⚠️ PERINGATAN EKSPERIMENTAL
@@ -16,7 +20,9 @@
 - Saat ini **hanya bisa dijalankan di Windows (Desktop)**
 - **Belum support Android** — ini adalah target utama
 - Masih dalam proses **rewrite dari C++ ke Rust**
-- **Belum stabil** — banyak fitur yang belum/tidak berfungsi
+- **Belum stabil** — banyak fitur 
+
+yang belum/tidak berfungsi
 
 **JANGAN digunakan untuk bermain game secara production.**
 

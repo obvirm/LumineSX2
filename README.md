@@ -1,27 +1,120 @@
-# PCSX2
+# LumineSX2
 
-![Windows Build Status](https://img.shields.io/github/actions/workflow/status/PCSX2/pcsx2/windows_build_matrix.yml?label=%F0%9F%96%A5%EF%B8%8F%20Windows%20Builds)
-![Linux Build Status](https://img.shields.io/github/actions/workflow/status/PCSX2/pcsx2/linux_build_matrix.yml?label=%F0%9F%90%A7%20Linux%20Builds)
-![MacOS Build Status](https://img.shields.io/github/actions/workflow/status/PCSX2/pcsx2/macos_build_matrix.yml?label=%F0%9F%8D%8E%20MacOS%20Builds)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/1f7c0d75fec74d6daa6adb084e5b4f71)](https://app.codacy.com/gh/PCSX2/pcsx2/dashboard?utm_source=github.com&utm_medium=referral&utm_content=PCSX2/pcsx2&utm_campaign=Badge_Grade)
-[![Discord Server](https://img.shields.io/discord/309643527816609793?color=%235CA8FA&label=PCSX2%20Discord&logo=discord&logoColor=white)](https://discord.com/invite/TCz3t9k)
+> **PlayStation 2 Emulator — Android-First Rewrite**
 
-PCSX2 is a free and open-source PlayStation 2 (PS2) emulator. Its purpose is to emulate the PS2's hardware, using a combination of MIPS CPU [Interpreters](<https://en.wikipedia.org/wiki/Interpreter_(computing)>), [Recompilers](https://en.wikipedia.org/wiki/Dynamic_recompilation) and a [Virtual Machine](https://en.wikipedia.org/wiki/Virtual_machine) which manages hardware states and PS2 system memory. This allows you to play PS2 games on your PC, with many additional features and benefits.
+[![Platform](https://img.shields.io/badge/platform-Windows%20(desktop)-orange?style=flat-square)]()
+[![Platform](https://img.shields.io/badge/platform-Android%20(target)-green?style=flat-square)]()
+[![Language](https://img.shields.io/badge/language-Rust%20+%20C++-blue?style=flat-square)]()
+[![Status](https://img.shields.io/badge/status-EXPERIMENTAL%20-red?style=flat-square)]()
 
-## Project Details
+---
 
-PCSX2 has been in development for more than 20 years. Past versions could only run a few public domain game demos, but newer versions can run most games at full speed, including popular titles such as Final Fantasy X and Devil May Cry 3. Visit the [PCSX2 compatibility list](https://pcsx2.net/compat/) to check the latest compatibility status of games (with more than 2500 titles tested).
+## ⚠️ PERINGATAN EKSPERIMENTAL
 
-Installers and binaries for both stable and nightly builds are available from [our website](https://pcsx2.net/downloads/).
+**LumineSX2 masih dalam tahap pengembangan awal.**
 
-## System Requirements
+- Saat ini **hanya bisa dijalankan di Windows (Desktop)**
+- **Belum support Android** — ini adalah target utama
+- Masih dalam proses **rewrite dari C++ ke Rust**
+- **Belum stabil** — banyak fitur yang belum/tidak berfungsi
 
-PCSX2 supports Windows, Linux, and Mac platforms. Our [setup documentation page](https://pcsx2.net/docs/setup/requirements) contains additional details on software and hardware requirements.
+**JANGAN digunakan untuk bermain game secara production.**
 
-Please note that a BIOS dump from a legitimately-owned PS2 console is required to use the emulator. For more information, visit [this page](https://pcsx2.net/docs/setup/bios/).
+---
 
-## Contributing / Building
+## Visi & Misi
 
-PCSX2 supports translation into other languages using [Crowdin](https://crowdin.com/project/pcsx2-emulator).
+### Visi
+Membangun emulator PlayStation 2 yang modern, ringan, dan portabel untuk platform **Android** (terutama device Redmi/Xiaomi), dengan arsitektur Rust yang aman dan performa tinggi.
 
-See the [Contribution Guide](https://pcsx2.net/docs/contributing/) for more info on how to contribute.
+### Misi
+1. **Rewrite modul-modul inti PCSX2 ke Rust** — satu per satu, dimulai dari CDVD
+2. **UI modern dengan Slint** — Material You dark theme, touch-friendly untuk mobile
+3. **Vulkan renderer** — kompatibel dengan GPU mobile (ARM Mali, Adreno, dll)
+4. **Android-first** — target utama adalah HP Redmi/Xiaomi dengan harga terjangkau
+5. **Open source** — berbasis PCSX2 (GPLv3), dikembangkan secara transparan
+
+---
+
+## Status Porting ke Rust
+
+| Modul | Status | Keterangan |
+|-------|--------|------------|
+| `common/` | ✅ Sebagian | StringUtil, SettingsWrapper, Threading |
+| `CDVD/` | ✅ Parsial | ISO reader sudah jalan, CHD/CSO stubbed |
+| `GS/` | ❌ Belum | Graphics synthesizer (prioritas rendah) |
+| `SPU2/` | ❌ Belum | Audio processing |
+| `PAD/` | ❌ Belum | Input/controller |
+| `Core/EE` | ❌ Belum | Emotion Engine (prioritas rendah) |
+
+---
+
+## Build (Windows)
+
+### Prerequisites
+- [Rust](https://rustup.rs/) (stable toolchain)
+- [Visual Studio 2022](https://visualstudio.microsoft.com/) (C++ build tools)
+- [Vulkan SDK](https://vulkan.lunarg.com/) (untuk renderer)
+
+### Build Commands
+
+```powershell
+# Build Rust UI + link PCSX2 core
+cd lumine-sx2
+cargo build --features pcsx2-core --release
+
+# Output: target/release/lumine-sx2.exe
+```
+
+### Run
+
+```powershell
+# Boot game
+.\target\release\lumine-sx2.exe --boot "E:\path\to\game.iso"
+
+# With BIOS path
+.\target\release\lumine-sx2.exe --bios "E:\path\to\bios" --boot "E:\path\to\game.iso"
+```
+
+---
+
+## Arsitektur
+
+```
+┌─────────────────────────────────────┐
+│         LumineSX2 (Rust UI)         │
+│          Slint + Material You       │
+├─────────────────────────────────────┤
+│     C FFI Bridge (pcsx2_capi)       │
+├─────────────────────────────────────┤
+│      PCSX2 Core (C++ Static Lib)    │
+│   VMManager | GS | SPU2 | PAD | EE  │
+├─────────────────────────────────────┤
+│     Rust Modules (gradually ported) │
+│   CDVD ✅ | common ✅ | ...         │
+└─────────────────────────────────────┘
+```
+
+---
+
+## Perbedaan dengan PCSX2 Original
+
+| Aspek | PCSX2 Original | LumineSX2 |
+|-------|----------------|-----------|
+| UI Framework | Qt6 | Slint (Rust) |
+| Target Platform | Windows/Linux/Mac | Android (primary) |
+| Bahasa UI | C++ | Rust |
+| Renderer | Vulkan/D3D11/D3D12/GL | Vulkan (fokus) |
+| Status | Stable | Experimental |
+
+---
+
+## Credits
+
+LumineSX2 dibangun di atas [PCSX2](https://github.com/PCSX2/pcsx2) — emulator PS2 yang telah dikembangkan selama 20+ tahun. Terima kasih kepada seluruh kontributor PCSX2.
+
+---
+
+## License
+
+[GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0.html) — mengikuti license PCSX2 upstream.

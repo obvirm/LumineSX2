@@ -25,6 +25,8 @@
 #include "common/Path.h"
 #include "common/StringUtil.h"
 #include "common/WindowInfo.h"
+#include "common/Console.h"
+#include "BuildVersion.h"
 #include "Input/InputManager.h"
 #include "INISettingsInterface.h"
 #include "PerformanceMetrics.h"
@@ -792,5 +794,34 @@ bool pcsx2_frame_ready() { return s_frame_ready; }
 const u8* pcsx2_frame_data() { return s_frame_buffer.data(); }
 int pcsx2_frame_size() { return (int)s_frame_buffer.size(); }
 void pcsx2_frame_consumed() { s_frame_ready = false; }
+
+// ═══════════════════════════════════════════════════════════════
+// LOG STREAMING + VERSION (for Slint About / Log viewer)
+// ═══════════════════════════════════════════════════════════════
+
+static PCSX2_OnLog s_on_log = nullptr;
+
+// Console host-output sink: forwards every core log line to the Slint callback.
+static void HostLogSink(LOGLEVEL level, ConsoleColors color, std::string_view message)
+{
+    if (s_on_log)
+        s_on_log(static_cast<int32_t>(level), static_cast<int32_t>(color), std::string(message).c_str());
+}
+
+void pcsx2_register_log_callback(PCSX2_OnLog on_log)
+{
+    s_on_log = on_log;
+    // Mirror core logs to the Slint UI. Level 3 = INFO (show info+errors).
+    Log::SetHostOutputLevel(LOGLEVEL_INFO, &HostLogSink);
+    fprintf(stderr, "[CAPI] Log host output enabled\n");
+}
+
+static thread_local std::string s_version_buf;
+const char* pcsx2_get_version_string()
+{
+    s_version_buf = std::string("PCSX2 ") + BuildVersion::GitRev +
+        " (" + BuildVersion::GitDate + ")";
+    return s_version_buf.c_str();
+}
 
 } // extern "C"

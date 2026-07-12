@@ -19,6 +19,8 @@ import { AchievementSettingsView } from "./settings_achievements.slint";
 import { AdvancedSettingsView } from "./settings_advanced.slint";
 import { ControllerSettingsView, ControllerBindingView } from "./settings_controller.slint";
 import { ExperimentalWarningView } from "./experimental_warning.slint";
+import { AboutView } from "./about.slint";
+import { LogViewerView } from "./log_viewer.slint";
 import { DebugPage, RegisterEntry, Register128, Register64, DisassemblyLine, BranchLine } from "./debug_main.slint";
 import { StackEntry } from "./debug_stack.slint";
 import { ThreadEntry } from "./debug_threads.slint";
@@ -261,9 +263,13 @@ export component MainWindow inherits Window {
     in-out property <string> status-message: "";
     in-out property <EmuState> emu-state: { frame: 0, ee_pc: 0, iop_pc: 0, fps: 60, speed: 100 };
     in-out property <image> framebuffer: @image-url("");
-    
+    in-out property <string> pcsx2-version: "";
+    in-out property <[string]> log-lines: [];
+
     callback add-game-folder();
     callback open-bios-folder();
+    callback open-external-url(string /*url*/);
+    callback clear-log();
     
     // Game control callbacks
     callback play-game();
@@ -1187,7 +1193,8 @@ in-out property <int> selected-bios: 0;
                         padding-left: 16px; padding-right: 16px; padding-top: 8px; spacing: 8px;
                         HorizontalLayout { padding-left: 68px; padding-bottom: 4px; Text { text: "Informasi"; color: primary; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; } }
                         SettingsRow { txt: "Pertanyaan Umum"; ico: @image-url("icons/qt/lightbulb-line.svg"); }
-                        SettingsRow { txt: "Tampilkan Versi"; sub: "LumineSX2 v0.1.0-alpha"; ico: @image-url("icons/info.svg"); }
+                        SettingsRow { txt: "Tampilkan Versi"; sub: "LumineSX2 v0.1.0-alpha"; ico: @image-url("icons/info.svg"); clicked => { settings-page = 16; } }
+                        SettingsRow { txt: "Log Emulator"; ico: @image-url("icons/qt/file-list-line.svg"); clicked => { settings-page = 17; } }
                         SettingsRow { txt: "Lisensi Pihak Ketiga"; ico: @image-url("icons/qt/file-line.svg"); }
                         SettingsRow { txt: "Peringatan Eksperimental"; sub: "Windows-only, Android belum didukung, sedang rewrite ke Rust"; ico: @image-url("icons/qt/error-warning-line.svg"); clicked => { settings-page = 15; } }
                     }
@@ -1574,6 +1581,26 @@ in-out property <int> selected-bios: 0;
             animate x { duration: 300ms; easing: ease-in-out; }
             y: 56px; height: parent.height - 56px; width: parent.width;
             ExperimentalWarningView { back-clicked => { settings-page = 0; } }
+        }
+        Rectangle {
+            x: settings-page == 16 ? 0px : parent.width;
+            animate x { duration: 300ms; easing: ease-in-out; }
+            y: 56px; height: parent.height - 56px; width: parent.width;
+            AboutView {
+                pcsx2-version: root.pcsx2-version;
+                back-clicked => { settings-page = 0; }
+                open-url(url) => { root.open-external-url(url); }
+            }
+        }
+        Rectangle {
+            x: settings-page == 17 ? 0px : parent.width;
+            animate x { duration: 300ms; easing: ease-in-out; }
+            y: 56px; height: parent.height - 56px; width: parent.width;
+            LogViewerView {
+                log-lines: root.log-lines;
+                back-clicked => { settings-page = 0; }
+                clear-log => { root.clear-log(); }
+            }
         }
         Rectangle {
             x: settings-page == 20 ? 0px : parent.width;

@@ -153,6 +153,16 @@ void pcsx2_set_limiter_mode(int32_t mode);
 // ─── Cleanup ───
 void pcsx2_free_string(const char* str);
 
+// ─── Log Streaming ───
+// Host log callback: (level 0..6, color, message)
+//   level: LOGLEVEL_NONE=0, ERROR=1, WARNING=2, INFO=3, DEV=4, DEBUG=5, TRACE=6
+//   color: ConsoleColors enum value
+typedef void (*PCSX2_OnLog)(int32_t level, int32_t color, const char* message);
+void pcsx2_register_log_callback(PCSX2_OnLog on_log);
+
+// Returns the PCSX2 build version string (git rev + date), e.g. "a0db40748 (2026-07-10)".
+const char* pcsx2_get_version_string();
+
 #ifdef __cplusplus
 }
 #endif

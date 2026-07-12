@@ -1,0 +1,113 @@
+// About window — parity with Qt AboutDialog
+import { ScrollView } from "std-widgets.slint";
+
+export struct AboutLink {
+    label: string,
+    url: string,
+}
+
+export component AboutView inherits Rectangle {
+    callback back-clicked;
+    callback open-url(string);
+
+    in-out property <string> version-text: "LumineSX2 v0.1.0-alpha";
+    in-out property <string> pcsx2-version: "";
+    in-out property <[AboutLink]> links: [
+        { label: "Website", url: "https://pcsx2.net" },
+        { label: "Support Forums", url: "https://forums.pcsx2.net" },
+        { label: "GitHub", url: "https://github.com/obvirm/LumineSX2" },
+        { label: "Discord", url: "https://discord.gg/pcsx2" },
+        { label: "Donate", url: "https://pcsx2.net/donate" },
+    ];
+
+    background: #141218;
+    clip: true;
+
+    VerticalLayout {
+        y: 56px;
+        width: parent.width;
+        height: parent.height - 56px;
+        spacing: 0px;
+
+        Rectangle {
+            height: 56px;
+            background: #141218;
+            HorizontalLayout {
+                spacing: 8px;
+                padding-left: 8px;
+                padding-right: 16px;
+                alignment: start;
+                Rectangle {
+                    width: 40px; height: 40px;
+                    border-radius: 20px;
+                    TouchArea {
+                        clicked => { root.back-clicked(); }
+                        Rectangle {
+                            width: 40px; height: 40px;
+                            border-radius: 20px;
+                            Image { source: @image-url("icons/qt/arrow-left-line.svg"); colorize: #E6E0E9; width: 22px; height: 22px; x: 9px; y: 9px; }
+                        }
+                    }
+                }
+                Text { text: "Tentang LumineSX2"; color: #E6E0E9; font-size: 18px; font-weight: 600; vertical-alignment: center; }
+            }
+        }
+
+        ScrollView {
+            viewport-width: parent.width;
+            VerticalLayout {
+                spacing: 16px;
+                padding-left: 24px; padding-right: 24px; padding-top: 16px; padding-bottom: 24px;
+                alignment: start;
+
+                Rectangle {
+                    height: 96px;
+                    HorizontalLayout {
+                        spacing: 16px;
+                        alignment: center;
+                        Image { source: @image-url("icons/qt/disc-2-line.svg"); width: 64px; height: 64px; }
+                        VerticalLayout {
+                            spacing: 4px;
+                            alignment: center;
+                            Text { text: "LumineSX2"; color: #D0BCFF; font-size: 26px; font-weight: 700; }
+                            Text { text: root.version-text; color: #938F99; font-size: 14px; }
+                        }
+                    }
+                }
+
+                Rectangle {
+                    background: #1D1B20; border-radius: 12px;
+                    VerticalLayout { spacing: 6px; padding: 16px; alignment: start;
+                        Text { text: "Versi PCSX2 Core"; color: #D0BCFF; font-size: 13px; font-weight: 600; }
+                        Text { text: root.pcsx2-version; color: #E6E0E9; font-size: 14px; }
+                        Text { text: "Berdasarkan PCSX2 (GPL-3.0) - emulator PS2 open-source."; color: #938F99; font-size: 12px; wrap: word-wrap; }
+                    }
+                }
+
+                Rectangle {
+                    background: #1D1B20; border-radius: 12px;
+                    VerticalLayout { spacing: 8px; padding: 16px; alignment: start;
+                        Text { text: "Tautan"; color: #D0BCFF; font-size: 13px; font-weight: 600; }
+                        for link in root.links : TouchArea {
+                            clicked => { root.open-url(link.url); }
+                            Text {
+                                text: link.label;
+                                color: #B7C4FF;
+                                font-size: 14px;
+                                font-weight: 500;
+                            }
+                        }
+                    }
+                }
+
+                Rectangle {
+                    background: #1D1B20; border-radius: 12px;
+                    VerticalLayout { spacing: 6px; padding: 16px; alignment: start;
+                        Text { text: "Status Eksperimental"; color: #F2B8B5; font-size: 13px; font-weight: 600; }
+                        Text { text: "Windows-only. Android belum didukung - sedang rewrite core ke Rust (CDVD sudah 100% Rust)."; color: #938F99; font-size: 12px; wrap: word-wrap; }
+                    }
+                }
+            }
+        }
+    }
+}

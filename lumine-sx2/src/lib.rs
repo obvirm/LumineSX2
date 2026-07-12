@@ -92,6 +92,56 @@ impl App {
             // Load ALL other settings from PCSX2 ini into the SettingsState global
             // so the UI shows current values.
             crate::settings_bindings::load_settings(&window);
+            // Show PCSX2 core version in the About view.
+            window.set_pcsx2_version(slint::SharedString::from(&Pcsx2Api::get_version_string()));
+        }
+
+        // Open external URL (About links). On Windows use shell; otherwise no-op.
+        window.on_open_external_url({
+            move |url| {
+                let url = url.to_string();
+                #[cfg(target_os = "windows")]
+                {
+                    let _ = std::process::Command::new("cmd")
+                        .args(["/c", "start", "", &url])
+                        .spawn();
+                }
+                #[cfg(not(target_os = "windows"))]
+                {
+                    let _ = url;
+                }
+            }
+        });
+
+        // Clear the in-memory log buffer (Log viewer).
+        {
+            let w = window.as_weak();
+            window.on_clear_log(move || {
+                crate::pcsx2_capi::clear_log_buffer();
+                if let Some(win) = w.upgrade() {
+                    win.set_log_lines(slint::ModelRc::from(std::rc::Rc::new(
+                        slint::VecModel::<slint::SharedString>::default(),
+                    )));
+                }
+            });
+        }
+
+        // Periodically push the core log ring buffer into the Slint Log viewer.
+        #[cfg(feature = "pcsx2-core")]
+        {
+            let log_weak = window.as_weak();
+            std::thread::spawn(move || loop {
+                if let Some(win) = log_weak.upgrade() {
+                    let lines: Vec<slint::SharedString> = crate::pcsx2_capi::get_log_lines()
+                        .into_iter()
+                        .map(|e| slint::SharedString::from(format!("[{}] {}", e.level, e.message)))
+                        .collect();
+                    win.set_log_lines(slint::ModelRc::from(std::rc::Rc::new(
+                        slint::VecModel::from(lines),
+                    )));
+                }
+                std::thread::sleep(std::time::Duration::from_millis(500));
+            });
         }
 
         // Browse BIOS folder (directory picker) — saves to settings

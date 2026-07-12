@@ -93,6 +93,10 @@ extern "C" {
     fn pcsx2_frame_data() -> *const u8;
     fn pcsx2_frame_size() -> c_int;
     fn pcsx2_frame_consumed();
+
+    // Log streaming + version
+    fn pcsx2_register_log_callback(on_log: *const u8);
+    fn pcsx2_get_version_string() -> *const c_char;
 }
 
 // ─── Default callback implementations ───
@@ -121,6 +125,45 @@ extern "C" fn cb_error(t: *const c_char, m: *const c_char) {
 }
 extern "C" fn cb_info(_: *const c_char, _: *const c_char) {}
 extern "C" fn cb_frame(_: *const u8, _: c_int, _: c_int, _: c_int) {}
+
+// ─── Log ring buffer (shared between core log sink and Slint viewer) ───
+#[derive(Clone)]
+pub struct LogEntry {
+    pub level: i32,
+    pub color: i32,
+    pub message: String,
+}
+
+static LOG_BUFFER: Mutex<Vec<LogEntry>> = Mutex::new(Vec::new());
+const MAX_LOG_LINES: usize = 2000;
+
+extern "C" fn cb_log(level: c_int, color: c_int, message: *const c_char) {
+    let msg = unsafe {
+        if message.is_null() {
+            String::new()
+        } else {
+            CStr::from_ptr(message).to_string_lossy().into_owned()
+        }
+    };
+    if let Ok(mut buf) = LOG_BUFFER.lock() {
+        buf.push(LogEntry { level, color, message: msg });
+        if buf.len() > MAX_LOG_LINES {
+            let drop = buf.len() - MAX_LOG_LINES;
+            buf.drain(0..drop);
+        }
+    }
+}
+
+pub fn get_log_lines() -> Vec<LogEntry> {
+    LOG_BUFFER.lock().map(|b| b.clone()).unwrap_or_default()
+}
+
+/// Drains the in-memory log buffer (used by the Log viewer "Clear" button).
+pub fn clear_log_buffer() {
+    if let Ok(mut buf) = LOG_BUFFER.lock() {
+        buf.clear();
+    }
+}
 
 // ─── Safe Rust API ───
 pub struct Pcsx2Api;
@@ -309,6 +352,21 @@ impl Pcsx2Api {
     pub fn frame_size() -> usize { unsafe { pcsx2_frame_size() as usize } }
     pub fn frame_consumed() { unsafe { pcsx2_frame_consumed() } }
 
+    pub fn register_log_callback() {
+        unsafe { pcsx2_register_log_callback(cb_log as *const u8); }
+    }
+
+    pub fn get_version_string() -> String {
+        unsafe {
+            let p = pcsx2_get_version_string();
+            if p.is_null() {
+                String::new()
+            } else {
+                CStr::from_ptr(p).to_string_lossy().into_owned()
+            }
+        }
+    }
+
     /// Get frame as BGRA pixel slice. Returns (width, height, data).
     pub fn get_frame() -> Option<(i32, i32, Vec<u8>)> {
         if !Self::frame_ready() { return None; }
@@ -338,6 +396,8 @@ impl Pcsx2Api {
                 cb_info as *const u8,
                 cb_frame as *const u8,
             );
+            // Also register the core log sink so the Slint Log viewer can show it.
+            pcsx2_register_log_callback(cb_log as *const u8);
         }
     }
 }

@@ -152,3 +152,5 @@ launch_err.txt
 launch_out.txt
 ptest_err.txt
 ptest_out.txt
+capi_build.log
+capi_build.err

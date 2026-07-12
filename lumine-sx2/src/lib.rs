@@ -490,54 +490,14 @@ impl App {
                 Pcsx2Api::commit_settings();
                 // Boot with empty filename — PCSX2 reads BIOS from settings
                 // Must run on fresh thread (Slint thread has COM initialized with different mode)
-                std::thread::spawn(move || {
-                    use crate::pcsx2_capi::PCSX2_VMState;
-                    if Pcsx2Api::boot("", fast_boot) {
-                        eprintln!("[MAIN] BIOS boot started (worker thread)");
-                        loop {
-                            match Pcsx2Api::get_state() {
-                                PCSX2_VMState::Running => Pcsx2Api::execute(),
-                                PCSX2_VMState::Paused => std::thread::sleep(std::time::Duration::from_millis(16)),
-                                _ => break,
-                            }
-                        }
-                    } else {
-                        eprintln!("[MAIN] BIOS boot FAILED");
-                    }
-                });
-
-                // Start frame polling thread (updates Slint framebuffer 60fps)
-                let weak_for_frame = window_weak.clone();
-                std::thread::spawn(move || {
-                    use crate::pcsx2_capi::PCSX2_VMState;
-                    loop {
-                        // Check if VM is still running
-                        let state = Pcsx2Api::get_state();
-                        if state != PCSX2_VMState::Running && state != PCSX2_VMState::Paused {
-                            break;
-                        }
-                        // Poll frame
-                        if let Some((w, h, data)) = Pcsx2Api::get_frame() {
-                            let w2 = weak_for_frame.clone();
-                            let _ = slint::invoke_from_event_loop(move || {
-                                if let Some(win) = w2.upgrade() {
-                                    let mut buffer = slint::SharedPixelBuffer::<slint::Rgba8Pixel>::new(w as u32, h as u32);
-                                    let pixels = buffer.make_mut_slice();
-                                    for (i, chunk) in data.chunks(4).enumerate() {
-                                        if i < pixels.len() && chunk.len() >= 4 {
-                                            pixels[i] = slint::Rgba8Pixel::new(chunk[0], chunk[1], chunk[2], chunk[3]);
-                                        }
-                                    }
-                                    win.set_framebuffer(slint::Image::from_rgba8(buffer));
-                                }
-                            });
-                        }
-                        std::thread::sleep(std::time::Duration::from_millis(16));
-                    }
-                    eprintln!("[FRAME] Frame polling thread exited");
-                });
-                win.set_is_playing(true);
-                win.set_status_message("Starting BIOS...".into());
+                if Pcsx2Api::boot("", fast_boot) {
+                    eprintln!("[MAIN] BIOS boot started");
+                    spawn_emulation_threads(window_weak.clone());
+                    win.set_is_playing(true);
+                    win.set_status_message("Starting BIOS...".into());
+                } else {
+                    eprintln!("[MAIN] BIOS boot FAILED");
+                }
             }
         });
         
@@ -549,24 +509,16 @@ impl App {
                 // Get selected game from list
                 let games = win.get_game_list();
                 let selected = win.get_selected_game();
-                if selected >= 0 && (selected as usize) < games.row_count() {
-                    if let Some(game) = games.row_data(selected as usize) {
-                        let path = game.path.to_string();
-                        if !path.is_empty() {
-                            // Save fast boot settings before boot
-                            let fast_boot = win.get_fast_boot();
-                            Pcsx2Api::set_bool_setting("EmuCore", "EnableFastBoot", fast_boot);
-                            Pcsx2Api::commit_settings();
-                            // Boot game
-                            if Pcsx2Api::boot(&path, win.get_fast_boot()) {
-                                win.set_is_playing(true);
-                                win.set_status_message("Booting game...".into());
-                            } else {
-                                win.set_status_message("Failed to boot game".into());
-                            }
-                        }
-                    }
+                if selected < 0 || (selected as usize) >= games.row_count() {
+                    return;
                 }
+                let Some(game) = games.row_data(selected as usize) else { return };
+                let path = game.path.to_string();
+                if path.is_empty() {
+                    return;
+                }
+                let fast_boot = win.get_fast_boot();
+                launch_game(window_weak.clone(), path, fast_boot);
             }
         });
         
@@ -661,7 +613,7 @@ impl App {
                             let p = entry.path();
                             if let Some(ext) = p.extension() {
                                 let ext_lower = ext.to_string_lossy().to_lowercase();
-                                if matches!(ext_lower.as_str(), "elf" | "iso" | "bin") {
+                                if matches!(ext_lower.as_str(), "elf" | "iso" | "bin" | "chd" | "cso" | "zso" | "gz") {
                                     let path_str = p.to_string_lossy().to_string();
                                     if !is_valid_ps2_game(&path_str) {
                                         continue;
@@ -779,6 +731,84 @@ impl App {
     pub fn run(&self) {
         self.window.run().unwrap();
     }
+}
+
+/// Boot a game from a path and start the emulation + frame threads.
+///
+/// This is exactly what the Slint `play-game` callback (game card click)
+/// triggers. It runs the PCSX2 `boot()` on a fresh worker thread (the Slint
+/// event thread has COM initialized in a mode that clashes with the core),
+/// then spawns the execution loop and frame-poller.
+fn launch_game(window_weak: slint::Weak<MainWindow>, path: String, fast_boot: bool) {
+    std::thread::spawn(move || {
+        Pcsx2Api::set_bool_setting("EmuCore", "EnableFastBoot", fast_boot);
+        Pcsx2Api::commit_settings();
+        if Pcsx2Api::boot(&path, fast_boot) {
+            eprintln!("[MAIN] Game boot started: {}", path);
+            spawn_emulation_threads(window_weak.clone());
+            if let Some(win) = window_weak.upgrade() {
+                win.set_is_playing(true);
+                win.set_status_message("Booting game...".into());
+            }
+        } else if let Some(win) = window_weak.upgrade() {
+            win.set_status_message("Failed to boot game".into());
+        }
+    });
+}
+
+/// Spawn the emulation execution loop + frame-polling thread.
+///
+/// The execution loop pumps the EE/IOP (`Pcsx2Api::execute()`) every tick; the
+/// frame thread copies the captured GS frame into the Slint `framebuffer`
+/// image. Both are required for a game to actually run and render — previously
+/// only the BIOS path spawned these, so clicking a game started the VM but it
+/// never advanced.
+fn spawn_emulation_threads(window_weak: slint::Weak<MainWindow>) {
+    // Execution loop
+    std::thread::spawn(move || {
+        use crate::pcsx2_capi::PCSX2_VMState;
+        loop {
+            match Pcsx2Api::get_state() {
+                PCSX2_VMState::Running => Pcsx2Api::execute(),
+                PCSX2_VMState::Paused => {
+                    Pcsx2Api::pump_messages();
+                    std::thread::sleep(std::time::Duration::from_millis(16));
+                }
+                _ => break,
+            }
+        }
+        eprintln!("[EMU] Execution loop exited");
+    });
+
+    // Frame polling thread (updates Slint framebuffer ~60fps)
+    std::thread::spawn(move || {
+        use crate::pcsx2_capi::PCSX2_VMState;
+        loop {
+            let state = Pcsx2Api::get_state();
+            if state != PCSX2_VMState::Running && state != PCSX2_VMState::Paused {
+                break;
+            }
+            if let Some((w, h, data)) = Pcsx2Api::get_frame() {
+                let w2 = window_weak.clone();
+                let _ = slint::invoke_from_event_loop(move || {
+                    if let Some(win) = w2.upgrade() {
+                        let mut buffer =
+                            slint::SharedPixelBuffer::<slint::Rgba8Pixel>::new(w as u32, h as u32);
+                        let pixels = buffer.make_mut_slice();
+                        for (i, chunk) in data.chunks(4).enumerate() {
+                            if i < pixels.len() && chunk.len() >= 4 {
+                                // GS frame data is BGRA; Slint expects RGBA.
+                                pixels[i] = slint::Rgba8Pixel::new(chunk[2], chunk[1], chunk[0], chunk[3]);
+                            }
+                        }
+                        win.set_framebuffer(slint::Image::from_rgba8(buffer));
+                    }
+                });
+            }
+            std::thread::sleep(std::time::Duration::from_millis(16));
+        }
+        eprintln!("[FRAME] Frame polling thread exited");
+    });
 }
 
 fn is_valid_ps2_game(path: &str) -> bool {

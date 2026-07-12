@@ -4,18 +4,15 @@ version = "0.1.0"
 edition = "2021"
 
 [lib]
-crate-type = ["staticlib", "cdylib"]
+crate-type = ["staticlib", "cdylib", "rlib"]
 
 [dependencies]
-# CHD format support
+# CHD format support (pure Rust)
 chd = "0.2"
 
 # Compression
-flate2 = "1.0"
-lzma-rs = "0.3"
-
-# ISO9660 filesystem
-# cdfs = "0.1"  # or custom implementation
+flate2 = "1.0"      # zlib/deflate (CSO)
+lz4_flex = "0.11"   # lz4 (ZSO)
 
 # Utilities
 thiserror = "1.0"

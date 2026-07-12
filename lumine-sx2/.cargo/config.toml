@@ -1,2 +1,14 @@
 [build]
-rustflags = ["-C", "target-feature=+sse4.1"]
+rustflags = ["-C", "target-feature=+sse4.1", "-C", "link-arg=/STACK:8388608"]
+
+# Use the default MSVC link.exe. The 0xc0000409 crash on the full link is
+# intermittent (a link.exe buffer bug under heavy memory pressure / long
+# command lines). The build that produced a working lumine-sx2.exe used exactly
+# this config plus /FORCE:MULTIPLE (injected by build.rs) and succeeded on the
+# first try. /FORCE:MULTIPLE is required because the `Host::` interface is
+# provided by both pcsx2_capi.lib (our Slint/headless host) and the GUI
+# Host.cpp object in PCSX2.lib; we want the capi version.
+#
+# NOTE: `linker = "rust-lld"` was tried and REJECTED — rustc passes `-flavor`
+# flags that the single-flavor rust-lld.exe does not accept (errors: "-flavor
+# link", "could not open link"), so the default MSVC linker is used.

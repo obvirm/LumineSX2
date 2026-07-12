@@ -1,11 +1,6 @@
 // SPDX-FileCopyrightText: 2002-2026 PCSX2 Dev Team
 // SPDX-License-Identifier: GPL-3.0+
 
-#include "CDVD/BlockdumpFileReader.h"
-#include "CDVD/ChdFileReader.h"
-#include "CDVD/CsoFileReader.h"
-#include "CDVD/FlatFileReader.h"
-#include "CDVD/GzippedFileReader.h"
 #include "CDVD/RustFileReader.h"
 #include "CDVD/IsoFileFormats.h"
 #include "Config.h"
@@ -40,22 +35,10 @@ static const char* nameFromType(int type)
 
 static std::unique_ptr<ThreadedFileReader> GetFileReader(const std::string& path)
 {
-	const std::string_view extension = Path::GetExtension(path);
-
-	if (StringUtil::compareNoCase(extension, "chd"))
-		return std::make_unique<ChdFileReader>();
-
-	if (StringUtil::compareNoCase(extension, "cso") || StringUtil::compareNoCase(extension, "zso"))
-		return std::make_unique<CsoFileReader>();
-
-	if (StringUtil::compareNoCase(extension, "gz"))
-		return std::make_unique<GzippedFileReader>();
-
-	if (StringUtil::compareNoCase(extension, "dump"))
-		return std::make_unique<BlockdumpFileReader>();
-
-	// Rust-based reader for ISO/raw files (replaces FlatFileReader)
-	// Falls back to FlatFileReader if Rust FFI fails to load
+	// All disc image formats (ISO/CHD/CSO/ZSO/.gz/dump) are read by the
+	// pure-Rust CDVD reader (pcsx2_cdvd FFI). The Rust reader selects the
+	// correct backend based on file extension and handles decompression
+	// (gzip) / parsing natively.
 	return CreateRustFileReader();
 }
 
@@ -199,6 +182,7 @@ bool InputIsoFile::Open(std::string srcfile, Error* error)
 	m_reader = GetFileReader(m_filename);
 	if (!m_reader->Open(m_filename, error))
 	{
+		// All image formats now go through the Rust reader; no C++ fallback remains.
 		m_reader.reset();
 		return false;
 	}

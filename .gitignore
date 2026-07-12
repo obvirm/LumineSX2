@@ -128,3 +128,11 @@ MEMD.md
 **/target/
 rust/**/target/
 .mcp.json
+
+# LumineSX2 runtime/debug artifacts
+*.dmp
+*.pid
+*.tmp
+covers/
+**/covers/*.jpg
+lumine_cdvd_*.tmp

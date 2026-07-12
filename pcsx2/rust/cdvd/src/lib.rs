@@ -13,12 +13,16 @@ mod iso_reader;
 mod chd_reader;
 mod cso_reader;
 mod blockdump_reader;
+mod isofs;
+mod gz_reader;
 
 pub use reader::{CDVDReader, CDVDError};
 pub use iso_reader::IsoReader;
 pub use chd_reader::ChdReader;
 pub use cso_reader::CsoReader;
 pub use blockdump_reader::BlockdumpReader;
+pub use isofs::IsoFS;
+pub use gz_reader::GzReader;
 
 use std::ffi::{CStr, c_char, c_int};
 use std::ptr;
@@ -48,8 +52,11 @@ pub unsafe extern "C" fn pcsx2_cdvd_open(path: *const c_char) -> *mut CDVDReader
         Err(_) => return ptr::null_mut(),
     };
 
-    // Auto-detect format based on extension
-    let reader: Box<dyn CDVDReader> = if path_str.ends_with(".iso") || path_str.ends_with(".ISO") {
+    // `Box<dyn CDVDReader>` is a 16-byte fat pointer. To expose a thin (8-byte)
+    // opaque handle to C++, we wrap it once more: `Box<Box<dyn CDVDReader>>`.
+    // `Box::into_raw` on that yields a thin `*mut Box<dyn CDVDReader>` which is
+    // safe to cast to `*mut CDVDReaderHandle`.
+    let inner: Box<dyn CDVDReader> = if path_str.ends_with(".iso") || path_str.ends_with(".ISO") {
         match IsoReader::open(path_str) {
             Ok(r) => Box::new(r),
             Err(_) => return ptr::null_mut(),
@@ -64,6 +71,11 @@ pub unsafe extern "C" fn pcsx2_cdvd_open(path: *const c_char) -> *mut CDVDReader
             Ok(r) => Box::new(r),
             Err(_) => return ptr::null_mut(),
         }
+    } else if path_str.ends_with(".gz") || path_str.ends_with(".GZ") {
+        match GzReader::open(path_str) {
+            Ok(r) => Box::new(r),
+            Err(_) => return ptr::null_mut(),
+        }
     } else {
         // Default to ISO
         match IsoReader::open(path_str) {
@@ -72,7 +84,8 @@ pub unsafe extern "C" fn pcsx2_cdvd_open(path: *const c_char) -> *mut CDVDReader
         }
     };
 
-    Box::into_raw(reader) as *mut CDVDReaderHandle
+    let wrapper: Box<Box<dyn CDVDReader>> = Box::new(inner);
+    Box::into_raw(wrapper) as *mut CDVDReaderHandle
 }
 
 /// Close and free a CDVD reader.
@@ -82,6 +95,8 @@ pub unsafe extern "C" fn pcsx2_cdvd_open(path: *const c_char) -> *mut CDVDReader
 #[no_mangle]
 pub unsafe extern "C" fn pcsx2_cdvd_close(handle: *mut CDVDReaderHandle) {
     if !handle.is_null() {
+        // `Box::into_raw(Box::new(reader))` returns `*mut Box<dyn CDVDReader>` (thin ptr),
+        // which we transparently store as the opaque handle.
         let _ = Box::from_raw(handle as *mut Box<dyn CDVDReader>);
     }
 }

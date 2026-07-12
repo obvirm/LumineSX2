@@ -1,12 +1,10 @@
 # All flags, libraries, etc, that are shared between PCSX2 compilation files
 add_library(PCSX2_FLAGS INTERFACE)
 
-if(DISABLE_ADVANCE_SIMD OR LTO_PCSX2_CORE)
-	# Fixes issues with some compiler + linker combinations
-	add_library(PCSX2 OBJECT)
-else()
-	add_library(PCSX2)
-endif()
+# LumineSX2: force a static PCSX2 library so pcsx2.lib is produced and can be
+# linked by the Rust FFI host. (Upstream uses OBJECT when DISABLE_ADVANCE_SIMD
+# or LTO_PCSX2_CORE are set, but we need the .lib artifact.)
+add_library(PCSX2)
 target_link_libraries(PCSX2 PRIVATE PCSX2_FLAGS)
 
 # Rust CDVD library (FFI bridge to pcsx2_cdvd crate)
@@ -210,38 +208,35 @@ set(pcsx2Headers
 	VUops.h)
 
 # CDVD sources
+# NOTE: The on-disk image-format readers (ISO/CHD/CSO/ZSO/.gz/blockdump) are
+# now 100% pure Rust in pcsx2/rust/cdvd. They are consumed via the FFI shim
+# RustFileReader.cpp. The C++ files below are the CDVD *emulation* layer (core
+# command processing, PS1, threading, ISO9660 metadata used by disc detection,
+# physical-drive IOCTL, hashing, ISO writing) that is intentionally kept in C++
+# for now (see analysis/compare_cdvd_cpp_vs_rust.md).
 set(pcsx2CDVDSources
-	CDVD/BlockdumpFileReader.cpp
 	CDVD/Ps1CD.cpp
 	CDVD/CDVDcommon.cpp
 	CDVD/CDVD.cpp
 	CDVD/CDVDdiscReader.cpp
 	CDVD/CDVDisoReader.cpp
 	CDVD/CDVDdiscThread.cpp
-	CDVD/FlatFileReader.cpp
 	CDVD/InputIsoFile.cpp
 	CDVD/IsoHasher.cpp
 	CDVD/IsoReader.cpp
 	CDVD/OutputIsoFile.cpp
-	CDVD/ChdFileReader.cpp
-	CDVD/CsoFileReader.cpp
-	CDVD/GzippedFileReader.cpp
 	CDVD/ThreadedFileReader.cpp
 	CDVD/RustFileReader.cpp
 	)
 
 # CDVD headers
 set(pcsx2CDVDHeaders
-	CDVD/BlockdumpFileReader.h
 	CDVD/Ps1CD.h
 	CDVD/CDVDcommon.h
 	CDVD/CDVD.h
 	CDVD/CDVD_internal.h
 	CDVD/CDVDdiscReader.h
-	CDVD/ChdFileReader.h
-	CDVD/CsoFileReader.h
 	CDVD/FlatFileReader.h
-	CDVD/GzippedFileReader.h
 	CDVD/ThreadedFileReader.h
 	CDVD/RustFileReader.h
 	CDVD/CDVD_Rust.h

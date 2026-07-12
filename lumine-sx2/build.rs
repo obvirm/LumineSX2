@@ -14,6 +14,10 @@ fn main() {
         println!("cargo:rustc-link-lib=static=PCSX2");
         println!("cargo:rustc-link-lib=static=common");
         
+        // Rust CDVD static lib (pure Rust CHD/CSO/ISO reader)
+        println!("cargo:rustc-link-search=native=E:/project/pcsx2/pcsx2/rust/cdvd/target/release");
+        println!("cargo:rustc-link-lib=static=pcsx2_cdvd");
+        
         // GS ISA variants (required)
         println!("cargo:rustc-link-search=native={}/pcsx2", build);
         for gs in &["GS-avx2", "GS-avx", "GS-sse4"] {
@@ -74,7 +78,13 @@ fn main() {
         
         println!("cargo:rerun-if-changed={}/capi/pcsx2_capi.lib", build);
         
-        // Increase stack size (PCSX2 global constructors need more)
+        // Increase default stack size. /FORCE:MULTIPLE is required here: the
+        // `Host::` interface is provided by BOTH pcsx2_capi.lib (our headless/
+        // Slint host implementation) and the GUI `Host.cpp` object inside
+        // PCSX2.lib. We want the capi version; /FORCE:MULTIPLE lets the linker
+        // pick it. We pair this with the LLVM lld-link (see .cargo/config.toml)
+        // because MSVC link.exe crashes with STATUS_STACK_BUFFER_OVERRUN
+        // (0xc0000409) on this very large link line.
         println!("cargo:rustc-link-arg=/STACK:8388608");
         println!("cargo:rustc-link-arg=/FORCE:MULTIPLE");
     }

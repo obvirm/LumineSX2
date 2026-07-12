@@ -31,19 +31,20 @@ impl IsoReader {
 impl CDVDReader for IsoReader {
     fn read_sectors(&mut self, lsn: u32, buffer: &mut [u8]) -> Result<usize> {
         let offset = lsn as u64 * SECTOR_SIZE as u64;
-        
         if offset >= self.size {
-            return Err(CDVDError::InvalidFormat(
-                format!("LSN {} out of bounds (size={})", lsn, self.size)
-            ));
+            // C++ FlatFileReader membiarkan baca di luar batas (return 0 bytes).
+            // Kita ikut behavior itu: kembalikan 0 bukan error, biar caller fallback.
+            return Ok(0);
         }
-        
+
         self.file.seek(SeekFrom::Start(offset))?;
-        
-        let bytes_to_read = buffer.len().min((self.size - offset) as usize);
-        self.file.read_exact(&mut buffer[..bytes_to_read])?;
-        
-        Ok(bytes_to_read)
+
+        // Baca sebanyak yang tersedia (clamp ke sisa size), jangan error kalau
+        // buffer melebihi ujung file.
+        let available = (self.size - offset) as usize;
+        let to_read = buffer.len().min(available);
+        let bytes_read = self.file.read(&mut buffer[..to_read])?;
+        Ok(bytes_read)
     }
     
     fn get_size(&self) -> u64 {

@@ -147,3 +147,8 @@ settings_map.json
 lumine-sx2/build_dbg.*
 lumine-sx2/build_ui.*
 analysis/port_qt_ui_to_slint.md
+commit_msg.txt
+launch_err.txt
+launch_out.txt
+ptest_err.txt
+ptest_out.txt

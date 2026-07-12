@@ -131,3 +131,29 @@
 - [x] Scan folder (iso/cso/chd/gz/bin/elf) + favorite + region filter
 - [ ] Cover download (SKIP - online, Android offline)
 - [ ] Drag-drop, context menu (rename/delete/properties)
+
+---
+
+## UI Porting Qt -> Slint (audit )
+
+### Gap 1: Settings wiring — DONE
+274 field ter-wiring ke core (paritas 1:1 Qt). Lihat commit sebelumnya.
+
+### Gap 2: Dialogs — DONE (About + Log viewer)
+-  (page 16): versi LumineSX2 + versi PCSX2 core (
+  dari +) + link eksternal (buka browser via ).
+-  (page 17): stream log core ke UI. Core log di-forward lewat
+   ->  -> ring buffer Rust (, 2000 baris)
+  -> dipoll 500ms ke . Tombol Bersihkan -> .
+- C++ bridge:  +  di
+  , di-build ulang jadi .
+- Test: debug build OK, exe jalan,  PASS (no regression).
+
+### Gap 2 lanjutan (BELUM):
+- [ ] Hotkey settings () — nyambung ke InputManager.
+- [ ] Memory card create/convert dialogs — nyambung ke .
+
+### Gap 3: Game list parity
+- [x] Scan folder (iso/cso/chd/gz/bin/elf) + favorite + region filter
+- [ ] Cover download (SKIP - online, Android offline)
+- [ ] Drag-drop, context menu (rename/delete/properties)

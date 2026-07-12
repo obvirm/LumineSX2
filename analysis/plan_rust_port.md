@@ -105,3 +105,29 @@
 2. **FFI bridge selama transisi**: Panggil C++ yang belum di-port via `extern "C"`
 3. **Test tiap fase**: Game harus tetap jalan setelah tiap fase
 4. **Prioritas render path**: Vulkan HW renderer dulu, SW renderer skip
+
+---
+
+## UI Porting Qt -> Slint (audit )
+
+### Gap 1: Settings wiring (DONE 2026-07-13)
+- **Sebelum**: 7 key aja yg tersimpan (renderer/fastboot/audio backend dll). Sisanya UI doang.
+- **Sesudah**: 274 field settings di 15 halaman settings di-bind two-way ke 
+  properties, lalu  tulis/ baca ke PCSX2 ini (paritas 1:1 dgn Qt).
+- Pola:  parse  -> tambah prop + two-way binding
+  di situs instansiasi (Slint global tdk diekspor oleh slint-build 1.16, jadi pakai
+  MainWindow props + ).
+- Test:  PASS (boot + emulation loop + settings round-trip).
+- Windows-only di-skip (auto-updater, setup wizard, VC runtime, online cover download)
+  karena target Android (Redmi).
+
+### Gap 2: Dialogs
+- [ ] About window (INFO:  di  - versi, kontributor)
+- [ ] Log viewer ( - 11 channel)
+- [ ] Hotkey settings ()
+- [ ] Memory card create/convert dialogs
+
+### Gap 3: Game list parity
+- [x] Scan folder (iso/cso/chd/gz/bin/elf) + favorite + region filter
+- [ ] Cover download (SKIP - online, Android offline)
+- [ ] Drag-drop, context menu (rename/delete/properties)

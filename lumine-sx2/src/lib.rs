@@ -4,6 +4,7 @@ pub mod pcsx2_capi;
 pub mod host;
 pub mod debug_backend;
 pub mod debug_controller;
+pub mod settings_bindings;
 use pcsx2_capi::{Pcsx2Api, PCSX2_VMState};
 use debug_controller::DebugController;
 
@@ -88,6 +89,9 @@ impl App {
             let fast_fwd = Pcsx2Api::get_bool_setting("EmuCore", "EnableFastBootFastForward", false);
             window.set_fast_boot(fast_boot);
             window.set_fast_forward_boot(fast_fwd);
+            // Load ALL other settings from PCSX2 ini into the SettingsState global
+            // so the UI shows current values.
+            crate::settings_bindings::load_settings(&window);
         }
 
         // Browse BIOS folder (directory picker) — saves to settings
@@ -488,6 +492,8 @@ impl App {
                 Pcsx2Api::set_bool_setting("EmuCore", "EnableFastBoot", fast_boot);
                 Pcsx2Api::set_bool_setting("EmuCore", "EnableFastBootFastForward", fast_fwd);
                 Pcsx2Api::commit_settings();
+                // Persist ALL UI settings to PCSX2 ini (Graphics/Audio/Emulation/etc)
+                crate::settings_bindings::apply_settings(&win);
                 // Boot with empty filename — PCSX2 reads BIOS from settings
                 // Must run on fresh thread (Slint thread has COM initialized with different mode)
                 if Pcsx2Api::boot("", fast_boot) {
@@ -518,6 +524,9 @@ impl App {
                     return;
                 }
                 let fast_boot = win.get_fast_boot();
+                // Persist ALL UI settings to PCSX2 ini (runs on the UI thread
+                // because Slint properties are not safe to touch elsewhere).
+                crate::settings_bindings::apply_settings(&win);
                 launch_game(window_weak.clone(), path, fast_boot);
             }
         });
@@ -743,7 +752,12 @@ fn launch_game(window_weak: slint::Weak<MainWindow>, path: String, fast_boot: bo
     std::thread::spawn(move || {
         Pcsx2Api::set_bool_setting("EmuCore", "EnableFastBoot", fast_boot);
         Pcsx2Api::commit_settings();
-        if Pcsx2Api::boot(&path, fast_boot) {
+        // NOTE: settings are applied from the UI thread (in the play-game /
+        // boot-bios callbacks) before launch_game runs. Slint properties are
+        // not safe to read from this worker thread, so we do NOT call
+        // apply_settings() here.
+        let ok = Pcsx2Api::boot(&path, fast_boot);
+        if ok {
             eprintln!("[MAIN] Game boot started: {}", path);
             spawn_emulation_threads(window_weak.clone());
             if let Some(win) = window_weak.upgrade() {

@@ -39,15 +39,23 @@
 | **Png/Lzma/Zstd** | `GS/GSPng.cpp`, `GSLzma.cpp` | `image`, `xz2`, `zstd` | 3 |
 
 ### Fase 1D: Disc & CDVD
-| Modul | File C++ | Rust Crate | Prioritas |
-|-------|----------|-----------|-----------|
-| **CDVD Base** | `CDVD/CDVD.cpp` + `CDVDcommon.cpp` | custom | 1 |
-| **ISO Reader** | `CDVD/IsoReader.cpp`, `FlatFileReader.cpp` | custom | 1 |
-| **ChdFileReader** | `CDVD/ChdFileReader.cpp` | `chd` crate | 2 |
-| **CsoFileReader** | `CDVD/CsoFileReader.cpp` | `flate2` + `lz4_flex` | 2 |
-| **ThreadedFileReader** | `CDVD/ThreadedFileReader.cpp` | `std::thread` | 2 |
-| **Game Database** | `GameDatabase.cpp` | `serde_yaml` | 2 |
-| **Game List** | `GameList.cpp` | custom | 2 |
+| Modul | File C++ | Rust Crate | Prioritas | Status |
+|-------|----------|-----------|-----------|--------|
+| **CDVD Base** | `CDVD/CDVD.cpp` + `CDVDcommon.cpp` | custom | 1 | 🔲 belum (CDVD.cpp masih C++) |
+| **ISO Reader** | `CDVD/IsoReader.cpp`, `FlatFileReader.cpp` | custom (`isofs.rs` + `iso_reader.rs`) | 1 | ✅ **SELESAI** (Rust 100%) |
+| **ChdFileReader** | `CDVD/ChdFileReader.cpp` | `chd` crate | 2 | ✅ **SELESAI** (`chd_reader.rs`) |
+| **CsoFileReader** | `CDVD/CsoFileReader.cpp` | `flate2` + `lz4_flex` | 2 | ✅ **SELESAI** (`cso_reader.rs`) |
+| **GzippedFileReader** | `CDVD/GzippedFileReader.cpp` | `flate2` | 2 | ✅ **SELESAI** (`gz_reader.rs`) |
+| **BlockdumpFileReader** | `CDVD/BlockdumpFileReader.cpp` | custom | 2 | ✅ **SELESAI** (`blockdump_reader.rs`) |
+| **ThreadedFileReader** | `CDVD/ThreadedFileReader.cpp` | `std::thread` | 2 | 🔲 belum (tetap C++, by design) |
+| **Game Database** | `GameDatabase.cpp` | `serde_yaml` | 2 | 🔲 |
+| **Game List** | `GameList.cpp` | custom | 2 | 🔲 (UI scan ada di lib.rs) |
+
+> **CDVD reader layer = 100% Rust** (commit `40f740a8f`). Semua format
+> (.iso/.chd/.cso/.zso/.dump/.gz) dibuka via `CreateRustFileReader()` di
+> `InputIsoFile.cpp`. C++ reader asli sudah lepas dari build. Sisa C++ di
+> `pcsx2/CDVD/`: `CDVD.cpp` (disc control/command), `ThreadedFileReader`
+> (threading, sengaja tetap C++), `Ps1CD.cpp`, `CDVDdiscThread`, `IOCtlSrc`.
 
 ### Fase 1E: Audio
 | Modul | File C++ | Rust Crate | Prioritas |

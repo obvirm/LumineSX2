@@ -300,6 +300,265 @@ export component MainWindow inherits Window {
     in-out property <int> game-list-view: 0; // 0 = grid, 1 = list
     in-out property <string> region-filter: "All";
     in-out property <bool> show-quick-menu: false;
+
+    // === Auto-generated settings properties (bound two-way from settings views) ===
+    in-out property <bool> ra-enable-ra;
+    in-out property <bool> ra-hardcore;
+    in-out property <bool> ra-show-notif;
+    in-out property <bool> ra-sound-fx;
+    in-out property <bool> ra-leaderboard-notif;
+    in-out property <bool> ra-show-overlays;
+    in-out property <int> adv-ee-clamp;
+    in-out property <int> adv-ee-round;
+    in-out property <bool> adv-ee-recompiler;
+    in-out property <bool> adv-ee-cache;
+    in-out property <int> adv-ee-div-round;
+    in-out property <bool> adv-intc-spin;
+    in-out property <bool> adv-wait-loop;
+    in-out property <int> adv-fast-mem;
+    in-out property <bool> adv-pause-on-tlb;
+    in-out property <bool> adv-extended-ram;
+    in-out property <int> adv-vu0-clamp;
+    in-out property <int> adv-vu0-round;
+    in-out property <int> adv-vu1-clamp;
+    in-out property <int> adv-vu1-round;
+    in-out property <bool> adv-vu0-recompiler;
+    in-out property <bool> adv-vu1-recompiler;
+    in-out property <bool> adv-mvu-flag;
+    in-out property <bool> adv-instant-vu1;
+    in-out property <bool> adv-iop-recompiler;
+    in-out property <int> adv-compression-method;
+    in-out property <int> adv-compression-level;
+    in-out property <bool> adv-backup-savestates;
+    in-out property <bool> adv-host-fs;
+    in-out property <bool> adv-pine-enabled;
+    in-out property <int> adv-pine-slot;
+    in-out property <int> audio-backend;
+    in-out property <int> audio-driver-index;
+    in-out property <int> audio-device-index;
+    in-out property <float> audio-buffer-ms;
+    in-out property <float> audio-output-latency-ms;
+    in-out property <bool> audio-output-latency-minimal;
+    in-out property <int> audio-sync-mode;
+    in-out property <float> audio-standard-volume;
+    in-out property <float> audio-fast-forward-volume;
+    in-out property <bool> audio-muted;
+    in-out property <int> audio-expansion-mode;
+    in-out property <float> audio-expand-block-size;
+    in-out property <float> audio-expand-circular-wrap;
+    in-out property <float> audio-expand-shift;
+    in-out property <float> audio-expand-depth;
+    in-out property <float> audio-expand-focus;
+    in-out property <float> audio-expand-center-image;
+    in-out property <float> audio-expand-front-separation;
+    in-out property <float> audio-expand-rear-separation;
+    in-out property <float> audio-expand-low-cutoff;
+    in-out property <float> audio-expand-high-cutoff;
+    in-out property <float> audio-stretch-sequence-length;
+    in-out property <float> audio-stretch-seek-window;
+    in-out property <float> audio-stretch-overlap;
+    in-out property <bool> audio-stretch-quick-seek;
+    in-out property <bool> audio-stretch-aa-filter;
+    in-out property <string> cheats-filter;
+    in-out property <bool> controller-sdl-input;
+    in-out property <int> controller-port1-type;
+    in-out property <int> controller-port2-type;
+    in-out property <int> controller-usb1-device;
+    in-out property <int> controller-usb2-device;
+    in-out property <int> emu-speed-preset;
+    in-out property <bool> emu-frame-pacing;
+    in-out property <int> emu-vsync-index;
+    in-out property <int> emu-ntsc-mode;
+    in-out property <int> emu-pal-mode;
+    in-out property <bool> emu-real-time-clock;
+    in-out property <int> emu-locale-format;
+    in-out property <int> emu-normal-speed;
+    in-out property <int> emu-fast-speed;
+    in-out property <int> emu-slow-speed;
+    in-out property <int> emu-turbo-index;
+    in-out property <int> emu-slowmo-index;
+    in-out property <bool> emu-sync-to-host;
+    in-out property <bool> emu-vsync-for-timing;
+    in-out property <bool> emu-skip-duplicate-frames;
+    in-out property <int> emu-max-frame-latency;
+    in-out property <int> emu-ee-cycle-rate;
+    in-out property <int> emu-ee-cycle-skip;
+    in-out property <bool> emu-mtvu;
+    in-out property <bool> emu-thread-pinning;
+    in-out property <bool> emu-fast-cdvd;
+    in-out property <bool> emu-cdvd-precache;
+    in-out property <bool> emu-enable-cheats;
+    in-out property <bool> emu-apply-widescreen-patches;
+    in-out property <bool> emu-apply-no-interlace-patches;
+    in-out property <string> emu-rtc-year;
+    in-out property <string> emu-rtc-month;
+    in-out property <string> emu-rtc-day;
+    in-out property <string> emu-rtc-hour;
+    in-out property <string> emu-rtc-minute;
+    in-out property <string> emu-rtc-second;
+    in-out property <string> folders-saves-dir;
+    in-out property <string> folders-snapshots-dir;
+    in-out property <string> folders-logs-dir;
+    in-out property <string> folders-cheats-dir;
+    in-out property <string> folders-patches-dir;
+    in-out property <string> folders-textures-dir;
+    in-out property <string> folders-memcards-dir;
+    in-out property <bool> gf-fpu-mul-hack;
+    in-out property <bool> gf-fpu-full-mode;
+    in-out property <bool> gf-xgkick-hack;
+    in-out property <bool> gf-ee-timing-hack;
+    in-out property <bool> gf-skip-mpeg-hack;
+    in-out property <bool> gf-oph-flag-hack;
+    in-out property <bool> gf-blit-invalidate-hack;
+    in-out property <bool> gf-vU0-branch-hack;
+    in-out property <bool> gf-vu-add-sub-hack;
+    in-out property <bool> gf-vu-compare-hack;
+    in-out property <bool> gf-vu-max-hack;
+    in-out property <bool> gf-vu-min-hack;
+    in-out property <bool> gf-auto-flush-gs;
+    in-out property <bool> gf-conservative-framebuffer;
+    in-out property <bool> gf-texture-inside-rt;
+    in-out property <bool> gf-dma-busy-hack;
+    in-out property <bool> gf-gif-fifo-hack;
+    in-out property <bool> gf-goemon-tlb-hack;
+    in-out property <bool> gamelist-recursive-scan;
+    in-out property <int> graphics-resolution;
+    in-out property <int> graphics-aspect-ratio;
+    in-out property <int> graphics-renderer;
+    in-out property <int> graphics-adapter;
+    in-out property <int> graphics-tex-filter;
+    in-out property <int> graphics-trilinear;
+    in-out property <int> graphics-anisotropic;
+    in-out property <bool> graphics-auto-flush;
+    in-out property <bool> graphics-mipmap;
+    in-out property <int> graphics-sw-threads;
+    in-out property <bool> graphics-shade-boost;
+    in-out property <bool> graphics-preload-tex;
+    in-out property <bool> graphics-dump-tex;
+    in-out property <bool> graphics-load-replacements;
+    in-out property <int> graphics-accurate-blending;
+    in-out property <bool> graphics-gpu-palette-conv;
+    in-out property <bool> graphics-disable-vertex-cache;
+    in-out property <bool> graphics-disable-framebuffer-fetch;
+    in-out property <bool> graphics-edge-aa1;
+    in-out property <bool> graphics-merge-sprites-sw;
+    in-out property <int> graphics-tv-shader;
+    in-out property <bool> graphics-fxaa;
+    in-out property <bool> graphics-shader-cache;
+    in-out property <bool> graphics-dump-mipmaps;
+    in-out property <string> graphics-preload-tex-dir;
+    in-out property <bool> graphics-dump-fmv;
+    in-out property <int> graphics-fmv-aspect;
+    in-out property <bool> graphics-disable-readbacks;
+    in-out property <int> graphics-gs-dump-compression;
+    in-out property <bool> graphics-exclusive-fs;
+    in-out property <bool> graphics-override-tex-barriers;
+    in-out property <bool> graphics-debug-device;
+    in-out property <bool> graphics-debug-blend;
+    in-out property <bool> graphics-software-clut-render;
+    in-out property <int> graphics-cpu-sprite-render-size;
+    in-out property <int> graphics-cas-sharpen;
+    in-out property <float> graphics-cas-sharpness;
+    in-out property <bool> graphics-integer-scaling;
+    in-out property <bool> graphics-anti-blur;
+    in-out property <int> graphics-deinterlace;
+    in-out property <bool> graphics-hw-auto-fix;
+    in-out property <bool> graphics-texture-preloading;
+    in-out property <bool> graphics-half-pixel-offset;
+    in-out property <bool> graphics-round-sprite;
+    in-out property <bool> graphics-auto-flush-hw;
+    in-out property <bool> graphics-depth-readback;
+    in-out property <bool> graphics-cpu-framebuffer;
+    in-out property <bool> graphics-gpu-palette;
+    in-out property <bool> graphics-get-dc;
+    in-out property <bool> graphics-mipmap-hw;
+    in-out property <bool> graphics-trilinear-hw;
+    in-out property <bool> graphics-skip-draw;
+    in-out property <bool> graphics-half-bottom;
+    in-out property <bool> graphics-preload-frame;
+    in-out property <bool> graphics-disable-partial-invalidation;
+    in-out property <bool> graphics-texture-inside-rt;
+    in-out property <bool> graphics-disable-render-fixes;
+    in-out property <bool> graphics-capture-avi;
+    in-out property <bool> graphics-capture-png;
+    in-out property <int> graphics-capture-audio;
+    in-out property <int> graphics-screenshot-format;
+    in-out property <int> graphics-screenshot-quality;
+    in-out property <int> graphics-video-codec;
+    in-out property <int> graphics-video-bitrate;
+    in-out property <string> graphics-video-resolution;
+    in-out property <int> graphics-half-pixel-offset-mode;
+    in-out property <int> graphics-round-sprite-mode;
+    in-out property <int> graphics-half-bottom-override;
+    in-out property <int> graphics-skip-draw-start;
+    in-out property <int> graphics-skip-draw-offset;
+    in-out property <int> interface-theme-index;
+    in-out property <int> interface-language-index;
+    in-out property <bool> interface-render-separate;
+    in-out property <bool> interface-hide-main-when-running;
+    in-out property <bool> interface-disable-window-resize;
+    in-out property <bool> interface-confirm-exit;
+    in-out property <bool> interface-save-on-shutdown;
+    in-out property <bool> interface-pause-focus-loss;
+    in-out property <bool> interface-pause-on-start;
+    in-out property <bool> interface-pause-on-controller-disconnect;
+    in-out property <bool> interface-mouse-lock;
+    in-out property <bool> interface-inhibit-screensaver;
+    in-out property <bool> interface-start-fullscreen;
+    in-out property <bool> interface-double-click-fullscreen;
+    in-out property <bool> interface-hide-cursor-fullscreen;
+    in-out property <bool> interface-prompt-state-failure;
+    in-out property <bool> interface-use-savestate-selector;
+    in-out property <bool> interface-discord-presence;
+    in-out property <bool> interface-english-titles;
+    in-out property <string> interface-bg-image-path;
+    in-out property <int> interface-bg-scale-index;
+    in-out property <float> interface-bg-opacity;
+    in-out property <bool> interface-start-big-picture;
+    in-out property <string> memcard-memcard-folder;
+    in-out property <int> memcard-selected-card;
+    in-out property <bool> memcard-show-create;
+    in-out property <bool> memcard-show-convert;
+    in-out property <bool> memcard-show-rename;
+    in-out property <bool> memcard-show-delete;
+    in-out property <bool> osd-show-perf;
+    in-out property <int> osd-perf-pos;
+    in-out property <float> osd-osd-scale;
+    in-out property <float> osd-osd-margin-x;
+    in-out property <float> osd-osd-margin-y;
+    in-out property <bool> osd-osd-bold;
+    in-out property <string> osd-osd-font;
+    in-out property <bool> osd-show-fps;
+    in-out property <bool> osd-show-speed;
+    in-out property <bool> osd-show-cpu;
+    in-out property <bool> osd-show-gpu;
+    in-out property <bool> osd-show-frame-times;
+    in-out property <bool> osd-show-hw-info;
+    in-out property <bool> osd-show-version;
+    in-out property <bool> osd-show-settings-summary;
+    in-out property <bool> osd-show-patches-list;
+    in-out property <bool> osd-show-inputs;
+    in-out property <bool> osd-show-ee-perf;
+    in-out property <bool> osd-show-vu-perf;
+    in-out property <bool> osd-showGS-stats;
+    in-out property <bool> osd-show-VRAM;
+    in-out property <bool> osd-show-internal-resolution;
+    in-out property <bool> osd-show-game-info;
+    in-out property <bool> osd-show-disc-info;
+    in-out property <bool> osd-show-savestate-info;
+    in-out property <bool> osd-show-audio-info;
+    in-out property <bool> osd-show-controller-info;
+    in-out property <bool> osd-show-turbo-indicator;
+    in-out property <bool> osd-show-recording-indicator;
+    in-out property <bool> osd-show-log-screen;
+    in-out property <bool> osd-show-gs-window-title;
+    in-out property <bool> osd-show-notifications;
+    in-out property <float> osd-notif-duration;
+    in-out property <bool> osd-warn-unsafe;
+    in-out property <bool> patch-widescreen;
+    in-out property <bool> patch-no-interlace;
+    in-out property <bool> patch-no-mpeg;
+    in-out property <bool> patch-texture-dump;
     
     in-out property <int> settings-page: 0; // 0=main, 1=Graphics, 2=Audio, 3=Controls, 4=System, 5=MemoryCards, 6=Cheats, 7=Debug
 in-out property <int> selected-bios: 0;
@@ -940,25 +1199,154 @@ in-out property <int> selected-bios: 0;
             x: settings-page == 1 ? 0px : parent.width;
             animate x { duration: 300ms; easing: ease-in-out; }
             y: 56px; height: parent.height - 56px; width: parent.width;
-            InterfaceSettingsView { back-clicked => { settings-page = 0; } }
+            InterfaceSettingsView { back-clicked => { settings-page = 0; }                 theme-index <=> root.interface-theme-index;
+                language-index <=> root.interface-language-index;
+                render-separate <=> root.interface-render-separate;
+                hide-main-when-running <=> root.interface-hide-main-when-running;
+                disable-window-resize <=> root.interface-disable-window-resize;
+                confirm-exit <=> root.interface-confirm-exit;
+                save-on-shutdown <=> root.interface-save-on-shutdown;
+                pause-focus-loss <=> root.interface-pause-focus-loss;
+                pause-on-start <=> root.interface-pause-on-start;
+                pause-on-controller-disconnect <=> root.interface-pause-on-controller-disconnect;
+                mouse-lock <=> root.interface-mouse-lock;
+                inhibit-screensaver <=> root.interface-inhibit-screensaver;
+                start-fullscreen <=> root.interface-start-fullscreen;
+                double-click-fullscreen <=> root.interface-double-click-fullscreen;
+                hide-cursor-fullscreen <=> root.interface-hide-cursor-fullscreen;
+                prompt-state-failure <=> root.interface-prompt-state-failure;
+                use-savestate-selector <=> root.interface-use-savestate-selector;
+                discord-presence <=> root.interface-discord-presence;
+                english-titles <=> root.interface-english-titles;
+                bg-image-path <=> root.interface-bg-image-path;
+                bg-scale-index <=> root.interface-bg-scale-index;
+                bg-opacity <=> root.interface-bg-opacity;
+                start-big-picture <=> root.interface-start-big-picture;
+}
         }
         Rectangle {
             x: settings-page == 2 ? 0px : parent.width;
             animate x { duration: 300ms; easing: ease-in-out; }
             y: 56px; height: parent.height - 56px; width: parent.width;
-            ControllerSettingsView { back-clicked => { settings-page = 0; } }
+            ControllerSettingsView { back-clicked => { settings-page = 0; }                 sdl-input <=> root.controller-sdl-input;
+                port1-type <=> root.controller-port1-type;
+                port2-type <=> root.controller-port2-type;
+                usb1-device <=> root.controller-usb1-device;
+                usb2-device <=> root.controller-usb2-device;
+}
         }
         Rectangle {
             x: settings-page == 3 ? 0px : parent.width;
             animate x { duration: 300ms; easing: ease-in-out; }
             y: 56px; height: parent.height - 56px; width: parent.width;
-            GraphicsSettingsView { back-clicked => { settings-page = 0; } }
+            GraphicsSettingsView { back-clicked => { settings-page = 0; }                 resolution <=> root.graphics-resolution;
+                aspect-ratio <=> root.graphics-aspect-ratio;
+                renderer <=> root.graphics-renderer;
+                adapter <=> root.graphics-adapter;
+                tex-filter <=> root.graphics-tex-filter;
+                trilinear <=> root.graphics-trilinear;
+                anisotropic <=> root.graphics-anisotropic;
+                auto-flush <=> root.graphics-auto-flush;
+                mipmap <=> root.graphics-mipmap;
+                sw-threads <=> root.graphics-sw-threads;
+                shade-boost <=> root.graphics-shade-boost;
+                preload-tex <=> root.graphics-preload-tex;
+                dump-tex <=> root.graphics-dump-tex;
+                load-replacements <=> root.graphics-load-replacements;
+                accurate-blending <=> root.graphics-accurate-blending;
+                gpu-palette-conv <=> root.graphics-gpu-palette-conv;
+                disable-vertex-cache <=> root.graphics-disable-vertex-cache;
+                disable-framebuffer-fetch <=> root.graphics-disable-framebuffer-fetch;
+                edge-aa1 <=> root.graphics-edge-aa1;
+                merge-sprites-sw <=> root.graphics-merge-sprites-sw;
+                tv-shader <=> root.graphics-tv-shader;
+                fxaa <=> root.graphics-fxaa;
+                shader-cache <=> root.graphics-shader-cache;
+                dump-mipmaps <=> root.graphics-dump-mipmaps;
+                preload-tex-dir <=> root.graphics-preload-tex-dir;
+                dump-fmv <=> root.graphics-dump-fmv;
+                fmv-aspect <=> root.graphics-fmv-aspect;
+                disable-readbacks <=> root.graphics-disable-readbacks;
+                gs-dump-compression <=> root.graphics-gs-dump-compression;
+                exclusive-fs <=> root.graphics-exclusive-fs;
+                override-tex-barriers <=> root.graphics-override-tex-barriers;
+                debug-device <=> root.graphics-debug-device;
+                debug-blend <=> root.graphics-debug-blend;
+                software-clut-render <=> root.graphics-software-clut-render;
+                cpu-sprite-render-size <=> root.graphics-cpu-sprite-render-size;
+                cas-sharpen <=> root.graphics-cas-sharpen;
+                cas-sharpness <=> root.graphics-cas-sharpness;
+                integer-scaling <=> root.graphics-integer-scaling;
+                anti-blur <=> root.graphics-anti-blur;
+                deinterlace <=> root.graphics-deinterlace;
+                hw-auto-fix <=> root.graphics-hw-auto-fix;
+                texture-preloading <=> root.graphics-texture-preloading;
+                half-pixel-offset <=> root.graphics-half-pixel-offset;
+                round-sprite <=> root.graphics-round-sprite;
+                auto-flush-hw <=> root.graphics-auto-flush-hw;
+                depth-readback <=> root.graphics-depth-readback;
+                cpu-framebuffer <=> root.graphics-cpu-framebuffer;
+                gpu-palette <=> root.graphics-gpu-palette;
+                get-dc <=> root.graphics-get-dc;
+                mipmap-hw <=> root.graphics-mipmap-hw;
+                trilinear-hw <=> root.graphics-trilinear-hw;
+                skip-draw <=> root.graphics-skip-draw;
+                half-bottom <=> root.graphics-half-bottom;
+                preload-frame <=> root.graphics-preload-frame;
+                disable-partial-invalidation <=> root.graphics-disable-partial-invalidation;
+                texture-inside-rt <=> root.graphics-texture-inside-rt;
+                disable-render-fixes <=> root.graphics-disable-render-fixes;
+                capture-avi <=> root.graphics-capture-avi;
+                capture-png <=> root.graphics-capture-png;
+                capture-audio <=> root.graphics-capture-audio;
+                screenshot-format <=> root.graphics-screenshot-format;
+                screenshot-quality <=> root.graphics-screenshot-quality;
+                video-codec <=> root.graphics-video-codec;
+                video-bitrate <=> root.graphics-video-bitrate;
+                video-resolution <=> root.graphics-video-resolution;
+                half-pixel-offset-mode <=> root.graphics-half-pixel-offset-mode;
+                round-sprite-mode <=> root.graphics-round-sprite-mode;
+                half-bottom-override <=> root.graphics-half-bottom-override;
+                skip-draw-start <=> root.graphics-skip-draw-start;
+                skip-draw-offset <=> root.graphics-skip-draw-offset;
+}
         }
         Rectangle {
             x: settings-page == 4 ? 0px : parent.width;
             animate x { duration: 300ms; easing: ease-in-out; }
             y: 56px; height: parent.height - 56px; width: parent.width;
-            EmulationSettingsView { back-clicked => { settings-page = 0; } }
+            EmulationSettingsView { back-clicked => { settings-page = 0; }                 speed-preset <=> root.emu-speed-preset;
+                frame-pacing <=> root.emu-frame-pacing;
+                vsync-index <=> root.emu-vsync-index;
+                ntsc-mode <=> root.emu-ntsc-mode;
+                pal-mode <=> root.emu-pal-mode;
+                real-time-clock <=> root.emu-real-time-clock;
+                locale-format <=> root.emu-locale-format;
+                normal-speed <=> root.emu-normal-speed;
+                fast-speed <=> root.emu-fast-speed;
+                slow-speed <=> root.emu-slow-speed;
+                turbo-index <=> root.emu-turbo-index;
+                slowmo-index <=> root.emu-slowmo-index;
+                sync-to-host <=> root.emu-sync-to-host;
+                vsync-for-timing <=> root.emu-vsync-for-timing;
+                skip-duplicate-frames <=> root.emu-skip-duplicate-frames;
+                max-frame-latency <=> root.emu-max-frame-latency;
+                ee-cycle-rate <=> root.emu-ee-cycle-rate;
+                ee-cycle-skip <=> root.emu-ee-cycle-skip;
+                mtvu <=> root.emu-mtvu;
+                thread-pinning <=> root.emu-thread-pinning;
+                fast-cdvd <=> root.emu-fast-cdvd;
+                cdvd-precache <=> root.emu-cdvd-precache;
+                enable-cheats <=> root.emu-enable-cheats;
+                apply-widescreen-patches <=> root.emu-apply-widescreen-patches;
+                apply-no-interlace-patches <=> root.emu-apply-no-interlace-patches;
+                rtc-year <=> root.emu-rtc-year;
+                rtc-month <=> root.emu-rtc-month;
+                rtc-day <=> root.emu-rtc-day;
+                rtc-hour <=> root.emu-rtc-hour;
+                rtc-minute <=> root.emu-rtc-minute;
+                rtc-second <=> root.emu-rtc-second;
+}
         }
         Rectangle {
             x: settings-page == 5 ? 0px : parent.width;
@@ -982,13 +1370,73 @@ in-out property <int> selected-bios: 0;
             x: settings-page == 6 ? 0px : parent.width;
             animate x { duration: 300ms; easing: ease-in-out; }
             y: 56px; height: parent.height - 56px; width: parent.width;
-            AudioSettingsView { back-clicked => { settings-page = 0; } }
+            AudioSettingsView { back-clicked => { settings-page = 0; }                 backend <=> root.audio-backend;
+                driver-index <=> root.audio-driver-index;
+                device-index <=> root.audio-device-index;
+                buffer-ms <=> root.audio-buffer-ms;
+                output-latency-ms <=> root.audio-output-latency-ms;
+                output-latency-minimal <=> root.audio-output-latency-minimal;
+                sync-mode <=> root.audio-sync-mode;
+                standard-volume <=> root.audio-standard-volume;
+                fast-forward-volume <=> root.audio-fast-forward-volume;
+                muted <=> root.audio-muted;
+                expansion-mode <=> root.audio-expansion-mode;
+                expand-block-size <=> root.audio-expand-block-size;
+                expand-circular-wrap <=> root.audio-expand-circular-wrap;
+                expand-shift <=> root.audio-expand-shift;
+                expand-depth <=> root.audio-expand-depth;
+                expand-focus <=> root.audio-expand-focus;
+                expand-center-image <=> root.audio-expand-center-image;
+                expand-front-separation <=> root.audio-expand-front-separation;
+                expand-rear-separation <=> root.audio-expand-rear-separation;
+                expand-low-cutoff <=> root.audio-expand-low-cutoff;
+                expand-high-cutoff <=> root.audio-expand-high-cutoff;
+                stretch-sequence-length <=> root.audio-stretch-sequence-length;
+                stretch-seek-window <=> root.audio-stretch-seek-window;
+                stretch-overlap <=> root.audio-stretch-overlap;
+                stretch-quick-seek <=> root.audio-stretch-quick-seek;
+                stretch-aa-filter <=> root.audio-stretch-aa-filter;
+}
         }
         Rectangle {
             x: settings-page == 7 ? 0px : parent.width;
             animate x { duration: 300ms; easing: ease-in-out; }
             y: 56px; height: parent.height - 56px; width: parent.width;
-            OsdSettingsView { back-clicked => { settings-page = 0; } }
+            OsdSettingsView { back-clicked => { settings-page = 0; }                 show-perf <=> root.osd-show-perf;
+                perf-pos <=> root.osd-perf-pos;
+                osd-scale <=> root.osd-osd-scale;
+                osd-margin-x <=> root.osd-osd-margin-x;
+                osd-margin-y <=> root.osd-osd-margin-y;
+                osd-bold <=> root.osd-osd-bold;
+                osd-font <=> root.osd-osd-font;
+                show-fps <=> root.osd-show-fps;
+                show-speed <=> root.osd-show-speed;
+                show-cpu <=> root.osd-show-cpu;
+                show-gpu <=> root.osd-show-gpu;
+                show-frame-times <=> root.osd-show-frame-times;
+                show-hw-info <=> root.osd-show-hw-info;
+                show-version <=> root.osd-show-version;
+                show-settings-summary <=> root.osd-show-settings-summary;
+                show-patches-list <=> root.osd-show-patches-list;
+                show-inputs <=> root.osd-show-inputs;
+                show-ee-perf <=> root.osd-show-ee-perf;
+                show-vu-perf <=> root.osd-show-vu-perf;
+                showGS-stats <=> root.osd-showGS-stats;
+                show-VRAM <=> root.osd-show-VRAM;
+                show-internal-resolution <=> root.osd-show-internal-resolution;
+                show-game-info <=> root.osd-show-game-info;
+                show-disc-info <=> root.osd-show-disc-info;
+                show-savestate-info <=> root.osd-show-savestate-info;
+                show-audio-info <=> root.osd-show-audio-info;
+                show-controller-info <=> root.osd-show-controller-info;
+                show-turbo-indicator <=> root.osd-show-turbo-indicator;
+                show-recording-indicator <=> root.osd-show-recording-indicator;
+                show-log-screen <=> root.osd-show-log-screen;
+                show-gs-window-title <=> root.osd-show-gs-window-title;
+                show-notifications <=> root.osd-show-notifications;
+                notif-duration <=> root.osd-notif-duration;
+                warn-unsafe <=> root.osd-warn-unsafe;
+}
         }
         Rectangle {
             x: settings-page == 8 ? 0px : parent.width;
@@ -1017,43 +1465,109 @@ in-out property <int> selected-bios: 0;
                 assign-slot(slot, idx) => { root.memcard-assign-slot(slot, idx); }
                 eject-slot(slot) => { root.memcard-eject(slot); }
                 swap-slots => { root.memcard-swap-slots(); }
-            }
+                            selected-card <=> root.memcard-selected-card;
+                show-create <=> root.memcard-show-create;
+                show-convert <=> root.memcard-show-convert;
+                show-rename <=> root.memcard-show-rename;
+                show-delete <=> root.memcard-show-delete;
+}
         }
         Rectangle {
             x: settings-page == 9 ? 0px : parent.width;
             animate x { duration: 300ms; easing: ease-in-out; }
             y: 56px; height: parent.height - 56px; width: parent.width;
-            AchievementSettingsView { back-clicked => { settings-page = 0; } }
+            AchievementSettingsView { back-clicked => { settings-page = 0; }                 enable-ra <=> root.ra-enable-ra;
+                hardcore <=> root.ra-hardcore;
+                show-notif <=> root.ra-show-notif;
+                sound-fx <=> root.ra-sound-fx;
+                leaderboard-notif <=> root.ra-leaderboard-notif;
+                show-overlays <=> root.ra-show-overlays;
+}
         }
         Rectangle {
             x: settings-page == 10 ? 0px : parent.width;
             animate x { duration: 300ms; easing: ease-in-out; }
             y: 56px; height: parent.height - 56px; width: parent.width;
-            PatchesSettingsView { back-clicked => { settings-page = 0; } }
+            PatchesSettingsView { back-clicked => { settings-page = 0; }                 widescreen <=> root.patch-widescreen;
+                no-interlace <=> root.patch-no-interlace;
+                no-mpeg <=> root.patch-no-mpeg;
+                texture-dump <=> root.patch-texture-dump;
+}
         }
         Rectangle {
             x: settings-page == 11 ? 0px : parent.width;
             animate x { duration: 300ms; easing: ease-in-out; }
             y: 56px; height: parent.height - 56px; width: parent.width;
-            CheatsSettingsView { back-clicked => { settings-page = 0; } }
+            CheatsSettingsView { back-clicked => { settings-page = 0; }                 filter <=> root.cheats-filter;
+}
         }
         Rectangle {
             x: settings-page == 12 ? 0px : parent.width;
             animate x { duration: 300ms; easing: ease-in-out; }
             y: 56px; height: parent.height - 56px; width: parent.width;
-            GameFixesSettingsView { back-clicked => { settings-page = 0; } }
+            GameFixesSettingsView { back-clicked => { settings-page = 0; }                 fpu-mul-hack <=> root.gf-fpu-mul-hack;
+                fpu-full-mode <=> root.gf-fpu-full-mode;
+                xgkick-hack <=> root.gf-xgkick-hack;
+                ee-timing-hack <=> root.gf-ee-timing-hack;
+                skip-mpeg-hack <=> root.gf-skip-mpeg-hack;
+                oph-flag-hack <=> root.gf-oph-flag-hack;
+                blit-invalidate-hack <=> root.gf-blit-invalidate-hack;
+                vU0-branch-hack <=> root.gf-vU0-branch-hack;
+                vu-add-sub-hack <=> root.gf-vu-add-sub-hack;
+                vu-compare-hack <=> root.gf-vu-compare-hack;
+                vu-max-hack <=> root.gf-vu-max-hack;
+                vu-min-hack <=> root.gf-vu-min-hack;
+                auto-flush-gs <=> root.gf-auto-flush-gs;
+                conservative-framebuffer <=> root.gf-conservative-framebuffer;
+                texture-inside-rt <=> root.gf-texture-inside-rt;
+                dma-busy-hack <=> root.gf-dma-busy-hack;
+                gif-fifo-hack <=> root.gf-gif-fifo-hack;
+                goemon-tlb-hack <=> root.gf-goemon-tlb-hack;
+}
         }
         Rectangle {
             x: settings-page == 13 ? 0px : parent.width;
             animate x { duration: 300ms; easing: ease-in-out; }
             y: 56px; height: parent.height - 56px; width: parent.width;
-            FoldersSettingsView { back-clicked => { settings-page = 0; } }
+            FoldersSettingsView { back-clicked => { settings-page = 0; }                 saves-dir <=> root.folders-saves-dir;
+                snapshots-dir <=> root.folders-snapshots-dir;
+                logs-dir <=> root.folders-logs-dir;
+                cheats-dir <=> root.folders-cheats-dir;
+                patches-dir <=> root.folders-patches-dir;
+                textures-dir <=> root.folders-textures-dir;
+                memcards-dir <=> root.folders-memcards-dir;
+}
         }
         Rectangle {
             x: settings-page == 14 ? 0px : parent.width;
             animate x { duration: 300ms; easing: ease-in-out; }
             y: 56px; height: parent.height - 56px; width: parent.width;
-            AdvancedSettingsView { back-clicked => { settings-page = 0; } }
+            AdvancedSettingsView { back-clicked => { settings-page = 0; }                 ee-clamp <=> root.adv-ee-clamp;
+                ee-round <=> root.adv-ee-round;
+                ee-recompiler <=> root.adv-ee-recompiler;
+                ee-cache <=> root.adv-ee-cache;
+                ee-div-round <=> root.adv-ee-div-round;
+                intc-spin <=> root.adv-intc-spin;
+                wait-loop <=> root.adv-wait-loop;
+                fast-mem <=> root.adv-fast-mem;
+                pause-on-tlb <=> root.adv-pause-on-tlb;
+                extended-ram <=> root.adv-extended-ram;
+                vu0-clamp <=> root.adv-vu0-clamp;
+                vu0-round <=> root.adv-vu0-round;
+                vu1-clamp <=> root.adv-vu1-clamp;
+                vu1-round <=> root.adv-vu1-round;
+                vu0-recompiler <=> root.adv-vu0-recompiler;
+                vu1-recompiler <=> root.adv-vu1-recompiler;
+                mvu-flag <=> root.adv-mvu-flag;
+                instant-vu1 <=> root.adv-instant-vu1;
+                iop-recompiler <=> root.adv-iop-recompiler;
+                compression-method <=> root.adv-compression-method;
+                compression-level <=> root.adv-compression-level;
+                backup-savestates <=> root.adv-backup-savestates;
+                host-fs <=> root.adv-host-fs;
+                pine-enabled <=> root.adv-pine-enabled;
+                pine-slot <=> root.adv-pine-slot;
+}
         }
         Rectangle {
             x: settings-page == 15 ? 0px : parent.width;

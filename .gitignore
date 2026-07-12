@@ -136,3 +136,14 @@ rust/**/target/
 covers/
 **/covers/*.jpg
 lumine_cdvd_*.tmp
+find_global*.py
+diag_global*.py
+gen_mainwin_props.py
+gen_settings_binding.py
+gen_settings_rust.py
+parse_settings.py
+slint_test.rs
+settings_map.json
+lumine-sx2/build_dbg.*
+lumine-sx2/build_ui.*
+analysis/port_qt_ui_to_slint.md

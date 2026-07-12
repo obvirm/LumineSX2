@@ -45,11 +45,33 @@ fn main() {
         window.set_selected_game(0);
         window.set_fast_boot(true);
 
+        // Mirror the real App startup: load settings from ini, then ensure the
+        // BIOS directory is set (the test doesn't go through the UI picker).
+        lumine_sx2::settings_bindings::load_settings(&window);
+        window.set_bios_dir_path(bios_dir.into());
+        // Also exercise the settings round-trip: set a few UI fields, apply,
+        // then read the ini back to confirm they were written.
+        window.set_graphics_resolution(3);
+        window.set_audio_backend(1);
+        window.set_emu_mtvu(false);
+        window.set_osd_show_fps(true);
+        lumine_sx2::settings_bindings::apply_settings(&window);
+        std::thread::sleep(std::time::Duration::from_millis(400));
+        let r_res = Pcsx2Api::get_int_setting("EmuCore/GS", "upscale_multiplier", 1);
+        let r_aud = Pcsx2Api::get_int_setting("SPU2/Output", "Backend", 0);
+        let r_mtvu = Pcsx2Api::get_bool_setting("EmuCore/Speedhacks", "MTVU", true);
+        let r_fps = Pcsx2Api::get_bool_setting("EmuCore/GS", "OsdShowFPS", false);
+        let settings_ok = r_res == 3 && r_aud == 1 && r_mtvu == false && r_fps == true;
+        eprintln!(
+            "[TEST] settings round-trip: res={} aud={} mtvu={} fps={} ok={}",
+            r_res, r_aud, r_mtvu, r_fps, settings_ok
+        );
+
         eprintln!("[TEST] Invoking play-game (simulated game-card click)...");
         window.invoke_play_game();
 
         // Give the boot worker thread time to start the VM.
-        std::thread::sleep(Duration::from_secs(8));
+        std::thread::sleep(Duration::from_secs(10));
 
         let mut reached_running = false;
         let mut saw_frame = false;
@@ -82,11 +104,14 @@ fn main() {
         // Clean shutdown.
         Pcsx2Api::shutdown();
 
-        if reached_running && saw_frame {
-            eprintln!("[TEST] PASS: game click booted + emulation loop ran");
+        if reached_running && saw_frame && settings_ok {
+            eprintln!("[TEST] PASS: game click booted + emulation loop ran + settings applied");
             std::process::exit(0);
         } else {
-            eprintln!("[TEST] FAIL: game did not reach running frame");
+            eprintln!(
+                "[TEST] FAIL: running={} frame={} settings={}",
+                reached_running, saw_frame, settings_ok
+            );
             std::process::exit(1);
         }
     }

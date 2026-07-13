@@ -13,7 +13,7 @@ pcsx2_common_rs = { path = "../rust/common" }
 chrono = "0.4"
 
 [features]
-default = ["desktop"]
+default = ["desktop", "pcsx2-core"]
 desktop = ["rfd"]
 android = []
 pcsx2-core = []

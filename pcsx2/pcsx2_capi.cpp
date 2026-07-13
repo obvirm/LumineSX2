@@ -11,6 +11,7 @@
 #endif
 #include <objbase.h>
 #endif
+#include <atomic>
 #include "Achievements.h"
 #include "ImGui/ImGuiManager.h"
 #include "common/FileSystem.h"
@@ -667,6 +668,109 @@ float pcsx2_get_current_speed() { return PerformanceMetrics::GetSpeed(); }
 // ═══════════════════════════════════════════════════════════════
 
 const HotkeyInfo g_host_hotkeys[1] = {};
+
+// Hotkey capture state (for "press a key" UI).
+// When a capture is active, InputManager routes the next event to our hook.
+static std::atomic<bool> s_capturing(false);
+static std::string s_captured_key;
+static std::mutex s_capture_mutex;
+
+// InputInterceptHook callback — returns the captured key string and stops capture.
+static InputInterceptHook::CallbackResult HotkeyCaptureHook(InputBindingKey key, float value)
+{
+	if (value <= 0.0f)
+		return InputInterceptHook::CallbackResult::ContinueProcessingEvent;
+
+	// Convert the key to a human-readable binding string and store it.
+	std::string str = InputManager::ConvertInputBindingKeyToString(InputBindingInfo::Type::Button, key);
+	if (!str.empty())
+	{
+		std::unique_lock lock(s_capture_mutex);
+		s_captured_key = std::move(str);
+	}
+	s_capturing.store(false);
+	InputManager::RemoveHook();
+	return InputInterceptHook::CallbackResult::RemoveHookAndStopProcessingEvent;
+}
+
+const char* pcsx2_get_hotkey_list()
+{
+	static thread_local std::string s;
+	const std::vector<const HotkeyInfo*> hotkeys(InputManager::GetHotkeyList());
+	s.clear();
+	for (const HotkeyInfo* hk : hotkeys)
+	{
+		if (!s.empty())
+			s += "\n";
+		s += hk->name;
+		s += "|";
+		s += hk->category ? hk->category : "";
+		s += "|";
+		s += hk->display_name ? hk->display_name : "";
+	}
+	return s.c_str();
+}
+
+const char* pcsx2_get_hotkey_binding(const char* name)
+{
+	static thread_local std::string s;
+	s = Host::GetBaseStringListSetting("Hotkeys", name).empty()
+			? ""
+			: Host::GetBaseStringListSetting("Hotkeys", name).front();
+	return s.c_str();
+}
+
+void pcsx2_set_hotkey_binding(const char* name, const char* binding)
+{
+	if (!name || !binding)
+		return;
+	std::vector<std::string> list = Host::GetBaseStringListSetting("Hotkeys", name);
+	list.clear();
+	list.push_back(binding);
+	Host::SetBaseStringListSettingValue("Hotkeys", name, list);
+}
+
+void pcsx2_clear_hotkey_binding(const char* name)
+{
+	if (!name)
+		return;
+	std::vector<std::string> empty;
+	Host::SetBaseStringListSettingValue("Hotkeys", name, empty);
+}
+
+void pcsx2_capture_hotkey_begin()
+{
+	s_capturing.store(true);
+	{
+		std::unique_lock lock(s_capture_mutex);
+		s_captured_key.clear();
+	}
+	InputManager::SetHook(HotkeyCaptureHook);
+}
+
+bool pcsx2_capture_hotkey_poll(char* out, int32_t size)
+{
+	if (!s_capturing.load())
+	{
+		std::unique_lock lock(s_capture_mutex);
+		if (s_captured_key.empty())
+			return false;
+		const int n = std::min<int>(static_cast<int>(s_captured_key.size()), size - 1);
+		std::memcpy(out, s_captured_key.c_str(), n);
+		out[n] = '\0';
+		s_captured_key.clear();
+		return true;
+	}
+	return false;
+}
+
+void pcsx2_capture_hotkey_cancel()
+{
+	s_capturing.store(false);
+	InputManager::RemoveHook();
+	std::unique_lock lock(s_capture_mutex);
+	s_captured_key.clear();
+}
 
 // ═══════════════════════════════════════════════════════════════
 // DEBUG INTERFACE

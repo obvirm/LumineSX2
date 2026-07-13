@@ -163,6 +163,18 @@ void pcsx2_register_log_callback(PCSX2_OnLog on_log);
 // Returns the PCSX2 build version string (git rev + date), e.g. "a0db40748 (2026-07-10)".
 const char* pcsx2_get_version_string();
 
+// ─── Hotkeys ───
+// Returns a newline-separated list of hotkeys. Each record: name|category|display_name
+const char* pcsx2_get_hotkey_list();
+// Returns the first binding string for a hotkey (or empty string).
+const char* pcsx2_get_hotkey_binding(const char* name);
+void pcsx2_set_hotkey_binding(const char* name, const char* binding);
+void pcsx2_clear_hotkey_binding(const char* name);
+// Capture: begin listening, poll for next key, cancel.
+void pcsx2_capture_hotkey_begin();
+bool pcsx2_capture_hotkey_poll(char* out, int32_t size);
+void pcsx2_capture_hotkey_cancel();
+
 #ifdef __cplusplus
 }
 #endif

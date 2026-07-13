@@ -10,6 +10,8 @@ use debug_controller::DebugController;
 
 use slint::{SharedPixelBuffer, Rgba8Pixel, Image, ModelRc, Model};
 
+
+
 /// Scan BIOS directory and detect valid BIOS files
 fn scan_bios_dir(dir_path: &str) -> Vec<BiosEntry> {
     let dir = std::path::Path::new(dir_path);
@@ -502,6 +504,92 @@ impl App {
                 let enabled2 = win.get_memcard_slot2_enabled();
                 win.set_memcard_slot1_enabled(enabled2);
                 win.set_memcard_slot2_enabled(enabled1);
+            }
+        });
+
+        // ── Hotkey bindings (parity with Qt HotkeySettingsWidget) ──
+        fn load_hotkeys(win: &MainWindow) {
+            let list = crate::pcsx2_capi::Pcsx2Api::get_hotkey_list();
+            let entries: Vec<crate::HotkeyEntry> = list
+                .into_iter()
+                .map(|h| crate::HotkeyEntry {
+                    name: h.name.into(),
+                    category: h.category.into(),
+                    display: h.display_name.into(),
+                    binding: h.binding.replace('\n', ", ").into(),
+                })
+                .collect();
+            win.set_hotkeys(std::rc::Rc::new(slint::VecModel::from(entries)).into());
+        }
+
+        window.on_refresh_hotkeys({
+            let window_weak = window.as_weak();
+            move || {
+                if let Some(win) = window_weak.upgrade() {
+                    load_hotkeys(&win);
+                }
+            }
+        });
+
+        window.on_hotkey_capture({
+            let window_weak = window.as_weak();
+            move |name| {
+                crate::pcsx2_capi::Pcsx2Api::capture_hotkey_begin();
+                // Poll the capture in a background thread; on success, write binding + reload.
+                let wk = window_weak.clone();
+                std::thread::spawn(move || {
+                    for _ in 0..200 {
+                        if let Some(key) = crate::pcsx2_capi::Pcsx2Api::poll_hotkey_capture() {
+                            crate::pcsx2_capi::Pcsx2Api::set_hotkey_binding(&name.to_string(), &key);
+                            crate::pcsx2_capi::Pcsx2Api::reload_input_bindings();
+                            if let Some(win) = wk.upgrade() {
+                                load_hotkeys(&win);
+                                win.set_hotkey_capturing(false);
+                                win.set_hotkey_capturing_name("".into());
+                            }
+                            return;
+                        }
+                        std::thread::sleep(std::time::Duration::from_millis(50));
+                    }
+                    // Timed out — cancel capture.
+                    crate::pcsx2_capi::Pcsx2Api::capture_hotkey_cancel();
+                    if let Some(win) = wk.upgrade() {
+                        win.set_hotkey_capturing(false);
+                        win.set_hotkey_capturing_name("".into());
+                    }
+                });
+            }
+        });
+
+        window.on_hotkey_clear({
+            let window_weak = window.as_weak();
+            move |name| {
+                crate::pcsx2_capi::Pcsx2Api::clear_hotkey_binding(&name.to_string());
+                crate::pcsx2_capi::Pcsx2Api::reload_input_bindings();
+                if let Some(win) = window_weak.upgrade() {
+                    load_hotkeys(&win);
+                }
+            }
+        });
+
+        window.on_hotkey_reload({
+            let window_weak = window.as_weak();
+            move || {
+                crate::pcsx2_capi::Pcsx2Api::reload_input_bindings();
+                if let Some(win) = window_weak.upgrade() {
+                    load_hotkeys(&win);
+                }
+            }
+        });
+
+        window.on_hotkey_cancel_capture({
+            let window_weak = window.as_weak();
+            move || {
+                crate::pcsx2_capi::Pcsx2Api::capture_hotkey_cancel();
+                if let Some(win) = window_weak.upgrade() {
+                    win.set_hotkey_capturing(false);
+                    win.set_hotkey_capturing_name("".into());
+                }
             }
         });
 
@@ -1056,4 +1144,6 @@ fn download_cover(serial: &str, output_path: &std::path::Path) -> bool {
         Err(_) => false,
     }
 }
+
+
 

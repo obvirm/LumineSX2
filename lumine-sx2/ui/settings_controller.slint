@@ -23,7 +23,9 @@ export component ControllerSettingsView inherits DetailPage {
     SettingsRow { txt: "Port 4"; sub: "Not Connected"; ico: @image-url("icons/qt/controller-line.svg"); }
 
     SectionHeader { txt: "Hotkey Settings"; }
-    SettingsRow { txt: "Hotkey Bindings"; sub: "Configure keyboard/controller hotkeys"; ico: @image-url("icons/qt/settings-3-line.svg"); show-arrow: true; }
+    SettingsRow { txt: "Hotkey Bindings"; sub: "Configure keyboard/controller hotkeys"; ico: @image-url("icons/qt/settings-3-line.svg"); show-arrow: true; clicked => { root.hotkey-clicked(); } }
+
+    callback hotkey-clicked;
 
     SectionHeader { txt: "USB Devices"; }
     ComboRow { txt: "Port 1 USB"; model: ["None", "GunCon2", "USB Keyboard", "USB Mouse"]; current-index: usb1-device; selected(idx) => { usb1-device = idx; } }

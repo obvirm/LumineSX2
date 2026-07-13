@@ -18,6 +18,7 @@ import { FoldersSettingsView } from "./settings_folders.slint";
 import { AchievementSettingsView } from "./settings_achievements.slint";
 import { AdvancedSettingsView } from "./settings_advanced.slint";
 import { ControllerSettingsView, ControllerBindingView } from "./settings_controller.slint";
+import { HotkeySettingsView, HotkeyEntry } from "./hotkey_settings.slint";
 import { ExperimentalWarningView } from "./experimental_warning.slint";
 import { AboutView } from "./about.slint";
 import { LogViewerView } from "./log_viewer.slint";
@@ -592,6 +593,11 @@ in-out property <int> selected-bios: 0;
     callback memcard-assign-slot(int /*slot*/, int /*card-index*/);
     callback memcard-eject(int /*slot*/);
     callback memcard-swap-slots();
+    callback refresh-hotkeys();
+    callback hotkey-capture(string);
+    callback hotkey-clear(string);
+    callback hotkey-reload();
+    callback hotkey-cancel-capture();
 
     // Memory Card data
     in-out property <string> memcard-folder: "memcards/";
@@ -602,6 +608,9 @@ in-out property <int> selected-bios: 0;
     in-out property <string> memcard-slot2-card: "Mcd002.ps2";
     in-out property <string> memcard-slot2-type: "PS2 (8MB)";
     in-out property <[MemCardInfo]> memcard-list: [];
+    in-out property <[HotkeyEntry]> hotkeys: [];
+    in-out property <bool> hotkey-capturing: false;
+    in-out property <string> hotkey-capturing-name: "";
 
     property <color> bg: #141218;
     property <color> surface: #1D1B20;
@@ -1235,11 +1244,13 @@ in-out property <int> selected-bios: 0;
             x: settings-page == 2 ? 0px : parent.width;
             animate x { duration: 300ms; easing: ease-in-out; }
             y: 56px; height: parent.height - 56px; width: parent.width;
-            ControllerSettingsView { back-clicked => { settings-page = 0; }                 sdl-input <=> root.controller-sdl-input;
+            ControllerSettingsView { back-clicked => { settings-page = 0; }
+                sdl-input <=> root.controller-sdl-input;
                 port1-type <=> root.controller-port1-type;
                 port2-type <=> root.controller-port2-type;
                 usb1-device <=> root.controller-usb1-device;
                 usb2-device <=> root.controller-usb2-device;
+                hotkey-clicked => { settings-page = 21; root.refresh-hotkeys(); }
 }
         }
         Rectangle {
@@ -1607,6 +1618,20 @@ in-out property <int> selected-bios: 0;
             animate x { duration: 300ms; easing: ease-in-out; }
             y: 56px; height: parent.height - 56px; width: parent.width;
             ControllerBindingView { back-clicked => { settings-page = 2; } }
+        }
+        Rectangle {
+            x: settings-page == 21 ? 0px : parent.width;
+            animate x { duration: 300ms; easing: ease-in-out; }
+            y: 56px; height: parent.height - 56px; width: parent.width;
+            HotkeySettingsView {
+                hotkeys: root.hotkeys;
+                capturing: root.hotkey-capturing;
+                capturing-name: root.hotkey-capturing-name;
+                back-clicked => { settings-page = 2; }
+                capture-requested(name) => { root.hotkey-capture(name); }
+                clear-binding(name) => { root.hotkey-clear(name); }
+                reload-clicked => { root.hotkey-reload(); }
+            }
         }
     Rectangle {
         x: parent.width - self.width - 16px;

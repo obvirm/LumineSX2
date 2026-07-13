@@ -1,0 +1,130 @@
+// Hotkey settings — parity with Qt HotkeySettingsWidget + InputBindingWidget
+import { ScrollView } from "std-widgets.slint";
+import { MaterialColors, DetailPage } from "common.slint";
+
+export struct HotkeyEntry {
+    name: string,
+    category: string,
+    display: string,
+    binding: string,
+}
+
+export component HotkeySettingsView inherits DetailPage {
+    title: "Hotkey & Tombol Pintas";
+
+    callback capture-requested(string); // ask host to start capturing a key for `name`
+    callback clear-binding(string);      // clear binding for `name`
+    callback cancel-capture();           // abort current capture
+    callback reload-clicked;              // reload bindings from ini
+
+    in-out property <[HotkeyEntry]> hotkeys: [];
+    in-out property <bool> capturing: false;
+    in-out property <string> capturing-name: "";
+
+    VerticalLayout {
+        spacing: 0px;
+
+        Rectangle {
+            height: 56px;
+            background: #141218;
+            HorizontalLayout {
+                spacing: 8px;
+                padding-left: 8px;
+                padding-right: 16px;
+                alignment: start;
+                Rectangle {
+                    width: 40px; height: 40px;
+                    border-radius: 20px;
+                    TouchArea {
+                        clicked => { root.back-clicked(); }
+                        Rectangle {
+                            width: 40px; height: 40px;
+                            border-radius: 20px;
+                            Image { source: @image-url("icons/qt/arrow-left-line.svg"); colorize: #E6E0E9; width: 22px; height: 22px; x: 9px; y: 9px; }
+                        }
+                    }
+                }
+                Text { text: root.title; color: #E6E0E9; font-size: 18px; font-weight: 600; vertical-alignment: center; }
+                Rectangle { width: 8px; }
+                TouchArea {
+                    clicked => { root.reload-clicked(); }
+                    Rectangle {
+                        height: 36px; min-width: 100px; border-radius: 18px; background: #1D1B20;
+                        Text { text: "Muat Ulang"; color: #E6E0E9; font-size: 13px; vertical-alignment: center; horizontal-alignment: center; }
+                    }
+                }
+            }
+        }
+
+        Rectangle {
+            background: #0E0C12;
+            clip: true;
+            ScrollView {
+                viewport-width: parent.width;
+                VerticalLayout {
+                    spacing: 4px;
+                    padding: 10px;
+                    alignment: start;
+
+                    if (root.capturing) : Rectangle {
+                        background: #4A4458; border-radius: 8px;
+                        padding: 10px;
+                        Text { text: "Tekan tombol untuk: " + root.capturing-name; color: #E8DEF8; font-size: 13px; font-weight: 600; }
+                    }
+
+                    for hk in root.hotkeys : HorizontalLayout {
+                        height: 44px;
+                        spacing: 10px;
+                        padding-left: 12px; padding-right: 12px;
+                        Rectangle {
+                            width: 150px;
+                            VerticalLayout { alignment: center; }
+                            Text { text: hk.display != "" ? hk.display : hk.name; color: #E6E0E9; font-size: 14px; wrap: word-wrap; }
+                            if (hk.category != "") : Text { text: hk.category; color: #938F99; font-size: 11px; }
+                        }
+                        Rectangle {
+                            width: 160px;
+                            TouchArea {
+                                clicked => {
+                                    if (!root.capturing) {
+                                        root.capturing = true;
+                                        root.capturing-name = hk.name;
+                                        root.capture-requested(hk.name);
+                                    }
+                                }
+                                Rectangle {
+                                    height: 32px; min-width: 140px; border-radius: 6px;
+                                    background: root.capturing && root.capturing-name == hk.name ? #D0BCFF : #1D1B20;
+                                    HorizontalLayout { alignment: center; padding-left: 8px; padding-right: 8px; }
+                                    Text {
+                                        text: hk.binding != "" ? hk.binding : "— belum diatur —";
+                                        color: root.capturing && root.capturing-name == hk.name ? #381E72 : #C8C3CE;
+                                        font-size: 12px;
+                                        font-family: "monospace";
+                                        horizontal-alignment: center;
+                                    }
+                                }
+                            }
+                        }
+                        Rectangle { width: 8px; }
+                        TouchArea {
+                            clicked => {
+                                if (root.capturing && root.capturing-name == hk.name) {
+                                    root.capturing = false;
+                                    root.capturing-name = "";
+                                    root.cancel-capture();
+                                } else {
+                                    root.clear-binding(hk.name);
+                                }
+                            }
+                            Rectangle {
+                                height: 32px; min-width: 60px; border-radius: 6px; background: #2A2730;
+                                Text { text: root.capturing && root.capturing-name == hk.name ? "Batal" : "Hapus"; color: #E6E0E9; font-size: 12px; horizontal-alignment: center; vertical-alignment: center; }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

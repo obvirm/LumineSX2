@@ -97,6 +97,15 @@ extern "C" {
     // Log streaming + version
     fn pcsx2_register_log_callback(on_log: *const u8);
     fn pcsx2_get_version_string() -> *const c_char;
+
+    // Hotkeys
+    fn pcsx2_get_hotkey_list() -> *const c_char;
+    fn pcsx2_get_hotkey_binding(name: *const c_char) -> *const c_char;
+    fn pcsx2_set_hotkey_binding(name: *const c_char, binding: *const c_char);
+    fn pcsx2_clear_hotkey_binding(name: *const c_char);
+    fn pcsx2_capture_hotkey_begin();
+    fn pcsx2_capture_hotkey_poll(out: *mut c_char, size: c_int) -> bool;
+    fn pcsx2_capture_hotkey_cancel();
 }
 
 // ─── Default callback implementations ───
@@ -167,6 +176,15 @@ pub fn clear_log_buffer() {
 
 // ─── Safe Rust API ───
 pub struct Pcsx2Api;
+
+/// Mirrors a PCSX2 hotkey (name/category/display + current binding string).
+#[derive(Clone)]
+pub struct Pcsx2Hotkey {
+    pub name: String,
+    pub category: String,
+    pub display_name: String,
+    pub binding: String,
+}
 
 impl Pcsx2Api {
     pub fn initialize(bios_dir: &str) -> bool {
@@ -365,6 +383,68 @@ impl Pcsx2Api {
                 CStr::from_ptr(p).to_string_lossy().into_owned()
             }
         }
+    }
+
+    // ─── Hotkeys ───
+    /// Returns all hotkeys as a Vec. Each hotkey's `binding` is the current first
+    /// binding string (or empty if unbound).
+    pub fn get_hotkey_list() -> Vec<Pcsx2Hotkey> {
+        let raw = unsafe {
+            let p = pcsx2_get_hotkey_list();
+            if p.is_null() { String::new() } else { CStr::from_ptr(p).to_string_lossy().into_owned() }
+        };
+        raw.lines()
+            .map(|line| {
+                let mut parts = line.splitn(3, '|');
+                let name = parts.next().unwrap_or("").to_string();
+                let category = parts.next().unwrap_or("").to_string();
+                let display_name = parts.next().unwrap_or("").to_string();
+                let binding = Self::get_hotkey_binding(&name);
+                Pcsx2Hotkey { name, category, display_name, binding }
+            })
+            .collect()
+    }
+
+    pub fn get_hotkey_binding(name: &str) -> String {
+        let c = CString::new(name).unwrap();
+        unsafe {
+            let p = pcsx2_get_hotkey_binding(c.as_ptr());
+            if p.is_null() { String::new() } else { CStr::from_ptr(p).to_string_lossy().into_owned() }
+        }
+    }
+
+    pub fn set_hotkey_binding(name: &str, binding: &str) {
+        let cn = CString::new(name).unwrap();
+        let cb = CString::new(binding).unwrap();
+        unsafe { pcsx2_set_hotkey_binding(cn.as_ptr(), cb.as_ptr()); }
+    }
+
+    pub fn clear_hotkey_binding(name: &str) {
+        let c = CString::new(name).unwrap();
+        unsafe { pcsx2_clear_hotkey_binding(c.as_ptr()); }
+    }
+
+    /// Begin capturing the next key press. Poll with `poll_hotkey_capture()`.
+    pub fn capture_hotkey_begin() {
+        unsafe { pcsx2_capture_hotkey_begin(); }
+    }
+
+    pub fn poll_hotkey_capture() -> Option<String> {
+        let mut buf = [0u8; 256];
+        unsafe {
+            if pcsx2_capture_hotkey_poll(buf.as_mut_ptr() as *mut c_char, buf.len() as c_int) {
+                let s = CStr::from_ptr(buf.as_ptr() as *const c_char)
+                    .to_string_lossy()
+                    .into_owned();
+                if s.is_empty() { None } else { Some(s) }
+            } else {
+                None
+            }
+        }
+    }
+
+    pub fn capture_hotkey_cancel() {
+        unsafe { pcsx2_capture_hotkey_cancel(); }
     }
 
     /// Get frame as BGRA pixel slice. Returns (width, height, data).

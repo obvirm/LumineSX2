@@ -136,10 +136,10 @@
 
 ## UI Porting Qt -> Slint (audit )
 
-### Gap 1: Settings wiring — DONE
+### Gap 1: Settings wiring ï¿½ DONE
 274 field ter-wiring ke core (paritas 1:1 Qt). Lihat commit sebelumnya.
 
-### Gap 2: Dialogs — DONE (About + Log viewer)
+### Gap 2: Dialogs ï¿½ DONE (About + Log viewer)
 -  (page 16): versi LumineSX2 + versi PCSX2 core (
   dari +) + link eksternal (buka browser via ).
 -  (page 17): stream log core ke UI. Core log di-forward lewat
@@ -149,9 +149,22 @@
   , di-build ulang jadi .
 - Test: debug build OK, exe jalan,  PASS (no regression).
 
-### Gap 2 lanjutan (BELUM):
-- [ ] Hotkey settings () — nyambung ke InputManager.
-- [ ] Memory card create/convert dialogs — nyambung ke .
+### Gap 2 lanjutan (DONE: Hotkey settings):
+- [x] Hotkey settings (Tombol Pintasan) - parity dengan Qt HotkeySettingsWidget + InputBindingWidget. Page 21.
+  - Enumerasi hotkey via pcsx2_get_hotkey_list() (InputManager::GetHotkeyList).
+  - Baca/set/clear binding via pcsx2_get/set/clear_hotkey_binding() (INI section [Hotkeys], string-list).
+  - Tangkap tombol: pcsx2_capture_hotkey_begin/poll/cancel() pakai InputInterceptHook internal.
+  - C++ bridge (pcsx2_capi.{h,cpp}) + Rust API (pcsx2_capi.rs) + UI (hotkey_settings.slint) + wiring lib.rs.
+  - Test: examples/hotkey_test.rs PASS - enumerate 64 hotkey, set/get/clear round-trip OK, capture begin/poll/cancel no panic.
+  - Commit 0f89f3c6c (pushed).
+- [ ] Memory card create/convert dialogs - nyambung ke SIO/Memcard/MemoryCardFile.
+
+### Gap 2: Dialogs - DONE (About + Log viewer + Hotkey settings)
+- About (page 16): versi LumineSX2 + versi PCSX2 core (pcsx2_get_version_string() dari BuildVersion::GitRev+GitDate) + link eksternal (buka browser via cmd start).
+- Log viewer (page 17): stream log core ke UI. Core log di-forward lewat Console::SetHostOutputLevel -> cb_log -> ring buffer Rust (2000 baris) -> dipoll 500ms ke root.log-lines. Tombol Bersihkan -> clear_log_buffer().
+- Hotkey settings (page 21): lihat Gap 2 lanjutan di atas.
+- C++ bridge: pcsx2_register_log_callback() + pcsx2_get_version_string() + pcsx2_*_hotkey_*() di pcsx2_capi.{h,cpp}, di-build ulang jadi build/capi/pcsx2_capi.lib.
+- Test: debug build OK, exe jalan, hotkey_test PASS (no regression).
 
 ### Gap 3: Game list parity
 - [x] Scan folder (iso/cso/chd/gz/bin/elf) + favorite + region filter
